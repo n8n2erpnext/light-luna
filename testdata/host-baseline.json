@@ -1,0 +1,62 @@
+{
+  "apiVersion": "lightluna.io/v1alpha1",
+  "kind": "PolicyBundle",
+  "metadata": {
+    "name": "host-baseline",
+    "revision": 1
+  },
+  "spec": {
+    "mode": "host",
+    "defaultInbound": "drop",
+    "emergencyAccess": {
+      "enabled": true,
+      "networks": [
+        "192.0.2.0/24"
+      ]
+    },
+    "aliases": [
+      {
+        "id": "trusted-admin",
+        "type": "cidr-set",
+        "values": [
+          "192.0.2.14/32"
+        ]
+      },
+      {
+        "id": "web-ports",
+        "type": "port-set",
+        "values": [
+          80,
+          443
+        ]
+      }
+    ],
+    "rules": [
+      {
+        "id": "cd6ac70a-94b8-465e-856c-ddac843491b3",
+        "priority": 200,
+        "direction": "input",
+        "source": "any",
+        "protocol": "tcp",
+        "destinationPort": 8080,
+        "action": "drop",
+        "note": "Synthetic test only"
+      },
+      {
+        "id": "6cdac70a-94b8-465e-856c-ddac843491b2",
+        "priority": 100,
+        "direction": "input",
+        "source": "trusted-admin",
+        "protocol": "tcp",
+        "destinationPort": 22,
+        "action": "accept",
+        "note": "Documentation-only test CIDR"
+      }
+    ],
+    "autonomous": {
+      "mode": "shadow",
+      "allowRealBans": false,
+      "maxBanTtlSeconds": 300
+    }
+  }
+}

@@ -1,0 +1,39 @@
+# 15 — P0 Standalone Foundation (experimental, non-enforcing)
+
+**Status:** Engineering scaffold on branch `feat/p0-standalone-foundation`. This does NOT complete P0, does NOT satisfy G-STANDALONE, and must not be installed as a firewall.
+
+## Implemented in the first slice
+
+- Standard library Go policy reader with 1 MiB input cap, unknown JSON field rejection, and one-object-only parsing.
+- Typed minimal PolicyBundle contract for standalone `host` / `edge` only.
+- CIDR and port alias validation, uniqueness, canonical CIDR checks, rule UUID/priority checks, P0 supported TCP/UDP/ICMP directions and actions.
+- Require declaration of rescue networks before accepting an inbound drop/reject policy even for preview. **Declaring rescue networks does NOT prove reachability.**
+- Deny real auto-bans; `off`, `observe` and `shadow` are the only recognized autonomous modes.
+- Deterministic, non-enforcing JSON policy preview, with explicit kernel/coexistence/recovery unknowns.
+- Synthetic documentation-only sample policy. Documentation IP ranges `192.0.2.0/24` MUST NOT be used for real administration.
+
+## Commands (development only)
+
+```sh
+go test ./...
+go vet ./...
+go run ./cmd/lunactl version
+go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
+go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
+```
+
+## Non-claims and strict prohibitions
+
+- There is NO nft rule generation, `nft -c` compatibility test, kernel transaction, privileged executor, watchdog, rollback, rescue path, WebUI, service, network simulator, log collector, firewall installer, ban or NetBird connector in this first slice.
+- Policy JSON Schema covers declarative syntax; the CLI additionally checks CIDR network masking, duplicate identities and cross-field constraints. They must remain aligned and will need schema conformance testing.
+- No real firewall changes, no production test, no permissions escalation and no networking side effects are authorized by these files.
+- Never run `nft add`/`nft flush`/`iptables -F` on a host as part of this scaffold.
+
+## Next safe P0 stages
+
+1. Add negative tests for duplicate JSON keys and stricter alias schemas; add fuzz/regression corpus.
+2. Introduce an nft compiler interface that emits *inert text* and is checked in **disposable netns only**, with no application on the parent host.
+3. Build an independent local policy gate, least-privilege IPC and out-of-process rollback design; keep them disabled by default.
+4. Add standalone CLI/API status and simulation with explicit limits and no real apply.
+5. Define CI matrix for Ubuntu/Debian amd64/arm64, compatibility fixture snapshots, SBOM and package dry-runs.
+6. Obtain explicit owner approval before ANY live firewall enforcement testing. NetBird work stays parked until G-STANDALONE and separate approval.

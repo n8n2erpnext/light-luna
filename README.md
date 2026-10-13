@@ -3,7 +3,7 @@
 **Orbit. Observe. Defend.**  
 **Intelligent Software Firewall & Autonomous Defense**  
 *A Light Family product by THAI DUY Digital*  
-**Status:** Architecture / documentation baseline, 2026-10-13. **No runtime product, firewall installation, cloud service or auto-ban is claimed.**
+**Status:** Architecture baseline plus an experimental **non-enforcing P0 policy/CLI scaffold**, 2026-10-13. **No working firewall, nft apply, service, cloud, live ban or standalone acceptance is claimed.**
 
 Light Luna is a packaged **software firewall** for Linux servers and future compatible security appliances. It combines traditional, predictable firewall controls with **Luna Brain**, a bounded, evidence-driven security decision system. It works without Cloud, NetBird or Luna Brain. **Development is strictly standalone-first**: implement, package and prove the independent firewall before initiating ANY NetBird connector development. NetBird is a later optional integration, not an early development track.
 
@@ -41,7 +41,9 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 | [Roadmap & test gates](docs/11-ROADMAP.md) | Milestones, acceptance criteria and anti-scope-creep |
 | [Architectural decisions](docs/12-ADRS.md) | Decided / proposed / unresolved |
 | [Research sources](docs/13-REFERENCES.md) | Public official documentation links and caveats |
-| [Project handoff](docs/14-HANDOFF-2026-10-13.md) | Decisions, artifacts, GitHub blocker and next session |
+| [Project handoff](docs/14-HANDOFF-2026-10-13.md) | Historical design-era handoff |
+| [P0 implementation notes](docs/15-P0-IMPLEMENTATION-NOTES.md) | Actual implemented slice, commands, limitations and next tests |
+| [HOMESV P0 handoff](docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | Dev environment, verified tests, safe next tasks and Git publishing |
 
 ## Mandatory stage gate — standalone first
 
@@ -75,7 +77,7 @@ WebUI / lunactl ---> Local Control API ---> Policy & Config Store
 
 ## Current boundaries
 
-- This repository starts as **design and technical documentation**; no firewall code, WAF engine, enforcement daemon, infrastructure, domain, logo asset, or deployment is claimed to exist.
+- This repository now includes an **experimental, non-enforcing policy validator and CLI preview only**. No nft compiler/apply, WAF engine, privileged daemon, installer, infrastructure, logo asset or working firewall exists.
 - Existing Luna/Selene Sentinel work is **research input**; do not copy live logs, agent memory databases, credentials, user data or production automation into this repository.
 - Existing production Light Remote, NetBird, VPS-ARM, HOMESV and VPS-AMD are **out of scope for rule changes** until a lab and owner-approved rollout plan are ready. NetBird integration development itself is **out of scope until standalone gate acceptance**.
 - Licensing, product name/trademark/domain availability, commercial Cloud terms, and vendor integration obligations remain subject to review.
