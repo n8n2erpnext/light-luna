@@ -85,6 +85,10 @@ The VPS-ARM [source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-
 
 [ADR-023](../adr/ADR-023-dual-brain-memory-cloud.md) is **PROPOSED**, not yet owner-finalized. [Memory budgets](../architecture/luna-memory-lifecycle.md) and [Cloud topology](../architecture/luna-cloud-intelligence.md) are sizing/architecture hypotheses; do not infer deployed client databases, memory quota enforcement, hemispheres, signed knowledge updater, Cloud API or tenant services from docs file presence. The only reachable source remains the Go non-enforcing P0 CLI. No legacy neural weights have been found in scoped Sentinel source, and no network sync occurs from Light Luna.
 
+## Offline package and component lifecycle (DECIDED DESIGN; NO EXECUTABLE IMPLEMENTATION)
+
+[ADR-024](../adr/ADR-024-offline-base-independent-component-updates.md) establishes a **mandatory packaged Basic Brain and knowledge baseline** for the first shipping Light Luna release. [Install/update design](../architecture/offline-base-component-update-lifecycle.md), [component release manifest](../../schemas/component-release-manifest-v1alpha1.schema.json), [installed state](../../schemas/component-install-state-v1alpha1.schema.json) and [fictional offline fixture](../../testdata/offline-component-state.example.json) are specification data only. There is **NO** componentized installer, updater, Brain process, signed manifest verifier, local WebUI version page, rollback manager or Cloud sync in current reachable Go code. The two schemas are not imported or semantically validated by `cmd/lunactl`. The only active command remains the inert policy CLI.
+
 ## Current verification and risks
 
 HOMESV unit tests, vet, CLI validation/preview and amd64/arm64 cross-builds passed for baseline `9ae27b2`. No WebUI E2E, Linux namespace test, kernel compatibility check, privileged executor, secure install/uninstall, actual live recovery, independent release signatures or real ban/counter proof exists.

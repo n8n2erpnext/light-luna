@@ -29,6 +29,8 @@
 
 | ADR-023 | **PROPOSED** | [Dual-role Luna Brain, bounded local memory and optional Cloud intelligence](adr/ADR-023-dual-brain-memory-cloud.md). Analytical Go core + optional hypothesis/ML plane, 256/512 MiB and 2 GiB experimental data caps, local enforcement, signed relevant knowledge delta, opt-in Cloud learning; pending owner acceptance and benchmark |
 
+| ADR-024 | **DECIDED** | [Offline-complete base installer and independent App/Brain/Knowledge/module updates](adr/ADR-024-offline-base-independent-component-updates.md): package Basic Go Brain+verified baseline knowledge; Cloud optional; distinct version ledgers, compatible ABI, signed offline bundles, staged rollback; advanced ML remains optional; no shipping implementation yet |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

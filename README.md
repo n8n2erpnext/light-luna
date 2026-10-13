@@ -51,6 +51,10 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 
 **Go** is the planned primary backend, CLI, deterministic Luna Brain and separated constrained executor language. **React + TypeScript** is the proposed WebUI. An **optional, unprivileged Python worker** may be added only for justified ML/statistics/inference tasks; baseline Host/Edge operation and safety never depend on Python or any LLM. JavaScript `.mjs` is no longer the planned default Brain runtime. See [ADR-020](docs/adr/ADR-020-go-core-python-optional.md). **Only the P0 Go CLI/validator is implemented today.**
 
+## Offline-complete installation and independent releases
+
+The planned product installer contains the local application, independently protected firewall executor, **Basic Go Luna Brain** and verified **base knowledge** from day one. It runs without Cloud enrollment, NetBird or an Internet connection; advanced Python ML and extra WAF/XDP modules remain optional. **App, Brain, executor, module, knowledge and optional model versions update independently** with signed compatibility checks and rollback, even if two components sometimes require a coordinated transaction. See [ADR-024](docs/adr/ADR-024-offline-base-independent-component-updates.md) and [lifecycle design](docs/architecture/offline-base-component-update-lifecycle.md). The repository currently contains only a non-enforcing P0 Go CLI; this is a **release architecture requirement**, not a ready installer.
+
 ## Proposed Brain runtime/memory and Cloud extension
 
 [ADR-023](docs/adr/ADR-023-dual-brain-memory-cloud.md) evaluates Go deterministic analysis plus optional hypothesis/ML reasoning, independently checked by an outside Policy Gate. [Local learning budgets](docs/architecture/luna-memory-lifecycle.md) propose bounded telemetry and knowledge storage. [Cloud intelligence](docs/architecture/luna-cloud-intelligence.md) describes a **future** curator and signed, per-asset delta downloads; aggregate experience uplink is opt-in. Light Luna must always preserve offline core firewall authority. None of this is implemented or approved as release-capable functionality.

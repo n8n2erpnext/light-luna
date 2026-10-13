@@ -36,6 +36,8 @@
       "brainV2Implementation": "not_started",
       "threatIntelIntegration": "not_started",
       "cloudExperienceSharing": "future_opt_in_not_implemented",
+      "offlineBaseBrainReleaseRequirement": "decided_not_implemented",
+      "componentizedVersionUpdate": "architecture_only_not_implemented",
       "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
       "decisionProposalSchema": "static_advisory_only_not_runtime_validated"
     }
@@ -60,7 +62,11 @@
     "threatKnowledgePipeline": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
     "dualBrainProposal": "docs/adr/ADR-023-dual-brain-memory-cloud.md",
     "localMemoryProposal": "docs/architecture/luna-memory-lifecycle.md",
-    "cloudIntelligenceProposal": "docs/architecture/luna-cloud-intelligence.md"
+    "cloudIntelligenceProposal": "docs/architecture/luna-cloud-intelligence.md",
+    "offlineBaseReleaseDecision": "docs/adr/ADR-024-offline-base-independent-component-updates.md",
+    "componentLifecycleContract": "docs/architecture/offline-base-component-update-lifecycle.md",
+    "componentReleaseManifestSchema": "schemas/component-release-manifest-v1alpha1.schema.json",
+    "componentInstallStateSchema": "schemas/component-install-state-v1alpha1.schema.json"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

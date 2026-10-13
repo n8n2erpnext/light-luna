@@ -28,6 +28,11 @@ Scope: document ownership and historical path mapping
 | [ADR-021 eBPF/XDP capability](../adr/ADR-021-ebpf-observability-xdp-optional.md) | Optional Linux tracing + early ingress mitigation; no code or live attachment; kernel coexistence rules |
 | [ADR-022 Brain V2 knowledge migration](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) | Build new Go Brain; port only reviewed facts/rules; no legacy live DB/weight copy |
 | [ADR-023 Dual Brain + Memory + Cloud](../adr/ADR-023-dual-brain-memory-cloud.md) | Proposed roles, model training policy, node disk caps and optional Cloud; **pending owner acceptance** |
+| [ADR-024 Offline Base + Component Versions](../adr/ADR-024-offline-base-independent-component-updates.md) | DECIDED Basic Brain mandatory, offline-ready installer, App/Brain/Knowledge/module independent releases |
+| [Offline Install & Component Update Lifecycle](../architecture/offline-base-component-update-lifecycle.md) | Detailed install payload, version ledger, trust, preflight, atomic rollout, rollback and test cases |
+| [Component release manifest schema](../../schemas/component-release-manifest-v1alpha1.schema.json) | Design-only release-descriptor contract, not a trust verifier |
+| [Component installed-state schema](../../schemas/component-install-state-v1alpha1.schema.json) | Design-only multi-version status/Cloud lifecycle contract |
+| [Offline component state fixture](../../testdata/offline-component-state.example.json) | FICTIONAL disconnected install status, not a real release |
 | [Local Memory Lifecycle](../architecture/luna-memory-lifecycle.md) | Proposed quotas, data expiration, evidence degradation and SQLite WAL reserve |
 | [Cloud Intelligence](../architecture/luna-cloud-intelligence.md) | Proposed feed curator, signed packs, optional upload, tenant isolation, scale-ready Go/API architecture |
 | [Luna Brain V2 design](../architecture/luna-brain-v2.md) | Detailed knowledge/reasoning/memory/score contracts and component topology |

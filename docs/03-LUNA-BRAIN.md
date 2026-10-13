@@ -8,6 +8,10 @@
 
 [ADR-023](adr/ADR-023-dual-brain-memory-cloud.md) evaluates the requested left/right-brain structure as two **logical software roles**: Go deterministic analytical detection and optional Go/Python hypothesis reasoning. Both read three knowledge regions and typed evidence; independent critic checks contradictions while Policy Gate remains separate. Proposed [bounded local memory](architecture/luna-memory-lifecycle.md) prevents growing SQLite history by quota, TTL and downsampling; future [Cloud](architecture/luna-cloud-intelligence.md) distributes verified signed knowledge but does not decide packets or require raw log upload. All profiles/implementations remain proposals subject to owner approval and tests.
 
+## Basic Brain ships offline; advanced reasoning remains optional
+
+[ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) requires the future standalone installer to ship a functioning **Go-native Basic Luna Brain with a curated baseline KnowledgePack**, in addition to the firewall framework. Brain is a separately versioned unprivileged process; updating its code changes `brainVersion` but never automatically `appVersion`. Curated CVEs/scenarios are separately versioned `knowledgeRevision` assets, optional ML weights have `modelVersion`, and individual modules have their own releases. A node with no Cloud enrollment uses its bundled baseline and can manually install signed updates; Cloud never sits in the packet or permission path. [Update lifecycle](architecture/offline-base-component-update-lifecycle.md) is design only: Brain implementation has not started.
+
 ## Mission
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.

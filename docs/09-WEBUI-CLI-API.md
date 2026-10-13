@@ -12,6 +12,10 @@
 
 **Operations:** health, resource budgets, audit, backup/restore, break-glass, diagnostics bundle scrubber, upgrade/uninstall with rollback preview.
 
+## Proposed Components & Updates page
+
+[ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) requires an independent version ledger: App, Basic Brain, Executor, knowledge pack/revision/freshness, each module and optional ML model. Show Cloud status `never enrolled/offline/connected/degraded` independently of whether local protection is running. Provide per-track update policies, separate available/current/staged/rollback versions and a **full compatibility preflight**, not a universal single "Update All" that silently changes firewall privileges. Proposed CLI `lunactl version --components`, `lunactl update status/check/plan/import/apply/rollback` are not implemented. See [lifecycle spec](architecture/offline-base-component-update-lifecycle.md).
+
 ## Moon-state icon (not a sole safety signal)
 
 `MOON_CALM` cyan crescent; `MOON_WATCH` yellow; `MOON_ALERT` amber/orange; `BLOOD_MOON` red for confirmed high-severity threat; `ECLIPSE` for missing telemetry/control-plane visibility (unknown, not necessarily worse threat). **Show a separate threat severity and telemetry confidence indicator**; never imply red cannot occur while stale, and never imply green when sensors are blind. Icons/text/shape must be accessible without color vision.

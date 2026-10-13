@@ -6,9 +6,11 @@ Deliver signed/verifiable native Linux packages and an operator-friendly install
 
 ### Package component split (planned)
 
+**Installer contract changed 2026-10-13:** Ship a complete offline package with framework, restricted firewall executor, **Basic Luna Brain**, verified curated **base knowledge**, local UI/CLI and last-known-good recovery. A downloaded Cloud Brain is **not** required for activation. App, Brain, executor, individual modules, Knowledge revision and optional ML model have **separate versions and update lifecycles**. See the [offline installer/update contract](architecture/offline-base-component-update-lifecycle.md). These are release requirements, **not implemented functionality**.
+
 - `light-luna-agent`: unprivileged data collectors, local control plane and secure communication.
 - `light-luna-executor`: constrained privileged `lunalockd`, kernel rule owner, watchdog and rollback lease.
-- `light-luna-brain`: optional Luna Brain and local inference backend; separate resource profile.
+- `light-luna-brain`: **required Basic Go Luna Brain** in the standard offline-complete installer; unprivileged and separately versioned/restartable. Optional Python ML/inference workers and downloaded models use an additional package/resource profile. See [ADR-024](adr/ADR-024-offline-base-independent-component-updates.md).
 - `light-luna-waf`: optional adapter/connector, not enabled without L7 ingress configuration.
 - `light-luna-ui`: loopback/private-bound static WebUI with auth.
 - `lunactl`: typed local and remote CLI.

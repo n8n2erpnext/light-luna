@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 10742,
-      "sha256": "1ce22160a4bcef367a67cca03cd9439228aeb5622ecdcd26022003701c72a446"
+      "bytes": 11617,
+      "sha256": "732f4953c3cf575954af004b76f87f849e942e05883f63257fd17c9d18ebe7ca"
     },
     {
       "path": "SECURITY.md",
@@ -56,8 +56,8 @@
       "path": "docs/03-LUNA-BRAIN.md",
       "category": "architecture / design source",
       "title": "03 — Luna Brain: Bounded Autonomous Security",
-      "bytes": 7626,
-      "sha256": "b64201961a70a13d6ad3daba65c69c327c97000a164784ec35d491ecef4b2702"
+      "bytes": 8513,
+      "sha256": "a3b58cc98252b80c06ca9829dc0aa0d4d7bbb30aea3e216cfdf2dec324f8c5ca"
     },
     {
       "path": "docs/04-WAF-THREAT-INTEL.md",
@@ -77,8 +77,8 @@
       "path": "docs/06-CLOUD-FLEET.md",
       "category": "architecture / design source",
       "title": "06 — Cloud, Fleet & Trust",
-      "bytes": 2639,
-      "sha256": "2c531f77ded3222893a5cc2efe59b5dcb604e4a8a1f367cadb9a82a80f7c213a"
+      "bytes": 3428,
+      "sha256": "5b3dbfb561476736d3f70c6e34e73fd635af94241cfaea13e87b48a3eacadcfc"
     },
     {
       "path": "docs/07-SECURITY-SAFETY.md",
@@ -91,15 +91,15 @@
       "path": "docs/08-PACKAGING-HARDWARE.md",
       "category": "architecture / design source",
       "title": "08 — Packaging, OS & Hardware Compatibility",
-      "bytes": 3355,
-      "sha256": "c0195979bd56ea3ab73d8d207a7aaed1aff52550d449d513a78c0dc3aa73ad57"
+      "bytes": 4171,
+      "sha256": "41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea"
     },
     {
       "path": "docs/09-WEBUI-CLI-API.md",
       "category": "architecture / design source",
       "title": "09 — WebUI, CLI & Typed APIs",
-      "bytes": 4193,
-      "sha256": "0bd7419fb7dde6407eaa085752626915e5b10b00320c702e1ed6dae75b8879fa"
+      "bytes": 4964,
+      "sha256": "3143567fc7ecf5c7c2ea44d8d8028698834180482bc097bc28337ac8ee15fe10"
     },
     {
       "path": "docs/10-MOON-DESIGN.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 9750,
-      "sha256": "283194fba54b80f8877bf1b932f98dc4883d570f4ecdd4e4338cc605e2f305c9"
+      "bytes": 10590,
+      "sha256": "5d24f1ee024dbace8fd75139c3d4f03e684f58e7a41fa46f00565925f1b3d3fe"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 4188,
-      "sha256": "3aef0ba32e84652b51a55f2b6fb5631600d20098e134b61ce8a99b78a0d5b496"
+      "bytes": 4574,
+      "sha256": "68a1c1a8747b5d8ff8b0529f7813b821158d1f9d36aacfd5e9b656f1821d9ae4"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -179,6 +179,13 @@
       "sha256": "11ba2ff2bf73a3da6dd41b88becfa8a661778f46fc50c0a92ea6715ff7e8767c"
     },
     {
+      "path": "docs/adr/ADR-024-offline-base-independent-component-updates.md",
+      "category": "architecture / design source",
+      "title": "ADR-024 — Offline-Complete Installation and Independently Versioned Components",
+      "bytes": 8386,
+      "sha256": "15cca5d4c041d7de748473a52a7daa32638effa1e4eed298f061d80414a6391e"
+    },
+    {
       "path": "docs/architecture/luna-brain-v2.md",
       "category": "architecture / design source",
       "title": "Luna Brain V2 — Evidence, Knowledge, Reasoning and Defensive Decisions",
@@ -198,6 +205,13 @@
       "title": "Luna Local Memory — Resource Budgets, Compaction and Retention",
       "bytes": 6272,
       "sha256": "df0c9a4025466f0558ffcbe848f1be6c9ff95cfb05c1ada4cc85089b9d4dd6e1"
+    },
+    {
+      "path": "docs/architecture/offline-base-component-update-lifecycle.md",
+      "category": "architecture / design source",
+      "title": "Offline Base Installation and Per-Component Update Lifecycle",
+      "bytes": 13529,
+      "sha256": "e07d464e4a59e2357a94eaffb9394e0cff07ba2dfe2ce5541073110e9b931137"
     },
     {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
@@ -249,6 +263,20 @@
       "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
     },
     {
+      "path": "schemas/component-install-state-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "component-install-state-v1alpha1.schema",
+      "bytes": 5685,
+      "sha256": "c440b17d37251000562963f0856711383599d38341b90dce4597233f2cc95cbc"
+    },
+    {
+      "path": "schemas/component-release-manifest-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "component-release-manifest-v1alpha1.schema",
+      "bytes": 6493,
+      "sha256": "50b04800ee75252a660665d7e189a0ee9d668dfdf6b7e28fa107f2bb6fe5e92e"
+    },
+    {
       "path": "schemas/decision-proposal-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "decision-proposal-v1alpha1.schema",
@@ -282,6 +310,13 @@
       "title": "host-baseline",
       "bytes": 1296,
       "sha256": "a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a"
+    },
+    {
+      "path": "testdata/offline-component-state.example.json",
+      "category": "synthetic test fixture",
+      "title": "offline-component-state.example",
+      "bytes": 800,
+      "sha256": "8db8b2e63f43d5bcc1fce35e6cd5a2fbb43ccdffa489f4959e52648d18887104"
     }
   ]
 }

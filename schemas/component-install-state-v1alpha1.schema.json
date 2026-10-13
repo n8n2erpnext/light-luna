@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/component-install-state-v1alpha1.json",
+  "title": "Light Luna independently versioned installed component state (DESIGN ONLY)",
+  "description": "Local status display, not a signed release authorization or an indication that the described implementation exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "appVersion",
+    "brainVersion",
+    "executorVersion",
+    "knowledge",
+    "modules",
+    "cloud",
+    "updatePolicies"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.component-state/v1alpha1"
+    },
+    "appVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+    },
+    "brainVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+    },
+    "executorVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+    },
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packId",
+        "revision",
+        "lastVerifiedUtc",
+        "freshness"
+      ],
+      "properties": {
+        "packId": {
+          "type": "string",
+          "maxLength": 140
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lastVerifiedUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "freshness": {
+          "enum": [
+            "CURRENT",
+            "STALE",
+            "EXPIRED",
+            "UNKNOWN"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9._-]{2,110}$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "status"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+          },
+          "status": {
+            "enum": [
+              "INSTALLED",
+              "DISABLED",
+              "DEGRADED",
+              "UNSUPPORTED"
+            ]
+          }
+        }
+      }
+    },
+    "model": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+(?:[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+        },
+        "status": {
+          "enum": [
+            "INSTALLED",
+            "DISABLED",
+            "DEGRADED"
+          ]
+        }
+      }
+    },
+    "cloud": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enrollment",
+        "connection",
+        "telemetryShareOptIn"
+      ],
+      "properties": {
+        "enrollment": {
+          "enum": [
+            "NEVER_ENROLLED",
+            "ENROLLED",
+            "REVOKED"
+          ]
+        },
+        "connection": {
+          "enum": [
+            "OFFLINE",
+            "CONNECTED",
+            "DEGRADED"
+          ]
+        },
+        "telemetryShareOptIn": {
+          "type": "boolean"
+        },
+        "lastSuccessfulSyncUtc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "protocolAbi": {
+      "type": "object",
+      "maxProperties": 50,
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "updatePolicies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "app",
+        "brain",
+        "executor",
+        "knowledge",
+        "module",
+        "model"
+      ],
+      "properties": {
+        "app": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "SCHEDULED"
+          ]
+        },
+        "brain": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "SCHEDULED"
+          ]
+        },
+        "executor": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "SCHEDULED"
+          ]
+        },
+        "knowledge": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "AUTO_KNOWLEDGE"
+          ]
+        },
+        "module": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "SCHEDULED"
+          ]
+        },
+        "model": {
+          "enum": [
+            "OFF",
+            "NOTIFY",
+            "MANUAL",
+            "SCHEDULED"
+          ]
+        }
+      }
+    },
+    "brainHealth": {
+      "enum": [
+        "READY",
+        "DEGRADED",
+        "UNAVAILABLE",
+        "NOT_IMPLEMENTED"
+      ]
+    },
+    "firewallHealth": {
+      "enum": [
+        "READY",
+        "DEGRADED",
+        "UNAVAILABLE",
+        "NOT_IMPLEMENTED"
+      ]
+    }
+  }
+}

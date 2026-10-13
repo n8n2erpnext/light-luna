@@ -4,6 +4,10 @@
 
 Light Luna installs, loads policy, enforces manual rules, expires temporary bans, audits actions and recovers **fully offline**. Cloud is optional and opt-in. Local ownership is authoritative for emergency restores. Loss of Cloud MUST NOT silently turn a local firewall permissive or halt scheduled unblock.
 
+## Independently versioned Cloud and offline distribution (ADR-024)
+
+[ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) requires every install to contain a Basic Go Brain and curated base knowledge before optional Cloud enrollment. [Update lifecycle](architecture/offline-base-component-update-lifecycle.md) separates `appVersion`, `brainVersion`, `executorVersion`, optional module versions, `knowledgeRevision` and optional ML model version. Cloud distributes signed, compatible per-track updates/deltas under per-component owner policy; an offline signed bundle uses the **same trust verifier**. No background auto-updates to privileged executor or XDP module without a reviewed maintenance/rollback gate. The current code has no updater, Brain binary or Cloud sync.
+
 ## Proposed Cloud services
 
 1. **Device enrollment and ownership:** owner-activated short-lived invitation; device-bound keypair; certificate pinning/rotation; no automatic adoption of all peers found by NetBird.

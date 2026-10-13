@@ -1,0 +1,38 @@
+{
+  "schema": "lightluna.component-state/v1alpha1",
+  "appVersion": "1.4.0",
+  "brainVersion": "1.2.3",
+  "executorVersion": "1.1.2",
+  "knowledge": {
+    "packId": "knowledge-base-demo",
+    "revision": 185,
+    "lastVerifiedUtc": "2026-10-13T00:00:00Z",
+    "freshness": "STALE"
+  },
+  "modules": {
+    "waf": {
+      "version": "0.6.1",
+      "status": "DISABLED"
+    }
+  },
+  "model": null,
+  "cloud": {
+    "enrollment": "NEVER_ENROLLED",
+    "connection": "OFFLINE",
+    "telemetryShareOptIn": false
+  },
+  "protocolAbi": {
+    "app-brain": 2,
+    "app-executor": 1
+  },
+  "updatePolicies": {
+    "app": "MANUAL",
+    "brain": "MANUAL",
+    "executor": "MANUAL",
+    "knowledge": "NOTIFY",
+    "module": "MANUAL",
+    "model": "OFF"
+  },
+  "brainHealth": "READY",
+  "firewallHealth": "READY"
+}

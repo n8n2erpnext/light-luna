@@ -26,6 +26,10 @@
 
 Passing only a unit test or completing docs does **not** satisfy the gate. Until all conditions pass, mark NetBird `DEFERRED` and do not begin its development.
 
+## Offline installer / component release gate (ADR-024)
+
+[ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) makes a **Basic Go Luna Brain and verified baseline knowledge mandatory in the first shipping standalone install**; only larger ML/reasoning enhancements remain optional. App/Brain/Executor/Knowledge/modules/model have independently versioned, signed, rollbackable delivery and explicit compatible ABI. **Design the package boundaries in P0**, prove offline installer + Basic Brain + firewall/recovery in P1 release acceptance, then test App-only / Brain-only / Knowledge-only and coordinated incompatible update transactions. Cloud transport is an optional distribution channel and may be built later; do not implement required Cloud enrollment in P0–P4. Manual signed offline updates must work without Cloud.
+
 ## Optional eBPF/XDP capability track (ADR-021)
 
 This track is **not a mandatory standalone acceptance dependency** and does not authorize real firewall changes:

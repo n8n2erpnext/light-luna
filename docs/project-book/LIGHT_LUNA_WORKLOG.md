@@ -48,6 +48,13 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Proposed bounded client storage profiles, detailed quota/compaction and stale-evidence rules in [Local Memory Lifecycle](../architecture/luna-memory-lifecycle.md).
 - Proposed offline-first, signed update/delta and privacy-preserving future multi-tenant service in [Cloud Intelligence](../architecture/luna-cloud-intelligence.md). No Cloud service, model, database size caps or client sync actually implemented.
 
+## 2026-10-13 — Owner approves offline Basic Brain and split release versions
+
+- Clarified product contract: Light Luna installs as a **self-contained, Cloud-optional firewall with mandatory compact Go Basic Brain and baseline knowledge**, not a Cloud-dependent empty shell. Brain failure still cannot halt or loosen independent firewall policy/TTL.
+- [ADR-024](../adr/ADR-024-offline-base-independent-component-updates.md) DECIDED separate `appVersion`, `brainVersion`, `executorVersion`, module versions, `knowledgeRevision`, optional `modelVersion`, compatibility matrix/ABI, signed Cloud/offline update bundles and per-component rollback.
+- [Lifecycle](../architecture/offline-base-component-update-lifecycle.md) and two static JSON schema contracts plus a fictional offline-state fixture were created; these are design only and not a running updater, signed artifacts or executable firewall release.
+- Preserve P0–P4 standalone-first, defer optional Cloud service and NetBird integration, and test first-install with no network before any release claim.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.
