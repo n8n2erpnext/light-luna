@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "lightluna.project-truth-status.v1",
+  "snapshotDate": "2026-10-13",
+  "repository": {
+    "fullName": "n8n2erpnext/light-luna",
+    "visibility": "public",
+    "ownerDecision": "public accepted 2026-10-13",
+    "mainSHA": "66920c251603b0b0c4bcd0d0cfc94ca8f7220d41",
+    "developmentBranch": "feat/p0-standalone-foundation",
+    "developmentSHA": "9ae27b267e72e465ea7808c3936fabcf6b0cac05"
+  },
+  "development": {
+    "primaryHost": "HOMESV",
+    "milestone": "P0 scaffold",
+    "status": "non_enforcing_cli_only",
+    "languages": {
+      "go": "implemented_cli_policy",
+      "typescript_react": "proposed_webui",
+      "javascript_mjs": "proposed_brain",
+      "sqlite": "proposed_storage",
+      "nftables": "not_implemented"
+    },
+    "lastVerified": {
+      "goUnitTests": "pass",
+      "goVet": "pass",
+      "cliValidatePreview": "pass",
+      "crossBuildAmd64": "pass",
+      "crossBuildArm64": "pass",
+      "kernelNamespaceTests": "not_run",
+      "productionInstalled": false
+    }
+  },
+  "gates": {
+    "P0": "open",
+    "G_STANDALONE": "blocked",
+    "NetBirdIntegration": "deferred_until_gate_plus_owner_authorization",
+    "realFirewallEnforcement": "not_approved_or_deployed"
+  },
+  "documentation": {
+    "libraryRules": "docs/project-book/LIBRARY_RULES.md",
+    "projectBook": "docs/project-book/LIGHT_LUNA_PROJECT_BOOK.md",
+    "codeMap": "docs/project-book/LIGHT_LUNA_CODE_MAP.md",
+    "catalog": "docs/project-book/source_catalog.json",
+    "legacyDocPathsMoved": false
+  },
+  "notes": [
+    "This JSON is a dated snapshot, not live telemetry",
+    "Verification at recorded source SHA; future changes require reconciling docs against code",
+    "No confidential device identifiers, credentials or raw logs"
+  ]
+}

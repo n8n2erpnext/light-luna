@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "lightluna.source-catalog.v1",
+  "scope": "repository sources excluding docs/project-book and ephemeral artifacts",
+  "selfReferentialExcluded": true,
+  "entries": [
+    {
+      "path": "CONTRIBUTING.md",
+      "category": "repository contract",
+      "title": "Contributing (P0 standalone-first development)",
+      "bytes": 1098,
+      "sha256": "a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199"
+    },
+    {
+      "path": "README.md",
+      "category": "repository contract",
+      "title": "Light Luna",
+      "bytes": 7982,
+      "sha256": "2490ce0651c2bc8b1fb7172a6e52365710506b7ff68813d05b659882a02ece40"
+    },
+    {
+      "path": "SECURITY.md",
+      "category": "repository contract",
+      "title": "Security Policy (pre-release)",
+      "bytes": 612,
+      "sha256": "9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced"
+    },
+    {
+      "path": "cmd/lunactl/main.go",
+      "category": "executable entry",
+      "title": "main",
+      "bytes": 1349,
+      "sha256": "a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e"
+    },
+    {
+      "path": "docs/00-VISION-BRAND.md",
+      "category": "architecture / design source",
+      "title": "00 — Product Vision & Brand Story",
+      "bytes": 3512,
+      "sha256": "4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364"
+    },
+    {
+      "path": "docs/01-ARCHITECTURE.md",
+      "category": "architecture / design source",
+      "title": "01 — System Architecture",
+      "bytes": 6562,
+      "sha256": "3877e1dcc44fa6fa5265cd6a31760ab51deb87fc27dd3efe582d1713b9f308d0"
+    },
+    {
+      "path": "docs/02-FIREWALL-ENGINE.md",
+      "category": "architecture / design source",
+      "title": "02 — Traditional Firewall Engine: Rules, Aliases, NAT",
+      "bytes": 5328,
+      "sha256": "47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1"
+    },
+    {
+      "path": "docs/03-LUNA-BRAIN.md",
+      "category": "architecture / design source",
+      "title": "03 — Luna Brain: Bounded Autonomous Security",
+      "bytes": 5092,
+      "sha256": "7c60d23ee31e1e8dc2bec2ee937f5a9fa15190a9120934dab6ecbd2ffa2c53e0"
+    },
+    {
+      "path": "docs/04-WAF-THREAT-INTEL.md",
+      "category": "architecture / design source",
+      "title": "04 — WAF, IDS/IPS & Threat Intelligence",
+      "bytes": 4627,
+      "sha256": "332e92b9b52cc014d08cd975c39f98f91c3f8876fd399f9719902801fa95f52d"
+    },
+    {
+      "path": "docs/05-NETBIRD.md",
+      "category": "deferred research",
+      "title": "05 — NetBird Integration Research and Architecture",
+      "bytes": 10281,
+      "sha256": "1c3c40bceeb8176db3f0d3e28291f264dacef2bd8f3d6975fc1fa6ccb8b2138c"
+    },
+    {
+      "path": "docs/06-CLOUD-FLEET.md",
+      "category": "architecture / design source",
+      "title": "06 — Cloud, Fleet & Trust",
+      "bytes": 2639,
+      "sha256": "2c531f77ded3222893a5cc2efe59b5dcb604e4a8a1f367cadb9a82a80f7c213a"
+    },
+    {
+      "path": "docs/07-SECURITY-SAFETY.md",
+      "category": "architecture / design source",
+      "title": "07 — Security Threat Model, Enforcement Safety, Recovery",
+      "bytes": 3425,
+      "sha256": "4d1c3029776e73e65230c9249c23d1ecfa7bb150497c53871251ffe78fa101bb"
+    },
+    {
+      "path": "docs/08-PACKAGING-HARDWARE.md",
+      "category": "architecture / design source",
+      "title": "08 — Packaging, OS & Hardware Compatibility",
+      "bytes": 3355,
+      "sha256": "c0195979bd56ea3ab73d8d207a7aaed1aff52550d449d513a78c0dc3aa73ad57"
+    },
+    {
+      "path": "docs/09-WEBUI-CLI-API.md",
+      "category": "architecture / design source",
+      "title": "09 — WebUI, CLI & Typed APIs",
+      "bytes": 4193,
+      "sha256": "0bd7419fb7dde6407eaa085752626915e5b10b00320c702e1ed6dae75b8879fa"
+    },
+    {
+      "path": "docs/10-MOON-DESIGN.md",
+      "category": "architecture / design source",
+      "title": "10 — Light Luna Brand & Moon-State System",
+      "bytes": 3378,
+      "sha256": "86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59"
+    },
+    {
+      "path": "docs/11-ROADMAP.md",
+      "category": "decision / roadmap",
+      "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
+      "bytes": 6631,
+      "sha256": "668966f38a34c9eec8d443e72c39682d3e4dcf560f23fb2ee03d1a97a74ee294"
+    },
+    {
+      "path": "docs/12-ADRS.md",
+      "category": "decision / roadmap",
+      "title": "12 — Architecture Decision Register",
+      "bytes": 2818,
+      "sha256": "aecb1e64285a36f3b87b827325e6f0e0b1305c1d71478b8b4f616c95f6f78a74"
+    },
+    {
+      "path": "docs/13-REFERENCES.md",
+      "category": "architecture / design source",
+      "title": "13 — Research Sources and Verification Notes",
+      "bytes": 2719,
+      "sha256": "de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a"
+    },
+    {
+      "path": "docs/14-HANDOFF-2026-10-13.md",
+      "category": "historical / handoff",
+      "title": "14 — Light Luna Project Handoff (2026-10-13)",
+      "bytes": 5764,
+      "sha256": "650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85"
+    },
+    {
+      "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
+      "category": "historical / handoff",
+      "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
+      "bytes": 2836,
+      "sha256": "3fc3502d61828aeb54e3392fa6612c137cd758cd36258329d282916ed04faeda"
+    },
+    {
+      "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
+      "category": "historical / handoff",
+      "title": "16 — HOMESV P0 Engineering Handoff (2026-10-13)",
+      "bytes": 4896,
+      "sha256": "d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d"
+    },
+    {
+      "path": "go.mod",
+      "category": "repository contract",
+      "title": "go",
+      "bytes": 50,
+      "sha256": "1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0"
+    },
+    {
+      "path": "internal/policy/model.go",
+      "category": "implementation",
+      "title": "model",
+      "bytes": 2518,
+      "sha256": "6617795c78f27719f945df764093bd25ebf37d3967955959580d6b2046b640d2"
+    },
+    {
+      "path": "internal/policy/policy_test.go",
+      "category": "unit / negative tests",
+      "title": "policy_test",
+      "bytes": 3082,
+      "sha256": "fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96"
+    },
+    {
+      "path": "internal/policy/preview.go",
+      "category": "implementation",
+      "title": "preview",
+      "bytes": 1720,
+      "sha256": "326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362"
+    },
+    {
+      "path": "internal/policy/validate.go",
+      "category": "implementation",
+      "title": "validate",
+      "bytes": 5324,
+      "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
+    },
+    {
+      "path": "schemas/policy-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "policy-v1alpha1.schema",
+      "bytes": 6108,
+      "sha256": "c91b64ef7fa7b6e10d040f984762a33d52279e2d5da37a09872686936ba82526"
+    },
+    {
+      "path": "scripts/update_doc_catalog.py",
+      "category": "developer tooling",
+      "title": "update_doc_catalog",
+      "bytes": 6141,
+      "sha256": "3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb"
+    },
+    {
+      "path": "testdata/host-baseline.json",
+      "category": "synthetic test fixture",
+      "title": "host-baseline",
+      "bytes": 1296,
+      "sha256": "a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a"
+    }
+  ]
+}

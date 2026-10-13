@@ -1,4 +1,5 @@
 # No secrets, live telemetry, or generated security artifacts
+.luna/
 .env
 .env.*
 *.pem

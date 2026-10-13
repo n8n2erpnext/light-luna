@@ -1,0 +1,26 @@
+# Light Luna Worklog
+
+Status: chronological worklog; not canonical runtime evidence
+Date: 2026-10-13
+Scope: durable decisions, verified engineering milestones and blockers
+
+## 2026-10-13 — Documentation baseline, standalone-first lock
+
+- Architecture, security, stages P0–P7 and explicit G-STANDALONE were written in [legacy docs](DOCUMENT_LIBRARY_MAP.md). NetBird connector remains deferred until G-STANDALONE and owner approval.
+- Git `main` published to public `n8n2erpnext/light-luna` at `66920c2`; owner later confirmed repository may remain **public**.
+
+## 2026-10-13 — HOMESV P0 source slice
+
+- HOMESV became primary development environment. Feature branch `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`.
+- Go CLI PolicyBundle validator and inert preview added. HOMESV `go test ./...`, `go vet ./...`, validate/preview, Linux amd64/arm64 builds passed. No firewall runtime or release.
+- Source branch propagated to GitHub with SHA-256 verified Git bundle via VPS-ARM. GitHub PR creation via connector returned 403; remote branch exists. See [historical handoff](../16-P0-HOMESV-HANDOFF-2026-10-13.md).
+
+## 2026-10-13 — Documentation governance adopted from LightBI
+
+- Inspected read-only VPS-ARM LightBI document library in `LightBI-docs-cli-lightbi/docs/project-book/`: its `LIBRARY_RULES`, `DOCUMENT_LIBRARY_MAP`, `DOCUMENT_TEMPLATE`, `LIGHTBI_CODE_MAP`, Project Book and source catalog mechanism.
+- Adapted a **new Light Luna-owned** library with [governance](LIBRARY_RULES.md), [navigation](DOCUMENT_LIBRARY_MAP.md), [Project Book](LIGHT_LUNA_PROJECT_BOOK.md), [Code Map](LIGHT_LUNA_CODE_MAP.md), machine truth status and generated SHA source catalog.
+- Existing `docs/00`–`docs/16` paths kept unchanged. Future docs use functional shelves and authority labels; no LightBI code/doc copied wholesale.
+
+## Standing limitations
+
+No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

@@ -25,6 +25,8 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 
 ## Read this first
 
+**Documentation starts at [Light Luna Project Book](docs/project-book/README.md).** New engineers and AI agents must read its [Library Rules](docs/project-book/LIBRARY_RULES.md), [Project Book](docs/project-book/LIGHT_LUNA_PROJECT_BOOK.md), and [Code Map](docs/project-book/LIGHT_LUNA_CODE_MAP.md) before assuming a planned feature is implemented or changing docs. Source files and Git/test evidence remain the final authority.
+
 | Document | Purpose |
 |---|---|
 | [Product vision](docs/00-VISION-BRAND.md) | Name, lunar metaphor, personas, market/product boundary |
