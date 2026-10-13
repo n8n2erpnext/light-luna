@@ -31,6 +31,12 @@ Scope: document ownership and historical path mapping
 | [ADR-024 Offline Base + Component Versions](../adr/ADR-024-offline-base-independent-component-updates.md) | DECIDED Basic Brain mandatory, offline-ready installer, App/Brain/Knowledge/module independent releases |
 | [ADR-025 Portable Cloud & Scaling](../adr/ADR-025-portable-scalable-cloud.md) | DECIDED cloud portability contract; provider migration, independent scaling, state and signing continuity |
 | [ADR-026 Shared Account and Remote Fleet](../adr/ADR-026-unified-account-remote-fleet-control.md) | DECIDED local Cloud identity / offline recovery / Cloud read-config and remote owner-gated changes |
+| [ADR-027 Collective Threat Immunity](../adr/ADR-027-collective-threat-immunity.md) | DECIDED scenario, behavior and scoped indicator-based shared defensive learning; no global auto-ban from unverified local block |
+| [Federated Immune Threat Intelligence](../architecture/federated-immune-threat-intelligence.md) | Local signals → Cloud vet/review → signed relevant bulletins → local early detection, retractions and consent |
+| [ThreatSignal schema](../../schemas/threat-signal-v1alpha1.schema.json) | Design-only client opt-in behavior+outcome report; no proof that locally blocked source is malicious |
+| [ThreatBulletin schema](../../schemas/threat-bulletin-v1alpha1.schema.json) | Design-only Cloud watch/curated scenario or actor indicator; knowledge not executable |
+| [Threat signal fixture](../../testdata/threat-signal.synthetic.json) | Synthetic custom scenario/local block with UNVERIFIED label; no actor/IP disclosure |
+| [Threat bulletin fixture](../../testdata/threat-bulletin.synthetic.json) | Synthetic single-source WATCH_ONLY bulletin; no global enforcement |
 | [Unified Local + Cloud Account Architecture](../architecture/unified-account-cloud-fleet-control.md) | Identity, enrollment, RBAC, local Policy Gate, desired/actual sync and outbound secure agent |
 | [Fleet Config Intent Schema](../../schemas/fleet-config-intent-v1alpha1.schema.json) | Design-only bounded typed remote change proposal, never shell execution |
 | [Fleet Config Synthetic Fixture](../../testdata/fleet-config-intent.synthetic.json) | Synthetic Cloud owner/config intent; not live applied configuration |

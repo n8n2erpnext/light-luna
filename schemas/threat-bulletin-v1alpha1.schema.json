@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/threat-bulletin-v1alpha1.json",
+  "title": "Light Luna reviewed ThreatBulletinV1alpha1 — signed advisory knowledge, NOT a firewall action",
+  "description": "Schema validation does not check publisher signature/review. This is a knowledge-pack candidate, never a command to the receiver.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "bulletinId",
+    "sequence",
+    "status",
+    "publishedUtc",
+    "expiresUtc",
+    "scenario",
+    "confidence",
+    "scope",
+    "distribution",
+    "recommendedPosture",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.threat-bulletin/v1alpha1"
+    },
+    "bulletinId": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 150
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "CANDIDATE_WATCH",
+        "VERIFIED_PATTERN",
+        "CURATED_HIGH_RISK_INDICATOR",
+        "DISPUTED",
+        "RETRACTED"
+      ]
+    },
+    "publishedUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "contentSha256",
+        "behaviorClass"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 140
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "behaviorClass": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 120
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "sourceQualityReviewed",
+        "independentCorroboration",
+        "falsePositiveReview"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "UNVALIDATED_WATCH",
+            "REVIEWED_SCENARIO",
+            "CURATED_REPUTATION"
+          ]
+        },
+        "sourceQualityReviewed": {
+          "type": "boolean"
+        },
+        "independentCorroboration": {
+          "type": "boolean"
+        },
+        "falsePositiveReview": {
+          "enum": [
+            "NOT_PERFORMED",
+            "PERFORMED",
+            "DISPUTED"
+          ]
+        },
+        "evidenceSummaryDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "application"
+      ],
+      "properties": {
+        "application": {
+          "enum": [
+            "GENERIC_NETWORK",
+            "WEB_SERVICE",
+            "SSH_AUTH",
+            "SPECIFIC_COMPONENT"
+          ]
+        },
+        "componentRef": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value",
+            "validUntilUtc"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "PUBLIC_IP",
+                "PUBLIC_IP_PREFIX"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 180
+            },
+            "validUntilUtc": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publisherId",
+        "knowledgeRevision",
+        "reviewClass",
+        "sourceDigest"
+      ],
+      "properties": {
+        "publisherId": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 160
+        },
+        "knowledgeRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reviewClass": {
+          "enum": [
+            "SHADOW_ONLY",
+            "HUMAN_REVIEWED",
+            "APPROVED_CURATED"
+          ]
+        },
+        "sourceDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "revokesBulletinId": {
+          "type": "string",
+          "maxLength": 150
+        }
+      }
+    },
+    "recommendedPosture": {
+      "enum": [
+        "WATCH_ONLY",
+        "CORRELATE_LOCAL_EVIDENCE",
+        "OWNER_REVIEW_FOR_SCOPED_MITIGATION",
+        "WITHDRAW_PRIOR_WARNING"
+      ]
+    },
+    "benignAlternatives": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "maxLength": 180
+      }
+    },
+    "authority": {
+      "const": "SIGNED_KNOWLEDGE_ONLY_LOCAL_POLICY_GATE_REQUIRED"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "CANDIDATE_WATCH"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "recommendedPosture": {
+            "enum": [
+              "WATCH_ONLY",
+              "CORRELATE_LOCAL_EVIDENCE"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "RETRACTED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "recommendedPosture": {
+            "const": "WITHDRAW_PRIOR_WARNING"
+          },
+          "distribution": {
+            "required": [
+              "revokesBulletinId"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "CURATED_HIGH_RISK_INDICATOR"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "scope": {
+            "required": [
+              "subject"
+            ]
+          },
+          "confidence": {
+            "properties": {
+              "independentCorroboration": {
+                "const": true
+              },
+              "sourceQualityReviewed": {
+                "const": true
+              },
+              "falsePositiveReview": {
+                "const": "PERFORMED"
+              }
+            }
+          },
+          "distribution": {
+            "properties": {
+              "reviewClass": {
+                "const": "APPROVED_CURATED"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -68,6 +68,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - [Architecture](../architecture/unified-account-cloud-fleet-control.md) defines explicit device enrollment and remote-control authorization, RBAC, device outbound polling, desired vs actual config, compare-and-swap revisions, local Policy Gate, approval, expiry, audit and conflict receipts; Cloud cannot root-shell local nodes.
 - Added design-only typed fleet intent JSON Schema and synthetic intent fixture; no accounts, Cloud API, local WebUI or firewall changed.
 
+## 2026-10-14 — CrowdSec behavior/scenario comparison and federated immune-style direction
+
+- Reviewed [CrowdSec scenarios](https://docs.crowdsec.net/docs/log_processor/scenarios/intro/), [Central API contribution](https://docs.crowdsec.net/docs/central_api/intro/), [community blocklists](https://docs.crowdsec.net/docs/central_api/community_blocklist/) and [Remediation Sync beta](https://docs.crowdsec.net/u/console/remediation_sync/).
+- [ADR-027](../adr/ADR-027-collective-threat-immunity.md) DECIDED owner direction: opted-in client sends bounded **subject + behavior + scenario + evidence and local action/outcome**, Cloud vets/deduplicates and issues **signed scoped watch/curated bulletins** so other nodes recognize attack-like behavior early. No automatic global ban from one client.
+- [Federated design](../architecture/federated-immune-threat-intelligence.md) distinguishes local mitigation receipts vs proven maliciousness, official scenario hashes vs custom, public indicator provenance/TTL, corrections/retractions and anti-Sybil. Added two static candidate JSON schemas and synthetic fixtures. Nothing executed on host firewall or Cloud.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

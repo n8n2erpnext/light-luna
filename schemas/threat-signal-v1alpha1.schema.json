@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/threat-signal-v1alpha1.json",
+  "title": "Light Luna ThreatSignalV1alpha1 — opt-in behavioral observation, not maliciousness proof",
+  "description": "Static contract only. Does not validate sender signature, provenance/consent, ground-truth quality or permit a Cloud response.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "signalId",
+    "tenantRef",
+    "deviceRef",
+    "scenario",
+    "behavior",
+    "observation",
+    "localResponse",
+    "privacy",
+    "trust",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.threat-signal/v1alpha1"
+    },
+    "signalId": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 160
+    },
+    "tenantRef": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 120
+    },
+    "deviceRef": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 140
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "contentSha256",
+        "trustClass"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 140
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "trustClass": {
+          "enum": [
+            "REVIEWED_OFFICIAL",
+            "CUSTOM_RESEARCH_ONLY",
+            "UNKNOWN"
+          ]
+        },
+        "techniqueRef": {
+          "type": "string",
+          "maxLength": 90
+        }
+      }
+    },
+    "behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "windowSeconds",
+        "featureTags",
+        "independentSources"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "AUTH_ABUSE",
+            "ENDPOINT_SCAN",
+            "BOT_ABUSE",
+            "RESOURCE_FLOOD",
+            "CVE_PATH_PROBE",
+            "ANOMALOUS_CONNECTION_PATTERN",
+            "OTHER_RESEARCH"
+          ]
+        },
+        "windowSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400
+        },
+        "featureTags": {
+          "type": "array",
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 90
+          }
+        },
+        "independentSources": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "distinctFeatures": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedUtc",
+        "endedUtc",
+        "identityProvenance",
+        "telemetryCoverage",
+        "benignAlternativesChecked"
+      ],
+      "properties": {
+        "startedUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "identityProvenance": {
+          "enum": [
+            "VERIFIED_TRUSTED_INGRESS",
+            "UNVERIFIED_PROXY_HEADER",
+            "NOT_AVAILABLE"
+          ]
+        },
+        "telemetryCoverage": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "MISSING",
+            "STALE"
+          ]
+        },
+        "benignAlternativesChecked": {
+          "type": "boolean"
+        },
+        "evidenceDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "localResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "outcome",
+        "label"
+      ],
+      "properties": {
+        "action": {
+          "enum": [
+            "NONE",
+            "OBSERVED",
+            "NOTIFIED",
+            "CHALLENGED",
+            "RATE_LIMITED",
+            "TIMED_BLOCKED"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "NOT_APPLIED",
+            "APPLIED_VERIFIED",
+            "REJECTED",
+            "UNKNOWN",
+            "ROLLED_BACK"
+          ]
+        },
+        "label": {
+          "enum": [
+            "UNVERIFIED",
+            "OWNER_CONFIRMED_BENIGN",
+            "REVIEWED_ATTACK",
+            "AMBIGUOUS",
+            "FALSE_POSITIVE"
+          ]
+        },
+        "receiptDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sharingMode",
+        "consentRevision",
+        "publicSubjectShared",
+        "containsRawLogs"
+      ],
+      "properties": {
+        "sharingMode": {
+          "enum": [
+            "OPT_IN_AGGREGATED",
+            "OPT_IN_PUBLIC_INDICATOR"
+          ]
+        },
+        "consentRevision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "publicSubjectShared": {
+          "type": "boolean"
+        },
+        "containsRawLogs": {
+          "const": false
+        },
+        "sharedPublicIndicator": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 180
+        },
+        "indicatorType": {
+          "enum": [
+            "PUBLIC_IP",
+            "PUBLIC_IP_PREFIX"
+          ]
+        }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reportedAssessment",
+        "isCalibratedProbability"
+      ],
+      "properties": {
+        "reportedAssessment": {
+          "enum": [
+            "SUSPICIOUS_ONLY",
+            "CORROBORATED_LOCAL",
+            "REVIEWED_LOCAL"
+          ]
+        },
+        "isCalibratedProbability": {
+          "type": "boolean"
+        },
+        "calibrationRef": {
+          "type": "string",
+          "maxLength": 150
+        }
+      }
+    },
+    "authority": {
+      "const": "UNTRUSTED_CONTRIBUTION_NO_GLOBAL_ENFORCEMENT"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "privacy": {
+            "properties": {
+              "publicSubjectShared": {
+                "const": true
+              }
+            },
+            "required": [
+              "publicSubjectShared"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "privacy": {
+            "required": [
+              "sharedPublicIndicator",
+              "indicatorType"
+            ],
+            "properties": {
+              "sharingMode": {
+                "const": "OPT_IN_PUBLIC_INDICATOR"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "privacy": {
+            "properties": {
+              "publicSubjectShared": {
+                "const": false
+              }
+            },
+            "required": [
+              "publicSubjectShared"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "privacy": {
+            "properties": {
+              "sharingMode": {
+                "const": "OPT_IN_AGGREGATED"
+              }
+            },
+            "not": {
+              "required": [
+                "sharedPublicIndicator"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

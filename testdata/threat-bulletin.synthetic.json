@@ -1,0 +1,35 @@
+{
+  "schema": "lightluna.threat-bulletin/v1alpha1",
+  "bulletinId": "synthetic-candidate-0001",
+  "sequence": 1,
+  "status": "CANDIDATE_WATCH",
+  "publishedUtc": "2026-10-14T00:15:00Z",
+  "expiresUtc": "2026-10-15T00:15:00Z",
+  "scenario": {
+    "id": "lightluna.synthetic.auth-burst",
+    "revision": "0.0.1",
+    "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "behaviorClass": "AUTH_ABUSE"
+  },
+  "confidence": {
+    "kind": "UNVALIDATED_WATCH",
+    "sourceQualityReviewed": false,
+    "independentCorroboration": false,
+    "falsePositiveReview": "NOT_PERFORMED"
+  },
+  "scope": {
+    "application": "SSH_AUTH"
+  },
+  "distribution": {
+    "publisherId": "synthetic-publisher",
+    "knowledgeRevision": 1,
+    "reviewClass": "SHADOW_ONLY",
+    "sourceDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "recommendedPosture": "WATCH_ONLY",
+  "benignAlternatives": [
+    "authorized test login",
+    "password manager retry"
+  ],
+  "authority": "SIGNED_KNOWLEDGE_ONLY_LOCAL_POLICY_GATE_REQUIRED"
+}

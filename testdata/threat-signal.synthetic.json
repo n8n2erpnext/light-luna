@@ -1,0 +1,44 @@
+{
+  "schema": "lightluna.threat-signal/v1alpha1",
+  "signalId": "synthetic-observation-0001",
+  "tenantRef": "example-tenant",
+  "deviceRef": "example-device",
+  "scenario": {
+    "id": "lightluna.synthetic.auth-burst",
+    "revision": "0.0.1",
+    "contentSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "trustClass": "CUSTOM_RESEARCH_ONLY"
+  },
+  "behavior": {
+    "class": "AUTH_ABUSE",
+    "windowSeconds": 600,
+    "featureTags": [
+      "failed-logins",
+      "multiple-windows"
+    ],
+    "independentSources": 1
+  },
+  "observation": {
+    "startedUtc": "2026-10-14T00:00:00Z",
+    "endedUtc": "2026-10-14T00:10:00Z",
+    "identityProvenance": "NOT_AVAILABLE",
+    "telemetryCoverage": "PARTIAL",
+    "benignAlternativesChecked": false
+  },
+  "localResponse": {
+    "action": "TIMED_BLOCKED",
+    "outcome": "APPLIED_VERIFIED",
+    "label": "UNVERIFIED"
+  },
+  "privacy": {
+    "sharingMode": "OPT_IN_AGGREGATED",
+    "consentRevision": "synthetic-opt-in",
+    "publicSubjectShared": false,
+    "containsRawLogs": false
+  },
+  "trust": {
+    "reportedAssessment": "SUSPICIOUS_ONLY",
+    "isCalibratedProbability": false
+  },
+  "authority": "UNTRUSTED_CONTRIBUTION_NO_GLOBAL_ENFORCEMENT"
+}

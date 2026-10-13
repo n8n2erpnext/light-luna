@@ -12,6 +12,10 @@
 
 [ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) requires the future standalone installer to ship a functioning **Go-native Basic Luna Brain with a curated baseline KnowledgePack**, in addition to the firewall framework. Brain is a separately versioned unprivileged process; updating its code changes `brainVersion` but never automatically `appVersion`. Curated CVEs/scenarios are separately versioned `knowledgeRevision` assets, optional ML weights have `modelVersion`, and individual modules have their own releases. A node with no Cloud enrollment uses its bundled baseline and can manually install signed updates; Cloud never sits in the packet or permission path. [Update lifecycle](architecture/offline-base-component-update-lifecycle.md) is design only: Brain implementation has not started.
 
+## Collective immunity and federated behavior memory (design only)
+
+[ADR-027](adr/ADR-027-collective-threat-immunity.md) records the owner goal of an **immune-style federated Brain**: local Go Brain recognizes a suspicious time-bounded behavior scenario, independently authorized local mitigation produces a receipt, optional privacy-minimized signals may be sent to Cloud, and vetted signed **subject+behavior+scenario** bulletins enrich other clients' detection ahead of attack. The [defensive flow](architecture/federated-immune-threat-intelligence.md) makes Cloud watch/curated intelligence **advisory**, separates actor identifiers from behavior and requires multi-source corroboration, false-positive review, retraction and local Policy Gate. No unreviewed client can publish a global auto-ban. Local offline Brain remains functional with baseline scenarios.
+
 ## Mission
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.

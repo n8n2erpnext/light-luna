@@ -94,6 +94,10 @@ Cloud must protect against feedback loops (one duplicated IOC everywhere), poiso
 
 Keep a **source-of-truth graph**: knowledge pack may advise, cannot grant firewall permissions. Local node can stay offline indefinitely with last verified package and continue baseline firewall functionality.
 
+## Community defensive signals beyond CVE/IP lists (ADR-027)
+
+Static CVE/KEV/EPSS facts must connect to time-bounded **behavior graphs and local defensive outcomes**, not just universal IP blacklists. [ADR-027](../adr/ADR-027-collective-threat-immunity.md) and [federated immunity design](federated-immune-threat-intelligence.md) define `ThreatSignalV1alpha1` and `ThreatBulletinV1alpha1` with scenario ID/content digest, subject attribution quality, event windows, benign alternatives, evidence review and signed lifetime/retraction. A report of a local block does not prove attack or authorize other nodes to block. Cross-client intelligence contribution is separate opt-in; enrolled or logged-in users do not automatically consent. P7 Cloud review remains gated, P0–P4 offline Host/Edge do not depend on distributed learning.
+
 ## 7. Initial candidate versions and required acceptance
 
 - `KnowledgeClaimV1`: immutable source link/checksum, type, publisher, validity, scope, assertion, qualifiers, lifecycle and review status.

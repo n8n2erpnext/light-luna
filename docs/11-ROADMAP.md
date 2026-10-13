@@ -72,6 +72,15 @@ Before Cloud implementation, freeze the [ADR-025 portability contract](adr/ADR-0
 
 [ADR-026](adr/ADR-026-unified-account-remote-fleet-control.md) decides the finished product should use one Cloud user identity for its enrolled local WebUI and Cloud Console, permit locally controlled offline owner bootstrap/recovery and expose actual security/configuration state for remotely authorized Cloud management. The [architecture contract](architecture/unified-account-cloud-fleet-control.md) records local OIDC session mapping, separate tenant/device identity, enrollment consent, outbound polling, desired-vs-reported configuration with revision CAS, RBAC, local Policy Gate and receipts. Build secure **local authentication and policy APIs** first during standalone phases; remote Cloud endpoints/agent integration are future optional Cloud work after standalone acceptance, without NetBird dependency. Test Cloud takeover, session expiry, queued stale commands and remote-admin lockout before launch.
 
+## Collective defense and immune-style sharing (ADR-027)
+
+[ADR-027](adr/ADR-027-collective-threat-immunity.md) approves the behavior + subject + scenario learning direction. [Federated defense flow](architecture/federated-immune-threat-intelligence.md) defines:
+- **P0 design only:** typed bounded `ThreatSignal` / `ThreatBulletin` contracts and local scenario source/hash trust; synthetic anti-poisoning/false-positive fixtures.
+- **P1/P2 local only:** Go event parsers + behavior windows/scenario/counterexamples in `OBSERVE`/shadow; source identity proof and owner labels.
+- **P3 gated local actions:** independent Policy Gate and audited scoped TTL/recovery, not global automatic bans.
+- **P7 optional Cloud:** opt-in contributions, source validation/dedup/corroboration, signed relevant watch and curated behavior packs, revocation/appeals, anti-Sybil, latency/FPR benchmarks, safe migration. Existing signed knowledge channel can transport these; no new central packet decision dependency.
+- **Cloud → device:** scenario and watch intelligence can quickly prime recognition but never bypass local authorization. A single local block is not distributed as confirmed maliciousness.
+
 ## Initial epic backlog
 
 1. Policy JSON Schema and network object model.

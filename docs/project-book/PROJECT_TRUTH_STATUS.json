@@ -40,7 +40,9 @@
       "componentizedVersionUpdate": "architecture_only_not_implemented",
       "cloudPortabilityAndMigration": "owner_decided_design_only_no_runtime_or_restore_evidence",
       "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
-      "decisionProposalSchema": "static_advisory_only_not_runtime_validated"
+      "decisionProposalSchema": "static_advisory_only_not_runtime_validated",
+      "communityBehaviorSignalSync": "decided_design_not_implemented",
+      "cloudConsensusAndBulletins": "decided_design_not_implemented"
     }
   },
   "gates": {
@@ -74,7 +76,11 @@
     "cloudMigrationInventorySchema": "schemas/cloud-migration-inventory-v1alpha1.schema.json",
     "unifiedAccountFleetDecision": "docs/adr/ADR-026-unified-account-remote-fleet-control.md",
     "unifiedAccountFleetArchitecture": "docs/architecture/unified-account-cloud-fleet-control.md",
-    "fleetConfigIntentSchema": "schemas/fleet-config-intent-v1alpha1.schema.json"
+    "fleetConfigIntentSchema": "schemas/fleet-config-intent-v1alpha1.schema.json",
+    "collectiveImmunityDecision": "docs/adr/ADR-027-collective-threat-immunity.md",
+    "federatedThreatIntelligence": "docs/architecture/federated-immune-threat-intelligence.md",
+    "threatSignalSchema": "schemas/threat-signal-v1alpha1.schema.json",
+    "threatBulletinSchema": "schemas/threat-bulletin-v1alpha1.schema.json"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

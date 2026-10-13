@@ -36,6 +36,10 @@ An L4 firewall cannot match encrypted HTTP hostname/path without TLS termination
 
 Packet/connection counters, deny rate, scan distribution over disjoint windows, authentication errors, resource pressure, unusual egress and TLS/cert anomalies can all be signals. Avoid attributing packet drops to threat without service impact/expected traffic baselines. Multi-source corroboration is required for severe action.
 
+## Community behavior intelligence and collective immune-style memory (ADR-027)
+
+[ADR-027](adr/ADR-027-collective-threat-immunity.md) extends threat intelligence beyond IP reputation to **behavioral scenarios, independently verified actor indicators, time-window signatures, counterexamples, CVE/technique context and local mitigation outcomes**. The [full design](architecture/federated-immune-threat-intelligence.md) follows CrowdSec-inspired log/parser/scenario/decision separation and vetted signed distribution. A device's locally blocked source is **not** confirmed maliciousness and must not cause a global ban. Opt-in privacy-scoped reports are quarantined/reviewed in Cloud and distributed as versioned watch/curated intelligence, locally evaluated by Go Brain; any enforcement remains per-site Policy Gate and owner policy. Cloud reputation is never sufficient by itself to block protected admin/CDN or an entire subnet. This is research/design only, not a running feature.
+
 ## Operational guardrails
 
 False positive analyst review, owner allowlist, CDN/healthcheck scanner classification, proxy trust chain verification, per-site vs global enforcement scope, human-accessible unblock function, threshold and per-minute command budget, short default TTL, evidence replay test, local privacy/retention and audit tamper detection.

@@ -8,22 +8,22 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 13208 | df065d81c0993a97c3988c8386ae2aca65600b299deed79bd9ba01bc62866a75 |
+| [README.md](../../README.md) | repository contract | 13944 | 5550c3938ceacd6b83a3a5c59c7281b76f93214eb29a845840e97f6c9284807e |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 1349 | a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
 | [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 8202 | 5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
-| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 8513 | a3b58cc98252b80c06ca9829dc0aa0d4d7bbb30aea3e216cfdf2dec324f8c5ca |
-| [docs/04-WAF-THREAT-INTEL.md](../../docs/04-WAF-THREAT-INTEL.md) | architecture / design source | 4627 | 332e92b9b52cc014d08cd975c39f98f91c3f8876fd399f9719902801fa95f52d |
+| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 9379 | b3b88b242e609e6315f9d03e731b9bd7a3189a33b36ddbc7d9ab1a4bee4c3c98 |
+| [docs/04-WAF-THREAT-INTEL.md](../../docs/04-WAF-THREAT-INTEL.md) | architecture / design source | 5612 | efac1aeedada2a3e3d2e54d8e32e7261f95a21692652a3e8415aa4ef0a6b4db0 |
 | [docs/05-NETBIRD.md](../../docs/05-NETBIRD.md) | deferred research | 10281 | 1c3c40bceeb8176db3f0d3e28291f264dacef2bd8f3d6975fc1fa6ccb8b2138c |
 | [docs/06-CLOUD-FLEET.md](../../docs/06-CLOUD-FLEET.md) | architecture / design source | 5517 | caed1a685c64e815bbf1709b0f3463ccf95d107e90f49cd8eb15afc35bf2fd3f |
 | [docs/07-SECURITY-SAFETY.md](../../docs/07-SECURITY-SAFETY.md) | architecture / design source | 5314 | ec40b3e06dd7d41a139abaf74d4e39e47aaec8d2234ae1b772b7746faaba7965 |
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 12526 | 780511dbddac7c925b95a98e2f0628f064d13b98ab3990677717c64a42c613a9 |
-| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 5353 | d5b1452341873ea6758320383d58efcd4e7c2c36145af39b9fe275e971656c6b |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 13715 | 5d2b2843d51eb2ef5a76eafdeceba540cf2c1e16ada4c044ffdc1186d2d5482c |
+| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 5739 | 9b19333b81a07d56a89bfab0c3d31338505a9c057d1ebaa12d8cd4844761d1a6 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
 | [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 2836 | 3fc3502d61828aeb54e3392fa6612c137cd758cd36258329d282916ed04faeda |
@@ -35,13 +35,15 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/adr/ADR-024-offline-base-independent-component-updates.md](../../docs/adr/ADR-024-offline-base-independent-component-updates.md) | architecture / design source | 8386 | 15cca5d4c041d7de748473a52a7daa32638effa1e4eed298f061d80414a6391e |
 | [docs/adr/ADR-025-portable-scalable-cloud.md](../../docs/adr/ADR-025-portable-scalable-cloud.md) | architecture / design source | 9515 | 29b518b8e73a16fa9bffec92189c801aa21500e33e0df83458cbc34b3885a0da |
 | [docs/adr/ADR-026-unified-account-remote-fleet-control.md](../../docs/adr/ADR-026-unified-account-remote-fleet-control.md) | architecture / design source | 10572 | 70709597254185d4d002101f924546aef3b385b5791cb1b7232155e832db7b67 |
+| [docs/adr/ADR-027-collective-threat-immunity.md](../../docs/adr/ADR-027-collective-threat-immunity.md) | architecture / design source | 10408 | 7bf4e1de8985c342a8d607c46c8877a4acc698115b8ee92938852bb9fdc72e21 |
 | [docs/architecture/cloud-migration-and-recovery.md](../../docs/architecture/cloud-migration-and-recovery.md) | architecture / design source | 12602 | a8f34f1673ac14119dc5149f632348f2dceb6cd39dfa7b93de52ecf760c755f0 |
 | [docs/architecture/cloud-portability-and-scale.md](../../docs/architecture/cloud-portability-and-scale.md) | architecture / design source | 13871 | 7bda870322b8c38ace5d633f6126e2e1d7d3b92429e0dace83df1cf53a7019ce |
+| [docs/architecture/federated-immune-threat-intelligence.md](../../docs/architecture/federated-immune-threat-intelligence.md) | architecture / design source | 12644 | 0068b315b88bca39b540b271bc2950dbcf5b959c2bc090264b58b97b9f113591 |
 | [docs/architecture/luna-brain-v2.md](../../docs/architecture/luna-brain-v2.md) | architecture / design source | 13959 | 312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a |
-| [docs/architecture/luna-cloud-intelligence.md](../../docs/architecture/luna-cloud-intelligence.md) | architecture / design source | 10761 | ee9fcefe95b31fac5952f65f535a3eaf649a0daad3cba8623273e56820feb3f0 |
+| [docs/architecture/luna-cloud-intelligence.md](../../docs/architecture/luna-cloud-intelligence.md) | architecture / design source | 11664 | 53e585bd659b45bcfae83a5c5adee34f62376cfbdc82abd7a68db23d77fbea22 |
 | [docs/architecture/luna-memory-lifecycle.md](../../docs/architecture/luna-memory-lifecycle.md) | architecture / design source | 6272 | df0c9a4025466f0558ffcbe848f1be6c9ff95cfb05c1ada4cc85089b9d4dd6e1 |
 | [docs/architecture/offline-base-component-update-lifecycle.md](../../docs/architecture/offline-base-component-update-lifecycle.md) | architecture / design source | 13529 | e07d464e4a59e2357a94eaffb9394e0cff07ba2dfe2ce5541073110e9b931137 |
-| [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 9878 | 85c6637cbb6a23608b30258779e98c8e25d642bad8c61fd7d2b24ba36fcb06ef |
+| [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
 | [docs/architecture/unified-account-cloud-fleet-control.md](../../docs/architecture/unified-account-cloud-fleet-control.md) | architecture / design source | 12528 | 00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db |
 | [docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md](../../docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | architecture / design source | 9393 | bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4 |
 | [go.mod](../../go.mod) | repository contract | 50 | 1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0 |
@@ -56,11 +58,15 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [schemas/fleet-config-intent-v1alpha1.schema.json](../../schemas/fleet-config-intent-v1alpha1.schema.json) | API contract (partial semantic) | 5479 | 81be92efffc3fc33d102b0ca9d26654e20bbae0fea991e241b606cbddac870d0 |
 | [schemas/knowledge-claim-v1alpha1.schema.json](../../schemas/knowledge-claim-v1alpha1.schema.json) | API contract (partial semantic) | 5036 | f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502 |
 | [schemas/policy-v1alpha1.schema.json](../../schemas/policy-v1alpha1.schema.json) | API contract (partial semantic) | 6108 | c91b64ef7fa7b6e10d040f984762a33d52279e2d5da37a09872686936ba82526 |
+| [schemas/threat-bulletin-v1alpha1.schema.json](../../schemas/threat-bulletin-v1alpha1.schema.json) | API contract (partial semantic) | 6726 | 6d3ea895fa66b92b889e3b0aecfc706168af6b0c76223a46f3725acaacda7b4d |
+| [schemas/threat-signal-v1alpha1.schema.json](../../schemas/threat-signal-v1alpha1.schema.json) | API contract (partial semantic) | 7786 | 461589756fc029290943aff68f75be0c90b537fb08ca4c6c27711ef645fb2e8c |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |
 | [testdata/cloud-migration-inventory.synthetic.json](../../testdata/cloud-migration-inventory.synthetic.json) | synthetic test fixture | 1789 | 2618790838ad824c21fb0c3b1ab5956edd45fb027fbfb5cc61af228271a5b0af |
 | [testdata/fleet-config-intent.synthetic.json](../../testdata/fleet-config-intent.synthetic.json) | synthetic test fixture | 1147 | 1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a |
 | [testdata/host-baseline.json](../../testdata/host-baseline.json) | synthetic test fixture | 1296 | a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a |
 | [testdata/offline-component-state.example.json](../../testdata/offline-component-state.example.json) | synthetic test fixture | 800 | 8db8b2e63f43d5bcc1fce35e6cd5a2fbb43ccdffa489f4959e52648d18887104 |
+| [testdata/threat-bulletin.synthetic.json](../../testdata/threat-bulletin.synthetic.json) | synthetic test fixture | 1072 | deb2353c3a3fc7100555b26aa47913f7847791b1c7e6266e9a0d19b8de61524a |
+| [testdata/threat-signal.synthetic.json](../../testdata/threat-signal.synthetic.json) | synthetic test fixture | 1230 | 702624494db1379e7faf23c377891bfb94c63c4aeac14cc832799cc4527f520f |
 
 Governance files under docs/project-book are intentionally excluded;
 see [Library Map](DOCUMENT_LIBRARY_MAP.md) and [README](README.md).
