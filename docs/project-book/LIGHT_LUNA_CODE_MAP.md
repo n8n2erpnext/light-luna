@@ -44,7 +44,7 @@ Go binary cmd/lunactl/main.go::main()
        -> anything else: usage+error
 ```
 
-No `apply`, `stage`, `rollback`, `ban`, `netbird` subcommand; no daemon or listener. The preview is **not** nft-ready syntax and does not query kernel rules or prove emergency reachability.
+No `apply`, `stage`, `rollback`, `ban`, `netbird` subcommand; no daemon or listener. The preview is **not** nft-ready syntax and does not query kernel rules or prove emergency reachability. [ADR-020](../adr/ADR-020-go-core-python-optional.md) records the planned Go-native Brain and optional Python ML-worker boundary, not currently reachable code.
 
 ## Modules, authority, change path and tests
 
@@ -66,7 +66,8 @@ React+TypeScript WebUI (PROPOSED)
            -> policy gate / owner identity (PROPOSED)
                -> separate constrained Go lunalockd (PROPOSED)
                    -> nftables-owned rules + independent rollback watchdog (PROPOSED)
-       -> JS .mjs Luna Brain (PROPOSED, unprivileged decision input)
+       -> Go Luna Brain (DECIDED DIRECTION; NOT IMPLEMENTED, unprivileged)
+           -> optional non-root Python ML worker (DECIDED OPTION; NOT IMPLEMENTED)
        -> SQLite WAL (PROPOSED, not used)
 ```
 

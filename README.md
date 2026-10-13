@@ -47,6 +47,10 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 | [P0 implementation notes](docs/15-P0-IMPLEMENTATION-NOTES.md) | Actual implemented slice, commands, limitations and next tests |
 | [HOMESV P0 handoff](docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | Dev environment, verified tests, safe next tasks and Git publishing |
 
+## Implementation language direction
+
+**Go** is the planned primary backend, CLI, deterministic Luna Brain and separated constrained executor language. **React + TypeScript** is the proposed WebUI. An **optional, unprivileged Python worker** may be added only for justified ML/statistics/inference tasks; baseline Host/Edge operation and safety never depend on Python or any LLM. JavaScript `.mjs` is no longer the planned default Brain runtime. See [ADR-020](docs/adr/ADR-020-go-core-python-optional.md). **Only the P0 Go CLI/validator is implemented today.**
+
 ## Mandatory stage gate — standalone first
 
 **Stage A (ACTIVE PLAN):** Build and prove Light Luna as a self-contained firewall. Host and Edge must work without NetBird installed, without NetBird APIs, and without any NetBird dependency. Complete local rules, aliases, policy compiler, agent/executor, WebUI/CLI, packaging, recovery and standalone end-to-end tests first.

@@ -16,7 +16,9 @@
     "languages": {
       "go": "implemented_cli_policy",
       "typescript_react": "proposed_webui",
-      "javascript_mjs": "proposed_brain",
+      "go_brain": "owner_selected_direction_not_implemented",
+      "python_ml_worker": "optional_unprivileged_worker_not_implemented",
+      "javascript_mjs": "not_default_brain_runtime",
       "sqlite": "proposed_storage",
       "nftables": "not_implemented"
     },
@@ -41,7 +43,8 @@
     "projectBook": "docs/project-book/LIGHT_LUNA_PROJECT_BOOK.md",
     "codeMap": "docs/project-book/LIGHT_LUNA_CODE_MAP.md",
     "catalog": "docs/project-book/source_catalog.json",
-    "legacyDocPathsMoved": false
+    "legacyDocPathsMoved": false,
+    "languageDecision": "docs/adr/ADR-020-go-core-python-optional.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

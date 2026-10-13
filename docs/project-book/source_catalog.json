@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 7982,
-      "sha256": "2490ce0651c2bc8b1fb7172a6e52365710506b7ff68813d05b659882a02ece40"
+      "bytes": 8544,
+      "sha256": "f1f7aee57fc7a6ce4758c87aac6c42747745ca730f8f4320ebe58f6e8ff86283"
     },
     {
       "path": "SECURITY.md",
@@ -42,8 +42,8 @@
       "path": "docs/01-ARCHITECTURE.md",
       "category": "architecture / design source",
       "title": "01 — System Architecture",
-      "bytes": 6562,
-      "sha256": "3877e1dcc44fa6fa5265cd6a31760ab51deb87fc27dd3efe582d1713b9f308d0"
+      "bytes": 6901,
+      "sha256": "1d9b9a5dae6cca0513e7f071ac0d823c5f823115161fa6f6bf375ce8e943c769"
     },
     {
       "path": "docs/02-FIREWALL-ENGINE.md",
@@ -56,8 +56,8 @@
       "path": "docs/03-LUNA-BRAIN.md",
       "category": "architecture / design source",
       "title": "03 — Luna Brain: Bounded Autonomous Security",
-      "bytes": 5092,
-      "sha256": "7c60d23ee31e1e8dc2bec2ee937f5a9fa15190a9120934dab6ecbd2ffa2c53e0"
+      "bytes": 5969,
+      "sha256": "a8b6e0d7ee20d66fe717b7fe2dd17178825f85728b448e1072bac6a35c7b667f"
     },
     {
       "path": "docs/04-WAF-THREAT-INTEL.md",
@@ -119,8 +119,8 @@
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 2818,
-      "sha256": "aecb1e64285a36f3b87b827325e6f0e0b1305c1d71478b8b4f616c95f6f78a74"
+      "bytes": 3254,
+      "sha256": "f8b02f386ff10825c330b41caeb0f1b9a4a2099dbe2c25d8c9889c6cee8ca0ed"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -149,6 +149,13 @@
       "title": "16 — HOMESV P0 Engineering Handoff (2026-10-13)",
       "bytes": 4896,
       "sha256": "d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d"
+    },
+    {
+      "path": "docs/adr/ADR-020-go-core-python-optional.md",
+      "category": "architecture / design source",
+      "title": "ADR-020 — Go-native core and optional Python ML workers",
+      "bytes": 5620,
+      "sha256": "faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8"
     },
     {
       "path": "go.mod",

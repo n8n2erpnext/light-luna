@@ -4,6 +4,10 @@
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.
 
+## Implementation direction (ADR-020)
+
+Luna Brain's deterministic event normalization, anomaly detection, correlation, evidence aggregation and typed proposals are to be written **primarily in Go**. An **optional Python worker** is permitted for specific ML, offline evaluation, statistical analysis or supported inference integrations after capability, resource and packaging review; it is not a core runtime dependency. A Python process cannot mutate firewall state or access the privileged executor. It runs unprivileged with strict time/memory limits, a versioned input/output contract and no arbitrary script execution from untrusted logs or model output. Failure/absence falls back to Go deterministic operation and honest telemetry uncertainty. See [ADR-020](adr/ADR-020-go-core-python-optional.md). **Neither component is implemented as of the P0 CLI-only baseline.**
+
 ## Core loop
 
 `COLLECT → NORMALIZE → BASELINE → DETECT → CORRELATE → HYPOTHESIZE → DECIDE → POLICY-GATE → EXECUTE/WAIT → VERIFY → LEARN`

@@ -21,11 +21,12 @@ Light Luna is an independent, installable Linux **software firewall first**, wit
 
 - **Go — actual P0 implementation**: `lunactl` CLI, typed policy validation, inert preview. Target main backend, API and separately privileged executor. The executor **does not exist**.
 - **React + TypeScript — WebUI proposal only**: browser dashboard, policy editor, observability; no frontend source or service exists in this branch.
-- **JavaScript `.mjs` — Luna Brain candidate only**: unprivileged explainable intelligence runtime, no source yet. Rule application is **never** an LLM privileged shell.
+- **Go-native Luna Brain — owner-approved architecture direction, NOT IMPLEMENTED**: deterministic analytics, evidence correlation and typed recommendations should use Go; even with Go shared across components, Brain cannot access the privileged executor. See [ADR-020](../adr/ADR-020-go-core-python-optional.md).
+- **Python — optional worker only, NOT IMPLEMENTED**: selective, justified ML/stats/inference work using separate sandboxed unprivileged process, bounded CPU/memory/time and versioned inputs/outputs; no mandatory Python runtime for normal Host/Edge operation. `.mjs` is no longer the default Brain choice.
 - **SQLite — local store proposal only**: no database schema or service yet.
 - **nftables — future enforcement backend**: no compiler, transaction, watchdog, kernel change, service or real rules deployed.
 
-Rust, Python runtime and a separate Node backend are **not necessary core dependencies** at this stage. Python 3 is only an optional local documentation tooling interpreter if used.
+Rust, a **mandatory Python runtime**, and a separate Node backend are not required by the P0 firewall. Python 3 currently runs only the docs catalog tool; a future optional ML worker is permitted but does not yet exist. React/TypeScript WebUI and SQLite remain proposals rather than delivered code.
 
 ## Verified engineering snapshot
 

@@ -21,6 +21,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Adapted a **new Light Luna-owned** library with [governance](LIBRARY_RULES.md), [navigation](DOCUMENT_LIBRARY_MAP.md), [Project Book](LIGHT_LUNA_PROJECT_BOOK.md), [Code Map](LIGHT_LUNA_CODE_MAP.md), machine truth status and generated SHA source catalog.
 - Existing `docs/00`–`docs/16` paths kept unchanged. Future docs use functional shelves and authority labels; no LightBI code/doc copied wholesale.
 
+## 2026-10-13 — Go/Python component decision
+
+- Owner accepted the Go-native security/backend/Brain direction and explicitly allowed Python in components that benefit from its ML/data-science ecosystem.
+- Recorded [ADR-020](../adr/ADR-020-go-core-python-optional.md): Go deterministic Brain remains independent of an optional sandboxed non-root Python worker. `.mjs` is no longer the default Luna Brain runtime.
+- This is an **architecture decision only**; no Brain, worker, Python runtime dependency, firewall enforcement or production changes were made.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

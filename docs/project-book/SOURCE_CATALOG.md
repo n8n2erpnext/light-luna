@@ -8,13 +8,13 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 7982 | 2490ce0651c2bc8b1fb7172a6e52365710506b7ff68813d05b659882a02ece40 |
+| [README.md](../../README.md) | repository contract | 8544 | f1f7aee57fc7a6ce4758c87aac6c42747745ca730f8f4320ebe58f6e8ff86283 |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 1349 | a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
-| [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 6562 | 3877e1dcc44fa6fa5265cd6a31760ab51deb87fc27dd3efe582d1713b9f308d0 |
+| [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 6901 | 1d9b9a5dae6cca0513e7f071ac0d823c5f823115161fa6f6bf375ce8e943c769 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
-| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 5092 | 7c60d23ee31e1e8dc2bec2ee937f5a9fa15190a9120934dab6ecbd2ffa2c53e0 |
+| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 5969 | a8b6e0d7ee20d66fe717b7fe2dd17178825f85728b448e1072bac6a35c7b667f |
 | [docs/04-WAF-THREAT-INTEL.md](../../docs/04-WAF-THREAT-INTEL.md) | architecture / design source | 4627 | 332e92b9b52cc014d08cd975c39f98f91c3f8876fd399f9719902801fa95f52d |
 | [docs/05-NETBIRD.md](../../docs/05-NETBIRD.md) | deferred research | 10281 | 1c3c40bceeb8176db3f0d3e28291f264dacef2bd8f3d6975fc1fa6ccb8b2138c |
 | [docs/06-CLOUD-FLEET.md](../../docs/06-CLOUD-FLEET.md) | architecture / design source | 2639 | 2c531f77ded3222893a5cc2efe59b5dcb604e4a8a1f367cadb9a82a80f7c213a |
@@ -23,11 +23,12 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 4193 | 0bd7419fb7dde6407eaa085752626915e5b10b00320c702e1ed6dae75b8879fa |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
 | [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 6631 | 668966f38a34c9eec8d443e72c39682d3e4dcf560f23fb2ee03d1a97a74ee294 |
-| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 2818 | aecb1e64285a36f3b87b827325e6f0e0b1305c1d71478b8b4f616c95f6f78a74 |
+| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 3254 | f8b02f386ff10825c330b41caeb0f1b9a4a2099dbe2c25d8c9889c6cee8ca0ed |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
 | [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 2836 | 3fc3502d61828aeb54e3392fa6612c137cd758cd36258329d282916ed04faeda |
 | [docs/16-P0-HOMESV-HANDOFF-2026-10-13.md](../../docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | historical / handoff | 4896 | d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d |
+| [docs/adr/ADR-020-go-core-python-optional.md](../../docs/adr/ADR-020-go-core-python-optional.md) | architecture / design source | 5620 | faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8 |
 | [go.mod](../../go.mod) | repository contract | 50 | 1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0 |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2518 | 6617795c78f27719f945df764093bd25ebf37d3967955959580d6b2046b640d2 |
 | [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 3082 | fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96 |

@@ -24,6 +24,7 @@ Scope: document ownership and historical path mapping
 | [10 Moon Design](../10-MOON-DESIGN.md) | Proposed visual/semantic design |
 | [11 Roadmap](../11-ROADMAP.md) | **Canonical phase order** and G-STANDALONE gate |
 | [12 ADR register](../12-ADRS.md) | Decisions vs proposals vs open questions |
+| [ADR-020 Go/Python language roles](../adr/ADR-020-go-core-python-optional.md) | Go-native core; Python optional unprivileged ML worker; `.mjs` proposal superseded |
 | [13 References](../13-REFERENCES.md) | Dated external research bookmarks |
 | [14 Initial handoff](../14-HANDOFF-2026-10-13.md) | Historical documentation-phase handoff; Git blocker superseded |
 | [15 P0 implementation notes](../15-P0-IMPLEMENTATION-NOTES.md) | P0 code-slice handoff/notes, read with Code Map |

@@ -11,7 +11,7 @@
 | ADR-007 | **DECIDED** | NetBird optional integration **deferred until independently working Light Luna has passed G-STANDALONE and owner authorizes connector work**; not firewall owner; never disable NetBird ACLs to bypass conflicts |
 | ADR-008 | **DECIDED** | WAF and CVE intelligence included in roadmap, with honest layer/verification boundaries |
 | ADR-009 | **DECIDED** | Moon/orbital abstract branding with cyan crescent; blood moon and eclipse statuses |
-| ADR-010 | **PROPOSED** | Go native agent/executor, JS `.mjs` brain, React WebUI, SQLite local |
+| ADR-010 | **PARTIALLY SUPERSEDED** | Original proposal: Go native agent/executor, JS `.mjs` brain, React WebUI, SQLite local. **The `.mjs` Brain default is superseded by [ADR-020](adr/ADR-020-go-core-python-optional.md)**; React/TypeScript WebUI and SQLite remain proposed |
 | ADR-011 | **PROPOSED** | nftables Linux backend first, typed policy compiler and read-only coexistence audit |
 | ADR-012 | **PROPOSED** | Coraza + OWASP CRS connector and optional Suricata module |
 | ADR-013 | **PROPOSED** | `lunactl`, `lunalockd`, `luna-agent` internal naming, subject to package namespace review |
@@ -21,6 +21,7 @@
 | ADR-017 | **OPEN** | Cloud tenant IAM/edition/licensing and NetBird API schema/version support matrix |
 | ADR-018 | **OPEN** | Version 1 release definition and rollout site; production remains untouched |
 | ADR-019 | **DECIDED** | **Strict standalone-first sequence:** design/build/test/package independent Host and Edge, prove G-STANDALONE; NO NetBird code/API probing/compatibility integration tests/dependency before gate and explicit owner approval, including so-called read-only connector. The current NetBird document is future research only |
+| ADR-020 | **DECIDED** | [Go-native Backend/Brain; optional isolated Python worker](adr/ADR-020-go-core-python-optional.md). `.mjs` is no longer default Brain runtime; WebUI React/TypeScript and SQLite remain proposed; Brain/executor authority separated |
 
 ## Change process
 

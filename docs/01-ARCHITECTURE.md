@@ -24,8 +24,8 @@
 
 ## Recommended implementation (proposals, not commitments)
 
-- **Go:** native Linux agent, typed rule compiler, executor service, telemetry buffering; cross-build Linux `amd64` and `arm64`.
-- **JavaScript `.mjs`:** Luna orchestration, skill/evidence parsers and higher-level decision experiments; isolate using unprivileged process, bounded CPU/memory and deterministic schema. Final shipping brain model/runner may vary based on benchmark.
+- **Go (selected direction; Brain still unimplemented):** primary Linux backend/agent, deterministic Luna Brain, event correlation, typed rule compiler, independent Policy Gate, constrained privileged executor, telemetry buffering and CLI; cross-build Linux `amd64`/`arm64`. Brain and executor retain separate process privileges.
+- **Python (optional, task-justified):** separate non-privileged ML/evaluation/advanced analysis worker when a measured need for Python libraries exists. Disabled/absent by default; Go deterministic detection and safety decisions remain available when it is not installed or fails. See [ADR-020](adr/ADR-020-go-core-python-optional.md). JavaScript `.mjs` is not the default Brain runtime.
 - **React/TypeScript:** responsive WebUI, shared schema-generated clients; no sensitive privileged operations in browser.
 - **SQLite WAL:** single-node durable config, decision and audit index, event summaries (bounded retention); append-only integrity-checked audit chain where useful. Cloud relational DB only if needed for scale and tenancy.
 - **unix domain socket + peer credentials:** local control interface; mTLS device identity for remote agents.
