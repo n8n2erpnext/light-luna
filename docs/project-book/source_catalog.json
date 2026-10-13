@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 14817,
-      "sha256": "f21f030c9db340b04f04be4f8088174a09b452381b4360d79343bf7845ddad1d"
+      "bytes": 15750,
+      "sha256": "fffd983736497fefb21ac94ff62f172684fee66f3077dd497c440db277f81837"
     },
     {
       "path": "SECURITY.md",
@@ -25,11 +25,18 @@
       "sha256": "9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced"
     },
     {
+      "path": "cmd/luna-brain/main.go",
+      "category": "executable entry",
+      "title": "main",
+      "bytes": 1240,
+      "sha256": "151fbcc6f2f02e4ebbe60c8c08707780f0391d3416cabd4fa7a28df2e99a87aa"
+    },
+    {
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 1349,
-      "sha256": "a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e"
+      "bytes": 2173,
+      "sha256": "b63cbc127bdbe5dae38fd5b0cde880cbd06b684d415d6fb8a8ce3d4897d02471"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -112,8 +119,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 15610,
-      "sha256": "65d041c792745bb98e1054b9b111176a291a970f457f6e1fcb5cae98af58a702"
+      "bytes": 16454,
+      "sha256": "d306621738ba6f59097122622629092cd749d259551ca68fcd2f42f406747caa"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -242,6 +249,13 @@
       "sha256": "cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead"
     },
     {
+      "path": "docs/architecture/local-runtime-foundation.md",
+      "category": "architecture / design source",
+      "title": "Initial Standalone Runtime Framework (P0 executable slice)",
+      "bytes": 6372,
+      "sha256": "d942a064d1417d50bff19752b5b94444fdbbd05fa3c4e32efae71086d1276874"
+    },
+    {
       "path": "docs/architecture/luna-brain-v2.md",
       "category": "architecture / design source",
       "title": "Luna Brain V2 — Evidence, Knowledge, Reasoning and Defensive Decisions",
@@ -298,11 +312,60 @@
       "sha256": "1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0"
     },
     {
+      "path": "internal/brain/basic.go",
+      "category": "implementation",
+      "title": "basic",
+      "bytes": 1682,
+      "sha256": "db90c6b351b1c3058c6b8a4e81dc7caa4fe567f81cd0d4e4abb0f41242125d96"
+    },
+    {
+      "path": "internal/foundation/observation.go",
+      "category": "implementation",
+      "title": "observation",
+      "bytes": 3992,
+      "sha256": "7d9ec17802dbf6d290bec0f7201b47ff62400f2c46cc7a596ee81aeb05671e58"
+    },
+    {
+      "path": "internal/gate/advisory.go",
+      "category": "implementation",
+      "title": "advisory",
+      "bytes": 870,
+      "sha256": "0bc89efdc9cc1446caf116e95ceca43aa5965e824efd8cb31109366587bcf723"
+    },
+    {
+      "path": "internal/guardian/basic.go",
+      "category": "implementation",
+      "title": "basic",
+      "bytes": 602,
+      "sha256": "026515247a4c2d7a759f3e295943e38d71e67f53c05897dbd2ec938295f89390"
+    },
+    {
+      "path": "internal/offline/replay.go",
+      "category": "implementation",
+      "title": "replay",
+      "bytes": 2001,
+      "sha256": "1ffdfe8f98b6d4807d7689d00d99927afe03588a9342d335fa03a34632c147d4"
+    },
+    {
+      "path": "internal/offline/replay_test.go",
+      "category": "unit / negative tests",
+      "title": "replay_test",
+      "bytes": 3359,
+      "sha256": "5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e"
+    },
+    {
+      "path": "internal/policy/duplicate_keys_test.go",
+      "category": "unit / negative tests",
+      "title": "duplicate_keys_test",
+      "bytes": 664,
+      "sha256": "43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b"
+    },
+    {
       "path": "internal/policy/model.go",
       "category": "implementation",
       "title": "model",
-      "bytes": 2518,
-      "sha256": "6617795c78f27719f945df764093bd25ebf37d3967955959580d6b2046b640d2"
+      "bytes": 2058,
+      "sha256": "8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164"
     },
     {
       "path": "internal/policy/policy_test.go",
@@ -324,6 +387,20 @@
       "title": "validate",
       "bytes": 5324,
       "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
+    },
+    {
+      "path": "internal/strictjson/decode.go",
+      "category": "implementation",
+      "title": "decode",
+      "bytes": 2771,
+      "sha256": "d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26"
+    },
+    {
+      "path": "internal/strictjson/decode_test.go",
+      "category": "unit / negative tests",
+      "title": "decode_test",
+      "bytes": 801,
+      "sha256": "d90a7ab46bca5c7b9ad105716e54509e72937534b21645d5f4cff2620ff9782d"
     },
     {
       "path": "schemas/cloud-migration-inventory-v1alpha1.schema.json",
@@ -429,6 +506,13 @@
       "title": "host-integrity-report.synthetic",
       "bytes": 1311,
       "sha256": "d488426fb1432a0e271541b90bc4b2691df3051e179374ca794deb0c91b746bf"
+    },
+    {
+      "path": "testdata/offline-brain-replay.synthetic.json",
+      "category": "synthetic test fixture",
+      "title": "offline-brain-replay.synthetic",
+      "bytes": 1026,
+      "sha256": "efa3cc086f51e5432fab1f482be3f4bbfac3b48cd2196e6186e5a0ef9f33acb1"
     },
     {
       "path": "testdata/offline-component-state.example.json",

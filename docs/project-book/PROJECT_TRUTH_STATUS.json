@@ -1,6 +1,6 @@
 {
   "schemaVersion": "lightluna.project-truth-status.v1",
-  "snapshotDate": "2026-10-13",
+  "snapshotDate": "2026-10-14",
   "repository": {
     "fullName": "n8n2erpnext/light-luna",
     "visibility": "public",
@@ -13,11 +13,11 @@
   "development": {
     "primaryHost": "HOMESV",
     "milestone": "P0 scaffold",
-    "status": "non_enforcing_cli_only",
+    "status": "non_enforcing_policy_cli_and_synthetic_offline_brain_replay",
     "languages": {
       "go": "implemented_cli_policy",
       "typescript_react": "proposed_webui",
-      "go_brain": "owner_selected_direction_not_implemented",
+      "go_brain": "synthetic_demonstration_only_not_a_brain_service",
       "python_ml_worker": "optional_unprivileged_worker_not_implemented",
       "javascript_mjs": "not_default_brain_runtime",
       "sqlite": "proposed_storage",
@@ -33,7 +33,7 @@
       "crossBuildArm64": "pass",
       "kernelNamespaceTests": "not_run",
       "productionInstalled": false,
-      "brainV2Implementation": "not_started",
+      "brainV2Implementation": "demo_heuristic_replay_only_not_live_or_model",
       "threatIntelIntegration": "not_started",
       "cloudExperienceSharing": "future_opt_in_not_implemented",
       "offlineBaseBrainReleaseRequirement": "decided_not_implemented",
@@ -41,6 +41,10 @@
       "cloudPortabilityAndMigration": "owner_decided_design_only_no_runtime_or_restore_evidence",
       "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
       "decisionProposalSchema": "static_advisory_only_not_runtime_validated",
+      "offlineBrainReplay": "implemented_synthetic_non_enforcing_only",
+      "independentBrainBuild": "implemented_cli_only_not_process_or_ipc",
+      "guardianStatus": "UNKNOWN_NOT_INSTALLED",
+      "nestedJSONDuplicateRejection": "implemented_in_policy_and_replay",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
       "cloudConsensusAndBulletins": "decided_design_not_implemented",
       "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
@@ -86,7 +90,8 @@
     "threatBulletinSchema": "schemas/threat-bulletin-v1alpha1.schema.json",
     "selfDefenseDecision": "docs/adr/ADR-028-self-defense-host-compromise.md",
     "hostCompromiseArchitecture": "docs/architecture/host-self-defense-and-compromise-containment.md",
-    "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json"
+    "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json",
+    "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

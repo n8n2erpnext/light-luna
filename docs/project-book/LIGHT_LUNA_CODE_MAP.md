@@ -10,6 +10,20 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Current executable P0 foundation (2026-10-14; source-level verification only)
+
+[Local runtime foundation](../architecture/local-runtime-foundation.md) supersedes the **older snapshot below** for current source reachability. It is still **not deployed** and only operates on local files or synthetic replay. Git SHA: use the tip of `feat/p0-standalone-foundation` at evaluation time rather than the historical `9ae27b2` in the original sections.
+
+| Entry point / chain | Actual imported module | Side effect | Verified tests |
+|---|---|---|---|
+| `cmd/lunactl system snapshot` | [offline.Snapshot](../../internal/offline/replay.go) → [guardian.Snapshot](../../internal/guardian/basic.go), [brain.Version](../../internal/brain/basic.go) | Print honest component health/version statuses; no host inspection | [offline tests](../../internal/offline/replay_test.go) + CLI |
+| `cmd/lunactl brain replay testdata/offline-brain-replay.synthetic.json` | [strictjson](../../internal/strictjson/decode.go) → [foundation](../../internal/foundation/observation.go) → [offline.Replay](../../internal/offline/replay.go) → [brain.Evaluate](../../internal/brain/basic.go) → [gate.Preview](../../internal/gate/advisory.go) | Read a synthetic local file and output advisory JSON only, `kernelWrites=false` | [Replay tests](../../internal/offline/replay_test.go) |
+| `cmd/luna-brain version/replay` | [separate CLI executable](../../cmd/luna-brain/main.go), same offline libraries | Separate binary compilation; one-shot simulation, **no persistent daemon or IPC isolation** | Go test, Linux amd64/arm64 cross-build, replay run |
+| `cmd/lunactl firewall policies validate/preview` | [policy.Decode](../../internal/policy/model.go) → [strictjson](../../internal/strictjson/decode.go) → [Validate/MakePreview](../../internal/policy/validate.go) | Files + no-enforcement preview only | [Policy regression](../../internal/policy/duplicate_keys_test.go), [strictjson tests](../../internal/strictjson/decode_test.go) |
+| `internal/guardian` | [basic.go](../../internal/guardian/basic.go) | `UNKNOWN` placeholder; **no kernel/process/file scanning** | [offline tests](../../internal/offline/replay_test.go) |
+
+**Still absent:** actual agent service, local API, WebUI, Basic Brain trained model/persistent runtime, base KnowledgePack/signature validator, independent privileged executor, nftables compiler/runner, policy-apply/rollback watchdog, Cloud account/sync, eBPF/XDP attachment and Host Guardian scanner. Module/App version fields are *dev strings*, not signed independently upgradable packages. The original source map below is historical and should not be read as the current reachability list.
+
 ## Workspace topology
 
 ```text

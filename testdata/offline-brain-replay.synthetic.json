@@ -1,0 +1,38 @@
+{
+  "schema": "lightluna.replay/v1alpha1",
+  "observations": [
+    {
+      "schema": "lightluna.observation/v1alpha1",
+      "eventId": "synthetic-001",
+      "siteId": "example-site",
+      "category": "AUTH_FAILURE_BURST",
+      "occurredUtc": "2026-10-14T00:00:00Z",
+      "coverage": "COMPLETE",
+      "sourceTrust": "VERIFIED_INGRESS",
+      "count": 12,
+      "windows": 3
+    },
+    {
+      "schema": "lightluna.observation/v1alpha1",
+      "eventId": "synthetic-002",
+      "siteId": "example-site",
+      "category": "AUTH_FAILURE_BURST",
+      "occurredUtc": "2026-10-14T00:05:00Z",
+      "coverage": "PARTIAL",
+      "sourceTrust": "UNVERIFIED",
+      "count": 200,
+      "windows": 8
+    },
+    {
+      "schema": "lightluna.observation/v1alpha1",
+      "eventId": "synthetic-003",
+      "siteId": "example-site",
+      "category": "EGRESS_FANOUT",
+      "occurredUtc": "2026-10-14T00:10:00Z",
+      "coverage": "COMPLETE",
+      "sourceTrust": "VERIFIED_INGRESS",
+      "count": 30,
+      "windows": 3
+    }
+  ]
+}

@@ -11,7 +11,7 @@ Read [governance](LIBRARY_RULES.md), [library map](DOCUMENT_LIBRARY_MAP.md), [Co
 
 ## Identity and owner direction
 
-Light Luna is an independent, installable Linux **software firewall first**, with optional Luna Brain, WAF/IDS, Cloud and later hardware modes. It should function without Cloud or NetBird. Owner confirmed **public GitHub repository is intentional** on 2026-10-13, superseding the earlier private-repository preference in historical handoffs.
+Light Luna is an independent, installable Linux **software firewall first**, with a Basic Luna Brain required in the future full installer (ADR-024); enhanced ML, WAF/IDS, Cloud and later hardware modes remain optional. It should function without Cloud or NetBird. Owner confirmed **public GitHub repository is intentional** on 2026-10-13, superseding the earlier private-repository preference in historical handoffs.
 
 ## Non-negotiable stage order
 
@@ -65,6 +65,10 @@ After read-only inspection of the independent VPS-ARM Sentinel services, the sou
 ## Owner-decided Light Luna self-defense and compromised-client containment (not implemented)
 
 [ADR-028](../adr/ADR-028-self-defense-host-compromise.md) adds a mandatory **Self-Integrity Guardian** and a path for host process/file/egress threat detection, safe local containment and Cloud quarantine of compromised submissions. [Architecture](../architecture/host-self-defense-and-compromise-containment.md) separates XDP ingress filtering from optional eBPF tracing, OS events, integrity checks and bounded on-demand malware scanning; kernel/root compromise can falsify host evidence, requiring a trusted external rescue/credential rotation. A compromised but authenticated device cannot directly distribute trusted global patterns, signed KnowledgePacks, software updates or peer actions. Nothing has been attached to kernel, scanned, quarantined or enforced in current Light Luna P0 source.
+
+## Implemented P0 offline replay skeleton (2026-10-14, no enforcement)
+
+The [local runtime foundation](../architecture/local-runtime-foundation.md) adds **source-reachable** separate build targets `cmd/lunactl` and `cmd/luna-brain` with distinct App/Brain developer version strings; versioned normalized synthetic observation/replay contracts, demonstrative deterministic Go Brain and non-executing Gate preview; Guardian explicitly reports UNKNOWN; shared strict JSON parser rejects duplicate nested keys and trailing/unknown inputs. It is not a running background Brain service, validated signed base KnowledgePack, actual device health scanner, firewall executor or Cloud agent. See [Code Map](LIGHT_LUNA_CODE_MAP.md) for exact entry points, test evidence, independent build scope and absence of actual enforcement.
 
 ## Safety boundary
 

@@ -1,6 +1,6 @@
 # 11 — Delivery Roadmap, Test Gates and Release Discipline
 
-**Current milestone:** P0 **non-enforcing CLI/policy validation scaffold** exists on the development branch; no implemented kernel firewall or shipping release. See [Code Map](project-book/LIGHT_LUNA_CODE_MAP.md).
+**Current milestone:** P0 non-enforcing CLI/policy validation **plus the first executable offline Brain/Guardian/Gate simulation skeleton** exist on the development branch; no implemented kernel firewall, live host scanner, signed base pack or shipping release. See [current runtime foundation](architecture/local-runtime-foundation.md) and [Code Map](project-book/LIGHT_LUNA_CODE_MAP.md). See [Code Map](project-book/LIGHT_LUNA_CODE_MAP.md).
 
 | Milestone | Deliverables | Exit gates |
 |---|---|---|
@@ -52,6 +52,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 ## Decision KPIs (target definitions, no invented results)
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
+
+## Verified first runtime scaffold (P0 source, not standalone acceptance)
+
+The [implemented Go foundation](architecture/local-runtime-foundation.md) now supplies recursive duplicate-key rejecting JSON, typed synthetic observation replay, separate `luna-brain` and `lunactl` build targets, Guardian missing-evidence status, and a Policy Gate advisory-only preview. Next priority remains the independently safe **nftables compiler and kernel-namespace validation**, rather than Cloud/XDP or live monitoring. This source implementation does not satisfy G-STANDALONE or release-level Brain/Host Guardian requirements.
 
 ## Luna Brain V2 and security knowledge maturation (non-blocking plan)
 

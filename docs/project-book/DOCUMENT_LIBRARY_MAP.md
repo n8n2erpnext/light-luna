@@ -33,6 +33,7 @@ Scope: document ownership and historical path mapping
 | [ADR-026 Shared Account and Remote Fleet](../adr/ADR-026-unified-account-remote-fleet-control.md) | DECIDED local Cloud identity / offline recovery / Cloud read-config and remote owner-gated changes |
 | [ADR-027 Collective Threat Immunity](../adr/ADR-027-collective-threat-immunity.md) | DECIDED scenario, behavior and scoped indicator-based shared defensive learning; no global auto-ban from unverified local block |
 | [ADR-028 Self-Defense & Compromise Containment](../adr/ADR-028-self-defense-host-compromise.md) | DECIDED self-integrity, Host Guardian, optional file scanner, compromised-client Cloud trust quarantine |
+| [Local Runtime Foundation](../architecture/local-runtime-foundation.md) | IMPLEMENTED P0 separate CLI/Brain build targets and synthetic offline Brain→inert Gate replay; no real firewall/host sensor/service |
 | [Host Guardian & Containment Architecture](../architecture/host-self-defense-and-compromise-containment.md) | Linux process/file/egress observation, integrity/attestation ceiling, safe local isolation and Cloud untrusted-ingress separation |
 | [Host Integrity Report schema](../../schemas/host-integrity-report-v1alpha1.schema.json) | Design-only host status/device authentication vs trust, cloud contribution quarantine, no direct execution |
 | [Synthetic compromised host fixture](../../testdata/host-integrity-report.synthetic.json) | Synthetic status with suspected compromise, no actual files/processes scanned |

@@ -4,8 +4,9 @@ package policy
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
+
+	"github.com/n8n2erpnext/light-luna/internal/strictjson"
 )
 
 const MaxPolicyBytes = 1 << 20
@@ -53,28 +54,12 @@ type Autonomous struct {
 	MaxBanTTLSeconds int    `json:"maxBanTtlSeconds"`
 }
 
-// Decode enforces a bounded input, strictly known JSON fields, one JSON object,
-// and semantic validation. It never attempts to load or apply firewall state.
+// Decode enforces bounded input, unique keys at every JSON depth, known fields
+// and policy semantics. No kernel/netfilter operation is performed.
 func Decode(r io.Reader) (Bundle, error) {
 	var b Bundle
-	data, err := io.ReadAll(io.LimitReader(r, MaxPolicyBytes+1))
-	if err != nil {
-		return b, fmt.Errorf("read policy: %w", err)
-	}
-	if len(data) > MaxPolicyBytes {
-		return b, fmt.Errorf("policy exceeds %d bytes", MaxPolicyBytes)
-	}
-	d := json.NewDecoder(bytesReader(data))
-	d.DisallowUnknownFields()
-	if err := d.Decode(&b); err != nil {
-		return b, fmt.Errorf("decode policy: %w", err)
-	}
-	var extra any
-	if err := d.Decode(&extra); err != io.EOF {
-		if err == nil {
-			return b, fmt.Errorf("multiple JSON values are forbidden")
-		}
-		return b, fmt.Errorf("trailing data: %w", err)
+	if err := strictjson.Decode(r, MaxPolicyBytes, &b); err != nil {
+		return b, err
 	}
 	if err := b.Validate(); err != nil {
 		return b, err

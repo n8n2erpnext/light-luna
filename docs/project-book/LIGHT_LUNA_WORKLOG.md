@@ -80,6 +80,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - [ADR-028](../adr/ADR-028-self-defense-host-compromise.md) DECIDED new guardian/threat model: tamper/signed update protection, limited eBPF process/file/network observation, optional bounded AV, safe local egress/lateral containment after Policy Gate, independent recovery; Cloud rejects/quarantines compromised contributions and never accepts raw malware/executable samples from clients by default.
 - [Architecture](../architecture/host-self-defense-and-compromise-containment.md) and static HostIntegrityReport schema + synthetic compromised-device fixture added. No malware scanning, system installation, firewall attach, Cloud upload or code enforcement performed.
 
+## 2026-10-14 — First executable P0 Go component skeleton
+
+- Implemented a **genuine runnable but non-enforcing** foundation slice in [local runtime design/verification](../architecture/local-runtime-foundation.md): `internal/foundation` bounded event contracts; `internal/brain` deterministic, synthetic-only auth-burst observation; `internal/guardian` UNKNOWN coverage; `internal/gate` advisory-only/no-write; `internal/offline` first observable call chain and component snapshot; `cmd/luna-brain` separately buildable, one-shot replay; enhanced `lunactl` system snapshot/brain replay.
+- Hardened `internal/policy.Decode` by reusing `internal/strictjson`: recursively rejects duplicate JSON object keys, unknown fields, trailing data, bounded sizes; new nested-duplicate regression tests and replay positive/negative tests. Existing policy validation/preview preserved.
+- Ran Go unit tests and vet, standalone Brain replay/snapshot, and separate `linux/amd64`+`linux/arm64` cross-builds with network-disabled Go tooling. **Not a kernel/firewall/Cloud or malware scanning test**; no live infrastructure touched.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

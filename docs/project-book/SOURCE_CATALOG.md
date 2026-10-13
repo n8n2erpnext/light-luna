@@ -8,9 +8,10 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 14817 | f21f030c9db340b04f04be4f8088174a09b452381b4360d79343bf7845ddad1d |
+| [README.md](../../README.md) | repository contract | 15750 | fffd983736497fefb21ac94ff62f172684fee66f3077dd497c440db277f81837 |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
-| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 1349 | a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e |
+| [cmd/luna-brain/main.go](../../cmd/luna-brain/main.go) | executable entry | 1240 | 151fbcc6f2f02e4ebbe60c8c08707780f0391d3416cabd4fa7a28df2e99a87aa |
+| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 2173 | b63cbc127bdbe5dae38fd5b0cde880cbd06b684d415d6fb8a8ce3d4897d02471 |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
 | [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 8202 | 5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
@@ -22,7 +23,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 15610 | 65d041c792745bb98e1054b9b111176a291a970f457f6e1fcb5cae98af58a702 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 16454 | d306621738ba6f59097122622629092cd749d259551ca68fcd2f42f406747caa |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6148 | d3914223b111c9e4bda808f152f85393b3653b3d19b8c069356f3d96548a2443 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -41,6 +42,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/cloud-portability-and-scale.md](../../docs/architecture/cloud-portability-and-scale.md) | architecture / design source | 13871 | 7bda870322b8c38ace5d633f6126e2e1d7d3b92429e0dace83df1cf53a7019ce |
 | [docs/architecture/federated-immune-threat-intelligence.md](../../docs/architecture/federated-immune-threat-intelligence.md) | architecture / design source | 13527 | e836f45626e1dedd7a5f9cc4e48d9f40d1ecc9122fcd034f0876cf8018aa97a6 |
 | [docs/architecture/host-self-defense-and-compromise-containment.md](../../docs/architecture/host-self-defense-and-compromise-containment.md) | architecture / design source | 14047 | cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead |
+| [docs/architecture/local-runtime-foundation.md](../../docs/architecture/local-runtime-foundation.md) | architecture / design source | 6372 | d942a064d1417d50bff19752b5b94444fdbbd05fa3c4e32efae71086d1276874 |
 | [docs/architecture/luna-brain-v2.md](../../docs/architecture/luna-brain-v2.md) | architecture / design source | 13959 | 312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a |
 | [docs/architecture/luna-cloud-intelligence.md](../../docs/architecture/luna-cloud-intelligence.md) | architecture / design source | 12541 | ba37f8fd66a18e8f80482dc7b1ee49b9ed1e48d551234ec06e1d6657bb542ff7 |
 | [docs/architecture/luna-memory-lifecycle.md](../../docs/architecture/luna-memory-lifecycle.md) | architecture / design source | 6272 | df0c9a4025466f0558ffcbe848f1be6c9ff95cfb05c1ada4cc85089b9d4dd6e1 |
@@ -49,10 +51,19 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/unified-account-cloud-fleet-control.md](../../docs/architecture/unified-account-cloud-fleet-control.md) | architecture / design source | 12528 | 00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db |
 | [docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md](../../docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | architecture / design source | 9393 | bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4 |
 | [go.mod](../../go.mod) | repository contract | 50 | 1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0 |
-| [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2518 | 6617795c78f27719f945df764093bd25ebf37d3967955959580d6b2046b640d2 |
+| [internal/brain/basic.go](../../internal/brain/basic.go) | implementation | 1682 | db90c6b351b1c3058c6b8a4e81dc7caa4fe567f81cd0d4e4abb0f41242125d96 |
+| [internal/foundation/observation.go](../../internal/foundation/observation.go) | implementation | 3992 | 7d9ec17802dbf6d290bec0f7201b47ff62400f2c46cc7a596ee81aeb05671e58 |
+| [internal/gate/advisory.go](../../internal/gate/advisory.go) | implementation | 870 | 0bc89efdc9cc1446caf116e95ceca43aa5965e824efd8cb31109366587bcf723 |
+| [internal/guardian/basic.go](../../internal/guardian/basic.go) | implementation | 602 | 026515247a4c2d7a759f3e295943e38d71e67f53c05897dbd2ec938295f89390 |
+| [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2001 | 1ffdfe8f98b6d4807d7689d00d99927afe03588a9342d335fa03a34632c147d4 |
+| [internal/offline/replay_test.go](../../internal/offline/replay_test.go) | unit / negative tests | 3359 | 5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e |
+| [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
+| [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2058 | 8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164 |
 | [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 3082 | fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96 |
 | [internal/policy/preview.go](../../internal/policy/preview.go) | implementation | 1720 | 326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362 |
 | [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 5324 | d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d |
+| [internal/strictjson/decode.go](../../internal/strictjson/decode.go) | implementation | 2771 | d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26 |
+| [internal/strictjson/decode_test.go](../../internal/strictjson/decode_test.go) | unit / negative tests | 801 | d90a7ab46bca5c7b9ad105716e54509e72937534b21645d5f4cff2620ff9782d |
 | [schemas/cloud-migration-inventory-v1alpha1.schema.json](../../schemas/cloud-migration-inventory-v1alpha1.schema.json) | API contract (partial semantic) | 6989 | 33874323e7c4ad81febe3ceb770999058dd420eabbd247f1ddaf1b35abef34fd |
 | [schemas/component-install-state-v1alpha1.schema.json](../../schemas/component-install-state-v1alpha1.schema.json) | API contract (partial semantic) | 5685 | c440b17d37251000562963f0856711383599d38341b90dce4597233f2cc95cbc |
 | [schemas/component-release-manifest-v1alpha1.schema.json](../../schemas/component-release-manifest-v1alpha1.schema.json) | API contract (partial semantic) | 6493 | 50b04800ee75252a660665d7e189a0ee9d668dfdf6b7e28fa107f2bb6fe5e92e |
@@ -68,6 +79,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [testdata/fleet-config-intent.synthetic.json](../../testdata/fleet-config-intent.synthetic.json) | synthetic test fixture | 1147 | 1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a |
 | [testdata/host-baseline.json](../../testdata/host-baseline.json) | synthetic test fixture | 1296 | a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a |
 | [testdata/host-integrity-report.synthetic.json](../../testdata/host-integrity-report.synthetic.json) | synthetic test fixture | 1311 | d488426fb1432a0e271541b90bc4b2691df3051e179374ca794deb0c91b746bf |
+| [testdata/offline-brain-replay.synthetic.json](../../testdata/offline-brain-replay.synthetic.json) | synthetic test fixture | 1026 | efa3cc086f51e5432fab1f482be3f4bbfac3b48cd2196e6186e5a0ef9f33acb1 |
 | [testdata/offline-component-state.example.json](../../testdata/offline-component-state.example.json) | synthetic test fixture | 800 | 8db8b2e63f43d5bcc1fce35e6cd5a2fbb43ccdffa489f4959e52648d18887104 |
 | [testdata/threat-bulletin.synthetic.json](../../testdata/threat-bulletin.synthetic.json) | synthetic test fixture | 1072 | deb2353c3a3fc7100555b26aa47913f7847791b1c7e6266e9a0d19b8de61524a |
 | [testdata/threat-signal.synthetic.json](../../testdata/threat-signal.synthetic.json) | synthetic test fixture | 1230 | 702624494db1379e7faf23c377891bfb94c63c4aeac14cc832799cc4527f520f |
