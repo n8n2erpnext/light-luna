@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 10075,
-      "sha256": "5dc74dade5d4d49763b976e31b73566fd50f35144d400acdc7f51b0272c7ad7c"
+      "bytes": 10742,
+      "sha256": "1ce22160a4bcef367a67cca03cd9439228aeb5622ecdcd26022003701c72a446"
     },
     {
       "path": "SECURITY.md",
@@ -56,8 +56,8 @@
       "path": "docs/03-LUNA-BRAIN.md",
       "category": "architecture / design source",
       "title": "03 — Luna Brain: Bounded Autonomous Security",
-      "bytes": 6836,
-      "sha256": "b854cfbb4f27faec99f1127e34a67792884dbf51a6fd6ffc9e3a98ea81bbf5f3"
+      "bytes": 7626,
+      "sha256": "b64201961a70a13d6ad3daba65c69c327c97000a164784ec35d491ecef4b2702"
     },
     {
       "path": "docs/04-WAF-THREAT-INTEL.md",
@@ -119,8 +119,8 @@
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 3829,
-      "sha256": "155bd5cf6245315fe2c9c815219ee9700e39baf5575a17b9711a5b4484866d70"
+      "bytes": 4188,
+      "sha256": "3aef0ba32e84652b51a55f2b6fb5631600d20098e134b61ce8a99b78a0d5b496"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -172,11 +172,32 @@
       "sha256": "eba8997902b0ec95c3f8f37611450545534d98dee584ba63c233ff9e618b1ab3"
     },
     {
+      "path": "docs/adr/ADR-023-dual-brain-memory-cloud.md",
+      "category": "architecture / design source",
+      "title": "ADR-023 — Dual-Role Brain, Bounded Local Learning and Optional Cloud Intelligence",
+      "bytes": 5713,
+      "sha256": "11ba2ff2bf73a3da6dd41b88becfa8a661778f46fc50c0a92ea6715ff7e8767c"
+    },
+    {
       "path": "docs/architecture/luna-brain-v2.md",
       "category": "architecture / design source",
       "title": "Luna Brain V2 — Evidence, Knowledge, Reasoning and Defensive Decisions",
       "bytes": 13959,
       "sha256": "312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a"
+    },
+    {
+      "path": "docs/architecture/luna-cloud-intelligence.md",
+      "category": "architecture / design source",
+      "title": "Luna Cloud Intelligence — Federated Knowledge, Local Authority",
+      "bytes": 9913,
+      "sha256": "2119a2b9adfed425f29a256cbc15abc8f879aa719cd9f35952b452af3bf3b646"
+    },
+    {
+      "path": "docs/architecture/luna-memory-lifecycle.md",
+      "category": "architecture / design source",
+      "title": "Luna Local Memory — Resource Budgets, Compaction and Retention",
+      "bytes": 6272,
+      "sha256": "df0c9a4025466f0558ffcbe848f1be6c9ff95cfb05c1ada4cc85089b9d4dd6e1"
     },
     {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",

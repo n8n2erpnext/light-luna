@@ -4,6 +4,10 @@
 
 [ADR-022](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) selects a **new Go-native Brain V2** rather than cloning the existing Python Sentinel deployment. [Source audit](history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) confirms the older cognition is primarily curated/generated JSONL templates, deterministic heuristics, SQLite observations and gated learning—not a verified neural model checkpoint. [Brain V2 design](architecture/luna-brain-v2.md) defines knowledge/weights, evidence authority and private/local/cloud contracts; [Threat Knowledge Pipeline](architecture/threat-intelligence-knowledge-pipeline.md) defines CVE/feed → installed affected asset → scenario → advisory path. **This is planned architecture: no Brain V2 process, model or enforcement path is implemented.**
 
+## Proposed two-role Brain/memory design (not accepted implementation)
+
+[ADR-023](adr/ADR-023-dual-brain-memory-cloud.md) evaluates the requested left/right-brain structure as two **logical software roles**: Go deterministic analytical detection and optional Go/Python hypothesis reasoning. Both read three knowledge regions and typed evidence; independent critic checks contradictions while Policy Gate remains separate. Proposed [bounded local memory](architecture/luna-memory-lifecycle.md) prevents growing SQLite history by quota, TTL and downsampling; future [Cloud](architecture/luna-cloud-intelligence.md) distributes verified signed knowledge but does not decide packets or require raw log upload. All profiles/implementations remain proposals subject to owner approval and tests.
+
 ## Mission
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.

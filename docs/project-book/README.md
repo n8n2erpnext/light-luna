@@ -18,7 +18,9 @@ Read in this order, **before editing any documentation or code**:
 11. [ADR-022](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) — rebuild Brain V2; port reviewed knowledge rather than cloning live data/imagined model weights.
 12. [Brain V2](../architecture/luna-brain-v2.md) and [Threat Knowledge Pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) — proposed, independently reviewable component contracts.
 13. [Legacy source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) — VPS-ARM observations, heuristic numbers and implementation limits.
-14. [../../README.md](../../README.md) — public product introduction and constraints.
+14. [ADR-023](../adr/ADR-023-dual-brain-memory-cloud.md) — proposed dual-role brain, bounded learning and optional Cloud; **not yet decided or built**.
+15. [Local Memory](../architecture/luna-memory-lifecycle.md) and [Cloud Intelligence](../architecture/luna-cloud-intelligence.md) — proposed resource and sync contracts.
+16. [../../README.md](../../README.md) — public product introduction and constraints.
 
 ## Source precedence
 

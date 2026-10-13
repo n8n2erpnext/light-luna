@@ -41,6 +41,13 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Created [Brain V2](../architecture/luna-brain-v2.md), [Threat Knowledge Pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) and two versioned advisory knowledge/proposal JSON Schema drafts (not wired to runtime). Future Cloud learns from opt-in reviewed and privacy-minimized evidence, not raw traffic or automatic global ban policies.
 - Site-specific legacy production status and all security actions left unchanged. Brain implementation and G-STANDALONE remain open.
 
+## 2026-10-13 — Design review: hemispheres, training, memory and Cloud
+
+- Reviewed existing 3-region Sentinel corpus semantics against the requested two-brain metaphor; recommended **logical analytical vs hypothesis reasoning** roles rather than actual neural hemispheres, preserving independent critic and Policy Gate.
+- [ADR-023](../adr/ADR-023-dual-brain-memory-cloud.md) remains **PROPOSED** pending owner approval. Training a core neural model is not a baseline prerequisite; small optional ML worker requires labelled benchmarking.
+- Proposed bounded client storage profiles, detailed quota/compaction and stale-evidence rules in [Local Memory Lifecycle](../architecture/luna-memory-lifecycle.md).
+- Proposed offline-first, signed update/delta and privacy-preserving future multi-tenant service in [Cloud Intelligence](../architecture/luna-cloud-intelligence.md). No Cloud service, model, database size caps or client sync actually implemented.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

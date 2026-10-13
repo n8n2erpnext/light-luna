@@ -27,6 +27,8 @@
 
 | ADR-022 | **DECIDED** | [Rebuild Go-native Luna Brain V2](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md), migrate reviewed/typed knowledge and evidence safeguards, **not live Sentinel DBs or assumed neural weights**; Cloud sharing opt-in and locally governed |
 
+| ADR-023 | **PROPOSED** | [Dual-role Luna Brain, bounded local memory and optional Cloud intelligence](adr/ADR-023-dual-brain-memory-cloud.md). Analytical Go core + optional hypothesis/ML plane, 256/512 MiB and 2 GiB experimental data caps, local enforcement, signed relevant knowledge delta, opt-in Cloud learning; pending owner acceptance and benchmark |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

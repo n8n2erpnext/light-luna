@@ -81,6 +81,10 @@ The architecture deliberately keeps rule authorization independent of Luna Brain
 
 The VPS-ARM [source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) inspected the independent legacy Python observer/Guardian/intel services. They are **outside this Go module**, cannot be treated as Light Luna runtime and remain unchanged. [ADR-022](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) chooses new Go Brain V2, porting only reviewed knowledge and safe logic. Proposed [architecture](../architecture/luna-brain-v2.md) and [intel pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) define candidate entry points and state/proposal contracts. The committed `schemas/knowledge-claim-v1alpha1.schema.json` and `schemas/decision-proposal-v1alpha1.schema.json` are **static schema designs** only: `cmd/lunactl` does not import/validate/execute them and no event feed/ML/Cloud component consumes them. Adding these files has **zero kernel, network or model runtime effect**.
 
+## Dual-role Brain, local memory and Cloud (PLANNED ONLY)
+
+[ADR-023](../adr/ADR-023-dual-brain-memory-cloud.md) is **PROPOSED**, not yet owner-finalized. [Memory budgets](../architecture/luna-memory-lifecycle.md) and [Cloud topology](../architecture/luna-cloud-intelligence.md) are sizing/architecture hypotheses; do not infer deployed client databases, memory quota enforcement, hemispheres, signed knowledge updater, Cloud API or tenant services from docs file presence. The only reachable source remains the Go non-enforcing P0 CLI. No legacy neural weights have been found in scoped Sentinel source, and no network sync occurs from Light Luna.
+
 ## Current verification and risks
 
 HOMESV unit tests, vet, CLI validation/preview and amd64/arm64 cross-builds passed for baseline `9ae27b2`. No WebUI E2E, Linux namespace test, kernel compatibility check, privileged executor, secure install/uninstall, actual live recovery, independent release signatures or real ban/counter proof exists.
