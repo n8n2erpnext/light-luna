@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 13944,
-      "sha256": "5550c3938ceacd6b83a3a5c59c7281b76f93214eb29a845840e97f6c9284807e"
+      "bytes": 14817,
+      "sha256": "f21f030c9db340b04f04be4f8088174a09b452381b4360d79343bf7845ddad1d"
     },
     {
       "path": "SECURITY.md",
@@ -56,15 +56,15 @@
       "path": "docs/03-LUNA-BRAIN.md",
       "category": "architecture / design source",
       "title": "03 — Luna Brain: Bounded Autonomous Security",
-      "bytes": 9379,
-      "sha256": "b3b88b242e609e6315f9d03e731b9bd7a3189a33b36ddbc7d9ab1a4bee4c3c98"
+      "bytes": 10296,
+      "sha256": "740bfe799506a56ae6760560a59f1b2d123cf92e72dc01a896f65caf3cd70e90"
     },
     {
       "path": "docs/04-WAF-THREAT-INTEL.md",
       "category": "architecture / design source",
       "title": "04 — WAF, IDS/IPS & Threat Intelligence",
-      "bytes": 5612,
-      "sha256": "efac1aeedada2a3e3d2e54d8e32e7261f95a21692652a3e8415aa4ef0a6b4db0"
+      "bytes": 6435,
+      "sha256": "51e1942d8d5fc47a12352529757f51e618d86d569883c4c8cb72a459e23cea81"
     },
     {
       "path": "docs/05-NETBIRD.md",
@@ -84,8 +84,8 @@
       "path": "docs/07-SECURITY-SAFETY.md",
       "category": "architecture / design source",
       "title": "07 — Security Threat Model, Enforcement Safety, Recovery",
-      "bytes": 5314,
-      "sha256": "ec40b3e06dd7d41a139abaf74d4e39e47aaec8d2234ae1b772b7746faaba7965"
+      "bytes": 6466,
+      "sha256": "3a59679e13f9f8c9fb28239d0a18e91cc7d9c5cd886139e9e691d7b79be596a2"
     },
     {
       "path": "docs/08-PACKAGING-HARDWARE.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 13715,
-      "sha256": "5d2b2843d51eb2ef5a76eafdeceba540cf2c1e16ada4c044ffdc1186d2d5482c"
+      "bytes": 15610,
+      "sha256": "65d041c792745bb98e1054b9b111176a291a970f457f6e1fcb5cae98af58a702"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 5739,
-      "sha256": "9b19333b81a07d56a89bfab0c3d31338505a9c057d1ebaa12d8cd4844761d1a6"
+      "bytes": 6148,
+      "sha256": "d3914223b111c9e4bda808f152f85393b3653b3d19b8c069356f3d96548a2443"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -207,6 +207,13 @@
       "sha256": "7bf4e1de8985c342a8d607c46c8877a4acc698115b8ee92938852bb9fdc72e21"
     },
     {
+      "path": "docs/adr/ADR-028-self-defense-host-compromise.md",
+      "category": "architecture / design source",
+      "title": "ADR-028 — Light Luna Self-Defense, Host Compromise Detection and Collective Trust Containment",
+      "bytes": 10231,
+      "sha256": "8a8ea248ab3b86420db772dd5ea680ed7ae74058e37400590356ecd616e2f649"
+    },
+    {
       "path": "docs/architecture/cloud-migration-and-recovery.md",
       "category": "architecture / design source",
       "title": "Light Luna Cloud Migration and Disaster Recovery — Operator Runbook",
@@ -224,8 +231,15 @@
       "path": "docs/architecture/federated-immune-threat-intelligence.md",
       "category": "architecture / design source",
       "title": "Light Luna Collective Defense — Distributed Immune-Style Threat Learning",
-      "bytes": 12644,
-      "sha256": "0068b315b88bca39b540b271bc2950dbcf5b959c2bc090264b58b97b9f113591"
+      "bytes": 13527,
+      "sha256": "e836f45626e1dedd7a5f9cc4e48d9f40d1ecc9122fcd034f0876cf8018aa97a6"
+    },
+    {
+      "path": "docs/architecture/host-self-defense-and-compromise-containment.md",
+      "category": "architecture / design source",
+      "title": "Self-Defense, Host Threat Detection and Cloud/Peer Containment",
+      "bytes": 14047,
+      "sha256": "cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead"
     },
     {
       "path": "docs/architecture/luna-brain-v2.md",
@@ -238,8 +252,8 @@
       "path": "docs/architecture/luna-cloud-intelligence.md",
       "category": "architecture / design source",
       "title": "Luna Cloud Intelligence — Federated Knowledge, Local Authority",
-      "bytes": 11664,
-      "sha256": "53e585bd659b45bcfae83a5c5adee34f62376cfbdc82abd7a68db23d77fbea22"
+      "bytes": 12541,
+      "sha256": "ba37f8fd66a18e8f80482dc7b1ee49b9ed1e48d551234ec06e1d6657bb542ff7"
     },
     {
       "path": "docs/architecture/luna-memory-lifecycle.md",
@@ -347,6 +361,13 @@
       "sha256": "81be92efffc3fc33d102b0ca9d26654e20bbae0fea991e241b606cbddac870d0"
     },
     {
+      "path": "schemas/host-integrity-report-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "host-integrity-report-v1alpha1.schema",
+      "bytes": 8560,
+      "sha256": "e13ecbcbad7949d2499b358c6ff644e820864a4521ca1f6e2000bfa012fb86fd"
+    },
+    {
       "path": "schemas/knowledge-claim-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "knowledge-claim-v1alpha1.schema",
@@ -401,6 +422,13 @@
       "title": "host-baseline",
       "bytes": 1296,
       "sha256": "a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a"
+    },
+    {
+      "path": "testdata/host-integrity-report.synthetic.json",
+      "category": "synthetic test fixture",
+      "title": "host-integrity-report.synthetic",
+      "bytes": 1311,
+      "sha256": "d488426fb1432a0e271541b90bc4b2691df3051e179374ca794deb0c91b746bf"
     },
     {
       "path": "testdata/offline-component-state.example.json",

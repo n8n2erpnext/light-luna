@@ -111,6 +111,10 @@ The **Basic Go Luna Brain** should detect locally from bundled scenario knowledg
 
 Initial tests: 1/10/100 malicious simultaneous contributors, spam clones/replays, source-IP forgery, proxy NAT, IP reassignment, IPv6 churn, known benign scanner, CDN challenge, monitor traffic, broad legitimate login burst, XSS/path noise, stale/revoked pack, offline node reconnect, pack rollout rejection, spammed appeals, cross-tenant breach and Cloud downtime. Replay labels should include **attack, benign, ambiguous and insufficient telemetry**. Measure lead-time, FPR/FNR, scenario recall, ingest-to-watch latency, cost per 1K reports, safe rollout latency and retraction completion. Values will be measured later; none are published performance claims.
 
+## Integrity-gated community contributions (ADR-028)
+
+[ADR-028](../adr/ADR-028-self-defense-host-compromise.md) adds independent **device integrity and Host Guardian** as a quality/trust signal *before* a community threat contribution may even be considered for curation. Authentication proves enrollment key possession, not cleanliness. A compromised/suspected node's threat signals go to segregated untrusted intake with community-consensus weight **zero** pending external review; no raw suspicious files, executable scenario payloads or credential material may be uploaded. [Host containment architecture](host-self-defense-and-compromise-containment.md) separates local owner mitigation from Cloud quarantine, signed publisher and recovery. Even 'healthy observed' device submissions remain untrusted until source diversity, consent, falsification and independent review pass.
+
 ## 9. Relationship to phases
 
 P0 contracts/schema + synthetic negative tests only; P1/P2 local scenario observer/replay and Brain baseline; P3 gated local mitigation; P7 opt-in Cloud collective pattern curation/distribution. Shared community Cloud cannot become a prerequisite for G-STANDALONE and does not authorize NetBird engineering. All proposed endpoints, signed pack types and Cloud processing remain **unimplemented**.

@@ -81,6 +81,16 @@ Before Cloud implementation, freeze the [ADR-025 portability contract](adr/ADR-0
 - **P7 optional Cloud:** opt-in contributions, source validation/dedup/corroboration, signed relevant watch and curated behavior packs, revocation/appeals, anti-Sybil, latency/FPR benchmarks, safe migration. Existing signed knowledge channel can transport these; no new central packet decision dependency.
 - **Cloud → device:** scenario and watch intelligence can quickly prime recognition but never bypass local authorization. A single local block is not distributed as confirmed maliciousness.
 
+## Light Luna Self-Defense and Host Guardian (ADR-028)
+
+[ADR-028](adr/ADR-028-self-defense-host-compromise.md) adds an essential safety gate: Light Luna must check its **own integrity and privileged boundaries**, collect defensible Linux host-compromise signals, and refuse to let compromised clients poison Cloud/other clients. [Host Guardian design](architecture/host-self-defense-and-compromise-containment.md) and static [report schema](../schemas/host-integrity-report-v1alpha1.schema.json) separate measured evidence and Cloud trust. Phase scope:
+- **P0 design/tests:** typed host integrity/quarantine states, signed artifact + source hash contracts, no executable remote payloads, synthetic negative tests.
+- **P1 baseline:** independent self-integrity checker/supervisor with least-privileged components, bounded local process/log/integrity observations; no invasive root scan required for first firewall correctness gate.
+- **P2 host telemetry and scanning:** optional observe-only eBPF process/file/socket hooks and **optional bounded on-demand file scan** (candidate ClamAV/fanotify later). Validate support, benign false positives and CPU/I/O budgets; on-access blocking separately gated.
+- **P3 safe containment:** local owner Policy Gate, limited lateral/C2 egress or process-specific protection, preserved admin/recovery, TTL, crash rollback, lab only before approval.
+- **P7 Cloud contamination resistance:** every contribution untrusted, per-device integrity/trust/revocation, quarantined intake, independent signing, no sample upload by default, no automatic cross-client bans. Test compromised signed device/forged consensus/tenant breakout and trusted recovery.
+- Root/kernel compromise is **outside the guarantees of on-host self-detection**; require degraded trust and external recovery path. No user or production device is to be scanned/isolated under this design task.
+
 ## Initial epic backlog
 
 1. Policy JSON Schema and network object model.

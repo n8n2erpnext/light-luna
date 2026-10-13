@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/host-integrity-report-v1alpha1.json",
+  "title": "Light Luna HostIntegrityReportV1alpha1 — advisory-only, compromised host claims untrusted",
+  "description": "Static design contract. A valid report is NOT an independently verified attestation, virus-free certificate, permit to quarantine, or authority to publish community signatures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "reportId",
+    "deviceRef",
+    "time",
+    "hostStatus",
+    "dataCoverage",
+    "agentIntegrity",
+    "localAction",
+    "cloudHandling",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.host-integrity/v1alpha1"
+    },
+    "reportId": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 160
+    },
+    "deviceRef": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 140
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "createdUtc",
+        "evidenceThroughUtc",
+        "expiresUtc"
+      ],
+      "properties": {
+        "createdUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidenceThroughUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresUtc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "hostStatus": {
+      "enum": [
+        "HEALTHY_OBSERVED",
+        "UNKNOWN",
+        "SUSPECTED",
+        "CONTAINED",
+        "COMPROMISED_SUSPECTED",
+        "RECOVERY_REQUIRED"
+      ]
+    },
+    "dataCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "telemetryLossObserved",
+        "ebpfStatus",
+        "fileScanStatus",
+        "kernelTrust"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "COMPLETE_FOR_ENABLED_SENSORS",
+            "PARTIAL",
+            "STALE",
+            "MISSING"
+          ]
+        },
+        "telemetryLossObserved": {
+          "type": "boolean"
+        },
+        "ebpfStatus": {
+          "enum": [
+            "ACTIVE_OBSERVE_ONLY",
+            "NOT_INSTALLED",
+            "UNSUPPORTED",
+            "ERROR",
+            "DISABLED"
+          ]
+        },
+        "fileScanStatus": {
+          "enum": [
+            "SCOPED_SCAN_NO_FINDINGS",
+            "SCOPED_SCAN_FINDINGS",
+            "NOT_INSTALLED",
+            "NOT_RUN",
+            "ERROR"
+          ]
+        },
+        "kernelTrust": {
+          "enum": [
+            "UNATTESTED",
+            "HARDWARE_ATTESTED",
+            "ATTESTATION_FAILED",
+            "UNVERIFIED"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "maxItems": 25,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "JOURNALD",
+              "PROC",
+              "NFT_COUNTERS",
+              "EBPF_EVENTS",
+              "APP_INTEGRITY_HASHES",
+              "IMA_MEASUREMENTS",
+              "FILE_SCAN",
+              "NETWORK_EGRESS",
+              "EXTERNAL_ATTESTATION"
+            ]
+          }
+        }
+      }
+    },
+    "agentIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signedArtifactVerified",
+        "configHashVerified",
+        "privilegedLoaderState",
+        "trustRootStatus"
+      ],
+      "properties": {
+        "signedArtifactVerified": {
+          "type": "boolean"
+        },
+        "configHashVerified": {
+          "type": "boolean"
+        },
+        "privilegedLoaderState": {
+          "enum": [
+            "OWNED_VERIFIED",
+            "NOT_PRESENT",
+            "UNVERIFIED",
+            "TAMPER_SUSPECTED"
+          ]
+        },
+        "trustRootStatus": {
+          "enum": [
+            "VERIFIED",
+            "UNKNOWN",
+            "TAMPER_SUSPECTED"
+          ]
+        },
+        "detailsDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "evidenceClasses": {
+      "type": "array",
+      "maxItems": 30,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "UNEXPECTED_PROCESS_EXEC",
+          "CREDENTIAL_ESCALATION",
+          "PERSISTENCE_CHANGE",
+          "MASS_FILE_MUTATION",
+          "UNUSUAL_NETWORK_EGRESS",
+          "LATERAL_SCAN",
+          "MALWARE_SIGNATURE_MATCH",
+          "LUNA_BINARY_MODIFIED",
+          "UNEXPECTED_BPF_ATTACHMENT",
+          "UNKNOWN_ROOT_ACTIVITY",
+          "OTHER_RESEARCH"
+        ]
+      }
+    },
+    "localAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "executionRequested",
+        "emergencyRecoveryPreserved"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "OBSERVE",
+            "NOTIFY",
+            "REQUEST_OWNER_REVIEW",
+            "ALREADY_CONTAINED_BY_LOCAL_POLICY",
+            "RECOVERY_REQUIRED"
+          ]
+        },
+        "executionRequested": {
+          "const": false
+        },
+        "emergencyRecoveryPreserved": {
+          "type": "boolean"
+        },
+        "receiptRef": {
+          "type": "string",
+          "maxLength": 150
+        }
+      }
+    },
+    "cloudHandling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deviceAuthState",
+        "integrityTrust",
+        "communityContribution",
+        "remoteManagement",
+        "rawMalwareSampleAttached"
+      ],
+      "properties": {
+        "deviceAuthState": {
+          "enum": [
+            "AUTHENTICATED_KEY",
+            "REVOKED",
+            "UNKNOWN"
+          ]
+        },
+        "integrityTrust": {
+          "enum": [
+            "UNKNOWN",
+            "LIMITED",
+            "SUSPECTED_COMPROMISE",
+            "INDEPENDENTLY_ATTESTED"
+          ]
+        },
+        "communityContribution": {
+          "enum": [
+            "UNTRUSTED_QUARANTINE",
+            "SUSPENDED",
+            "RESEARCH_ONLY",
+            "ELIGIBLE_FOR_SEPARATE_REVIEW"
+          ]
+        },
+        "remoteManagement": {
+          "enum": [
+            "DISABLED",
+            "PAUSED",
+            "RESTRICTED",
+            "OWNER_POLICY"
+          ]
+        },
+        "rawMalwareSampleAttached": {
+          "const": false
+        },
+        "requiresOutOfBandReview": {
+          "type": "boolean"
+        }
+      }
+    },
+    "authority": {
+      "const": "LOCAL_HEALTH_OBSERVATION_NO_GLOBAL_EXECUTION"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "hostStatus": {
+            "enum": [
+              "COMPROMISED_SUSPECTED",
+              "RECOVERY_REQUIRED"
+            ]
+          }
+        },
+        "required": [
+          "hostStatus"
+        ]
+      },
+      "then": {
+        "properties": {
+          "cloudHandling": {
+            "properties": {
+              "integrityTrust": {
+                "const": "SUSPECTED_COMPROMISE"
+              },
+              "communityContribution": {
+                "enum": [
+                  "UNTRUSTED_QUARANTINE",
+                  "SUSPENDED"
+                ]
+              },
+              "remoteManagement": {
+                "enum": [
+                  "DISABLED",
+                  "PAUSED",
+                  "RESTRICTED"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "hostStatus": {
+            "const": "HEALTHY_OBSERVED"
+          }
+        },
+        "required": [
+          "hostStatus"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dataCoverage": {
+            "properties": {
+              "status": {
+                "const": "COMPLETE_FOR_ENABLED_SENSORS"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "cloudHandling": {
+            "properties": {
+              "integrityTrust": {
+                "const": "INDEPENDENTLY_ATTESTED"
+              }
+            },
+            "required": [
+              "integrityTrust"
+            ]
+          }
+        },
+        "required": [
+          "cloudHandling"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dataCoverage": {
+            "properties": {
+              "kernelTrust": {
+                "const": "HARDWARE_ATTESTED"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

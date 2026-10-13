@@ -40,6 +40,10 @@ Packet/connection counters, deny rate, scan distribution over disjoint windows, 
 
 [ADR-027](adr/ADR-027-collective-threat-immunity.md) extends threat intelligence beyond IP reputation to **behavioral scenarios, independently verified actor indicators, time-window signatures, counterexamples, CVE/technique context and local mitigation outcomes**. The [full design](architecture/federated-immune-threat-intelligence.md) follows CrowdSec-inspired log/parser/scenario/decision separation and vetted signed distribution. A device's locally blocked source is **not** confirmed maliciousness and must not cause a global ban. Opt-in privacy-scoped reports are quarantined/reviewed in Cloud and distributed as versioned watch/curated intelligence, locally evaluated by Go Brain; any enforcement remains per-site Policy Gate and owner policy. Cloud reputation is never sufficient by itself to block protected admin/CDN or an entire subnet. This is research/design only, not a running feature.
 
+## Malware/host compromise is a separate sensor plane (ADR-028)
+
+[ADR-028](adr/ADR-028-self-defense-host-compromise.md) adds Linux **Host Guardian** for process ancestry, privilege/persistence, file/integrity and suspicious egress/lateral behavior. This is not covered by web WAF rules or XDP ingress filtering alone. [Containment architecture](architecture/host-self-defense-and-compromise-containment.md) uses optional eBPF tracing + OS logs, signed artifact integrity, optional bounded file malware scanner and independent local Policy Gate for safe response. Reports from a compromised client must be quarantined before Cloud aggregation; signed files/versions only enter KnowledgePack publisher after independent review. No direct file malware binaries, root shell or Cloud-triggered peer quarantine via threat feed.
+
 ## Operational guardrails
 
 False positive analyst review, owner allowlist, CDN/healthcheck scanner classification, proxy trust chain verification, per-site vs global enforcement scope, human-accessible unblock function, threshold and per-minute command budget, short default TTL, evidence replay test, local privacy/retention and audit tamper detection.

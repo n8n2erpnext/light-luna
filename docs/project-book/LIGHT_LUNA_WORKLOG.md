@@ -74,6 +74,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - [ADR-027](../adr/ADR-027-collective-threat-immunity.md) DECIDED owner direction: opted-in client sends bounded **subject + behavior + scenario + evidence and local action/outcome**, Cloud vets/deduplicates and issues **signed scoped watch/curated bulletins** so other nodes recognize attack-like behavior early. No automatic global ban from one client.
 - [Federated design](../architecture/federated-immune-threat-intelligence.md) distinguishes local mitigation receipts vs proven maliciousness, official scenario hashes vs custom, public indicator provenance/TTL, corrections/retractions and anti-Sybil. Added two static candidate JSON schemas and synthetic fixtures. Nothing executed on host firewall or Cloud.
 
+## 2026-10-14 — Owner requires Light Luna self-defense and host-compromise containment
+
+- Investigated authoritative eBPF/Tetragon/Falco runtime security telemetry, Linux IMA/fs-verity integrity enforcement and ClamAV on-demand/on-access fanotify scanning. **XDP alone is a packet hook, not a host malware scanner**; severe root/kernel compromise can falsify all in-host sensors.
+- [ADR-028](../adr/ADR-028-self-defense-host-compromise.md) DECIDED new guardian/threat model: tamper/signed update protection, limited eBPF process/file/network observation, optional bounded AV, safe local egress/lateral containment after Policy Gate, independent recovery; Cloud rejects/quarantines compromised contributions and never accepts raw malware/executable samples from clients by default.
+- [Architecture](../architecture/host-self-defense-and-compromise-containment.md) and static HostIntegrityReport schema + synthetic compromised-device fixture added. No malware scanning, system installation, firewall attach, Cloud upload or code enforcement performed.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

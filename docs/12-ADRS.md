@@ -37,6 +37,8 @@
 
 | ADR-027 | **DECIDED** | [Collective threat immunity: share verified subjects + behavior + scenarios across opted-in nodes](adr/ADR-027-collective-threat-immunity.md): CrowdSec-inspired local scenario signals, Cloud review/dedup/anti-poisoning, signed expiring/retractable bulletins, **fast recognition without automatic global ban**, local independent Policy Gate; not implemented |
 
+| ADR-028 | **DECIDED** | [Self-defense, Linux Host Guardian and compromise/Cloud containment](adr/ADR-028-self-defense-host-compromise.md): verify Light Luna runtime/integrity, optional Linux process/file/egress evidence and bounded malware scanning, quarantine compromised clients' Cloud influence, local recovery; no claim XDP scans malware or kernel-root compromise is self-attestable; NOT IMPLEMENTED |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

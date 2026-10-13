@@ -16,6 +16,10 @@
 
 [ADR-027](adr/ADR-027-collective-threat-immunity.md) records the owner goal of an **immune-style federated Brain**: local Go Brain recognizes a suspicious time-bounded behavior scenario, independently authorized local mitigation produces a receipt, optional privacy-minimized signals may be sent to Cloud, and vetted signed **subject+behavior+scenario** bulletins enrich other clients' detection ahead of attack. The [defensive flow](architecture/federated-immune-threat-intelligence.md) makes Cloud watch/curated intelligence **advisory**, separates actor identifiers from behavior and requires multi-source corroboration, false-positive review, retraction and local Policy Gate. No unreviewed client can publish a global auto-ban. Local offline Brain remains functional with baseline scenarios.
 
+## Guardian, compromised-host integrity and Cloud trust (owner requirement)
+
+[ADR-028](adr/ADR-028-self-defense-host-compromise.md) adds a distinct **Host Guardian** with process/file/egress signals and signed Light Luna integrity checks, separate from the Luna reasoning Brain and privileged executor. [Containment design](architecture/host-self-defense-and-compromise-containment.md) prevents a compromised but authenticated client from converting local malware indicators or arbitrary payloads into trusted Cloud KnowledgePacks or lateral commands to peers. XDP never detects on-disk malware by itself; optional eBPF tracing, OS event/integrity checks and separate bounded AV scanners provide different evidence surfaces. A root-compromised host cannot reliably attest itself, so integrity may remain `UNKNOWN` and recovery may require out-of-band rescue. **Architecture only; no process/file scanner deployed.**
+
 ## Mission
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.

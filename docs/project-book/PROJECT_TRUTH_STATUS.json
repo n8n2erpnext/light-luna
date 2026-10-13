@@ -42,7 +42,10 @@
       "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
       "decisionProposalSchema": "static_advisory_only_not_runtime_validated",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
-      "cloudConsensusAndBulletins": "decided_design_not_implemented"
+      "cloudConsensusAndBulletins": "decided_design_not_implemented",
+      "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
+      "malwareScanning": "optional_future_not_installed",
+      "cloudClientTrustQuarantine": "decided_design_not_implemented"
     }
   },
   "gates": {
@@ -80,7 +83,10 @@
     "collectiveImmunityDecision": "docs/adr/ADR-027-collective-threat-immunity.md",
     "federatedThreatIntelligence": "docs/architecture/federated-immune-threat-intelligence.md",
     "threatSignalSchema": "schemas/threat-signal-v1alpha1.schema.json",
-    "threatBulletinSchema": "schemas/threat-bulletin-v1alpha1.schema.json"
+    "threatBulletinSchema": "schemas/threat-bulletin-v1alpha1.schema.json",
+    "selfDefenseDecision": "docs/adr/ADR-028-self-defense-host-compromise.md",
+    "hostCompromiseArchitecture": "docs/architecture/host-self-defense-and-compromise-containment.md",
+    "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

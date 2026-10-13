@@ -101,6 +101,10 @@ The VPS-ARM [source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-
 
 [ADR-027](../adr/ADR-027-collective-threat-immunity.md) and [federated design](../architecture/federated-immune-threat-intelligence.md) specify a future CrowdSec-inspired behavior scenario and shared intelligence pipeline. The static `schemas/threat-signal-v1alpha1.schema.json` / `schemas/threat-bulletin-v1alpha1.schema.json` and `testdata/threat-*.synthetic.json` do **not** implement signal capture, client consent, event parsing, scenario execution, Cloud consensus, signing, caching, gossip/transport, global blocklist or automatic remote decisions. Only Go CLI policy validator/preview is reachable. The design strictly separates local block receipts from adjudicated attack labels; multi-tenant Cloud and distributed reputation remain P7 optional future work.
 
+## Self-defense / Host Guardian / Cloud quarantine (ADR-028; DESIGN ONLY)
+
+[ADR-028](../adr/ADR-028-self-defense-host-compromise.md), [Host Guardian spec](../architecture/host-self-defense-and-compromise-containment.md), [static integrity report schema](../../schemas/host-integrity-report-v1alpha1.schema.json) and [synthetic fixture](../../testdata/host-integrity-report.synthetic.json) define required future guardian/service boundaries. They provide **no runnable process scanner, eBPF/LSM/BPF attachment, XDP guard, malware file scanner, tamper monitor, attestation, Cloud contamination filter, revocation code, response/remediation or kernel privileges**. All previous runnable Go code remains only the P0 inert policy CLI. A successful schema test cannot detect malware or prove a device clean.
+
 ## Current verification and risks
 
 HOMESV unit tests, vet, CLI validation/preview and amd64/arm64 cross-builds passed for baseline `9ae27b2`. No WebUI E2E, Linux namespace test, kernel compatibility check, privileged executor, secure install/uninstall, actual live recovery, independent release signatures or real ban/counter proof exists.

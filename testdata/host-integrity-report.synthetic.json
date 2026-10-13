@@ -1,0 +1,46 @@
+{
+  "schema": "lightluna.host-integrity/v1alpha1",
+  "reportId": "synthetic-host-integrity-001",
+  "deviceRef": "synthetic-device",
+  "time": {
+    "createdUtc": "2026-10-14T10:00:00Z",
+    "evidenceThroughUtc": "2026-10-14T09:59:00Z",
+    "expiresUtc": "2026-10-14T10:10:00Z"
+  },
+  "hostStatus": "COMPROMISED_SUSPECTED",
+  "dataCoverage": {
+    "status": "PARTIAL",
+    "telemetryLossObserved": true,
+    "ebpfStatus": "NOT_INSTALLED",
+    "fileScanStatus": "NOT_INSTALLED",
+    "kernelTrust": "UNATTESTED",
+    "sources": [
+      "JOURNALD",
+      "APP_INTEGRITY_HASHES"
+    ]
+  },
+  "agentIntegrity": {
+    "signedArtifactVerified": false,
+    "configHashVerified": false,
+    "privilegedLoaderState": "NOT_PRESENT",
+    "trustRootStatus": "UNKNOWN"
+  },
+  "evidenceClasses": [
+    "LUNA_BINARY_MODIFIED",
+    "PERSISTENCE_CHANGE"
+  ],
+  "localAction": {
+    "mode": "RECOVERY_REQUIRED",
+    "executionRequested": false,
+    "emergencyRecoveryPreserved": true
+  },
+  "cloudHandling": {
+    "deviceAuthState": "AUTHENTICATED_KEY",
+    "integrityTrust": "SUSPECTED_COMPROMISE",
+    "communityContribution": "UNTRUSTED_QUARANTINE",
+    "remoteManagement": "PAUSED",
+    "rawMalwareSampleAttached": false,
+    "requiresOutOfBandReview": true
+  },
+  "authority": "LOCAL_HEALTH_OBSERVATION_NO_GLOBAL_EXECUTION"
+}
