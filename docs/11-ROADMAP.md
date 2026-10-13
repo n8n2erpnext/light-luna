@@ -49,6 +49,17 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Luna Brain V2 and security knowledge maturation (non-blocking plan)
+
+- **P0:** define versioned `KnowledgeClaimV1` / `DecisionProposalV1` contracts, safe local input validation, synthetic replay, source provenance. Do **not** copy private Sentinel memory into public code or enable model enforcement.
+- **P1:** optional offline shadow migration of reviewed Sentinel facts/counterexamples, deterministic Go baseline, site-scoped evidence and temporal memory; independent benign-label evaluation.
+- **P2:** signed/source-hashed intelligence ingestion (CISA KEV, NVD, FIRST EPSS, MITRE ATT&CK, vendor advisories), exact SBOM+backport+route matching, scenario reasoning and early **recommendations** only; missing proof must produce `UNKNOWN`.
+- **P3:** qualified response preparation and independently authorized bounded mitigation only after false-positive, rollback, provenance and owner gates. Optional Python model worker can be benchmarked, never required.
+- **P4:** standalone Edge nodes exchange authorized, site-scoped evidence without Cloud/NetBird.
+- **P7 (future):** optional Cloud collective knowledge, signed/versioned pack distribution and opt-in anonymized validated experience; privacy review, poison resistance and rollback required. No automatic global bans from repeated reports.
+
+See [Brain V2](architecture/luna-brain-v2.md), [Threat Pipeline](architecture/threat-intelligence-knowledge-pipeline.md), [ADR-022](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) and the [legacy source audit](history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md). Brain V2 remains **design only**, not a dependency that blocks the basic firewall.
+
 ## Initial epic backlog
 
 1. Policy JSON Schema and network object model.

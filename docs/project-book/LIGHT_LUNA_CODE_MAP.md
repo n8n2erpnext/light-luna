@@ -77,6 +77,10 @@ The architecture deliberately keeps rule authorization independent of Luna Brain
 
 [ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md) records an **architecture decision only**. There are NO eBPF source objects, Go BPF loader imports, pinned maps, XDP link creation, tracepoint attachments, counters, security event streams or XDP drop path in current Light Luna code. Proposed future chain: kernel tracing hooks or NIC ingress XDP → optional least-privilege loader → Go collector → Go Brain → independent Policy Gate → constrained executor. Existing kernel XDP programs on development machines are **external** and are not Light Luna artifacts. Neither BPF/XDP nor NetBird enters standalone runtime as a required dependency.
 
+## Future Brain V2 architecture contracts (DESIGN ONLY; NOT REACHABLE)
+
+The VPS-ARM [source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) inspected the independent legacy Python observer/Guardian/intel services. They are **outside this Go module**, cannot be treated as Light Luna runtime and remain unchanged. [ADR-022](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) chooses new Go Brain V2, porting only reviewed knowledge and safe logic. Proposed [architecture](../architecture/luna-brain-v2.md) and [intel pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) define candidate entry points and state/proposal contracts. The committed `schemas/knowledge-claim-v1alpha1.schema.json` and `schemas/decision-proposal-v1alpha1.schema.json` are **static schema designs** only: `cmd/lunactl` does not import/validate/execute them and no event feed/ML/Cloud component consumes them. Adding these files has **zero kernel, network or model runtime effect**.
+
 ## Current verification and risks
 
 HOMESV unit tests, vet, CLI validation/preview and amd64/arm64 cross-builds passed for baseline `9ae27b2`. No WebUI E2E, Linux namespace test, kernel compatibility check, privileged executor, secure install/uninstall, actual live recovery, independent release signatures or real ban/counter proof exists.

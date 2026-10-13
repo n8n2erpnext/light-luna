@@ -7,7 +7,8 @@
     "ownerDecision": "public accepted 2026-10-13",
     "mainSHA": "66920c251603b0b0c4bcd0d0cfc94ca8f7220d41",
     "developmentBranch": "feat/p0-standalone-foundation",
-    "developmentSHA": "9ae27b267e72e465ea7808c3936fabcf6b0cac05"
+    "p0ImplementationSHA": "9ae27b267e72e465ea7808c3936fabcf6b0cac05",
+    "currentBranchRevision": "read-from-git-at-evaluation-time"
   },
   "development": {
     "primaryHost": "HOMESV",
@@ -31,7 +32,12 @@
       "crossBuildAmd64": "pass",
       "crossBuildArm64": "pass",
       "kernelNamespaceTests": "not_run",
-      "productionInstalled": false
+      "productionInstalled": false,
+      "brainV2Implementation": "not_started",
+      "threatIntelIntegration": "not_started",
+      "cloudExperienceSharing": "future_opt_in_not_implemented",
+      "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
+      "decisionProposalSchema": "static_advisory_only_not_runtime_validated"
     }
   },
   "gates": {
@@ -47,7 +53,11 @@
     "catalog": "docs/project-book/source_catalog.json",
     "legacyDocPathsMoved": false,
     "languageDecision": "docs/adr/ADR-020-go-core-python-optional.md",
-    "ebpfXdpDecision": "docs/adr/ADR-021-ebpf-observability-xdp-optional.md"
+    "ebpfXdpDecision": "docs/adr/ADR-021-ebpf-observability-xdp-optional.md",
+    "brainV2Decision": "docs/adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md",
+    "legacyCognitionAudit": "docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md",
+    "brainV2Design": "docs/architecture/luna-brain-v2.md",
+    "threatKnowledgePipeline": "docs/architecture/threat-intelligence-knowledge-pipeline.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

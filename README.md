@@ -51,6 +51,10 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 
 **Go** is the planned primary backend, CLI, deterministic Luna Brain and separated constrained executor language. **React + TypeScript** is the proposed WebUI. An **optional, unprivileged Python worker** may be added only for justified ML/statistics/inference tasks; baseline Host/Edge operation and safety never depend on Python or any LLM. JavaScript `.mjs` is no longer the planned default Brain runtime. See [ADR-020](docs/adr/ADR-020-go-core-python-optional.md). **Only the P0 Go CLI/validator is implemented today.**
 
+## Brain V2: a knowledge-driven defensive system
+
+Light Luna's differentiator is a governed security reasoning plane: **local observations + trusted public CVE/KEV/EPSS/vendor feeds + ATT&CK attack-technique models + exact installed-asset applicability + observed temporal behavior → evidence-bound incident/pre-attack recommendations**. Its collective Cloud knowledge is a future privacy-controlled, opt-in, signed/versioned subscription rather than a global ban authority. The existing Python Sentinel Luna is studied as a source of curated patterns and false-positive safeguards, **not** an existing pretrained neural model or production Light Luna Brain. The new Go-native Brain V2 is currently **architecture only**: [ADR-022](docs/adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md), [Brain V2 design](docs/architecture/luna-brain-v2.md), [Threat Pipeline](docs/architecture/threat-intelligence-knowledge-pipeline.md), [source audit](docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md).
+
 ## Optional eBPF/XDP roadmap
 
 nftables remains the primary firewall. Linux **eBPF host/network/socket/process observability** is an optional future sensor, and **XDP early-ingress L3/L4 filtering** is an optional, explicitly enabled future anti-DDoS fast path. Neither is implemented; no XDP/BPF attachment or packet drop is authorized by this plan. Preserve all existing XDP program ownership and support nftables-only on unsupported NICs. See [ADR-021](docs/adr/ADR-021-ebpf-observability-xdp-optional.md).

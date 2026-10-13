@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schema/decision-proposal-v1alpha1.json",
+  "title": "Light Luna DecisionProposalV1alpha1 (design only)",
+  "description": "Evidence-bounded unprivileged recommendation. No raw shell, nftables, or executable command fields permitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "decision_id",
+    "site_scope",
+    "kind",
+    "evidence_refs",
+    "missing_evidence",
+    "uncertainties",
+    "score",
+    "action",
+    "time",
+    "authority",
+    "telemetry_coverage"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.decision/v1alpha1"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:-]{12,180}$"
+    },
+    "site_scope": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 160
+    },
+    "service_scope": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "subject_ref": {
+      "type": "string",
+      "maxLength": 180
+    },
+    "kind": {
+      "enum": [
+        "NO_ACTION",
+        "INSUFFICIENT_TELEMETRY",
+        "WAIT_MORE_EVIDENCE",
+        "REVIEW_RECOMMENDED",
+        "PREPARE_MITIGATION",
+        "BAN_RECOMMENDED",
+        "INCIDENT_CRITICAL"
+      ]
+    },
+    "scenario_id": {
+      "type": "string",
+      "maxLength": 140
+    },
+    "scenario_revision": {
+      "type": "string",
+      "maxLength": 80
+    },
+    "evidence_refs": {
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 8,
+        "maxLength": 180
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      }
+    },
+    "alternative_hypotheses": {
+      "type": "array",
+      "maxItems": 15,
+      "items": {
+        "type": "string",
+        "maxLength": 180
+      }
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "calibration_verified"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "UNVALIDATED",
+            "UNCALIBRATED_RANK",
+            "CALIBRATED_PROBABILITY"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "calibration_verified": {
+          "type": "boolean"
+        },
+        "calibration_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 140
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "execution_requested"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "NONE",
+            "REQUEST_EVIDENCE",
+            "NOTIFY",
+            "REVIEW_PATCH",
+            "PREPARE_RULE",
+            "PROPOSE_SITE_RATE_LIMIT",
+            "PROPOSE_TIMED_BLOCK"
+          ]
+        },
+        "execution_requested": {
+          "const": false
+        },
+        "suggested_ttl_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3600
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 700
+        }
+      }
+    },
+    "telemetry_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "source_ip_provenance_verified",
+        "window_complete"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "MISSING",
+            "STALE",
+            "UNKNOWN"
+          ]
+        },
+        "source_ip_provenance_verified": {
+          "type": "boolean"
+        },
+        "window_complete": {
+          "type": "boolean"
+        },
+        "independent_signal_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_utc",
+        "created_utc",
+        "expires_utc"
+      ],
+      "properties": {
+        "observed_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "forecast_horizon_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2592000
+        },
+        "reassess_after_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 604800
+        }
+      }
+    },
+    "authority": {
+      "const": "ADVISORY_ONLY_NOT_EXECUTABLE"
+    }
+  }
+}

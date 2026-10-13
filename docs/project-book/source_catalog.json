@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 9054,
-      "sha256": "da6e263fc3b13a8dc39ced8f3766cc2ee8a143a58577093dca97a89f0fdcb6c7"
+      "bytes": 10075,
+      "sha256": "5dc74dade5d4d49763b976e31b73566fd50f35144d400acdc7f51b0272c7ad7c"
     },
     {
       "path": "SECURITY.md",
@@ -42,8 +42,8 @@
       "path": "docs/01-ARCHITECTURE.md",
       "category": "architecture / design source",
       "title": "01 — System Architecture",
-      "bytes": 7375,
-      "sha256": "a2aaeaadb58fe7ace1fbb66bb3e29abbe73d5781b7ea38491a4822509d840b15"
+      "bytes": 8202,
+      "sha256": "5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26"
     },
     {
       "path": "docs/02-FIREWALL-ENGINE.md",
@@ -56,8 +56,8 @@
       "path": "docs/03-LUNA-BRAIN.md",
       "category": "architecture / design source",
       "title": "03 — Luna Brain: Bounded Autonomous Security",
-      "bytes": 5969,
-      "sha256": "a8b6e0d7ee20d66fe717b7fe2dd17178825f85728b448e1072bac6a35c7b667f"
+      "bytes": 6836,
+      "sha256": "b854cfbb4f27faec99f1127e34a67792884dbf51a6fd6ffc9e3a98ea81bbf5f3"
     },
     {
       "path": "docs/04-WAF-THREAT-INTEL.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 8079,
-      "sha256": "645feb131f0944fb1d92ff3d4bb6ebfad3791a17a3bb46ffde8dd3a678c9a640"
+      "bytes": 9750,
+      "sha256": "283194fba54b80f8877bf1b932f98dc4883d570f4ecdd4e4338cc605e2f305c9"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 3548,
-      "sha256": "208d92dddaffa2faa4cce076c2b1ec0638334e936cc313a7d652db70d0612b94"
+      "bytes": 3829,
+      "sha256": "155bd5cf6245315fe2c9c815219ee9700e39baf5575a17b9711a5b4484866d70"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -165,6 +165,34 @@
       "sha256": "13e96c807dbedba32f9cb43a4046a9b4808e549fed57ffd20a35c6535f5200ff"
     },
     {
+      "path": "docs/adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md",
+      "category": "architecture / design source",
+      "title": "ADR-022 — Rebuild Luna Brain V2, Port Governed Knowledge, Not Runtime State",
+      "bytes": 6022,
+      "sha256": "eba8997902b0ec95c3f8f37611450545534d98dee584ba63c233ff9e618b1ab3"
+    },
+    {
+      "path": "docs/architecture/luna-brain-v2.md",
+      "category": "architecture / design source",
+      "title": "Luna Brain V2 — Evidence, Knowledge, Reasoning and Defensive Decisions",
+      "bytes": 13959,
+      "sha256": "312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a"
+    },
+    {
+      "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
+      "category": "architecture / design source",
+      "title": "Light Luna Threat Knowledge — Trusted Feed, Exposure and Scenario Pipeline",
+      "bytes": 9878,
+      "sha256": "85c6637cbb6a23608b30258779e98c8e25d642bad8c61fd7d2b24ba36fcb06ef"
+    },
+    {
+      "path": "docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md",
+      "category": "architecture / design source",
+      "title": "Sentinel Luna — Source and Cognitive Architecture Audit",
+      "bytes": 9393,
+      "sha256": "bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4"
+    },
+    {
       "path": "go.mod",
       "category": "repository contract",
       "title": "go",
@@ -198,6 +226,20 @@
       "title": "validate",
       "bytes": 5324,
       "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
+    },
+    {
+      "path": "schemas/decision-proposal-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "decision-proposal-v1alpha1.schema",
+      "bytes": 5083,
+      "sha256": "818f858e7b7a98821ecb1e075a6f0c3dfe895f6c71f6246df1ff12c335d3c82b"
+    },
+    {
+      "path": "schemas/knowledge-claim-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "knowledge-claim-v1alpha1.schema",
+      "bytes": 5036,
+      "sha256": "f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502"
     },
     {
       "path": "schemas/policy-v1alpha1.schema.json",

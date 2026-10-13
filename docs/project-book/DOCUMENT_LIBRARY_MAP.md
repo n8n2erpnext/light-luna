@@ -26,6 +26,12 @@ Scope: document ownership and historical path mapping
 | [12 ADR register](../12-ADRS.md) | Decisions vs proposals vs open questions |
 | [ADR-020 Go/Python language roles](../adr/ADR-020-go-core-python-optional.md) | Go-native core; Python optional unprivileged ML worker; `.mjs` proposal superseded |
 | [ADR-021 eBPF/XDP capability](../adr/ADR-021-ebpf-observability-xdp-optional.md) | Optional Linux tracing + early ingress mitigation; no code or live attachment; kernel coexistence rules |
+| [ADR-022 Brain V2 knowledge migration](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) | Build new Go Brain; port only reviewed facts/rules; no legacy live DB/weight copy |
+| [Luna Brain V2 design](../architecture/luna-brain-v2.md) | Detailed knowledge/reasoning/memory/score contracts and component topology |
+| [Threat Intel & Knowledge Pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) | CVE/KEV/EPSS/ATT&CK + asset-match + Cloud evidence and scenarios |
+| [Legacy Sentinel cognition audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | Verified source layout, JSONL record counts, heuristic weights and migration risks |
+| [Knowledge schema](../../schemas/knowledge-claim-v1alpha1.schema.json) | Proposed `KnowledgeClaimV1alpha1`; not yet validated by Go runtime |
+| [Decision proposal schema](../../schemas/decision-proposal-v1alpha1.schema.json) | Proposed advisory-only proposal; no executor or code wiring |
 | [13 References](../13-REFERENCES.md) | Dated external research bookmarks |
 | [14 Initial handoff](../14-HANDOFF-2026-10-13.md) | Historical documentation-phase handoff; Git blocker superseded |
 | [15 P0 implementation notes](../15-P0-IMPLEMENTATION-NOTES.md) | P0 code-slice handoff/notes, read with Code Map |

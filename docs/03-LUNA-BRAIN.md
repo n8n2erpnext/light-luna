@@ -1,5 +1,9 @@
 # 03 — Luna Brain: Bounded Autonomous Security
 
+## Brain V2 architecture and source evidence
+
+[ADR-022](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) selects a **new Go-native Brain V2** rather than cloning the existing Python Sentinel deployment. [Source audit](history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) confirms the older cognition is primarily curated/generated JSONL templates, deterministic heuristics, SQLite observations and gated learning—not a verified neural model checkpoint. [Brain V2 design](architecture/luna-brain-v2.md) defines knowledge/weights, evidence authority and private/local/cloud contracts; [Threat Knowledge Pipeline](architecture/threat-intelligence-knowledge-pipeline.md) defines CVE/feed → installed affected asset → scenario → advisory path. **This is planned architecture: no Brain V2 process, model or enforcement path is implemented.**
+
 ## Mission
 
 A decision engine, not a privileged shell. Luna learns *normal context*, correlates anomalies, tests hypotheses and issues structured proposals. A deterministic policy and executor approve/reject actions. Users can turn Luna OFF without disabling the firewall.

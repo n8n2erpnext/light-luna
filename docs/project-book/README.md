@@ -15,7 +15,10 @@ Read in this order, **before editing any documentation or code**:
 8. [DOCUMENT_TEMPLATE.md](DOCUMENT_TEMPLATE.md) — use when a new durable document is justified.
 9. [ADR-020](../adr/ADR-020-go-core-python-optional.md) — Go-native core plus optional, isolated Python ML worker (architecture decision; not implemented).
 10. [ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md) — optional future eBPF observation/XDP mitigation; not active.
-11. [../../README.md](../../README.md) — public product introduction and constraints.
+11. [ADR-022](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) — rebuild Brain V2; port reviewed knowledge rather than cloning live data/imagined model weights.
+12. [Brain V2](../architecture/luna-brain-v2.md) and [Threat Knowledge Pipeline](../architecture/threat-intelligence-knowledge-pipeline.md) — proposed, independently reviewable component contracts.
+13. [Legacy source audit](../history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) — VPS-ARM observations, heuristic numbers and implementation limits.
+14. [../../README.md](../../README.md) — public product introduction and constraints.
 
 ## Source precedence
 

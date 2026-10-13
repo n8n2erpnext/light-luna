@@ -33,6 +33,10 @@
 - **eBPF tracing/XDP (ADR-021; NOT IMPLEMENTED):** optional observability for Linux network, socket and process signals; later optional ingress XDP mitigation fast path for tested NIC/driver/kernel environments, behind independent Policy Gate and recovery. No automatic attachment, preexisting program replacement or mandatory XDP requirement for standalone operation. Go userspace with small eBPF-targeted C/Clang objects is a candidate. See [ADR-021](adr/ADR-021-ebpf-observability-xdp-optional.md).
 - **WAF:** proxy integration / Coraza + OWASP CRS; observe mode first. WAF placement explicit.
 
+## Knowledge-driven Luna Brain V2 (planned)
+
+[ADR-022](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) selects a fresh Go-native Brain with governed migration of legacy Sentinel **knowledge and reasoning rules**, not its live SQLite history or neural weights. [Brain V2](architecture/luna-brain-v2.md) separates curated knowledge, local evidence and reasoning from an independent action Policy Gate. [Threat intel](architecture/threat-intelligence-knowledge-pipeline.md) supplies versioned CVE/KEV/EPSS/vendor advisories, ATT&CK techniques, SBOM-backed per-asset applicability and defensive early-warning scenarios. Future Cloud publishes signed/approved privacy-minimized packs; no raw logs or direct action authority. This design does not add runtime Cloud/ML dependencies or NetBird integration to P0–P4.
+
 ## Data flow
 
 ```text

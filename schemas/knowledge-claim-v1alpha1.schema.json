@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schema/knowledge-claim-v1alpha1.json",
+  "title": "Light Luna KnowledgeClaimV1alpha1 (design only)",
+  "description": "Versioned curated knowledge assertion with provenance. Schema validity is NOT trust approval or authority to enforce.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "kind",
+    "scope",
+    "assertion",
+    "source",
+    "review",
+    "temporal",
+    "applicability",
+    "provenance_status"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.knowledge/v1alpha1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._:/-]{8,180}$"
+    },
+    "kind": {
+      "enum": [
+        "NETWORK_FACT",
+        "ATTACK_TECHNIQUE",
+        "CVE_ADVISORY",
+        "KEV_STATUS",
+        "EPSS_ESTIMATE",
+        "AFFECTED_COMPONENT",
+        "DETECTION_HYPOTHESIS",
+        "COUNTEREXAMPLE",
+        "SAFETY_INVARIANT",
+        "OBSERVED_OUTCOME"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "GLOBAL_PUBLIC",
+        "LOCAL_NODE",
+        "LOCAL_SITE",
+        "RESEARCH_ONLY"
+      ]
+    },
+    "assertion": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 1600
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 24,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "maxLength": 70
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publisher",
+        "uri",
+        "retrieved_utc",
+        "sha256"
+      ],
+      "properties": {
+        "publisher": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "uri": {
+          "type": "string",
+          "maxLength": 650,
+          "pattern": "^https://"
+        },
+        "retrieved_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 130
+        },
+        "source_revision": {
+          "type": "string",
+          "maxLength": 140
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reviewer_kind"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "QUARANTINED",
+            "UNREVIEWED",
+            "REVIEWED",
+            "APPROVED_FOR_SHADOW",
+            "APPROVED_FOR_KNOWLEDGE_PACK",
+            "RETRACTED"
+          ]
+        },
+        "reviewer_kind": {
+          "enum": [
+            "NONE",
+            "HUMAN",
+            "SIGNED_VENDOR",
+            "GOVERNED_AUTOMATION"
+          ]
+        },
+        "reviewed_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "temporal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_utc",
+        "expires_utc"
+      ],
+      "properties": {
+        "observed_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_published_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_match",
+        "backport_verified",
+        "exposure_verified"
+      ],
+      "properties": {
+        "asset_match": {
+          "enum": [
+            "UNKNOWN",
+            "NOT_APPLICABLE_VERIFIED",
+            "POTENTIALLY_AFFECTED",
+            "AFFECTED_VERIFIED"
+          ]
+        },
+        "backport_verified": {
+          "type": "boolean"
+        },
+        "exposure_verified": {
+          "type": "boolean"
+        },
+        "component_ref": {
+          "type": "string",
+          "maxLength": 180
+        },
+        "affected_range_ref": {
+          "type": "string",
+          "maxLength": 180
+        }
+      }
+    },
+    "provenance_status": {
+      "enum": [
+        "SOURCE_DERIVED",
+        "LOCAL_OBSERVATION",
+        "HYPOTHESIS",
+        "CROSS_VERIFIED",
+        "DISPUTED"
+      ]
+    },
+    "contradictions": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "string",
+        "maxLength": 180
+      }
+    },
+    "falsification_requirements": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "maxLength": 280
+      }
+    },
+    "supersedes": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "string",
+        "maxLength": 180
+      }
+    },
+    "authority": {
+      "const": "KNOWLEDGE_ONLY_NO_ENFORCEMENT"
+    }
+  }
+}

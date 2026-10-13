@@ -8,13 +8,13 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 9054 | da6e263fc3b13a8dc39ced8f3766cc2ee8a143a58577093dca97a89f0fdcb6c7 |
+| [README.md](../../README.md) | repository contract | 10075 | 5dc74dade5d4d49763b976e31b73566fd50f35144d400acdc7f51b0272c7ad7c |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 1349 | a6aa97d8f177d7795978d5c340f96f2cde53c0d4e3032e04facd1b01fba9651e |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
-| [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 7375 | a2aaeaadb58fe7ace1fbb66bb3e29abbe73d5781b7ea38491a4822509d840b15 |
+| [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 8202 | 5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
-| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 5969 | a8b6e0d7ee20d66fe717b7fe2dd17178825f85728b448e1072bac6a35c7b667f |
+| [docs/03-LUNA-BRAIN.md](../../docs/03-LUNA-BRAIN.md) | architecture / design source | 6836 | b854cfbb4f27faec99f1127e34a67792884dbf51a6fd6ffc9e3a98ea81bbf5f3 |
 | [docs/04-WAF-THREAT-INTEL.md](../../docs/04-WAF-THREAT-INTEL.md) | architecture / design source | 4627 | 332e92b9b52cc014d08cd975c39f98f91c3f8876fd399f9719902801fa95f52d |
 | [docs/05-NETBIRD.md](../../docs/05-NETBIRD.md) | deferred research | 10281 | 1c3c40bceeb8176db3f0d3e28291f264dacef2bd8f3d6975fc1fa6ccb8b2138c |
 | [docs/06-CLOUD-FLEET.md](../../docs/06-CLOUD-FLEET.md) | architecture / design source | 2639 | 2c531f77ded3222893a5cc2efe59b5dcb604e4a8a1f367cadb9a82a80f7c213a |
@@ -22,19 +22,25 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 3355 | c0195979bd56ea3ab73d8d207a7aaed1aff52550d449d513a78c0dc3aa73ad57 |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 4193 | 0bd7419fb7dde6407eaa085752626915e5b10b00320c702e1ed6dae75b8879fa |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 8079 | 645feb131f0944fb1d92ff3d4bb6ebfad3791a17a3bb46ffde8dd3a678c9a640 |
-| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 3548 | 208d92dddaffa2faa4cce076c2b1ec0638334e936cc313a7d652db70d0612b94 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 9750 | 283194fba54b80f8877bf1b932f98dc4883d570f4ecdd4e4338cc605e2f305c9 |
+| [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 3829 | 155bd5cf6245315fe2c9c815219ee9700e39baf5575a17b9711a5b4484866d70 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
 | [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 2836 | 3fc3502d61828aeb54e3392fa6612c137cd758cd36258329d282916ed04faeda |
 | [docs/16-P0-HOMESV-HANDOFF-2026-10-13.md](../../docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | historical / handoff | 4896 | d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d |
 | [docs/adr/ADR-020-go-core-python-optional.md](../../docs/adr/ADR-020-go-core-python-optional.md) | architecture / design source | 5620 | faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8 |
 | [docs/adr/ADR-021-ebpf-observability-xdp-optional.md](../../docs/adr/ADR-021-ebpf-observability-xdp-optional.md) | architecture / design source | 9161 | 13e96c807dbedba32f9cb43a4046a9b4808e549fed57ffd20a35c6535f5200ff |
+| [docs/adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md](../../docs/adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) | architecture / design source | 6022 | eba8997902b0ec95c3f8f37611450545534d98dee584ba63c233ff9e618b1ab3 |
+| [docs/architecture/luna-brain-v2.md](../../docs/architecture/luna-brain-v2.md) | architecture / design source | 13959 | 312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a |
+| [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 9878 | 85c6637cbb6a23608b30258779e98c8e25d642bad8c61fd7d2b24ba36fcb06ef |
+| [docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md](../../docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | architecture / design source | 9393 | bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4 |
 | [go.mod](../../go.mod) | repository contract | 50 | 1e434b84b0085ef1967c590198ba3010075e5cf4f89773a45f46642e829e4ba0 |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2518 | 6617795c78f27719f945df764093bd25ebf37d3967955959580d6b2046b640d2 |
 | [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 3082 | fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96 |
 | [internal/policy/preview.go](../../internal/policy/preview.go) | implementation | 1720 | 326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362 |
 | [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 5324 | d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d |
+| [schemas/decision-proposal-v1alpha1.schema.json](../../schemas/decision-proposal-v1alpha1.schema.json) | API contract (partial semantic) | 5083 | 818f858e7b7a98821ecb1e075a6f0c3dfe895f6c71f6246df1ff12c335d3c82b |
+| [schemas/knowledge-claim-v1alpha1.schema.json](../../schemas/knowledge-claim-v1alpha1.schema.json) | API contract (partial semantic) | 5036 | f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502 |
 | [schemas/policy-v1alpha1.schema.json](../../schemas/policy-v1alpha1.schema.json) | API contract (partial semantic) | 6108 | c91b64ef7fa7b6e10d040f984762a33d52279e2d5da37a09872686936ba82526 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |
 | [testdata/host-baseline.json](../../testdata/host-baseline.json) | synthetic test fixture | 1296 | a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a |

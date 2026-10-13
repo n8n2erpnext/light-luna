@@ -25,6 +25,8 @@
 
 | ADR-021 | **DECIDED** | [Optional eBPF observability, later opt-in XDP mitigation](adr/ADR-021-ebpf-observability-xdp-optional.md): nftables remains primary; never replace unknown XDP; kernel/driver matrix, Policy Gate, rollback and staged isolated tests mandatory; no implemented runtime |
 
+| ADR-022 | **DECIDED** | [Rebuild Go-native Luna Brain V2](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md), migrate reviewed/typed knowledge and evidence safeguards, **not live Sentinel DBs or assumed neural weights**; Cloud sharing opt-in and locally governed |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.
