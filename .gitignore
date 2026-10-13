@@ -1,0 +1,19 @@
+# No secrets, live telemetry, or generated security artifacts
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.sqlite
+*.sqlite3
+*.db
+*.log
+state/
+logs/
+telemetry/
+reports/
+.cache/
+node_modules/
+dist/
+build/
+.DS_Store

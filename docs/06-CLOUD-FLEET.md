@@ -1,0 +1,26 @@
+# 06 — Cloud, Fleet & Trust
+
+## Independence model
+
+Light Luna installs, loads policy, enforces manual rules, expires temporary bans, audits actions and recovers **fully offline**. Cloud is optional and opt-in. Local ownership is authoritative for emergency restores. Loss of Cloud MUST NOT silently turn a local firewall permissive or halt scheduled unblock.
+
+## Proposed Cloud services
+
+1. **Device enrollment and ownership:** owner-activated short-lived invitation; device-bound keypair; certificate pinning/rotation; no automatic adoption of all peers found by NetBird.
+2. **Fleet inventory and health:** per-node software version, code signature, last-seen, last policy revision, capabilities and protections, summarized security posture.
+3. **Policy distribution:** signed bundles with site/tenant scopes, canary ring, staged diff, fail-safe rollback, audit history and per-device approval setting.
+4. **Threat intelligence:** signed snapshots with freshness, source confidence, TTL, application selectors and privacy-safe event summaries; local context must decide relevance.
+5. **Updates:** signed metadata and artifacts, SBOM and provenance, compatibility gates, minimum safe version, staged rollout, rollback on failed health.
+6. **Operator notification and support:** alerts with receipts/delivery states, per-tenant RBAC and separation of security and billing data.
+
+## Multi-tenant controls
+
+Tenant+device keys, row-level isolation, encrypted secrets at rest, scoped service credentials, audit logs, signed replay-protected command envelopes, two-person approval for dangerous global policy distribution, rate/cardinality limits and clear billing/quotas. Cloud updates should never be accepted merely because they arrive via a trusted VPN; they require verified signing identity and policy version.
+
+## Crowd intelligence privacy
+
+Default **no upload of raw traffic payloads, secrets, private IPs, full request URLs or customer usernames**. Opt-in aggregated indicators with pseudonymization/minimum count thresholds, time-window bucketing, age-out policy and confidence; explicit opt-out and deletion lifecycle. Threat feeds and telemetry are untrusted input; do not let supplied content influence command invocation.
+
+## Scale and portability
+
+Keep control plane stateless where possible, with transactional persistence, indexed event summaries, TTL-based data rotation, queue + backpressure, per-tenant quotas and idempotency. Define operator-controlled offline export/import from day one. Horizontal scale/K3s migration should be possible without redesigning device protocol; don't introduce K3s as a dependency for v1.
