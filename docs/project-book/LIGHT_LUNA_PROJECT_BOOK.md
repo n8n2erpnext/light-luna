@@ -34,6 +34,10 @@ Rust, a **mandatory Python runtime**, and a separate Node backend are not requir
 
 Previously the docs-only `main` commit `66920c2` was published using VPS-ARM deploy key. All production infrastructure/firewall remained untouched in those operations.
 
+## Optional Linux eBPF/XDP direction (decision, not deployed)
+
+[ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md) adds **non-mandatory eBPF tracing** as a potential source of bounded host/network/socket/process telemetry and **optional XDP ingress DDoS filtering** after isolated tests and explicit enablement. nftables remains the primary firewall. No source object, attach, XDP_DROP, loader or benchmark exists in the current project. Do not confuse an existing kernel BPF attachment on HOMESV with Light Luna functionality. Kernel/driver support and coexistence must be checked before any isolated lab attachment, with no interruption of third-party XDP. Optional XDP is not a G-STANDALONE requirement; NetBird remains deferred.
+
 ## Safety boundary
 
 Mandatory scope and TTL, owner emergency paths, audit, independent privileged policy gate, transactional rollback lease and separation of host/vendor nftables tables are [design requirements](../07-SECURITY-SAFETY.md), **not implemented test results**. No root host firewall modifications; no development code is deployed.

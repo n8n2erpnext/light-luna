@@ -20,7 +20,9 @@
       "python_ml_worker": "optional_unprivileged_worker_not_implemented",
       "javascript_mjs": "not_default_brain_runtime",
       "sqlite": "proposed_storage",
-      "nftables": "not_implemented"
+      "nftables": "primary_firewall_backend_not_implemented",
+      "ebpf_tracing": "optional_future_observability_not_implemented",
+      "xdp": "optional_future_ingress_mitigation_not_implemented"
     },
     "lastVerified": {
       "goUnitTests": "pass",
@@ -44,7 +46,8 @@
     "codeMap": "docs/project-book/LIGHT_LUNA_CODE_MAP.md",
     "catalog": "docs/project-book/source_catalog.json",
     "legacyDocPathsMoved": false,
-    "languageDecision": "docs/adr/ADR-020-go-core-python-optional.md"
+    "languageDecision": "docs/adr/ADR-020-go-core-python-optional.md",
+    "ebpfXdpDecision": "docs/adr/ADR-021-ebpf-observability-xdp-optional.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

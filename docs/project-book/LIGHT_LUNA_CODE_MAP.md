@@ -73,6 +73,10 @@ React+TypeScript WebUI (PROPOSED)
 
 The architecture deliberately keeps rule authorization independent of Luna Brain and Internet/cloud status. NetBird code is **not allowed** before G-STANDALONE plus owner's approval. See [architectural model](../01-ARCHITECTURE.md) and [hard order](../11-ROADMAP.md).
 
+## eBPF/XDP planned hooks — NONE REACHABLE
+
+[ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md) records an **architecture decision only**. There are NO eBPF source objects, Go BPF loader imports, pinned maps, XDP link creation, tracepoint attachments, counters, security event streams or XDP drop path in current Light Luna code. Proposed future chain: kernel tracing hooks or NIC ingress XDP → optional least-privilege loader → Go collector → Go Brain → independent Policy Gate → constrained executor. Existing kernel XDP programs on development machines are **external** and are not Light Luna artifacts. Neither BPF/XDP nor NetBird enters standalone runtime as a required dependency.
+
 ## Current verification and risks
 
 HOMESV unit tests, vet, CLI validation/preview and amd64/arm64 cross-builds passed for baseline `9ae27b2`. No WebUI E2E, Linux namespace test, kernel compatibility check, privileged executor, secure install/uninstall, actual live recovery, independent release signatures or real ban/counter proof exists.

@@ -1,6 +1,6 @@
 # 11 — Delivery Roadmap, Test Gates and Release Discipline
 
-**Current milestone:** P-1 architecture/documentation only. **No implemented firewall or shipping release.**
+**Current milestone:** P0 **non-enforcing CLI/policy validation scaffold** exists on the development branch; no implemented kernel firewall or shipping release. See [Code Map](project-book/LIGHT_LUNA_CODE_MAP.md).
 
 | Milestone | Deliverables | Exit gates |
 |---|---|---|
@@ -25,6 +25,16 @@
 5. CI and reproducible test reports capture pass/fail plus versions, and the owner explicitly accepts **G-STANDALONE** and authorizes NetBird integration work.
 
 Passing only a unit test or completing docs does **not** satisfy the gate. Until all conditions pass, mark NetBird `DEFERRED` and do not begin its development.
+
+## Optional eBPF/XDP capability track (ADR-021)
+
+This track is **not a mandatory standalone acceptance dependency** and does not authorize real firewall changes:
+
+- **Early P0/P1 research:** documented Linux feature matrix and read-only inventory of current BPF/XDP attachments (never detach or replace). Specify data contracts and eBPF userspace loader API as a proposed extension; prefer nftables-only as baseline.
+- **P1/P2 laboratory observer:** bounded tracing/perf-ring/bpf-ringbuf candidate; synthetic events, kernel/driver/arch checks and clean detach in disposable VM/netns. Observe and validate only, no traffic drops.
+- **P2/P3 experimental XDP:** XDP_PASS-only counter in isolated lab, then shadow attack classifier. Validate native driver vs generic SKB, IPv4/v6, fragments, drops, CPU and legitimate-service latency; coexistence with existing XDP dispatchers must fail safely.
+- **P3+ opt-in live mitigation (separate approval):** scoped L3/L4 XDP_DROP only after policy-gate authorization, independent rollback and external admin reachability pass. Unavailable on unsupported platforms; standalone nftables must still work.
+- **Never claim Cloudflare's >8M pps case as a Light Luna result.** XDP does not solve saturated upstream links, nor replace conntrack/WAF. See [ADR-021](adr/ADR-021-ebpf-observability-xdp-optional.md).
 
 ## Gate-specific test suites
 

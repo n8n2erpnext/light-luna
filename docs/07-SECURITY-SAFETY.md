@@ -35,6 +35,10 @@ Protected assets: admin reachability, legitimate traffic, node identity/private 
 - Power outage mid-rule change; reboot while rollback timer active.
 - Disk full and DB lock causing unusable UI; negative decisions should never create allow rules.
 
+## eBPF/XDP additional safety boundary (future only)
+
+[ADR-021](adr/ADR-021-ebpf-observability-xdp-optional.md) requires that any eBPF tracing/XDP loader be isolated from Luna Brain and user input. Read-only capability inspection is allowed in development, but attaching/detaching/replacing a BPF program is a kernel operation subject to explicit owner-approved isolated test gates. Existing kernel programs and libxdp dispatchers are **not** Light Luna-owned; never replace or detach them automatically. For future XDP drop, require bounded parser, traffic source attribution, independent authorization, protected management flows, explicit NIC/driver/kernel mode compatibility, resource cap, telemetry-loss handling, external rollback and verification of no unintended packet loss. eBPF verifier approval is not equivalent to semantic/firewall safety. Unsupported native XDP is not silently converted to generic mode. Keep nftables-only fallback and no upstream anti-saturation promises.
+
 ## Default authorization states
 
 `OFF` / `OBSERVE` / `PROPOSE` / `CONFIRM_EACH` / `SCOPED_AUTO` (final only after all release gates). `SCOPED_AUTO` carries maximum TTL, protected service/target exceptions, rate caps and revocation switch. Default is `OBSERVE`, with all network ban actions disabled in design baseline.

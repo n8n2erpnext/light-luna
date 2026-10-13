@@ -27,6 +27,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Recorded [ADR-020](../adr/ADR-020-go-core-python-optional.md): Go deterministic Brain remains independent of an optional sandboxed non-root Python worker. `.mjs` is no longer the default Luna Brain runtime.
 - This is an **architecture decision only**; no Brain, worker, Python runtime dependency, firewall enforcement or production changes were made.
 
+## 2026-10-13 — eBPF/XDP extension decision
+
+- Reviewed [Cloudflare L4Drop 2018](https://blog.cloudflare.com/l4drop-xdp-ebpf-based-ddos-mitigations/), Linux kernel eBPF/XDP documentation, cilium/ebpf and libxdp multiprogram coexistence guidelines.
+- Recorded [ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md): nftables authoritative; optional read-only eBPF tracing; XDP opt-in ingress mitigation only after independent gate/recovery and owner approval; existing XDP programs must never be replaced.
+- HOMESV read-only link/kernel inventory confirms the machine has Linux 6.8 kernel/BTF but **does not prove safe/native XDP support**. No Light Luna BPF program loaded, attached or built; do not publish user infrastructure-specific device details in the repository.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

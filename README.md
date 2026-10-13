@@ -51,6 +51,10 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 
 **Go** is the planned primary backend, CLI, deterministic Luna Brain and separated constrained executor language. **React + TypeScript** is the proposed WebUI. An **optional, unprivileged Python worker** may be added only for justified ML/statistics/inference tasks; baseline Host/Edge operation and safety never depend on Python or any LLM. JavaScript `.mjs` is no longer the planned default Brain runtime. See [ADR-020](docs/adr/ADR-020-go-core-python-optional.md). **Only the P0 Go CLI/validator is implemented today.**
 
+## Optional eBPF/XDP roadmap
+
+nftables remains the primary firewall. Linux **eBPF host/network/socket/process observability** is an optional future sensor, and **XDP early-ingress L3/L4 filtering** is an optional, explicitly enabled future anti-DDoS fast path. Neither is implemented; no XDP/BPF attachment or packet drop is authorized by this plan. Preserve all existing XDP program ownership and support nftables-only on unsupported NICs. See [ADR-021](docs/adr/ADR-021-ebpf-observability-xdp-optional.md).
+
 ## Mandatory stage gate — standalone first
 
 **Stage A (ACTIVE PLAN):** Build and prove Light Luna as a self-contained firewall. Host and Edge must work without NetBird installed, without NetBird APIs, and without any NetBird dependency. Complete local rules, aliases, policy compiler, agent/executor, WebUI/CLI, packaging, recovery and standalone end-to-end tests first.

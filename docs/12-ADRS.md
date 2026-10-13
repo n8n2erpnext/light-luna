@@ -23,6 +23,8 @@
 | ADR-019 | **DECIDED** | **Strict standalone-first sequence:** design/build/test/package independent Host and Edge, prove G-STANDALONE; NO NetBird code/API probing/compatibility integration tests/dependency before gate and explicit owner approval, including so-called read-only connector. The current NetBird document is future research only |
 | ADR-020 | **DECIDED** | [Go-native Backend/Brain; optional isolated Python worker](adr/ADR-020-go-core-python-optional.md). `.mjs` is no longer default Brain runtime; WebUI React/TypeScript and SQLite remain proposed; Brain/executor authority separated |
 
+| ADR-021 | **DECIDED** | [Optional eBPF observability, later opt-in XDP mitigation](adr/ADR-021-ebpf-observability-xdp-optional.md): nftables remains primary; never replace unknown XDP; kernel/driver matrix, Policy Gate, rollback and staged isolated tests mandatory; no implemented runtime |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

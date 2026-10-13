@@ -29,7 +29,8 @@
 - **React/TypeScript:** responsive WebUI, shared schema-generated clients; no sensitive privileged operations in browser.
 - **SQLite WAL:** single-node durable config, decision and audit index, event summaries (bounded retention); append-only integrity-checked audit chain where useful. Cloud relational DB only if needed for scale and tenancy.
 - **unix domain socket + peer credentials:** local control interface; mTLS device identity for remote agents.
-- **nftables:** first Linux enforcement backend; separate backend interfaces enable OS migration later rather than promising Windows/macOS firewall at initial release.
+- **nftables:** **primary Linux firewall** and stateful conntrack/policy backend; separate backend interfaces permit future OS portability.
+- **eBPF tracing/XDP (ADR-021; NOT IMPLEMENTED):** optional observability for Linux network, socket and process signals; later optional ingress XDP mitigation fast path for tested NIC/driver/kernel environments, behind independent Policy Gate and recovery. No automatic attachment, preexisting program replacement or mandatory XDP requirement for standalone operation. Go userspace with small eBPF-targeted C/Clang objects is a candidate. See [ADR-021](adr/ADR-021-ebpf-observability-xdp-optional.md).
 - **WAF:** proxy integration / Coraza + OWASP CRS; observe mode first. WAF placement explicit.
 
 ## Data flow

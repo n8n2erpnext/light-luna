@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 8544,
-      "sha256": "f1f7aee57fc7a6ce4758c87aac6c42747745ca730f8f4320ebe58f6e8ff86283"
+      "bytes": 9054,
+      "sha256": "da6e263fc3b13a8dc39ced8f3766cc2ee8a143a58577093dca97a89f0fdcb6c7"
     },
     {
       "path": "SECURITY.md",
@@ -42,8 +42,8 @@
       "path": "docs/01-ARCHITECTURE.md",
       "category": "architecture / design source",
       "title": "01 — System Architecture",
-      "bytes": 6901,
-      "sha256": "1d9b9a5dae6cca0513e7f071ac0d823c5f823115161fa6f6bf375ce8e943c769"
+      "bytes": 7375,
+      "sha256": "a2aaeaadb58fe7ace1fbb66bb3e29abbe73d5781b7ea38491a4822509d840b15"
     },
     {
       "path": "docs/02-FIREWALL-ENGINE.md",
@@ -84,8 +84,8 @@
       "path": "docs/07-SECURITY-SAFETY.md",
       "category": "architecture / design source",
       "title": "07 — Security Threat Model, Enforcement Safety, Recovery",
-      "bytes": 3425,
-      "sha256": "4d1c3029776e73e65230c9249c23d1ecfa7bb150497c53871251ffe78fa101bb"
+      "bytes": 4416,
+      "sha256": "d0181e35950d478815f629464b484c90f8bc348ac2a5567d431097f38d3a4ac8"
     },
     {
       "path": "docs/08-PACKAGING-HARDWARE.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 6631,
-      "sha256": "668966f38a34c9eec8d443e72c39682d3e4dcf560f23fb2ee03d1a97a74ee294"
+      "bytes": 8079,
+      "sha256": "645feb131f0944fb1d92ff3d4bb6ebfad3791a17a3bb46ffde8dd3a678c9a640"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 3254,
-      "sha256": "f8b02f386ff10825c330b41caeb0f1b9a4a2099dbe2c25d8c9889c6cee8ca0ed"
+      "bytes": 3548,
+      "sha256": "208d92dddaffa2faa4cce076c2b1ec0638334e936cc313a7d652db70d0612b94"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -156,6 +156,13 @@
       "title": "ADR-020 — Go-native core and optional Python ML workers",
       "bytes": 5620,
       "sha256": "faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8"
+    },
+    {
+      "path": "docs/adr/ADR-021-ebpf-observability-xdp-optional.md",
+      "category": "architecture / design source",
+      "title": "ADR-021 — eBPF Observability and Optional XDP Early Mitigation",
+      "bytes": 9161,
+      "sha256": "13e96c807dbedba32f9cb43a4046a9b4808e549fed57ffd20a35c6535f5200ff"
     },
     {
       "path": "go.mod",

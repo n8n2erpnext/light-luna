@@ -14,7 +14,8 @@ Read in this order, **before editing any documentation or code**:
 7. [PROJECT_TRUTH_STATUS.json](PROJECT_TRUTH_STATUS.json) — machine-readable snapshot and unresolved gates.
 8. [DOCUMENT_TEMPLATE.md](DOCUMENT_TEMPLATE.md) — use when a new durable document is justified.
 9. [ADR-020](../adr/ADR-020-go-core-python-optional.md) — Go-native core plus optional, isolated Python ML worker (architecture decision; not implemented).
-10. [../../README.md](../../README.md) — public product introduction and constraints.
+10. [ADR-021](../adr/ADR-021-ebpf-observability-xdp-optional.md) — optional future eBPF observation/XDP mitigation; not active.
+11. [../../README.md](../../README.md) — public product introduction and constraints.
 
 ## Source precedence
 
