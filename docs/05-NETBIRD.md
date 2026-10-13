@@ -1,6 +1,8 @@
 # 05 — NetBird Integration Research and Architecture
 
-Research date: 2026-10-13. This is a **design based on published NetBird documentation**, not a live authorized test of the user's NetBird stack or a claim that every API feature works in the installed version. Probe the deployed version and API schema before shipping a connector.
+> **DEFERRED — NOT IN INITIAL DEVELOPMENT SCOPE.** This document preserves research for a *future optional connector*. Do **not** start NetBird code, package dependencies, API discovery/probes, integration tests, credential setup or changes to the deployed NetBird stack until Light Luna first runs successfully as an independently packaged firewall and passes the standalone acceptance gate in [`11-ROADMAP.md`](11-ROADMAP.md), followed by explicit owner approval to start the integration phase. Standalone Host and Edge require no NetBird client, server or account.
+
+Research date: 2026-10-13. This is **parked reference design based on published NetBird documentation**, not a live authorized test of the user's NetBird stack or a claim that every API feature works in the installed version. API probing is **deferred until after standalone acceptance and owner go-ahead**.
 
 ## What NetBird is and is not
 
@@ -73,12 +75,14 @@ The NetBird Networks router may masquerade traffic; backend sees router IP rathe
 
 ## Integration maturity/gates
 
-**NB0 (P0):** read-only connector; client feature probe, peer inventory, basic health and policy drift detection. Does not need write token.  
-**NB1 (P1):** derive authorized fleet targets, privacy-safe aggregate events and management channel identity, sandbox network tests.  
-**NB2:** explicit owner-approved NetBird policy suggestions and conflict simulation, negative security tests and rollback proof.  
-**NB3:** optional advanced Reverse Proxy/CrowdSec adapter when vendor version/extension guarantees established.
+**Start gate: POST-STANDALONE ONLY.** The milestones below are **not** the Light Luna product P0/P1. They are independent future NetBird-connector milestones and remain blocked until [`11-ROADMAP.md`](11-ROADMAP.md) standalone readiness acceptance and owner authorization.
 
-## Tests required
+**NB0 (FUTURE):** read-only connector; client feature probe, peer inventory, basic health and policy drift detection. Does not need write token.
+**NB1 (FUTURE):** derive authorized fleet targets, privacy-safe aggregate events and management channel identity, sandbox network tests.
+**NB2 (FUTURE):** explicit owner-approved NetBird policy suggestions and conflict simulation, negative security tests and rollback proof.
+**NB3 (FUTURE):** optional advanced Reverse Proxy/CrowdSec adapter when vendor version/extension guarantees established.
+
+## Tests required (ONLY after standalone readiness gate)
 
 - NetBird connected vs disconnected, P2P vs relay; no peer traffic sniffing assumption.
 - `wt0` filtering with nftables and iptables-nft; no ACL bypass/lockout on restart/upgrade.

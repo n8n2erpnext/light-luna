@@ -1,5 +1,7 @@
 # 01 — System Architecture
 
+**Architecture invariant / delivery order:** This is a standalone firewall architecture. Build and validate local Host/Edge operation first, with **zero runtime or build dependency on NetBird**. The NetBird connector is a *later plugin*, not part of initial agent, control plane, installer, E2E workflow or acceptance tests. See [roadmap and stage gate](11-ROADMAP.md).
+
 ## Operational modes (one distribution, selected during setup)
 
 | Mode | Where | Observes | Enforcement | Requirements |
@@ -33,7 +35,7 @@
 ## Data flow
 
 ```text
-network / proxy / host / NetBird -> collectors -> canonical events
+network / proxy / host -> collectors -> canonical events
                                                 | provenance + timestamps
                                                 v
                                        detector + Luna Brain

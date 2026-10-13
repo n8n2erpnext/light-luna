@@ -8,7 +8,7 @@
 | ADR-004 | **DECIDED** | Edge can manage remote agents without two physical NICs; packet inspection visibility is topology-dependent |
 | ADR-005 | **DECIDED** | Traditional firewall features are mandatory independent of Luna Brain |
 | ADR-006 | **DECIDED** | Luna Brain learns and proposes, independent policy gate authorizes; auto-ban not enabled in initial baseline |
-| ADR-007 | **DECIDED** | NetBird optional integration, not firewall owner, no disabling NetBird ACLs to bypass conflicts |
+| ADR-007 | **DECIDED** | NetBird optional integration **deferred until independently working Light Luna has passed G-STANDALONE and owner authorizes connector work**; not firewall owner; never disable NetBird ACLs to bypass conflicts |
 | ADR-008 | **DECIDED** | WAF and CVE intelligence included in roadmap, with honest layer/verification boundaries |
 | ADR-009 | **DECIDED** | Moon/orbital abstract branding with cyan crescent; blood moon and eclipse statuses |
 | ADR-010 | **PROPOSED** | Go native agent/executor, JS `.mjs` brain, React WebUI, SQLite local |
@@ -20,6 +20,7 @@
 | ADR-016 | **OPEN** | Minimum hardware profile validated through real benchmarks; inline packet path and acceleration strategy |
 | ADR-017 | **OPEN** | Cloud tenant IAM/edition/licensing and NetBird API schema/version support matrix |
 | ADR-018 | **OPEN** | Version 1 release definition and rollout site; production remains untouched |
+| ADR-019 | **DECIDED** | **Strict standalone-first sequence:** design/build/test/package independent Host and Edge, prove G-STANDALONE; NO NetBird code/API probing/compatibility integration tests/dependency before gate and explicit owner approval, including so-called read-only connector. The current NetBird document is future research only |
 
 ## Change process
 

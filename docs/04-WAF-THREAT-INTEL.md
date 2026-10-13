@@ -16,12 +16,12 @@ An L4 firewall cannot match encrypted HTTP hostname/path without TLS termination
 - Modes `off` / `observe` / `enforce`; start observe, measure false positives on real workloads, signed rule pack versioning and rollback.
 - Rules for known malicious paths, command-injection/SQL injection detection in HTTP traffic (not blanket guarantee), request limits, header/body constraints, bot/rate challenge where connector supports it, WAF-only site-scoped temporary blocks.
 - Structured evidence: normalized URI (sensitive fields redacted), reason, rule ID, matched zone, trusted originating IP, reverse-proxy chain, policy version, action and response status.
-- Supported adapters prioritized: existing Traefik/NetBird Reverse Proxy telemetry and extension points (capability probe required); Nginx/Coraza gateway, Caddy alternatives later. **Do not claim native NetBird proxy WAF APIs until proven.**
+- **Standalone priority:** generic HTTP termination integration for Nginx/Coraza or other vendor-neutral proxy/WAF deployment. Generic Traefik integration can be evaluated without NetBird. NetBird Reverse Proxy telemetry, vendor extension points and capability probes are **post-G-STANDALONE only**. **Do not claim native NetBird proxy WAF APIs until proven.**
 - WAF protocol limitations: WebSocket upgrade, streaming, large request bodies, HTTP/2 and HTTP/3/QUIC need specific test cases. Never silently block unsupported protocols when merely observing.
 
-## NetBird Proxy boundary
+## Future NetBird Proxy boundary (parked, no implementation in initial development)
 
-NetBird Reverse Proxy (beta) supports HTTP/L4 exposures, authentication, IP/country restriction and CrowdSec IP reputation; it does not imply a complete OWASP-CRS WAF control surface. Integrate read-only audit/proxy events first; add a verified supported insertion point or sidecar WAF on termination path before promising inline WAF enforcement. Respect CrowdSec `off/observe/enforce` service modes and bouncer cache semantics; avoid duplicate conflicting ban sources.
+**No NetBird WAF/proxy development, API probing or integration test until standalone Gate G-STANDALONE is accepted and owner approval granted.** This section is technical research for that later phase. NetBird Reverse Proxy (beta) supports HTTP/L4 exposures, authentication, IP/country restriction and CrowdSec IP reputation; it does not imply a complete OWASP-CRS WAF control surface. When this integration phase eventually opens, evaluate read-only audit/proxy events first; add a verified supported insertion point or sidecar WAF on termination path before promising inline WAF enforcement. Respect CrowdSec `off/observe/enforce` service modes and bouncer cache semantics; avoid duplicate conflicting ban sources.
 
 ## CVE engine design
 

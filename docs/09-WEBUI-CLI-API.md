@@ -2,13 +2,13 @@
 
 ## Operator UX
 
-**Home:** status/phase, protected nodes/services, local vs NetBird reachability, moon-state confidence, current enforcement mode, last policy revision, signed update freshness and safe recovery link.
+**Home (standalone first):** status/phase, protected nodes/services, local and remote Agent reachability over generic transport, moon-state confidence, current enforcement mode, last policy revision, signed update freshness and safe recovery link. NetBird reachability is a **future optional integration field**, not a required initial widget.
 
 **Firewall:** rule editor/diff/reorder, aliases and nested groups, interfaces/zones, input/output/forward, NAT/port-forward (gateway contexts), schedules, connections/counters, timed bans/unbans, imported vendor firewall conflicts.
 
 **Security:** Luna reasoning timeline, evidence provenance, incident score/uncertainty, scope, external source validation, independent critic/reviewer, WAF exceptions, IDS alerts and CVE exposure assessment.
 
-**Fleet/NetBird:** peer inventory *read-only initially*, device pairing, remote Agent status, edge topology, routing/masquerade and access policy diff, Cloud opt-in and signed updates.
+**Fleet (standalone):** Light Luna-owned device pairing, remote Agent status, edge topology, owner-defined IP/DNS/mTLS transport and signed updates. **NetBird subpage (post-G-STANDALONE only):** read-only peer inventory, routing/masquerade and access-policy diff; do not build the NetBird subpage until the independent firewall works and the owner approves integration.
 
 **Operations:** health, resource budgets, audit, backup/restore, break-glass, diagnostics bundle scrubber, upgrade/uninstall with rollback preview.
 
@@ -35,12 +35,12 @@ lunactl ban propose --target <ip> --scope <service> --ttl 5m
 lunactl unban propose --decision <id>
 lunactl luna status
 lunactl luna explain <decision-id>
-lunactl netbird inspect --read-only
+lunactl netbird inspect --read-only   # FUTURE ONLY; absent from standalone releases
 lunactl audit recent
 lunactl diagnostics --redact
 ```
 
-**These are planned commands, not implemented binaries.** Real apply/ban/unban tools will not appear as unguarded root shells. Use stable machine-readable structured output and shell completion when implemented.
+**NetBird-specific commands and routes MUST NOT be implemented, shipped or exposed in the standalone development phases.** They are listed to preserve possible future API namespace only. **These are planned commands, not implemented binaries.** Real apply/ban/unban tools will not appear as unguarded root shells. Use stable machine-readable structured output and shell completion when implemented.
 
 ## Internal API
 
@@ -57,7 +57,7 @@ POST   /v1/policies/commit         # future, authorized
 POST   /v1/policies/rollback       # emergency, elevated
 GET    /v1/decisions
 GET    /v1/decisions/{id}/evidence
-GET    /v1/integrations/netbird   # initial read-only
+GET    /v1/integrations/netbird   # FUTURE ONLY, post-G-STANDALONE read-only
 GET    /v1/audit
 ```
 
