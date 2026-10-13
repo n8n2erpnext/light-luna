@@ -30,6 +30,10 @@ Scope: document ownership and historical path mapping
 | [ADR-023 Dual Brain + Memory + Cloud](../adr/ADR-023-dual-brain-memory-cloud.md) | Proposed roles, model training policy, node disk caps and optional Cloud; **pending owner acceptance** |
 | [ADR-024 Offline Base + Component Versions](../adr/ADR-024-offline-base-independent-component-updates.md) | DECIDED Basic Brain mandatory, offline-ready installer, App/Brain/Knowledge/module independent releases |
 | [ADR-025 Portable Cloud & Scaling](../adr/ADR-025-portable-scalable-cloud.md) | DECIDED cloud portability contract; provider migration, independent scaling, state and signing continuity |
+| [ADR-026 Shared Account and Remote Fleet](../adr/ADR-026-unified-account-remote-fleet-control.md) | DECIDED local Cloud identity / offline recovery / Cloud read-config and remote owner-gated changes |
+| [Unified Local + Cloud Account Architecture](../architecture/unified-account-cloud-fleet-control.md) | Identity, enrollment, RBAC, local Policy Gate, desired/actual sync and outbound secure agent |
+| [Fleet Config Intent Schema](../../schemas/fleet-config-intent-v1alpha1.schema.json) | Design-only bounded typed remote change proposal, never shell execution |
+| [Fleet Config Synthetic Fixture](../../testdata/fleet-config-intent.synthetic.json) | Synthetic Cloud owner/config intent; not live applied configuration |
 | [Cloud Portability Architecture](../architecture/cloud-portability-and-scale.md) | Runtime/data boundaries, Compose→k3s, single-writer DB, signed object storage, API continuity |
 | [Cloud Migration & Recovery Runbook](../architecture/cloud-migration-and-recovery.md) | Future operator cutover with backup/WAL, write fencing, identity and object verification |
 | [Cloud Migration Inventory Schema](../../schemas/cloud-migration-inventory-v1alpha1.schema.json) | Static synthetic inventory/checklist contract, not a cutover authorization |

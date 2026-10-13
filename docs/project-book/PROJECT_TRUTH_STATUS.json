@@ -71,7 +71,10 @@
     "cloudPortabilityDecision": "docs/adr/ADR-025-portable-scalable-cloud.md",
     "cloudPortableArchitecture": "docs/architecture/cloud-portability-and-scale.md",
     "cloudMigrationRunbook": "docs/architecture/cloud-migration-and-recovery.md",
-    "cloudMigrationInventorySchema": "schemas/cloud-migration-inventory-v1alpha1.schema.json"
+    "cloudMigrationInventorySchema": "schemas/cloud-migration-inventory-v1alpha1.schema.json",
+    "unifiedAccountFleetDecision": "docs/adr/ADR-026-unified-account-remote-fleet-control.md",
+    "unifiedAccountFleetArchitecture": "docs/architecture/unified-account-cloud-fleet-control.md",
+    "fleetConfigIntentSchema": "schemas/fleet-config-intent-v1alpha1.schema.json"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

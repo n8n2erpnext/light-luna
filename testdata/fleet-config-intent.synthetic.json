@@ -1,0 +1,42 @@
+{
+  "schema": "lightluna.fleet-config-intent/v1alpha1",
+  "intentId": "synthetic-intent-001",
+  "tenantId": "tenant-example",
+  "deviceId": "device-example",
+  "siteId": "site-example",
+  "actor": {
+    "accountId": "account-example",
+    "oidcIssuer": "https://id.example.invalid",
+    "oidcSubject": "subject-example",
+    "role": "OWNER",
+    "authStrength": "RECENT_MFA"
+  },
+  "expectedLocalRevision": "policy-r42",
+  "issuedUtc": "2026-10-14T00:00:00Z",
+  "expiresUtc": "2026-10-14T00:10:00Z",
+  "operation": {
+    "kind": "SET_SENSOR_PREFERENCE",
+    "risk": "LOW",
+    "scope": {
+      "component": "collector",
+      "serviceId": "synthetic-service",
+      "maxTtlSeconds": 0
+    },
+    "patch": {
+      "sensorEnabled": true,
+      "samplingPercent": 20
+    }
+  },
+  "approval": {
+    "requiresLocalApproval": false,
+    "cloudAuthorizationReview": "AUTHORIZED_FOR_PROPOSAL"
+  },
+  "authority": {
+    "semantics": "PROPOSAL_ONLY_NOT_DIRECT_FIREWALL_COMMAND",
+    "canExecuteShell": false,
+    "canChangeEmergencyAccess": false,
+    "canChangeDeviceIdentity": false
+  },
+  "idempotencyKey": "synthetic-idempotency-001",
+  "sequence": 1
+}

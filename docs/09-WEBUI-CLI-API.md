@@ -1,5 +1,9 @@
 # 09 — WebUI, CLI & Typed APIs
 
+## Shared Light Luna Account and two UI surfaces (ADR-026)
+
+[ADR-026](adr/ADR-026-unified-account-remote-fleet-control.md) requires the enrolled device's local WebUI and Cloud Console to use the **same OIDC person identity**, with independent signed sessions and local/tenant authorization; Cloud account passwords/tokens are never stored as device/root credentials. A never-enrolled device can be fully administered with a local bootstrap owner and has a protected local emergency recovery path when Cloud is down. The Cloud Fleet page displays actual (last-reported) vs desired policy/config, online/offline/stale timestamps, App/Brain/Knowledge versions, alerts, and pending/rejected/applied receipts. Authorized remote edits travel through a typed versioned outbound agent queue and require local revision CAS, scopes, independent Policy Gate and rollback. Separate enrollment, remote management and telemetry sharing opt-ins. [UX/transport design](architecture/unified-account-cloud-fleet-control.md) and [fleet-intent schema](../schemas/fleet-config-intent-v1alpha1.schema.json) are **not implemented**.
+
 ## Operator UX
 
 **Home (standalone first):** status/phase, protected nodes/services, local and remote Agent reachability over generic transport, moon-state confidence, current enforcement mode, last policy revision, signed update freshness and safe recovery link. NetBird reachability is a **future optional integration field**, not a required initial widget.

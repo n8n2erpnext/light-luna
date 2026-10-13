@@ -8,6 +8,10 @@ Light Luna installs, loads policy, enforces manual rules, expires temporary bans
 
 [ADR-024](adr/ADR-024-offline-base-independent-component-updates.md) requires every install to contain a Basic Go Brain and curated base knowledge before optional Cloud enrollment. [Update lifecycle](architecture/offline-base-component-update-lifecycle.md) separates `appVersion`, `brainVersion`, `executorVersion`, optional module versions, `knowledgeRevision` and optional ML model version. Cloud distributes signed, compatible per-track updates/deltas under per-component owner policy; an offline signed bundle uses the **same trust verifier**. No background auto-updates to privileged executor or XDP module without a reviewed maintenance/rollback gate. The current code has no updater, Brain binary or Cloud sync.
 
+## One account across local and Cloud Console; scoped device management
+
+[ADR-026](adr/ADR-026-unified-account-remote-fleet-control.md) makes the owner's **Cloud account the standard identity for an enrolled local WebUI**, via OIDC redirect and local scoped session, and provides the Cloud Console with redacted **actual** status/config and typed **desired** configuration proposals. Local bootstrap/break-glass remains possible completely offline. Devices generate independent keys, enroll with two-sided owner approval, and poll an outbound authenticated Cloud queue, with no public inbound port or NetBird dependency. Remote access is an explicit opt-in distinct from Cloud enrollment and telemetry sharing. Every change is scoped, revision-checked, locally authorized by Policy Gate and acknowledged only after actual apply/rollback. Cloud logins do not confer root, protected admin policy changes or arbitrary shell. See [Unified Account & Fleet Management](architecture/unified-account-cloud-fleet-control.md). This is design, not a deployed portal/agent.
+
 ## Proposed Cloud services
 
 1. **Device enrollment and ownership:** owner-activated short-lived invitation; device-bound keypair; certificate pinning/rotation; no automatic adoption of all peers found by NetBird.

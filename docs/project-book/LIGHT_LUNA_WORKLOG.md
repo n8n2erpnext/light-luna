@@ -61,6 +61,13 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Designed [modular scalable Cloud](../architecture/cloud-portability-and-scale.md) (Go stateless API, workers, single Postgres primary, S3-compatible immutable objects, Compose-first → k3s) and [migration runbook](../architecture/cloud-migration-and-recovery.md) (restore/PITR, old-primary fencing, signing keys/device identities, no split brain and verified handover).
 - Introduced a **synthetic schema + non-approved inventory fixture** for validating future migration preparation without recording customer credentials/logs. No Cloud instantiated, backups initiated or infrastructure changed.
 
+## 2026-10-14 — Owner decides unified account and CrowdSec-style Cloud fleet management
+
+- Reviewed official CrowdSec Console enrollment and polling-based decision-management docs as **product precedent**, not an exact implementation dependency or promise of identical features.
+- [ADR-026](../adr/ADR-026-unified-account-remote-fleet-control.md) sets one Cloud-account human identity for enrolled local and Cloud WebUIs; preserve offline bootstrap owner/emergency recovery and avoid Cloud-password replication to client.
+- [Architecture](../architecture/unified-account-cloud-fleet-control.md) defines explicit device enrollment and remote-control authorization, RBAC, device outbound polling, desired vs actual config, compare-and-swap revisions, local Policy Gate, approval, expiry, audit and conflict receipts; Cloud cannot root-shell local nodes.
+- Added design-only typed fleet intent JSON Schema and synthetic intent fixture; no accounts, Cloud API, local WebUI or firewall changed.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

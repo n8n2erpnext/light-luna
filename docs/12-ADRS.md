@@ -33,6 +33,8 @@
 
 | ADR-025 | **DECIDED** | [Portable and horizontally scalable Light Luna Cloud](adr/ADR-025-portable-scalable-cloud.md): start modular Go Cloud + PostgreSQL + S3-compatible immutable artifacts; version-pinned OCI/Compose → multi-replica → k3s; verifiable backup/PITR, single-writer migration, keys/identity preservation, no client reinstall; Cloud implementation still deferred |
 
+| ADR-026 | **DECIDED** | [Unified Light Luna Cloud/local identity and remote device control](adr/ADR-026-unified-account-remote-fleet-control.md): same OIDC identity for local+Cloud login after enrollment; offline local owner recovery, tenant/device RBAC, outbound agent, desired-vs-actual config, owner-scoped approval and independent local Policy Gate. No implemented auth or Cloud agent |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

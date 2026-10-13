@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 12398,
-      "sha256": "e1e38f200328e7bc1985f87a6b08ecf6be75e21474d191d8335878a3ccdffe78"
+      "bytes": 13208,
+      "sha256": "df065d81c0993a97c3988c8386ae2aca65600b299deed79bd9ba01bc62866a75"
     },
     {
       "path": "SECURITY.md",
@@ -77,15 +77,15 @@
       "path": "docs/06-CLOUD-FLEET.md",
       "category": "architecture / design source",
       "title": "06 — Cloud, Fleet & Trust",
-      "bytes": 4454,
-      "sha256": "d2a673d1a85b93f4baca4c97cc29850120b4c43975dc29dfafe3edad6ed04249"
+      "bytes": 5517,
+      "sha256": "caed1a685c64e815bbf1709b0f3463ccf95d107e90f49cd8eb15afc35bf2fd3f"
     },
     {
       "path": "docs/07-SECURITY-SAFETY.md",
       "category": "architecture / design source",
       "title": "07 — Security Threat Model, Enforcement Safety, Recovery",
-      "bytes": 4416,
-      "sha256": "d0181e35950d478815f629464b484c90f8bc348ac2a5567d431097f38d3a4ac8"
+      "bytes": 5314,
+      "sha256": "ec40b3e06dd7d41a139abaf74d4e39e47aaec8d2234ae1b772b7746faaba7965"
     },
     {
       "path": "docs/08-PACKAGING-HARDWARE.md",
@@ -98,8 +98,8 @@
       "path": "docs/09-WEBUI-CLI-API.md",
       "category": "architecture / design source",
       "title": "09 — WebUI, CLI & Typed APIs",
-      "bytes": 4964,
-      "sha256": "3143567fc7ecf5c7c2ea44d8d8028698834180482bc097bc28337ac8ee15fe10"
+      "bytes": 6075,
+      "sha256": "be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63"
     },
     {
       "path": "docs/10-MOON-DESIGN.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 11541,
-      "sha256": "7eadbbfb1baa757548d8f26dadde4f46f940ac3b0e28dda992c39ec5b0c8f5a7"
+      "bytes": 12526,
+      "sha256": "780511dbddac7c925b95a98e2f0628f064d13b98ab3990677717c64a42c613a9"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 4959,
-      "sha256": "4c4bdad4762b8839d9305db34ef485e00fd4976d03de9d04d509ada8fb9b3ede"
+      "bytes": 5353,
+      "sha256": "d5b1452341873ea6758320383d58efcd4e7c2c36145af39b9fe275e971656c6b"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -193,6 +193,13 @@
       "sha256": "29b518b8e73a16fa9bffec92189c801aa21500e33e0df83458cbc34b3885a0da"
     },
     {
+      "path": "docs/adr/ADR-026-unified-account-remote-fleet-control.md",
+      "category": "architecture / design source",
+      "title": "ADR-026 — One Cloud Identity for Local/Cloud UI, Owner-Governed Remote Configuration",
+      "bytes": 10572,
+      "sha256": "70709597254185d4d002101f924546aef3b385b5791cb1b7232155e832db7b67"
+    },
+    {
       "path": "docs/architecture/cloud-migration-and-recovery.md",
       "category": "architecture / design source",
       "title": "Light Luna Cloud Migration and Disaster Recovery — Operator Runbook",
@@ -240,6 +247,13 @@
       "title": "Light Luna Threat Knowledge — Trusted Feed, Exposure and Scenario Pipeline",
       "bytes": 9878,
       "sha256": "85c6637cbb6a23608b30258779e98c8e25d642bad8c61fd7d2b24ba36fcb06ef"
+    },
+    {
+      "path": "docs/architecture/unified-account-cloud-fleet-control.md",
+      "category": "architecture / design source",
+      "title": "Unified Light Luna Account, Local Console and Cloud Fleet Management",
+      "bytes": 12528,
+      "sha256": "00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db"
     },
     {
       "path": "docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md",
@@ -312,6 +326,13 @@
       "sha256": "818f858e7b7a98821ecb1e075a6f0c3dfe895f6c71f6246df1ff12c335d3c82b"
     },
     {
+      "path": "schemas/fleet-config-intent-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "fleet-config-intent-v1alpha1.schema",
+      "bytes": 5479,
+      "sha256": "81be92efffc3fc33d102b0ca9d26654e20bbae0fea991e241b606cbddac870d0"
+    },
+    {
       "path": "schemas/knowledge-claim-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "knowledge-claim-v1alpha1.schema",
@@ -338,6 +359,13 @@
       "title": "cloud-migration-inventory.synthetic",
       "bytes": 1789,
       "sha256": "2618790838ad824c21fb0c3b1ab5956edd45fb027fbfb5cc61af228271a5b0af"
+    },
+    {
+      "path": "testdata/fleet-config-intent.synthetic.json",
+      "category": "synthetic test fixture",
+      "title": "fleet-config-intent.synthetic",
+      "bytes": 1147,
+      "sha256": "1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a"
     },
     {
       "path": "testdata/host-baseline.json",

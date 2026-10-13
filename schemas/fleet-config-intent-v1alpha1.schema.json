@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/fleet-config-intent-v1alpha1.json",
+  "title": "Light Luna bounded remote configuration intent, not executable command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "intentId",
+    "tenantId",
+    "deviceId",
+    "actor",
+    "expectedLocalRevision",
+    "issuedUtc",
+    "expiresUtc",
+    "operation",
+    "approval",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.fleet-config-intent/v1alpha1"
+    },
+    "intentId": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 160
+    },
+    "tenantId": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 120
+    },
+    "deviceId": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 160
+    },
+    "siteId": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accountId",
+        "oidcIssuer",
+        "oidcSubject",
+        "role",
+        "authStrength"
+      ],
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "minLength": 4
+        },
+        "oidcIssuer": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "oidcSubject": {
+          "type": "string",
+          "minLength": 4
+        },
+        "role": {
+          "enum": [
+            "OWNER",
+            "ADMINISTRATOR",
+            "SECURITY_OPERATOR",
+            "VIEWER"
+          ]
+        },
+        "authStrength": {
+          "enum": [
+            "NORMAL",
+            "RECENT_MFA"
+          ]
+        }
+      }
+    },
+    "expectedLocalRevision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "issuedUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "risk",
+        "scope",
+        "patch"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "SET_SENSOR_PREFERENCE",
+            "SET_BRAIN_OBSERVATION",
+            "PROPOSE_SITE_RATE_LIMIT",
+            "PROPOSE_TIMED_BLOCK",
+            "UPDATE_APPROVED_POLICY_SECTION"
+          ]
+        },
+        "risk": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ]
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "component"
+          ],
+          "properties": {
+            "component": {
+              "enum": [
+                "collector",
+                "brain",
+                "firewall",
+                "waf"
+              ]
+            },
+            "serviceId": {
+              "type": "string",
+              "maxLength": 140
+            },
+            "maxTtlSeconds": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3600
+            }
+          }
+        },
+        "patch": {
+          "type": "object",
+          "maxProperties": 20,
+          "additionalProperties": false,
+          "properties": {
+            "sensorEnabled": {
+              "type": "boolean"
+            },
+            "samplingPercent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "brainObserveEnabled": {
+              "type": "boolean"
+            },
+            "rateLimitPerMinute": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000
+            },
+            "blockTargetRef": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "timedBlockSeconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3600
+            },
+            "policySectionRef": {
+              "type": "string",
+              "maxLength": 140
+            },
+            "policyChangeRef": {
+              "type": "string",
+              "maxLength": 180
+            }
+          }
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requiresLocalApproval",
+        "cloudAuthorizationReview"
+      ],
+      "properties": {
+        "requiresLocalApproval": {
+          "type": "boolean"
+        },
+        "cloudAuthorizationReview": {
+          "enum": [
+            "AUTHORIZED_FOR_PROPOSAL",
+            "PENDING_REVIEW"
+          ]
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantics",
+        "canExecuteShell",
+        "canChangeEmergencyAccess",
+        "canChangeDeviceIdentity"
+      ],
+      "properties": {
+        "semantics": {
+          "const": "PROPOSAL_ONLY_NOT_DIRECT_FIREWALL_COMMAND"
+        },
+        "canExecuteShell": {
+          "const": false
+        },
+        "canChangeEmergencyAccess": {
+          "const": false
+        },
+        "canChangeDeviceIdentity": {
+          "const": false
+        }
+      }
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 12,
+      "maxLength": 160
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

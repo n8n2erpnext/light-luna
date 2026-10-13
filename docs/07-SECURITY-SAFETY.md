@@ -13,6 +13,10 @@ Protected assets: admin reachability, legitimate traffic, node identity/private 
 - WebUI → control API: RBAC, CSRF/session safety, MFA for risky actions, protected local emergency recovery.
 - Cloud/NetBird → local agents: device identity and policy validation independently of network tunnel membership.
 
+## Unified account and remote configuration threat boundary (future)
+
+[ADR-026](adr/ADR-026-unified-account-remote-fleet-control.md) specifies shared **human identity** between enrolled Cloud/local UIs, not a shared cookie/password/root account. Standard web OIDC login, bound local permissions and device-local break-glass are required. Cloud device status/desired config are never automatically authoritative: typed Cloud intents must be explicitly allowed per device, short-lived, version/nonce/idempotency-bound and locally checked against the **actual policy revision**; protected emergency and signing/owner controls remain local-only. No generic shell, arbitrary code, exposed inbound local management port or forced Cloud-generated nft/XDP policy; Cloud account takeover/MFA/revocation, forged receipts, out-of-order/offline actions and cross-tenant requests are mandatory negative tests.
+
 ## Hard invariants
 
 1. AI cannot modify owner allowlists, emergency recovery network, bootstrap keys or its own execution authority.
