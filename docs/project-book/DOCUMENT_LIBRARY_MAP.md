@@ -29,6 +29,11 @@ Scope: document ownership and historical path mapping
 | [ADR-022 Brain V2 knowledge migration](../adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) | Build new Go Brain; port only reviewed facts/rules; no legacy live DB/weight copy |
 | [ADR-023 Dual Brain + Memory + Cloud](../adr/ADR-023-dual-brain-memory-cloud.md) | Proposed roles, model training policy, node disk caps and optional Cloud; **pending owner acceptance** |
 | [ADR-024 Offline Base + Component Versions](../adr/ADR-024-offline-base-independent-component-updates.md) | DECIDED Basic Brain mandatory, offline-ready installer, App/Brain/Knowledge/module independent releases |
+| [ADR-025 Portable Cloud & Scaling](../adr/ADR-025-portable-scalable-cloud.md) | DECIDED cloud portability contract; provider migration, independent scaling, state and signing continuity |
+| [Cloud Portability Architecture](../architecture/cloud-portability-and-scale.md) | Runtime/data boundaries, Compose→k3s, single-writer DB, signed object storage, API continuity |
+| [Cloud Migration & Recovery Runbook](../architecture/cloud-migration-and-recovery.md) | Future operator cutover with backup/WAL, write fencing, identity and object verification |
+| [Cloud Migration Inventory Schema](../../schemas/cloud-migration-inventory-v1alpha1.schema.json) | Static synthetic inventory/checklist contract, not a cutover authorization |
+| [Cloud Migration Synthetic Fixture](../../testdata/cloud-migration-inventory.synthetic.json) | Intentionally unverified/TEST_ONLY mock, no live tenant/device data |
 | [Offline Install & Component Update Lifecycle](../architecture/offline-base-component-update-lifecycle.md) | Detailed install payload, version ledger, trust, preflight, atomic rollout, rollback and test cases |
 | [Component release manifest schema](../../schemas/component-release-manifest-v1alpha1.schema.json) | Design-only release-descriptor contract, not a trust verifier |
 | [Component installed-state schema](../../schemas/component-install-state-v1alpha1.schema.json) | Design-only multi-version status/Cloud lifecycle contract |

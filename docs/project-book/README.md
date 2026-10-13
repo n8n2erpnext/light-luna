@@ -21,7 +21,9 @@ Read in this order, **before editing any documentation or code**:
 14. [ADR-023](../adr/ADR-023-dual-brain-memory-cloud.md) — proposed dual-role brain, bounded learning and optional Cloud; **not yet decided or built**.
 15. [Local Memory](../architecture/luna-memory-lifecycle.md) and [Cloud Intelligence](../architecture/luna-cloud-intelligence.md) — proposed resource and sync contracts.
 16. [ADR-024](../adr/ADR-024-offline-base-independent-component-updates.md) and [offline component lifecycle](../architecture/offline-base-component-update-lifecycle.md) — DECIDED release design: bundled Basic Brain plus independent App/Brain/Knowledge/module updates; not yet implemented.
-17. [../../README.md](../../README.md) — public product introduction and constraints.
+17. [ADR-025](../adr/ADR-025-portable-scalable-cloud.md) — DECIDED portability, scale-out and VPS/Compose→k3s relocation guarantees to test, **not deployed**.
+18. [Cloud architecture](../architecture/cloud-portability-and-scale.md) and [migration/recovery](../architecture/cloud-migration-and-recovery.md) — portable runtime/state and operator rehearsal plan.
+19. [../../README.md](../../README.md) — public product introduction and constraints.
 
 ## Source precedence
 

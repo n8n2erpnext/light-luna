@@ -95,6 +95,10 @@ Global models may produce technique likelihood *only after independently labelle
 - Data plane offline: no packet cloud roundtrip. Region migration: stateless API + PostgreSQL controlled backup + object storage versioning and reproducible deployment.
 - Early stage do NOT deploy cloud or replace optional NetBird. Do not mix public threat feeds and private client knowledge in the same collection without typed scope.
 
+## Cloud relocation, replica scaling and keys (owner architecture decision)
+
+[ADR-025](../adr/ADR-025-portable-scalable-cloud.md) requires a provider-neutral, reproducibly deployed and **tested relocatable** Cloud. [Portability & scale](cloud-portability-and-scale.md) defines the single-writer PostgreSQL + immutable object storage and stateless Go API/worker scaling boundaries; [migration and disaster recovery runbook](cloud-migration-and-recovery.md) defines write fencing, PITR and device/signing trust continuity. A future signed KnowledgePack should be served through a stable owner-controlled DNS and content hash, independent of a specific provider, VPS IP, bucket host or orchestrator. Cloud service migration **does not change** `appVersion`, `brainVersion` or `knowledgeRevision` by itself. These are contracts, not running services.
+
 ## 8. Milestone and evidence to ship
 
 P0–P4: freeze schemas/extension interfaces but **no Cloud runtime dependency**. P2 build local official-feed reader/matcher in bounded shadow mode; P3 guarded local response with owner approval; P4 Edge offline/peer isolation; P7 Cloud intelligence exchange if separately approved. Bench dry run: offline 30d, signed-pack rollback/revocation, private telemetry leak attempt, sybil/poison attack, 100/1000/10000 simulated clients, DB queue crash, rate limiting, Cloud region move and expired CVE updates.

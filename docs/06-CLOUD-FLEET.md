@@ -25,6 +25,10 @@ Tenant+device keys, row-level isolation, encrypted secrets at rest, scoped servi
 
 Default **no upload of raw traffic payloads, secrets, private IPs, full request URLs or customer usernames**. Opt-in aggregated indicators with pseudonymization/minimum count thresholds, time-window bucketing, age-out policy and confidence; explicit opt-out and deletion lifecycle. Threat feeds and telemetry are untrusted input; do not let supplied content influence command invocation.
 
+## Owner-decided Cloud migration & scale foundation (ADR-025)
+
+[ADR-025](adr/ADR-025-portable-scalable-cloud.md) requires the optional Cloud to move VPS-ARM→VPS-AMD, other VPS providers or future k3s **without reinstalling clients, changing signed release trust, losing tenant/device identity or modifying public protocol**. [Portable architecture](architecture/cloud-portability-and-scale.md) chooses a **modular Go API + independently scalable workers**, PostgreSQL as one durable transaction writer, S3-compatible content-addressed signed objects and transactional outbox. Use pinned multiarch OCI images and Compose initially; add API replicas and move to k3s only when measured load justifies it. [Migration Runbook](architecture/cloud-migration-and-recovery.md) specifies off-host encrypted backup/WAL PITR, checksum-verified object copy, write-fencing, key custody, signed-pack continuity and measured restore. A cloud move is **never** a remote firewall rule change; original local Brain/policy remain independent.
+
 ## Scale and portability
 
 Keep control plane stateless where possible, with transactional persistence, indexed event summaries, TTL-based data rotation, queue + backpressure, per-tenant quotas and idempotency. Define operator-controlled offline export/import from day one. Horizontal scale/K3s migration should be possible without redesigning device protocol; don't introduce K3s as a dependency for v1.

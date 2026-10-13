@@ -38,6 +38,7 @@
       "cloudExperienceSharing": "future_opt_in_not_implemented",
       "offlineBaseBrainReleaseRequirement": "decided_not_implemented",
       "componentizedVersionUpdate": "architecture_only_not_implemented",
+      "cloudPortabilityAndMigration": "owner_decided_design_only_no_runtime_or_restore_evidence",
       "knowledgeClaimSchema": "static_proposal_not_runtime_validated",
       "decisionProposalSchema": "static_advisory_only_not_runtime_validated"
     }
@@ -66,7 +67,11 @@
     "offlineBaseReleaseDecision": "docs/adr/ADR-024-offline-base-independent-component-updates.md",
     "componentLifecycleContract": "docs/architecture/offline-base-component-update-lifecycle.md",
     "componentReleaseManifestSchema": "schemas/component-release-manifest-v1alpha1.schema.json",
-    "componentInstallStateSchema": "schemas/component-install-state-v1alpha1.schema.json"
+    "componentInstallStateSchema": "schemas/component-install-state-v1alpha1.schema.json",
+    "cloudPortabilityDecision": "docs/adr/ADR-025-portable-scalable-cloud.md",
+    "cloudPortableArchitecture": "docs/architecture/cloud-portability-and-scale.md",
+    "cloudMigrationRunbook": "docs/architecture/cloud-migration-and-recovery.md",
+    "cloudMigrationInventorySchema": "schemas/cloud-migration-inventory-v1alpha1.schema.json"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

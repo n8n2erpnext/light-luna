@@ -1,0 +1,61 @@
+{
+  "schema": "lightluna.cloud-migration-inventory/v1alpha1",
+  "dryRun": true,
+  "deployment": {
+    "id": "synthetic-arm-to-amd-move",
+    "releaseDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "platformFrom": "compose",
+    "platformTo": "compose",
+    "cloudApiMajor": 1,
+    "databaseSchemaVersion": "test-v1",
+    "sourceArchitecture": "arm64",
+    "targetArchitecture": "amd64"
+  },
+  "data": {
+    "postgresMajor": 16,
+    "backupKind": "synthetic",
+    "backupVerified": false,
+    "walCoverageVerified": false,
+    "objectsVerified": false,
+    "sourceCheckpointId": "synthetic-no-data",
+    "targetCheckpointId": "not-restored",
+    "objectCount": 0,
+    "objectManifestSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "identity": {
+    "tenantIdsStable": false,
+    "deviceIdsStable": false,
+    "tokenRevocationsVerified": false,
+    "signingRootIdStable": false,
+    "keyCustodyReviewed": false,
+    "signingRootId": "not-configured"
+  },
+  "jobs": {
+    "outboxReconciled": false,
+    "inboxDedupVerified": false,
+    "feedCursorsReconciled": false,
+    "workerLeasesDrained": false,
+    "pendingCount": 0
+  },
+  "endpoints": {
+    "canonicalHttpsOriginStable": false,
+    "oldSiteWriteFenced": false,
+    "newSiteSoleWriter": false,
+    "signedPackUrlsReachable": false,
+    "dnsTtlSeconds": 300
+  },
+  "restoreVerification": {
+    "cleanTargetRestorePassed": false,
+    "clientNoReenrollmentPassed": false,
+    "signedPackCheckPassed": false,
+    "tenantIsolationPassed": false,
+    "backupFromNewSitePassed": false
+  },
+  "cutover": {
+    "state": "TEST_ONLY",
+    "ownerAuthorized": false,
+    "blockers": [
+      "Synthetic checklist only: NO Cloud implemented or real cutover authorized"
+    ]
+  }
+}

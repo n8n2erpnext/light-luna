@@ -55,6 +55,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - [Lifecycle](../architecture/offline-base-component-update-lifecycle.md) and two static JSON schema contracts plus a fictional offline-state fixture were created; these are design only and not a running updater, signed artifacts or executable firewall release.
 - Preserve P0–P4 standalone-first, defer optional Cloud service and NetBird integration, and test first-install with no network before any release claim.
 
+## 2026-10-14 — Cloud portability and migration-first architecture
+
+- Owner required Light Luna Cloud to **scale and move VPS/provider/stack** with minimal client disruption. Recorded [ADR-025](../adr/ADR-025-portable-scalable-cloud.md) DECIDED portability acceptance, leaving specific providers/thresholds and recovery SLOs subject to testing.
+- Designed [modular scalable Cloud](../architecture/cloud-portability-and-scale.md) (Go stateless API, workers, single Postgres primary, S3-compatible immutable objects, Compose-first → k3s) and [migration runbook](../architecture/cloud-migration-and-recovery.md) (restore/PITR, old-primary fencing, signing keys/device identities, no split brain and verified handover).
+- Introduced a **synthetic schema + non-approved inventory fixture** for validating future migration preparation without recording customer credentials/logs. No Cloud instantiated, backups initiated or infrastructure changed.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

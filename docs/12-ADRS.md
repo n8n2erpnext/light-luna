@@ -31,6 +31,8 @@
 
 | ADR-024 | **DECIDED** | [Offline-complete base installer and independent App/Brain/Knowledge/module updates](adr/ADR-024-offline-base-independent-component-updates.md): package Basic Go Brain+verified baseline knowledge; Cloud optional; distinct version ledgers, compatible ABI, signed offline bundles, staged rollback; advanced ML remains optional; no shipping implementation yet |
 
+| ADR-025 | **DECIDED** | [Portable and horizontally scalable Light Luna Cloud](adr/ADR-025-portable-scalable-cloud.md): start modular Go Cloud + PostgreSQL + S3-compatible immutable artifacts; version-pinned OCI/Compose → multi-replica → k3s; verifiable backup/PITR, single-writer migration, keys/identity preservation, no client reinstall; Cloud implementation still deferred |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

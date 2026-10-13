@@ -64,6 +64,10 @@ False-positive rate against independent labeled benign traffic, recall against v
 
 See [Brain V2](architecture/luna-brain-v2.md), [Threat Pipeline](architecture/threat-intelligence-knowledge-pipeline.md), [ADR-022](adr/ADR-022-rebuild-luna-brain-governed-knowledge-migration.md) and the [legacy source audit](history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md). Brain V2 remains **design only**, not a dependency that blocks the basic firewall.
 
+## Cloud portability acceptance gate (design now; later optional Cloud release)
+
+Before Cloud implementation, freeze the [ADR-025 portability contract](adr/ADR-025-portable-scalable-cloud.md): stable client DNS/API, OCI multiarch image, provider-neutral config and object API, single-writer PostgreSQL/state migrations, idempotent jobs, reproducible Compose profile and secure signed KnowledgePack custody. Follow the [portable architecture](architecture/cloud-portability-and-scale.md) and [operator migration rehearsal](architecture/cloud-migration-and-recovery.md). A Cloud release is **not accepted** until tested backup restore to a clean VPS, device-ID/tenant/consent/revocation continuity, no reinstall, blob hash/signature check, safe old-writer fencing and tested rollback under failure. Validate Compose→Compose first, then Compose→k3s only when useful. Keep P0–P4 independent of Cloud; G-STANDALONE/NetBird stage order is unchanged.
+
 ## Initial epic backlog
 
 1. Policy JSON Schema and network object model.

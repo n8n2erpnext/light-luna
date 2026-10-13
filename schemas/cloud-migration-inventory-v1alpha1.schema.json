@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/cloud-migration-inventory-v1alpha1.json",
+  "title": "Light Luna proposed sanitized Cloud migration inventory (no secrets)",
+  "description": "Design-only inventory for rehearsals and migration signoffs. Passing validation does NOT prove backup integrity, active fencing, key custody, readiness or authorize cutover.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "dryRun",
+    "deployment",
+    "data",
+    "identity",
+    "jobs",
+    "endpoints",
+    "restoreVerification",
+    "cutover"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.cloud-migration-inventory/v1alpha1"
+    },
+    "dryRun": {
+      "type": "boolean"
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "releaseDigest",
+        "platformFrom",
+        "platformTo",
+        "cloudApiMajor",
+        "databaseSchemaVersion"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 120
+        },
+        "releaseDigest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "platformFrom": {
+          "enum": [
+            "compose",
+            "k3s",
+            "kubernetes",
+            "other"
+          ]
+        },
+        "platformTo": {
+          "enum": [
+            "compose",
+            "k3s",
+            "kubernetes",
+            "other"
+          ]
+        },
+        "cloudApiMajor": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "databaseSchemaVersion": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "sourceArchitecture": {
+          "enum": [
+            "amd64",
+            "arm64",
+            "other"
+          ]
+        },
+        "targetArchitecture": {
+          "enum": [
+            "amd64",
+            "arm64",
+            "other"
+          ]
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "postgresMajor",
+        "backupKind",
+        "backupVerified",
+        "walCoverageVerified",
+        "objectsVerified",
+        "sourceCheckpointId",
+        "targetCheckpointId"
+      ],
+      "properties": {
+        "postgresMajor": {
+          "type": "integer",
+          "minimum": 12
+        },
+        "backupKind": {
+          "enum": [
+            "physical_wal",
+            "logical_export",
+            "logical_replication",
+            "synthetic"
+          ]
+        },
+        "backupVerified": {
+          "type": "boolean"
+        },
+        "walCoverageVerified": {
+          "type": "boolean"
+        },
+        "objectsVerified": {
+          "type": "boolean"
+        },
+        "sourceCheckpointId": {
+          "type": "string",
+          "maxLength": 130
+        },
+        "targetCheckpointId": {
+          "type": "string",
+          "maxLength": 130
+        },
+        "objectCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "objectManifestSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tenantIdsStable",
+        "deviceIdsStable",
+        "tokenRevocationsVerified",
+        "signingRootIdStable",
+        "keyCustodyReviewed"
+      ],
+      "properties": {
+        "tenantIdsStable": {
+          "type": "boolean"
+        },
+        "deviceIdsStable": {
+          "type": "boolean"
+        },
+        "tokenRevocationsVerified": {
+          "type": "boolean"
+        },
+        "signingRootIdStable": {
+          "type": "boolean"
+        },
+        "keyCustodyReviewed": {
+          "type": "boolean"
+        },
+        "signingRootId": {
+          "type": "string",
+          "maxLength": 120
+        }
+      }
+    },
+    "jobs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outboxReconciled",
+        "inboxDedupVerified",
+        "feedCursorsReconciled",
+        "workerLeasesDrained"
+      ],
+      "properties": {
+        "outboxReconciled": {
+          "type": "boolean"
+        },
+        "inboxDedupVerified": {
+          "type": "boolean"
+        },
+        "feedCursorsReconciled": {
+          "type": "boolean"
+        },
+        "workerLeasesDrained": {
+          "type": "boolean"
+        },
+        "pendingCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonicalHttpsOriginStable",
+        "oldSiteWriteFenced",
+        "newSiteSoleWriter",
+        "signedPackUrlsReachable"
+      ],
+      "properties": {
+        "canonicalHttpsOriginStable": {
+          "type": "boolean"
+        },
+        "oldSiteWriteFenced": {
+          "type": "boolean"
+        },
+        "newSiteSoleWriter": {
+          "type": "boolean"
+        },
+        "signedPackUrlsReachable": {
+          "type": "boolean"
+        },
+        "dnsTtlSeconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "restoreVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cleanTargetRestorePassed",
+        "clientNoReenrollmentPassed",
+        "signedPackCheckPassed",
+        "tenantIsolationPassed",
+        "backupFromNewSitePassed"
+      ],
+      "properties": {
+        "cleanTargetRestorePassed": {
+          "type": "boolean"
+        },
+        "clientNoReenrollmentPassed": {
+          "type": "boolean"
+        },
+        "signedPackCheckPassed": {
+          "type": "boolean"
+        },
+        "tenantIsolationPassed": {
+          "type": "boolean"
+        },
+        "backupFromNewSitePassed": {
+          "type": "boolean"
+        },
+        "measuredDowntimeSeconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "measuredRpoSeconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "measuredRtoSeconds": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "cutover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "ownerAuthorized"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "PLANNING",
+            "TEST_ONLY",
+            "BLOCKED",
+            "READY_FOR_OPERATOR_REVIEW",
+            "COMPLETED_VERIFIED",
+            "ROLLED_BACK"
+          ]
+        },
+        "ownerAuthorized": {
+          "type": "boolean"
+        },
+        "blockers": {
+          "type": "array",
+          "maxItems": 50,
+          "items": {
+            "type": "string",
+            "maxLength": 250
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 11617,
-      "sha256": "732f4953c3cf575954af004b76f87f849e942e05883f63257fd17c9d18ebe7ca"
+      "bytes": 12398,
+      "sha256": "e1e38f200328e7bc1985f87a6b08ecf6be75e21474d191d8335878a3ccdffe78"
     },
     {
       "path": "SECURITY.md",
@@ -77,8 +77,8 @@
       "path": "docs/06-CLOUD-FLEET.md",
       "category": "architecture / design source",
       "title": "06 — Cloud, Fleet & Trust",
-      "bytes": 3428,
-      "sha256": "5b3dbfb561476736d3f70c6e34e73fd635af94241cfaea13e87b48a3eacadcfc"
+      "bytes": 4454,
+      "sha256": "d2a673d1a85b93f4baca4c97cc29850120b4c43975dc29dfafe3edad6ed04249"
     },
     {
       "path": "docs/07-SECURITY-SAFETY.md",
@@ -112,15 +112,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 10590,
-      "sha256": "5d24f1ee024dbace8fd75139c3d4f03e684f58e7a41fa46f00565925f1b3d3fe"
+      "bytes": 11541,
+      "sha256": "7eadbbfb1baa757548d8f26dadde4f46f940ac3b0e28dda992c39ec5b0c8f5a7"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 4574,
-      "sha256": "68a1c1a8747b5d8ff8b0529f7813b821158d1f9d36aacfd5e9b656f1821d9ae4"
+      "bytes": 4959,
+      "sha256": "4c4bdad4762b8839d9305db34ef485e00fd4976d03de9d04d509ada8fb9b3ede"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -186,6 +186,27 @@
       "sha256": "15cca5d4c041d7de748473a52a7daa32638effa1e4eed298f061d80414a6391e"
     },
     {
+      "path": "docs/adr/ADR-025-portable-scalable-cloud.md",
+      "category": "architecture / design source",
+      "title": "ADR-025 — Portable and Horizontally Scalable Light Luna Cloud",
+      "bytes": 9515,
+      "sha256": "29b518b8e73a16fa9bffec92189c801aa21500e33e0df83458cbc34b3885a0da"
+    },
+    {
+      "path": "docs/architecture/cloud-migration-and-recovery.md",
+      "category": "architecture / design source",
+      "title": "Light Luna Cloud Migration and Disaster Recovery — Operator Runbook",
+      "bytes": 12602,
+      "sha256": "a8f34f1673ac14119dc5149f632348f2dceb6cd39dfa7b93de52ecf760c755f0"
+    },
+    {
+      "path": "docs/architecture/cloud-portability-and-scale.md",
+      "category": "architecture / design source",
+      "title": "Cloud Portability, Scale-Out and State Boundaries",
+      "bytes": 13871,
+      "sha256": "7bda870322b8c38ace5d633f6126e2e1d7d3b92429e0dace83df1cf53a7019ce"
+    },
+    {
       "path": "docs/architecture/luna-brain-v2.md",
       "category": "architecture / design source",
       "title": "Luna Brain V2 — Evidence, Knowledge, Reasoning and Defensive Decisions",
@@ -196,8 +217,8 @@
       "path": "docs/architecture/luna-cloud-intelligence.md",
       "category": "architecture / design source",
       "title": "Luna Cloud Intelligence — Federated Knowledge, Local Authority",
-      "bytes": 9913,
-      "sha256": "2119a2b9adfed425f29a256cbc15abc8f879aa719cd9f35952b452af3bf3b646"
+      "bytes": 10761,
+      "sha256": "ee9fcefe95b31fac5952f65f535a3eaf649a0daad3cba8623273e56820feb3f0"
     },
     {
       "path": "docs/architecture/luna-memory-lifecycle.md",
@@ -263,6 +284,13 @@
       "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
     },
     {
+      "path": "schemas/cloud-migration-inventory-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "cloud-migration-inventory-v1alpha1.schema",
+      "bytes": 6989,
+      "sha256": "33874323e7c4ad81febe3ceb770999058dd420eabbd247f1ddaf1b35abef34fd"
+    },
+    {
       "path": "schemas/component-install-state-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "component-install-state-v1alpha1.schema",
@@ -303,6 +331,13 @@
       "title": "update_doc_catalog",
       "bytes": 6141,
       "sha256": "3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb"
+    },
+    {
+      "path": "testdata/cloud-migration-inventory.synthetic.json",
+      "category": "synthetic test fixture",
+      "title": "cloud-migration-inventory.synthetic",
+      "bytes": 1789,
+      "sha256": "2618790838ad824c21fb0c3b1ab5956edd45fb027fbfb5cc61af228271a5b0af"
     },
     {
       "path": "testdata/host-baseline.json",
