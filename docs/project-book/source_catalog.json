@@ -280,8 +280,8 @@
       "path": "docs/architecture/local-observability-and-notifications.md",
       "category": "architecture / design source",
       "title": "Light Luna Local Observability API, Ban State and Multi-Channel Notifications",
-      "bytes": 15902,
-      "sha256": "968206a471530179449fca8601b605cd0ed08860ffc4305981f7290d7a3234fd"
+      "bytes": 18278,
+      "sha256": "3cc5072f39f86f4fb2895b56ea4117212f4953047aa9b85ea116e18c3afa0857"
     },
     {
       "path": "docs/architecture/local-runtime-foundation.md",
@@ -578,6 +578,20 @@
       "sha256": "804729d2e9b5f84607f24bce06b0c6279e3e95848778ddb0c7463ac4cf367a8b"
     },
     {
+      "path": "internal/observability/synthetic.go",
+      "category": "implementation",
+      "title": "synthetic",
+      "bytes": 5294,
+      "sha256": "f9bb9877e31bfbe966a2e6ce816e2089977acaaa34ad892033ccac1704b7e0aa"
+    },
+    {
+      "path": "internal/observability/synthetic_test.go",
+      "category": "unit / negative tests",
+      "title": "synthetic_test",
+      "bytes": 5685,
+      "sha256": "e4db732e67fc9d5873928a705126d6a28da426c2512b03696f27d4548aad553e"
+    },
+    {
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
@@ -702,6 +716,13 @@
       "title": "knowledge-claim-v1alpha1.schema",
       "bytes": 5036,
       "sha256": "f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502"
+    },
+    {
+      "path": "schemas/local-observability-synthetic-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "local-observability-synthetic-v1alpha1.schema",
+      "bytes": 2030,
+      "sha256": "53923bf5030cacea812c8c7eef3832506c5ecb14aad6c1c6205bb132299506e9"
     },
     {
       "path": "schemas/policy-v1alpha1.schema.json",
@@ -1073,6 +1094,13 @@
       "title": "host-integrity-report.synthetic",
       "bytes": 1311,
       "sha256": "d488426fb1432a0e271541b90bc4b2691df3051e179374ca794deb0c91b746bf"
+    },
+    {
+      "path": "testdata/local-observability-synthetic.sample.json",
+      "category": "synthetic test fixture",
+      "title": "local-observability-synthetic.sample",
+      "bytes": 680,
+      "sha256": "7b2f61808858526595e0d6854818f0992f9a78a0ec20ac25fb057c108d1032c9"
     },
     {
       "path": "testdata/offline-brain-replay.synthetic.json",

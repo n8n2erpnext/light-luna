@@ -1,0 +1,40 @@
+{
+  "schema": "lightluna.synthetic-observability/v1alpha1",
+  "origin": "P0_SYNTHETIC_TEST_ONLY",
+  "authority": "NO_KERNEL_OR_NOTIFICATION_AUTHORITY",
+  "banStateCounts": [
+    {
+      "family": "ipv4",
+      "state": "proposed",
+      "count": 7
+    },
+    {
+      "family": "ipv6",
+      "state": "unknown",
+      "count": 2
+    },
+    {
+      "family": "ipv4",
+      "state": "rejected",
+      "count": 1
+    }
+  ],
+  "notificationQueues": [
+    {
+      "channel": "telegram",
+      "count": 0
+    },
+    {
+      "channel": "discord",
+      "count": 0
+    },
+    {
+      "channel": "slack",
+      "count": 0
+    },
+    {
+      "channel": "email",
+      "count": 0
+    }
+  ]
+}

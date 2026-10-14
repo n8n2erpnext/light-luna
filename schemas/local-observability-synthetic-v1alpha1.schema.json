@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/local-observability-synthetic-v1alpha1.json",
+  "title": "Light Luna Synthetic Observability Snapshot V1alpha1 (P0 ONLY)",
+  "description": "Pure offline fixture. NO production metrics listener, kernel bans, applied rules, outgoing notifications or owner-granted authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "origin",
+    "authority",
+    "banStateCounts",
+    "notificationQueues"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.synthetic-observability/v1alpha1"
+    },
+    "origin": {
+      "const": "P0_SYNTHETIC_TEST_ONLY"
+    },
+    "authority": {
+      "const": "NO_KERNEL_OR_NOTIFICATION_AUTHORITY"
+    },
+    "banStateCounts": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "family",
+          "state",
+          "count"
+        ],
+        "properties": {
+          "family": {
+            "enum": [
+              "ipv4",
+              "ipv6"
+            ]
+          },
+          "state": {
+            "enum": [
+              "proposed",
+              "unknown",
+              "rejected"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        }
+      }
+    },
+    "notificationQueues": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "channel",
+          "count"
+        ],
+        "properties": {
+          "channel": {
+            "enum": [
+              "telegram",
+              "discord",
+              "slack",
+              "email"
+            ]
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000
+          }
+        }
+      }
+    }
+  }
+}
