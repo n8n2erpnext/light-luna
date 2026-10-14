@@ -25,7 +25,7 @@ m=json.loads(p.read_text())
 assert m["ttlSeconds"]==10 and m["mode"]=="SYNTHETIC_VM_ONLY_NO_EXECUTOR"
 assert m["ownerApproved"] is False and m["kernelWrites"] is False
 '
-for file in guest-stage-test.sh guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py;do
+for file in guest-stage-test.sh guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py guest-auto-watchdog.py guest-rollback-fence.py;do
  lxc file push "scripts/lab/vm/$file" "$vm/opt/luna-p0-kernel-tests/$file" --mode=0700 >/dev/null
 done
 for mode in keeper_precommit keeper_postcommit watchdog_postcommit;do

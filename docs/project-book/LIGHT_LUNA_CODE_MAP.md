@@ -16,6 +16,14 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - `guest-auto-watchdog.py` → boot identity verified before READY and before namespace-targeted TTL rollback; READY/DONE receipts carry the ID. `guest-stage-test.sh` verifies receipts, and `reconcile-interrupted-stage.sh` refuses cross-boot terminal transitions.
 - `test_boot_journal.py` → 5 offline unit tests (new-boot refusal, legacy refusal, duplicate-key denial, etc.). **Effects:** synthetic VM journal/receipt writes only, no product policy apply. Standalone KVM suite on the modified source returned exit 0 with original explicit and automatic TTL regression markers; this is **not a real VM reboot, automatic boot reconciliation, signed owner authorization, or product executor**.
 
+## VM-local cooperative rollback fence (2026-10-14 — KVM lab source/runtime PASS)
+
+- `scripts/lab/vm/guest-rollback-fence.py` → `guard(mod, stage, boot)`: verify exact stage ID, boot UUID, non-symlinked VM root, persistent regular `0600` lock owned by current UID, same inode, single hardlink; bounded `fcntl.flock` and **re-read boot + full journal history after lock**. Fail closed for mismatch/timeout. Side effect: create/advisory-lock **guest-only lock file**, no nft writes.
+- `guest-auto-watchdog.py` → after TTL and keeper identity check, acquire common fence → observe journal/table while holding → delete only `inet luna_p0_stage` from verified guest netns → fsync `ROLLED_BACK` → primary DONE. Reject noncommitted state without kernel mutation; release mutex in `finally`.
+- `guest-fallback-supervisor.py` → same fence, own pinned guest netns; under lock recheck boot/stage, primary/keeper service death and exact nft JSON rule shape, then fixed test table deletion, journal and fallback DONE. Failpoint `os._exit(72)` inside mutex proves lock release on process death **without** journal/kernel atomicity.
+- `run-tests.sh`, `run-fallback-faults.sh`, `run-service-faults.sh`, `run-race-crash-tests.sh` push the identical fence helper to exact no-NIC KVM. The race runner supports explicit same-deadline fallback attempt and race-only repeat with unique archive tags.
+- `test_rollback_fence.py` → 10 unprivileged unit tests with independent POSIX processes. **Limits:** noncooperating root, stage creation/commit, power-cut receipt recovery, signed owner/grant and persistent transaction epochs NOT covered. Only a guest-only synthetic kernel table is ever deleted by this development feature.
+
 ## Controlled dual-arm arbitration and after-delete crash failpoint (2026-10-14; development source and KVM test only)
 
 - `scripts/lab/vm/guest-stage-test.sh` → exact opt-in `primary_race` (two prearmed services, no SIGKILL) or `fallback_after_delete` (primary SIGKILL, fallback service test-only `os._exit(72)` after fixed nft delete). Fault ACK, fallback ACK and special crash ACK required; regular `LUNA_VM_FAULT=none` remains unchanged.

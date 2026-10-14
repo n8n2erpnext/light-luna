@@ -119,11 +119,15 @@ def main():
     if sorted(os.listdir("/sys/class/net"))!=["lo"] or cmd("systemd-detect-virt").stdout.strip()!="kvm":
         raise ValueError("only NIC-less KVM VM allowed")
     if len(sys.argv) not in (6,7):
-        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit [--lab-fault-after-delete]")
-    crash_after_delete = len(sys.argv)==7
-    if crash_after_delete and (sys.argv[6] != "--lab-fault-after-delete"
-        or os.environ.get("LUNA_VM_FALLBACK_CRASH_ACK") != "VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE"):
+        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit [--lab-fault-after-delete|--lab-race-at-deadline]")
+    crash_after_delete = len(sys.argv)==7 and sys.argv[6]=="--lab-fault-after-delete"
+    race_at_deadline = len(sys.argv)==7 and sys.argv[6]=="--lab-race-at-deadline"
+    if len(sys.argv)==7 and not (crash_after_delete or race_at_deadline):
+        raise ValueError("unknown VM-only fault mode")
+    if crash_after_delete and os.environ.get("LUNA_VM_FALLBACK_CRASH_ACK") != "VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE":
         raise ValueError("VM-only crash failpoint not explicitly acknowledged")
+    if race_at_deadline and os.environ.get("LUNA_VM_FALLBACK_RACE_ACK") != "VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE":
+        raise ValueError("simultaneous-deadline lab check not acknowledged")
     keeper=int(sys.argv[1])
     ticks=int(sys.argv[2])
     netns=sys.argv[3]
@@ -160,42 +164,48 @@ def main():
                    "deadlineMonotonic":deadline,"primaryUnit":main_unit,"keeperUnit":keeper_unit,
                    "kernelWrites":False,"ownerApproved":False})
     print("VM_FALLBACK_PRECOMMIT_ARMED_PASS",flush=True)
-    remaining=deadline+1.0-time.monotonic()
+    remaining=deadline+(0.0 if race_at_deadline else 1.0)-time.monotonic()
     if remaining>0: time.sleep(remaining)
     if mod.boot_id()!=boot or os.readlink("/proc/self/ns/net")!=netns:
         raise ValueError("boot/netns identity changed")
-    current=mod.safe_load(mod.JOURNAL)
-    if current.get("stageId")!=plan["stageId"] or current.get("bootId")!=boot:
-        raise ValueError("journal/boot mismatch after TTL")
-    if current["state"]=="ROLLED_BACK":
-        persist(REJECTED,{"status":"PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER","stageId":plan["stageId"]})
-        return
-    if current["state"]!="COMMITTED_SYNTHETIC":
-        persist(REJECTED,{"status":"NOT_COMMITTED_NO_SUCCESS","stageId":plan["stageId"]})
-        return
-    if not (service_dead(main_unit) or service_dead(keeper_unit)):
-        persist(REJECTED,{"status":"PRIMARY_AND_KEEPER_STILL_ACTIVE_REFUSED_TAKEOVER","stageId":plan["stageId"]})
-        return
-    snapshot=cmd("nft","-j","list","table","inet",TABLE)
-    if snapshot.returncode!=0 or not fixed_synthetic_table(json.loads(snapshot.stdout)):
-        raise ValueError("synthetic table shape invalid, refuse deletion")
-    # ONLY one fixed synthetic table in this already-pinned VM netns.
-    removed=cmd("nft","delete","table","inet",TABLE)
-    if removed.returncode!=0 or cmd("nft","list","table","inet",TABLE).returncode==0:
-        raise ValueError("fixed synthetic table rollback could not be verified")
-    # Atomic fsync journal progression is a lab-only single-controller proof.
-    # Crash between nft delete and journal write remains unresolved (fail closed).
-    if crash_after_delete:
-        # Guest-only deterministic crash point after verified nft deletion,
-        # before terminal journal or DONE receipt. No background cleanup.
-        print("VM_FALLBACK_FAILPOINT_AFTER_DELETE_BEFORE_JOURNAL", flush=True)
-        os._exit(72)
-    mod.transition("transition","ROLLED_BACK",plan)
-    persist(DONE,{"schema":"lightluna.vm-fallback-done/v1alpha1",
-                  "status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",
-                  "stageId":plan["stageId"],"bootId":boot,"netnsInode":netns,
-                  "deadlineMonotonic":deadline,"completedMonotonic":time.monotonic(),
-                  "ownerApproved":False,"syntheticGuestOnly":True})
+    fence_path=ROOT/"guest-rollback-fence.py"
+    if fence_path.is_symlink() or not fence_path.is_file():
+        raise ValueError("missing guarded VM rollback fence")
+    spec=importlib.util.spec_from_file_location("vm_fallback_rollback_fence",fence_path)
+    fence=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fence)
+    with fence.guard(mod,plan["stageId"],boot) as current:
+        # All decisions below are based on the journal AFTER the exclusive
+        # cross-process VM lock. The primary uses the identical lock path.
+        if os.readlink("/proc/self/ns/net")!=netns or mod.boot_id()!=boot:
+            raise ValueError("fallback lost verified namespace/boot under lock")
+        if current["state"]=="ROLLED_BACK":
+            persist(REJECTED,{"status":"PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER","stageId":plan["stageId"],"rollbackFenced":True})
+            return
+        if current["state"]!="COMMITTED_SYNTHETIC":
+            persist(REJECTED,{"status":"NOT_COMMITTED_NO_SUCCESS","stageId":plan["stageId"],"rollbackFenced":True})
+            return
+        if not (service_dead(main_unit) or service_dead(keeper_unit)):
+            persist(REJECTED,{"status":"PRIMARY_AND_KEEPER_STILL_ACTIVE_REFUSED_TAKEOVER","stageId":plan["stageId"],"rollbackFenced":True})
+            return
+        snapshot=cmd("nft","-j","list","table","inet",TABLE)
+        if snapshot.returncode!=0 or not fixed_synthetic_table(json.loads(snapshot.stdout)):
+            raise ValueError("synthetic table shape invalid under fence; refuse deletion")
+        # ONLY the fixed test table in the already-pinned guest namespace.
+        removed=cmd("nft","delete","table","inet",TABLE)
+        if removed.returncode!=0 or cmd("nft","list","table","inet",TABLE).returncode==0:
+            raise ValueError("fixed synthetic table rollback could not be verified")
+        # This still is NOT atomic across kernel and journal disk fsync;
+        # process termination drops flock and must NOT imply success.
+        if crash_after_delete:
+            print("VM_FALLBACK_FAILPOINT_AFTER_DELETE_BEFORE_JOURNAL", flush=True)
+            os._exit(72)
+        mod.transition("transition","ROLLED_BACK",plan)
+        persist(DONE,{"schema":"lightluna.vm-fallback-done/v1alpha1",
+                      "status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",
+                      "stageId":plan["stageId"],"bootId":boot,"netnsInode":netns,
+                      "deadlineMonotonic":deadline,"completedMonotonic":time.monotonic(),
+                      "ownerApproved":False,"syntheticGuestOnly":True,"rollbackFenced":True})
     print("VM_FALLBACK_INDEPENDENT_PID1_SYNTHETIC_ROLLBACK_PASS",flush=True)
 
 

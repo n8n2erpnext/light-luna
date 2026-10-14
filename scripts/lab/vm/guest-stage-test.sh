@@ -215,6 +215,10 @@ PY
       [[ "${LUNA_VM_FALLBACK_CRASH_ACK:-}" == VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE ]] || { echo "FAILPOINT_ACK_MISSING";exit 2; }
       fallback_env=(--setenv=LUNA_VM_FALLBACK_CRASH_ACK=VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE)
       fallback_arg=(--lab-fault-after-delete)
+    elif [[ "$fault_mode" == primary_race ]];then
+      [[ "${LUNA_VM_FALLBACK_RACE_ACK:-}" == VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE ]] || { echo "RACE_MODE_ACK_MISSING";exit 2; }
+      fallback_env=(--setenv=LUNA_VM_FALLBACK_RACE_ACK=VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE)
+      fallback_arg=(--lab-race-at-deadline)
     fi
     systemd-run --unit="$fallback_unit" --property=RuntimeMaxSec=22s "${fallback_env[@]}" /usr/bin/nsenter -t "$keeper_pid" -n /usr/bin/python3 "$work/guest-fallback-supervisor.py" "$keeper_pid" "$anchor_ticks" "$anchor_netns" "$unit.service" "$keeper_unit.service" "${fallback_arg[@]}" > "$work/fallback-launch.log" 2>&1
     for _ in $(seq 1 70);do
@@ -376,7 +380,7 @@ if [[ "$fault_mode" == primary_race ]];then
 import json,sys
 from pathlib import Path
 r=json.loads(Path(sys.argv[1]).read_text())
-assert r["status"]=="PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER"
+assert r["status"] in ("PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER","PRIMARY_AND_KEEPER_STILL_ACTIVE_REFUSED_TAKEOVER")
 assert not Path("/opt/luna-p0-kernel-tests/fallback-done.json").exists()
 PY
   echo "VM_PRIMARY_FALLBACK_DUAL_ARM_NO_DUPLICATE_ROLLBACK_PASS"

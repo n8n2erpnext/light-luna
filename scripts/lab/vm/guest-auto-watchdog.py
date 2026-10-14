@@ -97,24 +97,32 @@ def main():
         raise ValueError("kernel boot ID changed while watchdog was armed")
     if birth(pid)!=ticks or namespace(pid)!=inode:
         raise ValueError("anchor identity no longer trusted at rollback")
-    latest=mod.safe_load(mod.JOURNAL)
-    if latest.get("bootId")!=current_boot or latest["stageId"]!=manifest["stageId"]:
-        raise ValueError("transaction changed while watchdog armed")
-    existing=run_nft(pid,"list","table","inet",TABLE,expect_success=False)
-    if latest["state"]!="COMMITTED_SYNTHETIC":
-        if existing.returncode==0:
-            run_nft(pid,"delete","table","inet",TABLE)
-        raise ValueError("not committed at TTL; fail-closed, no success receipt")
-    if existing.returncode!=0:
-        raise ValueError("table already missing before automatic rollback, refusing unverifiable success")
-    run_nft(pid,"delete","table","inet",TABLE)
-    if run_nft(pid,"list","table","inet",TABLE,expect_success=False).returncode==0:
-        raise ValueError("synthetic table still exists after deletion")
-    mod.transition("transition","ROLLED_BACK",manifest)
-    completed=time.monotonic()
-    save(DONE,{"stageId":manifest["stageId"],"bootId":current_boot,"status":"AUTO_ROLLBACK_CONFIRMED",
-               "completedMonotonic":completed,"deadlineMonotonic":deadline,
-               "lagSeconds":max(0.0,completed-deadline)})
+    # Both PID1-managed rollback workers must hold the SAME VM-local flock
+    # across state read -> kernel change -> fsynced journal -> DONE receipt.
+    fence_path=ROOT/"guest-rollback-fence.py"
+    if fence_path.is_symlink() or not fence_path.is_file():
+        raise ValueError("missing guarded VM rollback fence")
+    fence_spec=importlib.util.spec_from_file_location("vm_primary_rollback_fence",fence_path)
+    fence=importlib.util.module_from_spec(fence_spec)
+    fence_spec.loader.exec_module(fence)
+    with fence.guard(mod,manifest["stageId"],current_boot) as latest:
+        if birth(pid)!=ticks or namespace(pid)!=inode:
+            raise ValueError("keeper identity changed while waiting on rollback fence")
+        existing=run_nft(pid,"list","table","inet",TABLE,expect_success=False)
+        if latest["state"]!="COMMITTED_SYNTHETIC":
+            # Never delete a noncommitted or externally changed nft rule.
+            raise ValueError("not committed at TTL under fence; no kernel mutation or success receipt")
+        if existing.returncode!=0:
+            raise ValueError("table already missing under fence; no unverifiable success")
+        run_nft(pid,"delete","table","inet",TABLE)
+        if run_nft(pid,"list","table","inet",TABLE,expect_success=False).returncode==0:
+            raise ValueError("synthetic table remains after fenced deletion")
+        mod.transition("transition","ROLLED_BACK",manifest)
+        completed=time.monotonic()
+        save(DONE,{"stageId":manifest["stageId"],"bootId":current_boot,"status":"AUTO_ROLLBACK_CONFIRMED",
+                   "completedMonotonic":completed,"deadlineMonotonic":deadline,
+                   "lagSeconds":max(0.0,completed-deadline),
+                   "rollbackFenced":True})
     print("VM_AUTO_WATCHDOG_SELF_TRIGGERED_ROLLBACK_PASS",flush=True)
 
 if __name__=="__main__":

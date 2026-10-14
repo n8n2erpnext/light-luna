@@ -8,6 +8,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
 import sys
 
 ROOT = Path("/opt/luna-p0-kernel-tests")
@@ -50,9 +51,14 @@ def main():
         raise ValueError("fault evidence does not match incomplete journal")
     if (ROOT / "auto-watchdog-done.json").exists():
         raise ValueError("unexpected autonomous success receipt")
-    # Unique mode per VM run; cannot rewrite previously archived evidence.
-    dest_journal = ROOT / ("stage-journal.unrecovered-" + mode + ".json")
-    dest_fault = ROOT / ("stage-fault.unrecovered-" + mode + ".json")
+    # Optional unique VM-lab archive suffix preserves every previous fault
+    # record. Never overwrite old stage or error evidence.
+    tag = os.environ.get("LUNA_VM_FAULT_ARCHIVE_TAG", "")
+    if tag and not re.fullmatch(r"[a-z0-9-]{1,32}", tag):
+        raise ValueError("invalid lab evidence tag")
+    suffix = "."+tag if tag else ""
+    dest_journal = ROOT / ("stage-journal.unrecovered-" + mode + suffix + ".json")
+    dest_fault = ROOT / ("stage-fault.unrecovered-" + mode + suffix + ".json")
     if any(p.exists() or p.is_symlink() for p in (dest_journal,dest_fault)):
         raise ValueError("prior archived evidence exists; no overwrite")
     # Evidence first, journal last. Crash interruption will remain detectable.

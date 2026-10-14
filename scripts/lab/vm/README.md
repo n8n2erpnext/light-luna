@@ -2,6 +2,18 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Cooperative rollback writer lock — isolated VM only (2026-10-14)
+
+[Canonical architecture and bounded test evidence](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). The primary watchdog and independently netns-pinned fallback now **both require** `guest-rollback-fence.py`, delivered by the main KVM runner and all synthetic fault runners. Its `fcntl.flock` is held across current journal/boot revalidation, fixed guest-netns nft rollback, journal fsync, and success receipt; no process may claim success based on a stale pre-lock read. The lock file is a persistent VM-local `0600` inode; do not remove it between transactions. Without the fence, primary/fallback fail closed.
+
+A dual-armed test with **same monotonic deadline** and explicit VM-only ACK:
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_VM_RACE_CRASH_ACK=TEST_ONLY_NIC_LESS_KVM_RACE_CRASH LUNA_VM_EVIDENCE_TAG=unique-tag LUNA_P0_RACE_ONLY=1 bash scripts/lab/vm/run-race-crash-tests.sh
+```
+
+A further full race/crash execution omitting `LUNA_P0_RACE_ONLY=1` exercises the deterministic `os._exit(72)` after nft deletion while lock is held; journal remains unfinished and must be **separately inspected/archived**, never marked `ROLLED_BACK`. New unique archive tag support prevents overwriting earlier failed-transaction evidence. [Offline process/unit tests](test_rollback_fence.py) require **no VM/kernel access**. These scripts **can only** mutate the fixed synthetic table inside the dedicated no-NIC KVM; no actual Light Luna product policy is installed or enforced.
+
 ## VM-only dual-arm arbitration and crash-consistency detection (2026-10-14)
 
 [Canonical evidence and remaining gaps](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). The `primary_race` fault mode dual-arms primary and independent fallback while keeping the primary alive. On the tested timeline only the primary rolls back; fallback records `PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER` (REJECTED, **not** DONE). The `fallback_after_delete` mode SIGKILLs the primary, lets fallback remove the **fixed** guest synthetic nft table, then forces `os._exit(72)` **before** terminal journal persistence; this deliberately produces **absent kernel table + outstanding `COMMITTED_SYNTHETIC` journal**, with neither service claiming success. The VM fault observer and explicit manual archive preserve the inconsistency without rewriting it into rollback.

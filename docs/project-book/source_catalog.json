@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 29293,
-      "sha256": "fb00ed6cc82dc8dcc8586b76f17b4a31da00532bddd4ba63e036fbab4e611a57"
+      "bytes": 30248,
+      "sha256": "f963c8aec370735c7f311ecab2ba7fa96dd281f55b9d381f851038562c606c48"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -364,8 +364,8 @@
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
       "category": "architecture / design source",
       "title": "P0 autonomous TTL watchdog — independent KVM guest lab",
-      "bytes": 23637,
-      "sha256": "9c218fc6d5dcbc9f136ab0997697042658e1426ac721da2167f5e070d10475e5"
+      "bytes": 27077,
+      "sha256": "cefc72172422821f4a55a059fdaa0d61cffd8da99fc21e1c0de3b76e3ef3e0ee"
     },
     {
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
@@ -756,8 +756,8 @@
       "path": "scripts/lab/vm/README.md",
       "category": "developer tooling",
       "title": "Light Luna P0 kernel-separated LXD VM",
-      "bytes": 13706,
-      "sha256": "d70681c3288b8ba9f56815c7437f423f7a6677b6813ef0facc1a23ad2710d80c"
+      "bytes": 15250,
+      "sha256": "0b29ba2a43e1bf5ed7df0c7d363c057daa823598cb43cc44d2ae72ef60f66535"
     },
     {
       "path": "scripts/lab/vm/create-vm.sh",
@@ -777,8 +777,8 @@
       "path": "scripts/lab/vm/guest-archive-fault.py",
       "category": "developer tooling",
       "title": "guest-archive-fault",
-      "bytes": 3713,
-      "sha256": "bb8ecfa9d4bc69bce4485f853dd6e17a621bab3b8e5c7d4af279b01258c50e93"
+      "bytes": 4005,
+      "sha256": "99a54cfb6833db7231b8b1cbaf7470f01cf85ddef80e7320eb1e9cfa740fccc1"
     },
     {
       "path": "scripts/lab/vm/guest-archive-stale-boot.py",
@@ -791,8 +791,8 @@
       "path": "scripts/lab/vm/guest-auto-watchdog.py",
       "category": "developer tooling",
       "title": "guest-auto-watchdog",
-      "bytes": 5667,
-      "sha256": "293cd6b6b7c420c228690f730ed8de30b22864b3782afd6c164e1d7118df61e0"
+      "bytes": 6275,
+      "sha256": "1e90b96385ca82e5cccaa7e2a699777111b846e33651953eaddb0a05a8acfbac"
     },
     {
       "path": "scripts/lab/vm/guest-boot-inspect.py",
@@ -805,8 +805,8 @@
       "path": "scripts/lab/vm/guest-fallback-supervisor.py",
       "category": "developer tooling",
       "title": "guest-fallback-supervisor",
-      "bytes": 9934,
-      "sha256": "70ca61161d4b3609a66b86089ccf1e5c347f4f7a1ae9589a9330dc3c2da413c2"
+      "bytes": 10942,
+      "sha256": "3511a6528db394363a27d771d66a93a74ef522ce73edfeeda4835806b26922a2"
     },
     {
       "path": "scripts/lab/vm/guest-fault-evidence.py",
@@ -844,6 +844,13 @@
       "sha256": "b95abe7c3061a08f98cd433068921518f17a46d7647b95145fdbc775d42f9dc4"
     },
     {
+      "path": "scripts/lab/vm/guest-rollback-fence.py",
+      "category": "developer tooling",
+      "title": "guest-rollback-fence",
+      "bytes": 2948,
+      "sha256": "04ee60ea33cc3873b3bf2925229ab1cd2699a9c454e21f2d9febb3ed9a118026"
+    },
+    {
       "path": "scripts/lab/vm/guest-rollback.sh",
       "category": "developer tooling",
       "title": "guest-rollback",
@@ -861,8 +868,8 @@
       "path": "scripts/lab/vm/guest-stage-test.sh",
       "category": "developer tooling",
       "title": "guest-stage-test",
-      "bytes": 19296,
-      "sha256": "0c4e72919ff54c2d6db5e2f2df95bf6224031889179ad4dc97d8b61ae3448792"
+      "bytes": 19671,
+      "sha256": "4418ba2754237be23d0338cdc67efbe65a733035bceabbb130d690a2169f4584"
     },
     {
       "path": "scripts/lab/vm/reconcile-interrupted-stage.sh",
@@ -875,15 +882,15 @@
       "path": "scripts/lab/vm/run-fallback-faults.sh",
       "category": "developer tooling",
       "title": "run-fallback-faults",
-      "bytes": 3044,
-      "sha256": "9535f33f34b494dd1f8245e91100b53637a71a73875eb92d1f6f09c3db79ef90"
+      "bytes": 3091,
+      "sha256": "bb24d6fe7ffb6c680c2ad920470cb52d0a9f735b80fc64c1f951b565ef1f5cf1"
     },
     {
       "path": "scripts/lab/vm/run-race-crash-tests.sh",
       "category": "developer tooling",
       "title": "run-race-crash-tests",
-      "bytes": 5768,
-      "sha256": "cfef8f86ebe6af18e07f0fc5305cb79941309375022358732e8d10c4aafba6d1"
+      "bytes": 6095,
+      "sha256": "abe4e8602212bcca5045b5b1ca1ea57761703f5e42a2015760a1dc4eef4e6988"
     },
     {
       "path": "scripts/lab/vm/run-reboot-fault.sh",
@@ -896,15 +903,15 @@
       "path": "scripts/lab/vm/run-service-faults.sh",
       "category": "developer tooling",
       "title": "run-service-faults",
-      "bytes": 2915,
-      "sha256": "e893e30afd87886d90f4141c838d92a3e0fa08fbb3c08826253cfbe7828a815b"
+      "bytes": 2962,
+      "sha256": "115233edea781f1258808350a853f7b22700f033b5cd541eb918b222dfe8512a"
     },
     {
       "path": "scripts/lab/vm/run-tests.sh",
       "category": "developer tooling",
       "title": "run-tests",
-      "bytes": 3976,
-      "sha256": "144ef2bea03133afb9c98e6a80866a4fbedaecc797ae9bad4487b267516c3759"
+      "bytes": 4000,
+      "sha256": "5fe08acfb5e1f2e2153e3c246f6072ee4a6621c500f7d071e13136698859d1df"
     },
     {
       "path": "scripts/lab/vm/test_boot_inspect.py",
@@ -926,6 +933,13 @@
       "title": "test_fallback_supervisor",
       "bytes": 3045,
       "sha256": "1a6551156d5f42d37f1b6bbe4637ff11af8cd75fb75c636a312e6a8301394151"
+    },
+    {
+      "path": "scripts/lab/vm/test_rollback_fence.py",
+      "category": "developer tooling",
+      "title": "test_rollback_fence",
+      "bytes": 5287,
+      "sha256": "6197d31a643697e40ca9978e3f61438fd4d52b50b5b7b2f93687e12253b1ca0c"
     },
     {
       "path": "scripts/test_p0_ed25519_identities.sh",

@@ -25,7 +25,7 @@ assert j["state"]=="ROLLED_BACK" and j["bootId"]==Path("/proc/sys/kernel/random/
 assert not subprocess.check_output(["nft","list","tables"],text=True).strip()
 assert not subprocess.check_output(["ip","netns","list"],text=True).strip()
 '
-for file in guest-stage-test.sh guest-fallback-supervisor.py guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py;do
+for file in guest-stage-test.sh guest-fallback-supervisor.py guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py guest-auto-watchdog.py guest-rollback-fence.py;do
  lxc file push "scripts/lab/vm/$file" "$vm/opt/luna-p0-kernel-tests/$file" --mode=0700 >/dev/null
 done
 tag="${LUNA_VM_EVIDENCE_TAG:-race-crash-initial}"
@@ -35,6 +35,7 @@ tag="${LUNA_VM_EVIDENCE_TAG:-race-crash-initial}"
 lxc exec "$vm" -- env LUNA_VM_AUTO_TTL=1 LUNA_VM_FAULT=primary_race \
   LUNA_VM_FAULT_ACK=KILL_VM_SYNTHETIC_KEEPER_OR_WATCHDOG \
   LUNA_VM_FALLBACK=1 LUNA_VM_FALLBACK_ACK=ENABLE_GUEST_SYNTHETIC_FALLBACK \
+  LUNA_VM_FALLBACK_RACE_ACK=VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE \
   bash /opt/luna-p0-kernel-tests/guest-stage-test.sh
 lxc exec "$vm" -- env LUNA_VM_EVIDENCE_TAG="$tag" python3 - <<'PY'
 import json,os,subprocess
@@ -43,7 +44,7 @@ p=Path("/opt/luna-p0-kernel-tests")
 r=json.loads((p/"fallback-rejected.json").read_text())
 state=json.loads((p/"stage-journal.json").read_text())
 primary=json.loads((p/"auto-watchdog-done.json").read_text())
-assert r["status"]=="PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER"
+assert r["status"] in ("PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER","PRIMARY_AND_KEEPER_STILL_ACTIVE_REFUSED_TAKEOVER")
 assert primary["status"]=="AUTO_ROLLBACK_CONFIRMED"
 assert state["state"]=="ROLLED_BACK"
 assert not (p/"fallback-done.json").exists()
@@ -61,6 +62,10 @@ dir_fd=os.open(p,os.O_RDONLY|os.O_DIRECTORY)
 os.fsync(dir_fd);os.close(dir_fd)
 print("VM_PRIMARY_AND_FALLBACK_DUAL_ARM_NO_DOUBLE_SUCCESS_PASS")
 PY
+if [[ "${LUNA_P0_RACE_ONLY:-0}" == 1 ]];then
+  echo "VM_CONCURRENT_DEADLINE_ADVISORY_FENCE_RACE_ONLY_PASS"
+  exit 0
+fi
 # Inject a hard failure AFTER the fallback sees nft table deleted but BEFORE
 # the lab journal transitions or a DONE receipt can be persisted.
 lxc exec "$vm" -- env LUNA_VM_AUTO_TTL=1 LUNA_VM_FAULT=fallback_after_delete \
@@ -88,6 +93,7 @@ if lxc exec "$vm" -- python3 /opt/luna-p0-kernel-tests/guest-archive-fault.py >/
  echo ARCHIVE_MISSING_ACK_WRONGLY_ACCEPTED >&2;exit 3
 fi
 lxc exec "$vm" -- env LUNA_VM_FAULT_ARCHIVE_ACK=ARCHIVE_ONLY_UNRECOVERED_VM_FAULT \
+  LUNA_VM_FAULT_ARCHIVE_TAG="$tag" \
   python3 /opt/luna-p0-kernel-tests/guest-archive-fault.py
 # Archive the non-success READY alongside the error record; never turn it
 # into DONE. No active rule can survive post-test guest-only cleanup.
