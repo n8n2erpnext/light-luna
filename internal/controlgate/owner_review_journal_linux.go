@@ -7,6 +7,8 @@ package controlgate
 // production authorization database, or executor receipt store.
 import (
 	"crypto/ed25519"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"path/filepath"
 	"strings"
@@ -43,9 +45,18 @@ func NewOfflineReviewVerifierWithJournal(
 	for key, expires := range seen {
 		switch {
 		case strings.HasPrefix(key, "request:"):
-			v.seen[strings.TrimPrefix(key, "request:")] = expires
+			id := strings.TrimPrefix(key, "request:")
+			if !safeID.MatchString(id) {
+				return nil, nil, errors.New("invalid offline review ID in journal")
+			}
+			v.seen[id] = expires
 		case strings.HasPrefix(key, "nonce:"):
-			v.seenRequests[strings.TrimPrefix(key, "nonce:")] = expires
+			digest := strings.TrimPrefix(key, "nonce:")
+			raw, err := hex.DecodeString(digest)
+			if err != nil || len(raw) != sha256.Size || hex.EncodeToString(raw) != digest {
+				return nil, nil, errors.New("invalid canonical Agent intent digest in review journal")
+			}
+			v.seenRequests[digest] = expires
 		default:
 			return nil, nil, errors.New("unexpected review journal replay dimension")
 		}

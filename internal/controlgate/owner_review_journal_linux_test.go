@@ -4,6 +4,7 @@ package controlgate
 
 import (
 	"crypto/ed25519"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -136,6 +137,104 @@ func TestOfflineReviewJournalExclusiveLockCorruptOrWrongPath(t *testing.T) {
 	}
 	if _, _, err := NewOfflineReviewVerifierWithJournal(ap, rp, "synthetic-site", "synthetic-agent", "offline-owner-test", path, now); err == nil {
 		t.Fatal("symlink journal accepted")
+	}
+}
+
+// The shared Gate journal decoder accepts syntactically safe identifiers,
+// but an offline reviewer journal additionally requires that its "nonce"
+// dimension is the *canonical lower-case SHA-256* of an Agent intent.
+// Reject semantically malformed but otherwise valid JSONL rather than
+// silently discarding or trusting corrupt replay evidence.
+func TestOfflineReviewJournalRejectsNoncanonicalRestoredDigest(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("journal requires a nonroot service")
+	}
+	now := time.Date(2026, 10, 14, 9, 0, 0, 0, time.UTC)
+	ap, _, rp, _ := reviewKeys(t)
+	cases := []struct {
+		name   string
+		digest string
+		reject bool
+	}{
+		{"uppercase SHA-256", strings.Repeat("A", 64), true},
+		{"invalid hex", strings.Repeat("z", 64), true},
+		{"short digest", strings.Repeat("a", 8), true},
+		{"canonical digest", strings.Repeat("a", 64), false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "offline-review.jsonl")
+			data, err := json.Marshal(replayRecord{
+				RequestID:  "offline-review-restored-100",
+				Nonce:      tc.digest,
+				ExpiresUTC: now.Add(time.Minute),
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			data = append(data, '\n')
+			if err := os.WriteFile(path, data, 0600); err != nil {
+				t.Fatal(err)
+			}
+			v, journal, err := NewOfflineReviewVerifierWithJournal(
+				ap, rp, "synthetic-site", "synthetic-agent", "offline-owner-test",
+				path, now,
+			)
+			if tc.reject {
+				if err == nil {
+					journal.Close()
+					t.Fatalf("accepted malformed restored digest %q", tc.digest)
+				}
+				return
+			}
+			if err != nil || v == nil || journal == nil {
+				t.Fatalf("canonical journal refused: %v", err)
+			}
+			defer journal.Close()
+			if len(v.seen) != 1 || len(v.seenRequests) != 1 ||
+				v.seenRequests[tc.digest] != now.Add(time.Minute) {
+				t.Fatalf("unexpected restored replay state")
+			}
+		})
+	}
+}
+
+// Re-pinning a different test reviewer key does not reset an already
+// consumed Agent intent. Old signatures must fail with the new key; a newly
+// signed review of that SAME Agent intent must still fail replay checks.
+// This is NOT a key-rotation or revocation implementation.
+func TestOfflineReviewJournalDifferentPinnedTestKeyRetainsReplay(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("journal requires a nonroot service")
+	}
+	now := time.Date(2026, 10, 14, 9, 0, 0, 0, time.UTC)
+	ap, ak, rp, rk := reviewKeys(t)
+	agent, review := offlineFixtures(t, ak, rk, now)
+	path := filepath.Join(t.TempDir(), "offline-review.jsonl")
+	first, journal := openOfflineReviewTestJournal(t, ap, rp, path, now)
+	if res := first.Check(agent, review, now); res.Status != "CRYPTOGRAPHIC_TEST_MATCH_ONLY" {
+		t.Fatal(res)
+	}
+	if err := journal.Close(); err != nil {
+		t.Fatal(err)
+	}
+	_, _, nextPub, nextPrivate := reviewKeys(t)
+	second, journal2, err := NewOfflineReviewVerifierWithJournal(
+		ap, nextPub, "synthetic-site", "synthetic-agent", "offline-owner-test",
+		path, now.Add(time.Second),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer journal2.Close()
+	if res := second.Check(agent, review, now.Add(time.Second)); res.Status != "REJECTED" ||
+		res.CryptographicMatch || res.GrantsApply || res.KernelWrites {
+		t.Fatalf("old test reviewer key incorrectly trusted %+v", res)
+	}
+	renewed := newReviewForAgent(t, review, agent, nextPrivate, "offline-review-new-key-900")
+	if res := second.Check(agent, renewed, now.Add(time.Second)); res.Status != "REJECTED" ||
+		!strings.Contains(res.Reason, "replay") || res.GrantsApply || res.KernelWrites {
+		t.Fatalf("re-pinned test reviewer reset consumed Agent intent %+v", res)
 	}
 }
 

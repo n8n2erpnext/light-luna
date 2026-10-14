@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 reviewer journal canonical digest rejection — development source only (2026-10-14)
+
+- [`owner_review_journal_linux.go`](../../internal/controlgate/owner_review_journal_linux.go) → `NewOfflineReviewVerifierWithJournal` → common [`OpenReplayJournal`](../../internal/controlgate/journal_linux.go) → **new journal-domain validation** for restored `nonce:` SHA-256 digest (lowercase, 64 hex chars) and `request:` review ID. Reject invalid stored digest even when JSON syntax and file permissions are valid; **no** restart fallback to RAM-only.
+- [`owner_review_journal_linux_test.go`](../../internal/controlgate/owner_review_journal_linux_test.go) → nonroot private temp-file reload invalid uppercase/short/non-hex hash, valid canonical hash, test reviewer pubkey changed after restart while replay state is retained, and pre-existing Gate deny-only invariants. This is **not** owner key rotation or real revocation; key pin remains external, and snapshot rollback is not solved.
+- No Gate IPC, executor, kernel modification, real owner identity provider, NetBird or parked observability code added. `APPLY_POLICY` remains rejected.
+
 ## P0 reviewer key lifecycle — design only; authority regression test only (2026-10-14)
 
 - [`docs/architecture/p0-owner-key-lifecycle-revocation-contract.md`](../architecture/p0-owner-key-lifecycle-revocation-contract.md) is a **DRAFT acceptance contract** for key rotation, revocation, key-generation rollback, replay and owner presence. **No** lifecycle module, enrollment UI, durable key registry, protected generation anchor or real owner permission exists. K01–K19 are a **planned matrix**, not 19 passing tests.

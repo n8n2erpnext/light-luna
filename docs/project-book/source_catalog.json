@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 40517,
-      "sha256": "cd65dea6699546084d8174bf052d953f28c67aca5cf4d1d279f0ed9d855fa654"
+      "bytes": 41177,
+      "sha256": "07056b13d0dbcdd56144e8d5e8425f7a5100c5424d5884caff5dcf9ccfdc73bb"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -371,8 +371,8 @@
       "path": "docs/architecture/p0-offline-owner-review-separation.md",
       "category": "architecture / design source",
       "title": "P0 Offline Agent vs Reviewer Signature Separation — Denial-Only Contract",
-      "bytes": 9137,
-      "sha256": "dae6e0c60d84c257863de1ef3feb7b5f1036dcf46dcae526f6d6489588cefe26"
+      "bytes": 10721,
+      "sha256": "4ef5f04624c0718a8b4ad415ab3e548101b02f63bd3c375f9e59877448370201"
     },
     {
       "path": "docs/architecture/p0-owner-key-lifecycle-revocation-contract.md",
@@ -497,15 +497,15 @@
       "path": "internal/controlgate/owner_review_journal_linux.go",
       "category": "implementation",
       "title": "owner_review_journal_linux",
-      "bytes": 2058,
-      "sha256": "f0ec833484addd23bb8e8a89ab9472d2af9992f8a7187c51de86d93714540bf0"
+      "bytes": 2451,
+      "sha256": "b05068e690883c23d41848bab6362604e7e5cd5422a117aefb33ecb0c28a2f0f"
     },
     {
       "path": "internal/controlgate/owner_review_journal_linux_test.go",
       "category": "unit / negative tests",
       "title": "owner_review_journal_linux_test",
-      "bytes": 7567,
-      "sha256": "bc46e34982449c25f1cb471136b0ff61b9d2d669a3d01da1af7edb9df17cc243"
+      "bytes": 11216,
+      "sha256": "96632b3d1dc0d452c1496d3fe42c3ef434e8916a8b9cea69218781200cb9b63f"
     },
     {
       "path": "internal/controlgate/owner_review_test.go",

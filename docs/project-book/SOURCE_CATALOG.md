@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 40517 | cd65dea6699546084d8174bf052d953f28c67aca5cf4d1d279f0ed9d855fa654 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 41177 | 07056b13d0dbcdd56144e8d5e8425f7a5100c5424d5884caff5dcf9ccfdc73bb |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -59,7 +59,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-lxd-cross-uid-lab.md](../../docs/architecture/p0-lxd-cross-uid-lab.md) | architecture / design source | 9657 | f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828 |
 | [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
-| [docs/architecture/p0-offline-owner-review-separation.md](../../docs/architecture/p0-offline-owner-review-separation.md) | architecture / design source | 9137 | dae6e0c60d84c257863de1ef3feb7b5f1036dcf46dcae526f6d6489588cefe26 |
+| [docs/architecture/p0-offline-owner-review-separation.md](../../docs/architecture/p0-offline-owner-review-separation.md) | architecture / design source | 10721 | 4ef5f04624c0718a8b4ad415ab3e548101b02f63bd3c375f9e59877448370201 |
 | [docs/architecture/p0-owner-key-lifecycle-revocation-contract.md](../../docs/architecture/p0-owner-key-lifecycle-revocation-contract.md) | architecture / design source | 8347 | 3eb17d1d4ac66a9769596a8dcc225017997eb13bc8bb23e82bf116bad8b86ff3 |
 | [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 6598 | bdf865b7e14858e106b59c304a49b4ba803b004be61d8f42dd0e047c4fb47d1e |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 12601 | 0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d |
@@ -77,8 +77,8 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/controlgate/journal_linux_test.go](../../internal/controlgate/journal_linux_test.go) | unit / negative tests | 5993 | 6241c56215afe8fb4c8de1b02858a3a8a6204ec7cc4f04b889e074faf447a847 |
 | [internal/controlgate/owner_review.go](../../internal/controlgate/owner_review.go) | implementation | 8731 | e93d4c47b8354ed0f1d1713684e8ddbbe35eb92684fad3d9d83679f4151db44e |
 | [internal/controlgate/owner_review_authority_regression_test.go](../../internal/controlgate/owner_review_authority_regression_test.go) | unit / negative tests | 3578 | 9b6f250ca5962a7cbe0b9c0e16390d393eefd71a916f7712b9e9f5e322e95915 |
-| [internal/controlgate/owner_review_journal_linux.go](../../internal/controlgate/owner_review_journal_linux.go) | implementation | 2058 | f0ec833484addd23bb8e8a89ab9472d2af9992f8a7187c51de86d93714540bf0 |
-| [internal/controlgate/owner_review_journal_linux_test.go](../../internal/controlgate/owner_review_journal_linux_test.go) | unit / negative tests | 7567 | bc46e34982449c25f1cb471136b0ff61b9d2d669a3d01da1af7edb9df17cc243 |
+| [internal/controlgate/owner_review_journal_linux.go](../../internal/controlgate/owner_review_journal_linux.go) | implementation | 2451 | b05068e690883c23d41848bab6362604e7e5cd5422a117aefb33ecb0c28a2f0f |
+| [internal/controlgate/owner_review_journal_linux_test.go](../../internal/controlgate/owner_review_journal_linux_test.go) | unit / negative tests | 11216 | 96632b3d1dc0d452c1496d3fe42c3ef434e8916a8b9cea69218781200cb9b63f |
 | [internal/controlgate/owner_review_test.go](../../internal/controlgate/owner_review_test.go) | unit / negative tests | 10126 | 25c0bb4a1d049d116c7c73aafbfb0a23b3da01fb201700d21a31775f2b3b0c1b |
 | [internal/controlgate/selftest.go](../../internal/controlgate/selftest.go) | implementation | 2644 | ba053625b3bbdc358a4d3f3e166b18ce090266904d1f821e85c1a63f4935d645 |
 | [internal/devkeys/keys_linux.go](../../internal/devkeys/keys_linux.go) | implementation | 2762 | ccb44c02f619062431e748c3f6c540af641c43a73eec61d75a1bf56b17d2b30f |
