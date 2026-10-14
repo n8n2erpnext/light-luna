@@ -13,7 +13,7 @@ BOOT="11111111-2222-4333-8444-555555555555"
 NETNS="net:[12345678]"
 EPOCH="a"*24
 INVENTORY={"kernelInventoryComplete":True,"rootNftEntries":0,
-           "namedNetnsPresent":False,"nonRootNetnsProcesses":0}
+           "namedNetnsPresent":False,"nonRootNetnsProcesses":0,"foreignNetnsFdHolders":0}
 READY={"stageId":STAGE,"bootId":BOOT,"armed":True,"netnsInode":NETNS}
 JOURNAL={"stageId":STAGE,"bootId":BOOT,"state":"ROLLED_BACK",
          "history":["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]}
@@ -97,6 +97,15 @@ class ReadOnlyReviewTests(unittest.TestCase):
     def test_foreign_process_namespace_present(self):
         self.status("KERNEL_STATE_PRESENT_OR_UNKNOWN",
                     inventory=dict(INVENTORY,nonRootNetnsProcesses=1))
+    def test_fd_held_netns_denies_even_valid_done(self):
+        self.status("KERNEL_STATE_PRESENT_OR_UNKNOWN",
+                    inventory=dict(INVENTORY,foreignNetnsFdHolders=1))
+
+    def test_missing_fd_inventory_denies(self):
+        stale=dict(INVENTORY)
+        del stale["foreignNetnsFdHolders"]
+        self.status("INCOMPLETE_OR_INVALID_KERNEL_INVENTORY",inventory=stale)
+
     def test_missing_ready(self):
         self.status("MISSING_OR_UNREADABLE_JOURNAL_READY",ready=None)
     def test_archived_terminal_with_proven_prior_missing_done(self):

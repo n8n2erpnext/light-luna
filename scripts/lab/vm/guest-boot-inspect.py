@@ -47,20 +47,54 @@ def inspect_kernel():
     root_entries = [entry for entry in payload["nftables"] if set(entry) != {"metainfo"}]
     named_netns = command("ip", "netns", "list").strip()
     baseline = os.readlink("/proc/1/ns/net")
+    root_ns_stat = os.stat("/proc/1/ns/net")
     foreign = 0
-    for child in Path("/proc").iterdir():
-        if not child.name.isdecimal():
-            continue
+    foreign_fd_holders = 0
+    processes = [p for p in Path("/proc").iterdir() if p.name.isdecimal()]
+    if len(processes) > 4096:
+        raise ValueError("unbounded process namespace inventory")
+    for child in processes:
         try:
             current = os.readlink(str(child / "ns/net"))
+            if current != baseline:
+                foreign += 1
+            # A network namespace can remain alive after 'ip netns del'
+            # and after all threads leave it, via an open /proc/*/fd.
+            # /proc/*/ns/net alone does NOT establish kernel absence.
+            fds = list((child / "fd").iterdir())
+            if len(fds) > 8192:
+                raise ValueError("unbounded process FD namespace inventory")
+            has_foreign_ns_fd = False
+            for fd in fds:
+                try:
+                    target = os.readlink(fd)
+                except FileNotFoundError:
+                    continue  # fd closed while reading
+                if target.startswith("net:[") and target.endswith("]") and target != baseline:
+                    has_foreign_ns_fd = True
+                else:
+                    # Linux nsfs FDs opened through a bind-mounted
+                    # /run/netns/name can readlink as '/run/netns/name'
+                    # before unlink, then '/' afterward (verified in
+                    # no-NIC KVM). Compare nsfs device/inode through the
+                    # still-open /proc/<pid>/fd/N, not its displayed path.
+                    # This conservatively includes other nsfs types with
+                    # unknown type, marking inventory ambiguous rather
+                    # than claiming the network is clean.
+                    info = os.stat(fd)
+                    if (info.st_dev == root_ns_stat.st_dev
+                        and info.st_ino != root_ns_stat.st_ino):
+                        has_foreign_ns_fd = True
+            if has_foreign_ns_fd:
+                foreign_fd_holders += 1
         except FileNotFoundError:
-            continue  # raced with a completed process
-        if current != baseline:
-            foreign += 1
+            continue  # process terminated while inventorying
+        # Permission/OSError cannot be treated as an empty inventory.
     return {
         "rootNftEntries": len(root_entries),
         "namedNetnsPresent": bool(named_netns),
         "nonRootNetnsProcesses": foreign,
+        "foreignNetnsFdHolders": foreign_fd_holders,
         "kernelInventoryComplete": True,
     }
 
@@ -94,12 +128,14 @@ def classify(journal, manifest, current_boot, inventory):
         return result
     if (type(inventory.get("rootNftEntries")) is not int
         or type(inventory.get("nonRootNetnsProcesses")) is not int
+        or type(inventory.get("foreignNetnsFdHolders")) is not int
         or type(inventory.get("namedNetnsPresent")) is not bool
-        or inventory["rootNftEntries"] < 0 or inventory["nonRootNetnsProcesses"] < 0):
+        or inventory["rootNftEntries"] < 0 or inventory["nonRootNetnsProcesses"] < 0
+        or inventory["foreignNetnsFdHolders"] < 0):
         result["status"] = "INVALID_KERNEL_INVENTORY"
         return result
     if (inventory["rootNftEntries"] > 0 or inventory["nonRootNetnsProcesses"] > 0
-        or inventory["namedNetnsPresent"]):
+        or inventory["foreignNetnsFdHolders"] > 0 or inventory["namedNetnsPresent"]):
         result["status"] = "KERNEL_STATE_PRESENT_OR_UNVERIFIED"
         return result
     if journal is None:

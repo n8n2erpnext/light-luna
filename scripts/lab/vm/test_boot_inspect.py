@@ -13,7 +13,7 @@ A = "11111111-2222-4333-8444-555555555555"
 B = "99999999-aaaa-4bbb-8ccc-dddddddddddd"
 STAGE = "vm-synthetic-expected"
 MANIFEST = {"stageId": STAGE}
-CLEAN = {"rootNftEntries": 0, "nonRootNetnsProcesses": 0, "namedNetnsPresent": False, "kernelInventoryComplete": True}
+CLEAN = {"rootNftEntries": 0, "nonRootNetnsProcesses": 0, "foreignNetnsFdHolders": 0, "namedNetnsPresent": False, "kernelInventoryComplete": True}
 
 
 def journal(boot=A, state="COMMITTED_SYNTHETIC"):
@@ -53,6 +53,19 @@ class BootInspectTests(unittest.TestCase):
     def test_unnamed_foreign_namespace_blocks_acceptance(self):
         self.verify("KERNEL_STATE_PRESENT_OR_UNVERIFIED", journal(), kernel={**CLEAN,"nonRootNetnsProcesses":1})
 
+    def test_fd_held_foreign_namespace_blocks_acceptance(self):
+        self.verify("KERNEL_STATE_PRESENT_OR_UNVERIFIED", journal(),
+                    kernel={**CLEAN,"foreignNetnsFdHolders":1})
+
+    def test_missing_fd_inventory_denies(self):
+        missing=dict(CLEAN)
+        del missing["foreignNetnsFdHolders"]
+        self.verify("INVALID_KERNEL_INVENTORY",journal(),kernel=missing)
+
+    def test_invalid_fd_inventory_boolean_denies(self):
+        self.verify("INVALID_KERNEL_INVENTORY",journal(),
+                    kernel={**CLEAN,"foreignNetnsFdHolders":False})
+
     def test_incomplete_kernel_inventory_denies(self):
         self.verify("INCOMPLETE_KERNEL_INVENTORY", journal(), kernel={**CLEAN,"kernelInventoryComplete":False})
 
@@ -78,6 +91,7 @@ class BootInspectTests(unittest.TestCase):
     def test_unknown_root_nft_json_denies(self):
         with mock.patch.object(m,"command",return_value='{"nftables":[{"table":{"family":"inet","name":"foreign"}}]}'),\
              mock.patch.object(m.os,"readlink",return_value="net:[1]"),\
+             mock.patch.object(m.os,"stat",return_value=mock.Mock(st_dev=4,st_ino=1)),\
              mock.patch.object(m.Path,"iterdir",return_value=[]):
             r = m.inspect_kernel()
             self.assertEqual(r["rootNftEntries"],1)

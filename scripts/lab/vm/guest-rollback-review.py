@@ -39,13 +39,15 @@ def classify(journal, ready, current_boot, inventory, receipt, done=None, *,
         or inventory.get("kernelInventoryComplete") is not True
         or type(inventory.get("rootNftEntries")) is not int
         or type(inventory.get("nonRootNetnsProcesses")) is not int
+        or type(inventory.get("foreignNetnsFdHolders")) is not int
         or type(inventory.get("namedNetnsPresent")) is not bool
         or inventory["rootNftEntries"] < 0
+        or inventory["foreignNetnsFdHolders"] < 0
         or inventory["nonRootNetnsProcesses"] < 0):
         result["status"] = "INCOMPLETE_OR_INVALID_KERNEL_INVENTORY"
         return result
     if (inventory["rootNftEntries"] or inventory["nonRootNetnsProcesses"]
-        or inventory["namedNetnsPresent"]):
+        or inventory["foreignNetnsFdHolders"] or inventory["namedNetnsPresent"]):
         result["status"] = "KERNEL_STATE_PRESENT_OR_UNKNOWN"
         return result
     if not isinstance(journal, dict) or not isinstance(ready, dict):

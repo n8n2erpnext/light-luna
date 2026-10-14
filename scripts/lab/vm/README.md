@@ -2,6 +2,16 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## FD-held netns read-only integrity check (2026-10-14)
+
+[Canonical scope and verification](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `run-fd-held-netns-review.sh` uses an **explicitly acknowledged, exact no-NIC KVM** and delivers only updated read-only inspectors. Inside guest, it creates one disposable named network namespace without nft rules, holds an open FD, deletes its name, then verifies `foreignNetnsFdHolders >= 1` and a **denied** rollback classification even though journal/DONE are consistent. It closes the FD, verifies empty nft/named netns/FD inventory, and asserts stage journal SHA-256 did not change. Do not run against HOMESV host namespace or arbitrary LXD containers.
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_VM_FD_NS_ACK=TEST_ONLY_GUEST_FD_HELD_NETNS_INVENTORY bash scripts/lab/vm/run-fd-held-netns-review.sh
+```
+
+Expected markers: `VM_FD_ONLY_FOREIGN_NETNS_DETECTED_AND_REVIEW_DENIED_PASS`, `VM_FD_NS_CLEANUP_JOURNAL_HASH_UNCHANGED_NO_NFT_PASS`. A missing ACK is denied. This is **bounded read-only evidence inspection** around a guest synthetic fixture, not a complete forensic namespace scan, a real firewall operation or automatic recovery.
+
 ## Receipt fsync error-propagation tests — VM guest temp directories only (2026-10-14)
 
 [Canonical verification and nonclaims](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). This runner deliberately **does not** set up or change any nft rule. It checks the exact loopback-only KVM profile, terminal journal and empty root nft/named namespace inventory, then runs [10 receipt fault tests](test_rollback_fsync_faults.py) using unique guest temporary directories. Only mock syscall errors are raised; **no actual power interruption, disk fill or production stage mutation**.

@@ -16,6 +16,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Proposed**, not reachable source entry point: verified local security event → bounded local outbox → dedicated outgoing Telegram/Discord/Slack/SMTP adapters with retry/dedupe, secret isolation and owner opt-in. **No transport plugin, token, webhook or SMTP runtime exists.** Neither exporter nor notifier is allowed to invoke nft or privileged Policy Gate.
 - Owning contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md), decision [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Future implementation must create source + negative tests and revise this map's labels from **PROPOSED** only after proven runtime evidence.
 
+## Read-only FD-held nsfs namespace audit — KVM proven (2026-10-14)
+
+- `scripts/lab/vm/guest-boot-inspect.py` → `inspect_kernel` returns `foreignNetnsFdHolders` alongside root nft / named netns / non-root process network namespaces. Bounded guest `/proc/<pid>/fd` scan checks foreign `net:[...]` link targets OR nsfs `st_dev/st_ino` differing from PID1 netns, including renamed/unlinked bound namespace FDs. **Side effects: read-only proc/stat/nft inventory**, no kernel mutations; missing or invalid FD field → fail closed.
+- `scripts/lab/vm/guest-rollback-review.py` → requires zero `foreignNetnsFdHolders` before accepting even a coherent guest-only DONE; otherwise `KERNEL_STATE_PRESENT_OR_UNKNOWN`, with all actions unauthorised.
+- `scripts/lab/vm/test_boot_inspect.py` and `test_rollback_review.py` → 5 new offline negatives; `run-fd-held-netns-review.sh` exact, ACKed no-NIC KVM scenario: create disposable namespace, open FD, unlink name, verify FAIL-CLOSED, close FD, assert guest clean and stage journal hash unchanged. **Runtime proof is observation-only**; only disposable guest netns setup/cleanup is mutated, no nft or host networking.
+
 ## VM-only receipt fsync/ENOSPC fault harness (2026-10-14 — tested, not production)
 
 - `scripts/lab/vm/test_rollback_fsync_faults.py` → load `guest-rollback-receipts.py` with `ROOT` redirected to a unique temporary directory → inject `OSError(EIO)` at file/dir `os.fsync` callsites or `ENOSPC` at `os.open`; verify simulated continuation into kernel action stops if `prepare` raises; later failures never write DONE; retain orphan and historical observations, reject truncated JSON. **No actual nft call**, no stage journal write.
