@@ -27,6 +27,8 @@ Light Luna is a packaged **software firewall** for Linux servers and future comp
 
 **Documentation starts at [Light Luna Project Book](docs/project-book/README.md).** New engineers and AI agents must read its [Library Rules](docs/project-book/LIBRARY_RULES.md), [Project Book](docs/project-book/LIGHT_LUNA_PROJECT_BOOK.md), and [Code Map](docs/project-book/LIGHT_LUNA_CODE_MAP.md) before assuming a planned feature is implemented or changing docs. Source files and Git/test evidence remain the final authority.
 
+**Latest Core P0 source audit (2026-10-14):** [Rule precedence, CIDR-set union and safety limits](docs/architecture/p0-policy-rule-conflict-audit.md) · [Worklog](docs/project-book/LIGHT_LUNA_WORKLOG.md) · [Project Truth](docs/project-book/PROJECT_TRUTH_STATUS.json) · [full docs library](docs/project-book/DOCUMENT_LIBRARY_MAP.md). These links point to repository files, **not evidence of a deployed firewall**. P0 remains OPEN; standalone gate BLOCKED. Monitoring/notification work is parked.
+
 | Document | Purpose |
 |---|---|
 | [Product vision](docs/00-VISION-BRAND.md) | Name, lunar metaphor, personas, market/product boundary |

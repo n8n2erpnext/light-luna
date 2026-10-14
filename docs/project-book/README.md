@@ -29,6 +29,12 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 code and test evidence (2026-10-14)
+
+- [Policy rule precedence and CIDR-set union audit](../architecture/p0-policy-rule-conflict-audit.md) — actual static Go policy analyzer, IPv4/IPv6 alias coverage, advisory-only boundaries; extension verified on HOMESV at local source commit `834100a6671c45404d6a52f5a0ef26441d2711f7`. Published Git SHA must be independently confirmed.
+- [Core Code Map](LIGHT_LUNA_CODE_MAP.md), [chronological Worklog](LIGHT_LUNA_WORKLOG.md), [machine-readable Project Truth](PROJECT_TRUTH_STATUS.json) and [Source Catalog](SOURCE_CATALOG.md) are the canonical route to implemented modules, tests, and current release gates.
+- **No standalone release or real kernel enforcement:** P0 OPEN, G-STANDALONE BLOCKED. Prometheus/Grafana/notification adapters are **future architecture only**, paused by owner priority.
+
 ## Source precedence
 
 **Exact code at Git SHA + test evidence + actual runtime status** > current validated contracts > accepted ADRs > contemporary design/handoff > archived research. These levels are not interchangeable. A passing unit test is not evidence of a working firewall.

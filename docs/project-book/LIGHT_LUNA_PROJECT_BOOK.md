@@ -3,7 +3,7 @@
 Status: current project synthesis (not a substitute for code)
 Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
-Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
+Historical baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; initial development foundation `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`. Latest locally verified Core audit extension `834100a6671c45404d6a52f5a0ef26441d2711f7` (HOMESV; Git remote must be checked independently).
 
 ## Core P0 CIDR-set union analysis refinement (2026-10-14)
 

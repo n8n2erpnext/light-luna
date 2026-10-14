@@ -8,7 +8,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 25316 | d661d9431a50809b089a0fd7891d4b6537c4bf6bd8c0c648ffbca63f68eab2e1 |
+| [README.md](../../README.md) | repository contract | 25814 | 6be70b6346eecb25db5decebb45def78a37bfb81aa87b23e08594321f9b61564 |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/luna-agent/ed_linux.go](../../cmd/luna-agent/ed_linux.go) | executable entry | 2116 | 6420a0eb3316408b33bb68fce8bad78afdad50dba11ef25fbb8fa61b3a8b95c3 |
 | [cmd/luna-agent/main.go](../../cmd/luna-agent/main.go) | executable entry | 2839 | cfd8e12440334d74d5330a15c6378499437765f9ec8cd69b4bf02adad4c3a1ff |

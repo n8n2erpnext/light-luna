@@ -2,8 +2,8 @@
 
 Edition: 0.1 source-derived P0 baseline
 Status: verification snapshot of development branch, **not a production runtime map**
-Date: 2026-10-13
-Git: `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`; main `66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`
+Date: 2026-10-14
+Original foundation baseline: `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`; latest reviewed Core source: `834100a6671c45404d6a52f5a0ef26441d2711f7` on HOMESV; confirm current Git HEAD before assuming the remote branch is current. Main reference (historical): `66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`.
 Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal/policy/model.go), [validation](../../internal/policy/validate.go), [preview](../../internal/policy/preview.go), [tests](../../internal/policy/policy_test.go)
 
 ## Reading contract (borrowed from LightBI)
