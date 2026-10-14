@@ -46,6 +46,21 @@ func TestOfflineReviewJournalRestartAndSeparateDimensions(t *testing.T) {
 	agent, review := offlineFixtures(t, ak, rk, now)
 	path := filepath.Join(t.TempDir(), "offline-review.jsonl")
 	v, j := openOfflineReviewTestJournal(t, ap, rp, path, now)
+	// A rejected hex-alias cannot write a replay record or consume a valid
+	// review. This exercises the actual nonroot, fsynced test journal.
+	alias := agent
+	alias.SignatureEd25519 = strings.ToUpper(agent.SignatureEd25519)
+	if alias.SignatureEd25519 == agent.SignatureEd25519 {
+		t.Fatal("test signature unexpectedly contains no lowercase hex letters")
+	}
+	if rejected := v.Check(alias, review, now); rejected.Status != "REJECTED" ||
+		rejected.CryptographicMatch || rejected.GrantsApply || rejected.KernelWrites {
+		t.Fatalf("noncanonical Agent spelling accepted: %+v", rejected)
+	}
+	before, err := os.Stat(path)
+	if err != nil || before.Size() != 0 || len(v.seen) != 0 || len(v.seenRequests) != 0 {
+		t.Fatalf("rejected Agent signature consumed journal: %v", err)
+	}
 	accepted := v.Check(agent, review, now)
 	if accepted.Status != "CRYPTOGRAPHIC_TEST_MATCH_ONLY" || !accepted.CryptographicMatch ||
 		accepted.GrantsApply || accepted.KernelWrites || accepted.HumanOwnerAuthenticated || accepted.DurableReplay {

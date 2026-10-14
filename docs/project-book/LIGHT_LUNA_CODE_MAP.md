@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 offline reviewer Agent signature canonicalization — source-only (2026-10-14)
+
+- **Reachability:** standalone [`OfflineReviewVerifier.Check`](../../internal/controlgate/owner_review.go) (only development tests/use; not connected to the product Gate or Agent IPC) → Agent Ed25519 hex decoder → **canonical lowercase round-trip check** → pinned signature verification → reviewer signature validation → one-time in-memory or optional journal replay record. Uppercase-alias Agent signatures are rejected *before* any replay-state mutation or journal append.
+- **Proof:** [RAM-only negative test](../../internal/controlgate/owner_review_test.go) and [nonroot journal restart test](../../internal/controlgate/owner_review_journal_linux_test.go) reproduce the prior unexpected acceptance, then verify rejection plus subsequent canonical-only acceptance and replay denial. Effects: only temporary nonroot test journal I/O; no production service, Gate/IPC update, privilege, kernel nft command or outgoing network.
+- **Authority:** outputs remain `CRYPTOGRAPHIC_TEST_MATCH_ONLY` at best; never `HumanOwnerAuthenticated`, `GrantsApply`, `KernelWrites` or `DurableReplay`. Read [owning architecture](../architecture/p0-offline-owner-review-separation.md); P0 OPEN / G-STANDALONE BLOCKED.
+
 ## P0 reviewer journal canonical digest rejection — development source only (2026-10-14)
 
 - [`owner_review_journal_linux.go`](../../internal/controlgate/owner_review_journal_linux.go) → `NewOfflineReviewVerifierWithJournal` → common [`OpenReplayJournal`](../../internal/controlgate/journal_linux.go) → **new journal-domain validation** for restored `nonce:` SHA-256 digest (lowercase, 64 hex chars) and `request:` review ID. Reject invalid stored digest even when JSON syntax and file permissions are valid; **no** restart fallback to RAM-only.
@@ -31,7 +37,7 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 
 - [`docs/architecture/p0-owner-key-lifecycle-revocation-contract.md`](../architecture/p0-owner-key-lifecycle-revocation-contract.md) is a **DRAFT acceptance contract** for key rotation, revocation, key-generation rollback, replay and owner presence. **No** lifecycle module, enrollment UI, durable key registry, protected generation anchor or real owner permission exists. K01–K19 are a **planned matrix**, not 19 passing tests.
 - [`internal/controlgate/owner_review_authority_regression_test.go`](../../internal/controlgate/owner_review_authority_regression_test.go) → existing `NewOfflineReviewVerifier` and `Check` → nil/unpinned key rejection, changed public key rejection, precise issuance/expiry/clock boundaries and self-asserted `ActorRole=OWNER` denied by existing Gate APPLY. **Test-only** source; no new runtime entry point or filesystem/network effect. `HumanOwnerAuthenticated=false`, `GrantsApply=false`, `KernelWrites=false`, `DurableReplay=false` remain unchanged.
-- `internal/controlgate/owner_review.go` and existing journal remain **unchanged**; no privileged or untrusted key-rotation path was implemented. A prior attempted lifecycle module write was safety blocked and **not retried**.
+- At the owner-lifecycle contract checkpoint `internal/controlgate/owner_review.go` and journal were unchanged. The **subsequent detached-signature canonicalization** is independently mapped above; it is not a lifecycle/rotation feature. No privileged or untrusted key-rotation path was implemented. A prior attempted lifecycle module write was safety blocked and **not retried**.
 
 ## P0 detached reviewer restart-persistent replay — TEST ONLY (2026-10-14)
 

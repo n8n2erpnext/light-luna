@@ -5,6 +5,10 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Historical baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; initial development foundation `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`. Latest locally verified Core audit extension `834100a6671c45404d6a52f5a0ef26441d2711f7` (HOMESV; Git remote must be checked independently).
 
+## Core P0 offline reviewer signature canonicalization (2026-10-14)
+
+[The detached offline verifier](../../internal/controlgate/owner_review.go) now rejects Agent Ed25519 signatures with noncanonical uppercase hex spelling, matching its existing strict reviewer-signature representation. Previously an uppercase spelling verified against the same bytes and was accepted. [Pure Go negative test](../../internal/controlgate/owner_review_test.go) and [nonroot private journal test](../../internal/controlgate/owner_review_journal_linux_test.go) demonstrated RED→GREEN, no replay budget consumed on denial, then canonical-only test match and restart replay denial. **Test cryptographic match is not authenticated owner consent, permission to APPLY, hardware durability or a production privilege boundary.** Gate and IPC remain unchanged; P0 OPEN / G-STANDALONE BLOCKED.
+
 ## Core P0 reviewer journal replay input hardening (2026-10-14)
 
 [Owner review architecture](../architecture/p0-offline-owner-review-separation.md) now reflects a concrete Go Core hardening: [offline journal reloader](../../internal/controlgate/owner_review_journal_linux.go) rejects restored records whose Agent intent digest is not exactly canonical lowercase SHA-256, even if their JSON lines are syntactically valid. [Nonroot negative tests](../../internal/controlgate/owner_review_journal_linux_test.go) cover bad digests and independently re-pinned test reviewer keys across a restart without discarding Agent-intent replay state. **No** key registry, owner-approved rotation/revocation or source of human consent was introduced. Signed APPLY remains rejected, privilege executor unavailable and G-STANDALONE BLOCKED.

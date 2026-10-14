@@ -135,8 +135,9 @@ func (v *OfflineReviewVerifier) Check(agent SignedIntent, review SignedReviewEvi
 		return deniedReview("only Agent Ed25519 envelope is accepted")
 	}
 	agentSig, err := hex.DecodeString(agent.SignatureEd25519)
-	if err != nil || len(agentSig) != ed25519.SignatureSize {
-		return deniedReview("malformed Agent signature")
+	if err != nil || len(agentSig) != ed25519.SignatureSize ||
+		hex.EncodeToString(agentSig) != agent.SignatureEd25519 {
+		return deniedReview("noncanonical Agent signature")
 	}
 	canonicalIntent, err := canonical(i)
 	if err != nil {

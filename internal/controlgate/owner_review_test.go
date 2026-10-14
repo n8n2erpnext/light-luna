@@ -196,6 +196,37 @@ func TestOfflineReviewSignerIsolationAndBadSignatures(t *testing.T) {
 		t.Fatal("review content modified without fresh signature", r)
 	}
 }
+
+// A hex spelling alias of a valid Ed25519 signature must not create a
+// second representation of one Agent envelope. A rejected alias may not
+// consume the review ID or intent replay budget.
+func TestOfflineReviewRejectsNoncanonicalAgentSignatureWithoutConsumingReview(t *testing.T) {
+	now := time.Date(2026, 10, 14, 9, 0, 0, 0, time.UTC)
+	ap, ak, rp, rk := reviewKeys(t)
+	agent, review := offlineFixtures(t, ak, rk, now)
+	v := newReviewer(t, ap, rp)
+
+	alias := agent
+	alias.SignatureEd25519 = strings.ToUpper(agent.SignatureEd25519)
+	if alias.SignatureEd25519 == agent.SignatureEd25519 {
+		t.Fatal("test signature unexpectedly lacks lowercase hex letters")
+	}
+	denied := v.Check(alias, review, now)
+	if denied.Status != "REJECTED" || denied.CryptographicMatch ||
+		denied.GrantsApply || denied.KernelWrites || denied.HumanOwnerAuthenticated ||
+		len(v.seen) != 0 || len(v.seenRequests) != 0 {
+		t.Fatalf("noncanonical Agent signature accepted/consumed: %+v", denied)
+	}
+	valid := v.Check(agent, review, now)
+	if valid.Status != "CRYPTOGRAPHIC_TEST_MATCH_ONLY" || !valid.CryptographicMatch ||
+		valid.GrantsApply || valid.KernelWrites || valid.HumanOwnerAuthenticated || valid.DurableReplay {
+		t.Fatalf("canonical signature not accepted as test-only evidence: %+v", valid)
+	}
+	if replay := v.Check(agent, review, now); replay.Status != "REJECTED" {
+		t.Fatalf("canonical Agent replay not rejected: %+v", replay)
+	}
+}
+
 func TestOfflineReviewValidationAndBudget(t *testing.T) {
 	now := time.Date(2026, 10, 14, 9, 0, 0, 0, time.UTC)
 	ap, ak, rp, rk := reviewKeys(t)

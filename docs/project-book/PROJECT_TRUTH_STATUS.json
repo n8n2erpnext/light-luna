@@ -77,6 +77,8 @@
       "p0OfflineReviewJournalDigestReload": "IMPLEMENTED_STRICT_RESTORED_NONCE_CANONICAL_64_LOWER_HEX_SHA256_AND_REVIEW_ID_VALIDATION_DENY_ON_SEMANTIC_CORRUPTION",
       "p0OfflineReviewJournalDigestNegativeTests": "PASS_nonroot_wrong_length_uppercase_nonhex_valid_digest_and_changed_external_test_key_replay_denial",
       "p0OfflineReviewJournalKeyRotationNonclaim": "NO_REGISTERED_ROTATION_NO_REVOCATION_NO_OWNER_ENROLLMENT_NO_PROTECTED_GENERATION_OR_SNAPSHOT_ROLLBACK_GUARANTEE",
+      "p0OfflineReviewAgentSignatureCanonical": "SOURCE_ONLY_DETACHED_VERIFIER_REJECTS_UPPERCASE_HEX_AGENT_ED25519_SPELLING_NO_GATE_IPC_OR_EXECUTOR_CHANGE",
+      "p0OfflineReviewAgentSignatureNegativeTests": "PASS_RED_GREEN_NONROOT_JOURNAL_AND_IN_MEMORY_TESTS_INVALID_ALIAS_NO_REPLAY_RECORD_CANONICAL_TEST_MATCH_ONLY",
       "separateAgentGateProcesses": "implemented_manual_linux_dev_binaries_same_uid_not_production_service_isolation",
       "ed25519AgentGateIdentity": "implemented_agent_private_gate_public_request_verification_same_UID_demo_only",
       "ed25519DowngradeProtection": "implemented_reject_mixed_or_wrong_algorithm_request",

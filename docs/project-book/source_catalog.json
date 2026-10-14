@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 41177,
-      "sha256": "07056b13d0dbcdd56144e8d5e8425f7a5100c5424d5884caff5dcf9ccfdc73bb"
+      "bytes": 41941,
+      "sha256": "06c839bd4647213f60e7feabdfdee2335ff72b8045f1b413904680ea9a5f366a"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -371,8 +371,8 @@
       "path": "docs/architecture/p0-offline-owner-review-separation.md",
       "category": "architecture / design source",
       "title": "P0 Offline Agent vs Reviewer Signature Separation — Denial-Only Contract",
-      "bytes": 10721,
-      "sha256": "4ef5f04624c0718a8b4ad415ab3e548101b02f63bd3c375f9e59877448370201"
+      "bytes": 12586,
+      "sha256": "7b0c3e4e2dddee2258bbb780a1b9a34e4c404c8d7074d3473635ea1c48a95c23"
     },
     {
       "path": "docs/architecture/p0-owner-key-lifecycle-revocation-contract.md",
@@ -483,8 +483,8 @@
       "path": "internal/controlgate/owner_review.go",
       "category": "implementation",
       "title": "owner_review",
-      "bytes": 8731,
-      "sha256": "e93d4c47b8354ed0f1d1713684e8ddbbe35eb92684fad3d9d83679f4151db44e"
+      "bytes": 8794,
+      "sha256": "30a5c03720380ba05f4534346f9e97d6e021c57fb741aea1d3b6f7c2dbedb085"
     },
     {
       "path": "internal/controlgate/owner_review_authority_regression_test.go",
@@ -504,15 +504,15 @@
       "path": "internal/controlgate/owner_review_journal_linux_test.go",
       "category": "unit / negative tests",
       "title": "owner_review_journal_linux_test",
-      "bytes": 11216,
-      "sha256": "96632b3d1dc0d452c1496d3fe42c3ef434e8916a8b9cea69218781200cb9b63f"
+      "bytes": 11986,
+      "sha256": "b7ebb71812afa506dcd34caaebafc6d570159eeb60bc9f18cb6a7a1847fbe73f"
     },
     {
       "path": "internal/controlgate/owner_review_test.go",
       "category": "unit / negative tests",
       "title": "owner_review_test",
-      "bytes": 10126,
-      "sha256": "25c0bb4a1d049d116c7c73aafbfb0a23b3da01fb201700d21a31775f2b3b0c1b"
+      "bytes": 11549,
+      "sha256": "5247845c453847e3b15e8ab7244a075525ce29e76b3483cfa78da0626a697c03"
     },
     {
       "path": "internal/controlgate/selftest.go",
