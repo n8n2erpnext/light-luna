@@ -7,6 +7,7 @@ touches systemd, or installs privileges. This is not kernel rollback proof.
 import hashlib
 import importlib.util
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -110,6 +111,54 @@ class StageTTLIdentityTests(unittest.TestCase):
                 self.write(manifest(ttl))
                 with self.assertRaisesRegex(ValueError, "unsafe manifest"):
                     journal.manifest()
+
+
+
+class StageManifestFileReadTests(unittest.TestCase):
+    """Offline tests for stale path checks and alternate inode names."""
+
+    def setUp(self):
+        work = tempfile.TemporaryDirectory(prefix="luna-stage-io-")
+        self.addCleanup(work.cleanup)
+        self.root = Path(work.name)
+        self.path = self.root / "stage-intent.json"
+        self.payload = json.dumps(manifest(8))
+
+    def test_legitimate_single_link_regular_file_reads(self):
+        self.path.write_text(self.payload, encoding="utf-8")
+        self.assertEqual(journal.safe_load(self.path), manifest(8))
+
+    def test_hardlinked_manifest_rejected(self):
+        source = self.root / "other-name.json"
+        source.write_text(self.payload, encoding="utf-8")
+        os.link(source, self.path)
+        with self.assertRaises((ValueError, OSError)):
+            journal.safe_load(self.path)
+
+    def test_symlink_denied_even_if_precheck_lies(self):
+        source = self.root / "other-name.json"
+        source.write_text(self.payload, encoding="utf-8")
+        self.path.symlink_to(source)
+        # Simulate stale is_symlink() information: the final open must still
+        # refuse to traverse a symlink, even when the precheck was inaccurate.
+        with mock.patch.object(Path, "is_symlink", return_value=False):
+            with self.assertRaises((ValueError, OSError)):
+                journal.safe_load(self.path)
+
+    def test_file_growth_denied_even_if_precheck_size_stale(self):
+        self.path.write_text(self.payload, encoding="utf-8")
+        original_stat = self.path.stat()
+        self.path.write_text(self.payload + " " * 4097, encoding="utf-8")
+        # Original stat would claim the old safe size. The opened FD must be
+        # checked independently and reading must remain bounded to 4096 bytes.
+        with mock.patch.object(Path, "stat", return_value=original_stat):
+            with self.assertRaises((ValueError, OSError)):
+                journal.safe_load(self.path)
+
+    def test_duplicate_keys_still_rejected(self):
+        self.path.write_text('{"a":1,"a":2}', encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "duplicate JSON key"):
+            journal.safe_load(self.path)
 
 
 if __name__ == "__main__":

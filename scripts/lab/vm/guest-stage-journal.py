@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import sys
 import tempfile
 from pathlib import Path
@@ -41,10 +42,21 @@ def unique_pairs(pairs):
     return output
 
 def safe_load(path):
-    if path.is_symlink() or not path.is_file() or path.stat().st_size > 4096:
-        raise ValueError("missing, symlinked or over-limit staging file")
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle, object_pairs_hook=unique_pairs)
+    # Inspect the opened inode, NOT a potentially stale path precheck. Final
+    # symlinks are refused by O_NOFOLLOW; O_NONBLOCK avoids FIFO open hangs.
+    # This guest-only fixture does not defend against hostile VM root or
+    # replacement of trusted ancestor directories.
+    flags = os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW | os.O_NONBLOCK
+    with os.fdopen(os.open(path, flags), "rb") as handle:
+        opened = os.fstat(handle.fileno())
+        if (not stat.S_ISREG(opened.st_mode) or opened.st_nlink != 1
+            or opened.st_size < 1 or opened.st_size > 4096):
+            raise ValueError("nonregular, hardlinked or over-limit staging file")
+        # A file can grow after fstat: bound the actual bytes read as well.
+        raw = handle.read(4097)
+        if len(raw) > 4096:
+            raise ValueError("staging file grew beyond byte limit")
+    return json.loads(raw.decode("utf-8"), object_pairs_hook=unique_pairs)
 
 def manifest():
     m = safe_load(MANIFEST)

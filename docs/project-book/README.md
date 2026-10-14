@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 guest file-read safety (2026-10-15)
+
+- [Synthetic VM manifest/journal opened-inode checks](../architecture/p0-vm-synthetic-stage-revert.md) — [Python guest reader](../../scripts/lab/vm/guest-stage-journal.py) now uses nofollow descriptor open, `fstat` single-link regular-file verification and 4097-byte bounded read to defend against stale path checks/size growth. [Five focused test methods](../../scripts/lab/vm/test_stage_manifest_ttl.py), including three RED→GREEN negatives; VM Python offline suite **103 PASS**. This does not prove guest/Host kernel rollback; live LXD journal status UNKNOWN.
+
 ## Latest Core P0 guest manifest strictness (2026-10-15)
 
 - [Guest metadata validation](../architecture/p0-vm-synthetic-stage-revert.md) now rejects `policyRevision` masquerading as `true`/`1.0` and forged `effect` claims. [Seven-case focused offline suite](../../scripts/lab/vm/test_stage_manifest_ttl.py) includes five RED→GREEN negative mutations; complete VM Python offline suite **98 PASS**. Real Go CLI manifest accepted by guest parser; read-only LXD socket access denied, **VM live state UNKNOWN**.

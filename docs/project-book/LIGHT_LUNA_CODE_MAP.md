@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 guest-only manifest and journal file-read integrity (2026-10-15)
+
+- **Code:** [`guest-stage-journal.py:safe_load`](../../scripts/lab/vm/guest-stage-journal.py) now validates **opened file descriptor** via `O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK` and `fstat`, requires one-link regular inode and size 1..4096, reads at most 4097 bytes to detect growth, then parses strict UTF-8 with existing duplicate-key protection. Used by the synthetic manifest and journal readers, not Host production files.
+- **Tests:** [`test_stage_manifest_ttl.py`](../../scripts/lab/vm/test_stage_manifest_ttl.py) adds five safety cases: normal input, stale symlink precheck, hardlink, stale size after growth, duplicate key. **Three RED→GREEN**, focused **12 PASS**, Python VM offline suite **103 PASS**. No privileged LXD access or live KVM test; current VM journal/receipt state UNKNOWN after permission denial.
+- **Nonclaims:** only final-component symlink traversal is blocked by `O_NOFOLLOW`; this does **not** authorize owner APPLY, guarantee parent-dir integrity, power-loss safe journals, or host rescue. [Owning architecture](../architecture/p0-vm-synthetic-stage-revert.md). P0 OPEN/G-STANDALONE BLOCKED.
+
 ## P0 guest stage manifest anti-forgery metadata check (2026-10-15)
 
 - **Path:** [guest-stage-journal.py `manifest()`](../../scripts/lab/vm/guest-stage-journal.py) validates fixed guest-only manifest schema, policy name/revision, TTL-bound ID, `kernelWrites=false`, `ownerApproved=false` and now requires **exact inert effect text** plus **`type(policyRevision) is int`**, not Python's permissive equality for `True` or `1.0`.

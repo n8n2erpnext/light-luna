@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — VM guest opened-inode manifest/journal size checks (2026-10-15)
+
+[VM-stage file-reader contract](architecture/p0-vm-synthetic-stage-revert.md) now uses descriptor-verified `O_NOFOLLOW` and `fstat` (regular file, single link, bounded bytes), plus a read-time 4097-byte cap to reject stale size checks; strict duplicate-key JSON validation remains. Five new [offline cases](../scripts/lab/vm/test_stage_manifest_ttl.py) include three pre-fix RED→GREEN negatives, bringing Python VM offline suite to **103 PASS**. LXD guest state is still **UNKNOWN** due prior read-only socket permission denial; no guest cleanup, migration or live netfilter test. No owner authorization, rescue or production executor. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud and ADR-029 deferred.
+
 ## Active Core P0 — guest synthetic manifest anti-forgery metadata (2026-10-15)
 
 [VM-stage contract](architecture/p0-vm-synthetic-stage-revert.md) now refuses booleans/floats posing as integer revision 1 and arbitrary `effect` claims in the guest manifest reader. Five field-forgery negatives were RED then GREEN, seven focused tests PASS and VM **offline** suite grew to **98 PASS**; a real unprivileged Go CLI manifest parsed successfully. **Read-only access to NIC-less LXD VM was denied by socket permissions**, so current guest/journal/receipt status remains UNKNOWN; no live tests or migrations. Next valid isolated acceptance requires authorized VM inventory and safe archival review, not bypass. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud deferred; ADR-029 parked.
