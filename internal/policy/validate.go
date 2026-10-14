@@ -78,6 +78,12 @@ func (b Bundle) Validate() error {
 		if len(a.ID) < 2 || !nameRE.MatchString(a.ID) {
 			return fmt.Errorf("aliases[%d]: invalid id", i)
 		}
+		// "any" is a reserved rule-source wildcard. Letting an alias
+		// reuse it makes the simulator/analyzer and nft text preview
+		// interpret the very same policy differently.
+		if a.ID == "any" {
+			return fmt.Errorf("aliases[%d]: reserved source id %q", i, a.ID)
+		}
 		if _, exists := aliases[a.ID]; exists {
 			return fmt.Errorf("aliases[%d]: duplicate id %q", i, a.ID)
 		}

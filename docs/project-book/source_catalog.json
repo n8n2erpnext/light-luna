@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 42709,
-      "sha256": "e1e3580de774ff0f9efe79c344291b3f071c4f5f7edad1aeb3425b8057991476"
+      "bytes": 43385,
+      "sha256": "4508fced996b35bbcff48af02478bf01ae66380d720f3dcc9d7b2412cd9d0090"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 6598,
-      "sha256": "bdf865b7e14858e106b59c304a49b4ba803b004be61d8f42dd0e047c4fb47d1e"
+      "bytes": 8709,
+      "sha256": "7002e28b81ae4e5a8037e67c28c765a86eb1ed49fe74757fa73061771dbc15e3"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -721,8 +721,8 @@
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 5018,
-      "sha256": "6bb9263a20f343217e16f99892e363f4fe0e6e5697306c1204f6bd1f6152388f"
+      "bytes": 6309,
+      "sha256": "45f672bd8de552417d79fb2dbd4db59eb4454cca3025701305f02ec92555f723"
     },
     {
       "path": "internal/policy/preview.go",
@@ -735,8 +735,8 @@
       "path": "internal/policy/validate.go",
       "category": "implementation",
       "title": "validate",
-      "bytes": 6425,
-      "sha256": "eba6c295b454f529f0ea616f0b3973f45849533d2f554f53ed3e7cdd32900932"
+      "bytes": 6695,
+      "sha256": "93512a2f20ada6f6ebc56bf5b685f263e1d5aa16439bebc489930e52152a9c77"
     },
     {
       "path": "internal/strictjson/decode.go",
@@ -833,8 +833,8 @@
       "path": "schemas/policy-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "policy-v1alpha1.schema",
-      "bytes": 6108,
-      "sha256": "c91b64ef7fa7b6e10d040f984762a33d52279e2d5da37a09872686936ba82526"
+      "bytes": 6185,
+      "sha256": "f6fa5a7646f723a441369b1687f05f1b0dd948e40422148db2061ab5d88b5d3f"
     },
     {
       "path": "schemas/threat-bulletin-v1alpha1.schema.json",

@@ -128,6 +128,38 @@ func TestICMPSourceFamiliesValidateConsistently(t *testing.T) {
 	}
 }
 
+// "any" is a policy-language source sentinel, not a user-defined alias.
+// Its precedence differs across consumers (FlowSimulator/ConflictAnalyzer vs
+// nft preview alias expansion), so validation must reject the collision.
+func TestReservedAnyAliasCannotShadowSourceSentinel(t *testing.T) {
+	b, err := decode(t, fixture(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	b.Spec.Aliases[0].ID = "any"
+	b.Spec.Rules[1].Source = "any"
+	if err := b.Validate(); err == nil {
+		t.Fatal("reserved any alias was accepted as a user-defined source")
+	}
+	if _, err := MakePreview(b); err == nil {
+		t.Fatal("preview accepted ambiguous any alias")
+	}
+	if _, err := AnalyzeConflicts(b); err == nil {
+		t.Fatal("static analyzer accepted ambiguous any alias")
+	}
+	// "any" remains legal as a rule source in bundles with no alias collision.
+	b.Spec.Aliases[0].ID = "trusted-admin"
+	if err := b.Validate(); err != nil {
+		t.Fatalf("legitimate any wildcard source rejected: %v", err)
+	}
+	// A port-set alias is also forbidden from masquerading as the wildcard,
+	// even if that alias is not referenced by the current rules.
+	b.Spec.Aliases[1].ID = "any"
+	if err := b.Validate(); err == nil || !strings.Contains(err.Error(), "reserved source id") {
+		t.Fatalf("reserved port-set alias was not rejected: %v", err)
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")
