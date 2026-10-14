@@ -2,6 +2,17 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Read-only rollback receipt/journal review — no auto repair (2026-10-14)
+
+[Canonical nonclaims and actual KVM evidence](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-rollback-review.py` is an independent **read-only** guest-side reviewer; it requires VM/root/no-NIC marker, reads current journal/READY, kernel/netns inventory, fsynced per-epoch three-phase observations and actual DONE. It returns structured review statuses, **never** nft mutation, synthetic DONE synthesis or journal advancement. Typical invocations, only inside the verified guest:
+
+```bash
+python3 /opt/luna-p0-kernel-tests/guest-rollback-review.py
+python3 /opt/luna-p0-kernel-tests/guest-rollback-review.py --archived-terminal initial-observer-timeout
+```
+
+The archived mode uses only tightly named retained `stage-journal.receipt-missing-fallback_after_terminal.TAG.json`, `auto-watchdog-ready.receipt-missing.TAG.json` and `terminal-review.TAG.json` records, explicitly labeled **AFTER_EXIT_CLEANUP** evidence. Exit 0 means **consistent synthetic observation only**, not policy permission; exit 3 means evidence unavailable, incomplete, cross-boot or manual review required. In KVM, missing DONE current/archive both exited 3 and a full normal primary TTL success exited 0 with `successAcknowledged=false`. [23 offline classifier unit cases](test_rollback_review.py) PASS, 76 combined Python tests. No product rescue, signed auth, or production service.
+
 ## Journal-terminal-before-DONE failure / immutable observation receipts (2026-10-14)
 
 [Architecture and correct acceptance limits](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). Both PID1 rollback services now require `guest-rollback-receipts.py` delivered by every KVM host runner, and write non-overwriting, file+directory fsynced **prepared → kernel-absent → journal-terminal** observations under the existing rollback flock. No observation receipt is a signature, an owner grant, an atomic nft+journal commit or permission to auto-reconcile a missing DONE.

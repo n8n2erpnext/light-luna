@@ -10,6 +10,11 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Read-only guest rollback review classifier (2026-10-14 — source and KVM lab verification)
+
+- `scripts/lab/vm/guest-rollback-review.py` → CLI current or `--archived-terminal TAG` → existing `guest-boot-inspect.py` (KVM marker/root, no NIC, read-only nft/netns/process inventory), `guest-stage-journal.py` (immutable state/READY JSON), `guest-rollback-receipts.py` (epoch-bound hash-chain verifier) → pure `classify` → bounded JSON report. **Side effects:** reads only, **never** nft apply/delete, journal mutation, service changes or owner authorization. Current coherent synthetic DONE returns exit 0 for **observation consistency only**; ambiguous or missing DONE returns 3.
+- `scripts/lab/vm/test_rollback_review.py` → 23 offline positive/negative cases for missing/malformed/out-of-order evidence, cross-boot, kernel inventory, current vs archived post-cleanup provenance, primary/fallback DONE coherence. Combined Python VM suite 76 PASS. **Actual KVM:** missing-DONE current/archive exit 3; primary DONE after normal TTL regression exit 0. Production cross-boot reconciliation and signer/epoch authority **NOT IMPLEMENTED**.
+
 ## Synthetic journal/receipt Linux boot ID boundary (2026-10-14)
 
 - `guest-stage-journal.py` → `boot_id()` → kernel `/proc/sys/kernel/random/boot_id`; `transition(init)` pins it to the guest-only journal; `transition(next)` rejects mismatched/legacy records. Only a single-controller laboratory journal is implemented.
