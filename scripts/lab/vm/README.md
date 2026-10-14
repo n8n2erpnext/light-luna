@@ -2,6 +2,16 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Receipt fsync error-propagation tests — VM guest temp directories only (2026-10-14)
+
+[Canonical verification and nonclaims](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). This runner deliberately **does not** set up or change any nft rule. It checks the exact loopback-only KVM profile, terminal journal and empty root nft/named namespace inventory, then runs [10 receipt fault tests](test_rollback_fsync_faults.py) using unique guest temporary directories. Only mock syscall errors are raised; **no actual power interruption, disk fill or production stage mutation**.
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_VM_RECEIPT_FSYNC_ACK=TEST_ONLY_GUEST_TEMP_RECEIPT_FSYNC bash scripts/lab/vm/run-receipt-fsync-lab.sh
+```
+
+Acceptance marker: `VM_FSYNC_TEMP_DIR_ERRORS_NO_ACTIVE_JOURNAL_OR_NFT_CHANGE_PASS` with runner exit 0 and 10/10 guest Python tests PASS. The runner compares active journal SHA-256 before/after and denies running if root nft, named netns or external NICs are present. A partial receipt following fsync failure can be syntactically valid but **is not evidence of successful durability**, cannot be used to mint a DONE and requires a separate review. All P0 product capabilities remain **OPEN/BLOCKED**, with NetBird integration deferred.
+
 ## Read-only rollback receipt/journal review — no auto repair (2026-10-14)
 
 [Canonical nonclaims and actual KVM evidence](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-rollback-review.py` is an independent **read-only** guest-side reviewer; it requires VM/root/no-NIC marker, reads current journal/READY, kernel/netns inventory, fsynced per-epoch three-phase observations and actual DONE. It returns structured review statuses, **never** nft mutation, synthetic DONE synthesis or journal advancement. Typical invocations, only inside the verified guest:

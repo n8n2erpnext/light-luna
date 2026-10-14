@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 guest-local fsync fault injection for immutable synthetic receipts (2026-10-14)
+
+[Evidence and limitations](architecture/p0-vm-autonomous-ttl-watchdog.md): simulated receipt file/dir fsync `EIO`, pre-open `ENOSPC`, orphan/truncated JSON and no-overwrite evidence are now covered by [10 focused tests](../scripts/lab/vm/test_rollback_fsync_faults.py), PASS offline and PASS in **exact no-NIC KVM** using guest temporary directories. Active journal hash did not change; no nft rules were installed or altered by this fault suite. This is bounded failure-path behavior, **not** simulated power loss at the kernel or proof of durable receipt consensus. P0 blockers remain actual crash/power-failure matrix, signed owner authorization, boot-time safe handling of ambiguous epochs, protection against FD-held namespaces and production installer/executor. G-STANDALONE BLOCKED; NetBird deferred.
+
 ## P0 read-only recovery-evidence classification (2026-10-14 — no-NIC KVM verified)
 
 [Source and test evidence](architecture/p0-vm-autonomous-ttl-watchdog.md): a new **read-only** rollback reviewer differentiates prepared-only, kernel-observed-absent, journal-terminal-but-DONE-missing, coherent DONE, cross-boot and invalid/foreign kernel evidence. 23 new offline unit tests PASS (76 total); actual KVM current missing-DONE and archived missing-DONE cases **exit 3**, while a newly completed normal TTL test produces an observation-consistent primary DONE (exit 0) that **does not grant owner success/permission**. No automatic repair, production signed receipts, kernel/disk atomic commit, FD-held namespace completeness or power-failure guarantee. P0 OPEN; G-STANDALONE BLOCKED.

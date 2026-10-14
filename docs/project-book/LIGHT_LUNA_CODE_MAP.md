@@ -10,6 +10,12 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## VM-only receipt fsync/ENOSPC fault harness (2026-10-14 — tested, not production)
+
+- `scripts/lab/vm/test_rollback_fsync_faults.py` → load `guest-rollback-receipts.py` with `ROOT` redirected to a unique temporary directory → inject `OSError(EIO)` at file/dir `os.fsync` callsites or `ENOSPC` at `os.open`; verify simulated continuation into kernel action stops if `prepare` raises; later failures never write DONE; retain orphan and historical observations, reject truncated JSON. **No actual nft call**, no stage journal write.
+- `scripts/lab/vm/run-receipt-fsync-lab.sh` → explicit ACK + exact no-NIC KVM marker/profile/different-kernel checks + terminal synthetic journal/root-nft/netns preflight → push only receipt source and fault test, run 10 real guest Python tests, compare active journal SHA-256 before/after, require empty root nft/named namespaces. Source-level 10/10 PASS and guest 10/10 PASS.
+- **Boundaries:** synthetic EIO/ENOSPC, not actual power cut/disk failure; a parseable orphan file after fsync failure **does not prove durability or recovery permission**. Product kernel executor, root firewall changes, signed owner authority and replay recovery NOT IMPLEMENTED.
+
 ## Read-only guest rollback review classifier (2026-10-14 — source and KVM lab verification)
 
 - `scripts/lab/vm/guest-rollback-review.py` → CLI current or `--archived-terminal TAG` → existing `guest-boot-inspect.py` (KVM marker/root, no NIC, read-only nft/netns/process inventory), `guest-stage-journal.py` (immutable state/READY JSON), `guest-rollback-receipts.py` (epoch-bound hash-chain verifier) → pure `classify` → bounded JSON report. **Side effects:** reads only, **never** nft apply/delete, journal mutation, service changes or owner authorization. Current coherent synthetic DONE returns exit 0 for **observation consistency only**; ambiguous or missing DONE returns 3.
