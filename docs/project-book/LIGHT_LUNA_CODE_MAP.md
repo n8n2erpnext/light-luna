@@ -21,6 +21,18 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 protocol-port wildcard schema parity — non-enforcing contract (2026-10-14)
+
+- **Go authority and entry points:** [`policy.Bundle.Validate`](../../internal/policy/validate.go) (CLI validation/preview/analyze, Flow Simulator and unhooked nft preview consumers) already accepts destinationPort `0` as TCP/UDP wildcard; rejects nonzero ICMP/ICMPv6 ports. Public [JSON Schema](../../schemas/policy-v1alpha1.schema.json) now reflects both rules: integer min 0, max 65535 and conditional `icmp|icmpv6` → optional port `const:0`.
+- **Verification:** [Go protocol-port matrix](../../internal/policy/policy_test.go), repeatable [Python schema contract matrix](../../scripts/test_p0_policy_schema_contract.py) with 12 port cases plus rescue/alias cases (pre-fix RED, post-fix GREEN), and existing pure Go compiler/simulator suites. This is static validation only; no change to actual firewall or authorized executor.
+- **Limits:** schema is a preflight, Go remains final semantic gate, no full schema equivalence claim. [Owning policy audit](../architecture/p0-policy-rule-conflict-audit.md). P0 OPEN / G-STANDALONE BLOCKED.
+
+## P0 deny-default rescue schema parity — static input only (2026-10-14)
+
+- **Entrypoint:** external JSON Schema validators use [`schemas/policy-v1alpha1.schema.json`](../../schemas/policy-v1alpha1.schema.json) as non-enforcing preflight; `lunactl firewall policies validate|preview|analyze` and other Go consumers still call authoritative [`Bundle.Validate`](../../internal/policy/validate.go). Public schema now conditionally requires `emergencyAccess.enabled=true` and nonempty networks for `defaultInbound=drop|reject`, matching existing Go semantics.
+- **Evidence:** [Go semantic table](../../internal/policy/policy_test.go) (10 cases) and reusable [Python JSON Schema contract test](../../scripts/test_p0_policy_schema_contract.py) (11 rescue cases + 2 alias negatives). Old schema failed targeted negative while Go passed; new schema passes. Script is run as `python3 scripts/test_p0_policy_schema_contract.py` using installed `jsonschema`, not part of `go test`.
+- **Effects:** validation reports only, **no real reachability, independent watchdog, signed owner proof or firewall operation**; even syntactically valid rescue CIDRs may not connect. P0 OPEN/G-STANDALONE BLOCKED. [Owning architecture](../architecture/p0-policy-rule-conflict-audit.md).
+
 ## P0 reserved source wildcard namespace — validation and schema (2026-10-14)
 
 - **Reachable validation owner:** `cmd/lunactl` `firewall policies validate|preview|analyze` → [`policy.Decode`](../../internal/policy/model.go) / [`Bundle.Validate`](../../internal/policy/validate.go) → **reject alias IDs exactly `any`**, which is the reserved rule source wildcard; [JSON Schema](../../schemas/policy-v1alpha1.schema.json) includes the same exclusion. No program executing kernel rules changed.

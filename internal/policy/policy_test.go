@@ -160,6 +160,85 @@ func TestReservedAnyAliasCannotShadowSourceSentinel(t *testing.T) {
 	}
 }
 
+// Source-of-truth Go semantic gate: fail closed when defaultInbound would
+// deny new inbound traffic but no emergency CIDR is explicitly declared.
+// This is declaration validation, not proof that a rescue route is reachable.
+func TestDefaultInboundRequiresDeclaredEmergencyAccess(t *testing.T) {
+	base, err := decode(t, fixture(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		name     string
+		mode     string
+		enabled  bool
+		networks []string
+		valid    bool
+	}{
+		{"accept can omit rescue", "accept", false, nil, true},
+		{"accept may declare rescue", "accept", true, []string{"192.0.2.0/24"}, true},
+		{"drop with approved rescue declaration", "drop", true, []string{"192.0.2.0/24"}, true},
+		{"reject with approved rescue declaration", "reject", true, []string{"192.0.2.0/24"}, true},
+		{"drop rescue disabled", "drop", false, []string{"192.0.2.0/24"}, false},
+		{"reject rescue disabled", "reject", false, []string{"192.0.2.0/24"}, false},
+		{"drop enabled but no CIDRs", "drop", true, nil, false},
+		{"reject enabled but no CIDRs", "reject", true, []string{}, false},
+		{"drop missing both rescue safeguards", "drop", false, nil, false},
+		{"reject missing both rescue safeguards", "reject", false, nil, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			b := base
+			b.Spec.DefaultInbound = tc.mode
+			b.Spec.EmergencyAccess.Enabled = tc.enabled
+			b.Spec.EmergencyAccess.Networks = tc.networks
+			err := b.Validate()
+			if (err == nil) != tc.valid {
+				t.Fatalf("go policy valid=%t expected %t; err=%v", err == nil, tc.valid, err)
+			}
+		})
+	}
+}
+
+// Ports use a zero wildcard in the P0 PolicyBundle model. ICMP families
+// have no L4 destination port, so a nonzero value is a semantic error.
+func TestProtocolDestinationPortContract(t *testing.T) {
+	base, err := decode(t, fixture(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := []struct {
+		name     string
+		protocol string
+		port     int
+		valid    bool
+	}{
+		{"TCP wildcard zero", "tcp", 0, true},
+		{"UDP wildcard zero", "udp", 0, true},
+		{"TCP max port", "tcp", 65535, true},
+		{"UDP real port", "udp", 53, true},
+		{"TCP negative port", "tcp", -1, false},
+		{"UDP over maximum", "udp", 65536, false},
+		{"ICMP zero no port", "icmp", 0, true},
+		{"ICMPv6 zero no port", "icmpv6", 0, true},
+		{"ICMP with TCP port", "icmp", 443, false},
+		{"ICMPv6 with UDP port", "icmpv6", 53, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			b := base
+			b.Spec.Rules = append([]Rule(nil), base.Spec.Rules...)
+			b.Spec.Rules[0].Protocol = tc.protocol
+			b.Spec.Rules[0].DestinationPort = tc.port
+			got := b.Validate()
+			if (got == nil) != tc.valid {
+				t.Fatalf("protocol=%s port=%d valid=%t expected=%t: %v",
+					tc.protocol, tc.port, got == nil, tc.valid, got)
+			}
+		})
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")

@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 43385,
-      "sha256": "4508fced996b35bbcff48af02478bf01ae66380d720f3dcc9d7b2412cd9d0090"
+      "bytes": 44710,
+      "sha256": "01c2e7ef3336f49c8dd423dcf9f77dbb868e5edc7105d35b8fc967ab9cb44ce4"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 8709,
-      "sha256": "7002e28b81ae4e5a8037e67c28c765a86eb1ed49fe74757fa73061771dbc15e3"
+      "bytes": 12373,
+      "sha256": "2057306712d4179a2704dbeef32a45f1a2c71cb8f48e3e08be0959b29f89474d"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -721,8 +721,8 @@
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 6309,
-      "sha256": "45f672bd8de552417d79fb2dbd4db59eb4454cca3025701305f02ec92555f723"
+      "bytes": 9123,
+      "sha256": "e6211b921f2bb730999aee37f56586262bc035a8a8d664cb3b7fea62cf96ef6b"
     },
     {
       "path": "internal/policy/preview.go",
@@ -833,8 +833,8 @@
       "path": "schemas/policy-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "policy-v1alpha1.schema",
-      "bytes": 6185,
-      "sha256": "f6fa5a7646f723a441369b1687f05f1b0dd948e40422148db2061ab5d88b5d3f"
+      "bytes": 7396,
+      "sha256": "cb7a8e76b0382eb0cf8809a1f6719deba5a303fd0d59d60a451b8001c263de8d"
     },
     {
       "path": "schemas/threat-bulletin-v1alpha1.schema.json",
@@ -1157,6 +1157,13 @@
       "title": "test_p0_gate_processes",
       "bytes": 2536,
       "sha256": "c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6"
+    },
+    {
+      "path": "scripts/test_p0_policy_schema_contract.py",
+      "category": "developer tooling",
+      "title": "test_p0_policy_schema_contract",
+      "bytes": 3731,
+      "sha256": "610eae06481b7cd1785b5008f074d35cf16995cbf6d316edc31f338200f69888"
     },
     {
       "path": "scripts/update_doc_catalog.py",

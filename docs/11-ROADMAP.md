@@ -61,6 +61,14 @@ False-positive rate against independent labeled benign traffic, recall against v
 
 [Go events module](../internal/observability/events.go), [schema](../schemas/local-security-events-synthetic-v1alpha1.schema.json), [test fixture](../testdata/local-security-events-synthetic.sample.json) and [unit tests](../internal/observability/events_test.go) now validate **synthetic-only** event types and compute deterministic `SIMULATED_NOT_SENT` route plans for Telegram/Discord/Slack/email with a hard fan-out cap. Strict input and anti-forgery checks refuse real `BAN_APPLIED`, actual notification-send claims, raw IP/credential fields and automatic owner authority. **Source-only**: live audit storage, verified ban reconciliation, metrics HTTP endpoint, authenticated ban API, durable outbox, real provider transports, Grafana and signed owner auth remain open. P0 OPEN / G-STANDALONE BLOCKED.
 
+## Active Core P0 — protocol/port schema preflight consistency (2026-10-14)
+
+[Core policy contract](architecture/p0-policy-rule-conflict-audit.md) now fixes a second JSON Schema/Go mismatch: TCP/UDP destination port 0 is accepted as wildcard; ICMP/ICMPv6 reject nonzero ports through a schema conditional, like existing Go validation. [Go and Python tests](../scripts/test_p0_policy_schema_contract.py) are bounded preflight evidence, **not kernel packet-path acceptance**. Changes built on the uncommitted, tested rescue-declaration parity increment. No real firewall writes; P0 OPEN, G-STANDALONE BLOCKED; deferred NetBird/Cloud, parked ADR-029.
+
+## Active Core P0 — rescue declaration validation consistency (2026-10-14)
+
+[Source-verified public schema contract](architecture/p0-policy-rule-conflict-audit.md): `defaultInbound=drop|reject` now conditionally requires `emergencyAccess.enabled=true` **and** one or more networks in JSON Schema, matching Go `Bundle.Validate` behavior already present. A new repeatable Python schema test fails the original configuration check and passes after correction; Go semantic matrix passes. The invariant is **declaration-only** and does not prove rescue SSH, route independence or rollback. No kernel changes; G-STANDALONE remains BLOCKED, ADR-029 parked and NetBird deferred.
+
 ## Active Core P0 — reserved policy alias/source namespace (2026-10-14)
 
 [Validation contract](architecture/p0-policy-rule-conflict-audit.md) now rejects alias ID `any` for either CIDR or port aliases, reserving it solely for rule-source wildcard semantics. This prevents disagreement between static analyzer/simulator and unhooked nft preview. Go RED→GREEN plus JSON Schema Draft 2020-12 tests confirm source/schema parity for this narrow rule; no firewall is applied. **Multi-earlier-rule union remains unimplemented**: an exploratory implementation was safety-blocked and its uncommitted tests reverted. P0 OPEN/G-STANDALONE BLOCKED; ADR-029 parked; NetBird deferred.

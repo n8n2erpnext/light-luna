@@ -201,7 +201,7 @@
               },
               "destinationPort": {
                 "type": "integer",
-                "minimum": 1,
+                "minimum": 0,
                 "maximum": 65535
               },
               "action": {
@@ -216,7 +216,26 @@
                 "type": "string",
                 "maxLength": 512
               }
-            }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "required": ["protocol"],
+                  "properties": {
+                    "protocol": {
+                      "enum": ["icmp", "icmpv6"]
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "destinationPort": {
+                      "const": 0
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         "autonomous": {
@@ -245,7 +264,35 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["defaultInbound"],
+            "properties": {
+              "defaultInbound": {
+                "enum": ["drop", "reject"]
+              }
+            }
+          },
+          "then": {
+            "required": ["emergencyAccess"],
+            "properties": {
+              "emergencyAccess": {
+                "required": ["enabled", "networks"],
+                "properties": {
+                  "enabled": {
+                    "const": true
+                  },
+                  "networks": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

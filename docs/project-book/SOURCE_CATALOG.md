@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 43385 | 4508fced996b35bbcff48af02478bf01ae66380d720f3dcc9d7b2412cd9d0090 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 44710 | 01c2e7ef3336f49c8dd423dcf9f77dbb868e5edc7105d35b8fc967ab9cb44ce4 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -61,7 +61,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-offline-owner-review-separation.md](../../docs/architecture/p0-offline-owner-review-separation.md) | architecture / design source | 12586 | 7b0c3e4e2dddee2258bbb780a1b9a34e4c404c8d7074d3473635ea1c48a95c23 |
 | [docs/architecture/p0-owner-key-lifecycle-revocation-contract.md](../../docs/architecture/p0-owner-key-lifecycle-revocation-contract.md) | architecture / design source | 8347 | 3eb17d1d4ac66a9769596a8dcc225017997eb13bc8bb23e82bf116bad8b86ff3 |
-| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 8709 | 7002e28b81ae4e5a8037e67c28c765a86eb1ed49fe74757fa73061771dbc15e3 |
+| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 12373 | 2057306712d4179a2704dbeef32a45f1a2c71cb8f48e3e08be0959b29f89474d |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 12601 | 0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
@@ -109,7 +109,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/policy/conflicts_test.go](../../internal/policy/conflicts_test.go) | unit / negative tests | 4667 | 11bd520ee3f4f0aabb0b89a7f8130a886787cffb9030b797d936bb5998999182 |
 | [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2058 | 8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164 |
-| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 6309 | 45f672bd8de552417d79fb2dbd4db59eb4454cca3025701305f02ec92555f723 |
+| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 9123 | e6211b921f2bb730999aee37f56586262bc035a8a8d664cb3b7fea62cf96ef6b |
 | [internal/policy/preview.go](../../internal/policy/preview.go) | implementation | 1720 | 326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362 |
 | [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 6695 | 93512a2f20ada6f6ebc56bf5b685f263e1d5aa16439bebc489930e52152a9c77 |
 | [internal/strictjson/decode.go](../../internal/strictjson/decode.go) | implementation | 2771 | d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26 |
@@ -125,7 +125,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [schemas/knowledge-claim-v1alpha1.schema.json](../../schemas/knowledge-claim-v1alpha1.schema.json) | API contract (partial semantic) | 5036 | f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502 |
 | [schemas/local-observability-synthetic-v1alpha1.schema.json](../../schemas/local-observability-synthetic-v1alpha1.schema.json) | API contract (partial semantic) | 2030 | 53923bf5030cacea812c8c7eef3832506c5ecb14aad6c1c6205bb132299506e9 |
 | [schemas/local-security-events-synthetic-v1alpha1.schema.json](../../schemas/local-security-events-synthetic-v1alpha1.schema.json) | API contract (partial semantic) | 2428 | 59e8055932da536fb0e8bc76510856cf15922d9d33c84b229b9662a627756966 |
-| [schemas/policy-v1alpha1.schema.json](../../schemas/policy-v1alpha1.schema.json) | API contract (partial semantic) | 6185 | f6fa5a7646f723a441369b1687f05f1b0dd948e40422148db2061ab5d88b5d3f |
+| [schemas/policy-v1alpha1.schema.json](../../schemas/policy-v1alpha1.schema.json) | API contract (partial semantic) | 7396 | cb7a8e76b0382eb0cf8809a1f6719deba5a303fd0d59d60a451b8001c263de8d |
 | [schemas/threat-bulletin-v1alpha1.schema.json](../../schemas/threat-bulletin-v1alpha1.schema.json) | API contract (partial semantic) | 6726 | 6d3ea895fa66b92b889e3b0aecfc706168af6b0c76223a46f3725acaacda7b4d |
 | [schemas/threat-signal-v1alpha1.schema.json](../../schemas/threat-signal-v1alpha1.schema.json) | API contract (partial semantic) | 7786 | 461589756fc029290943aff68f75be0c90b537fb08ca4c6c27711ef645fb2e8c |
 | [scripts/lab/lxd/README.md](../../scripts/lab/lxd/README.md) | developer tooling | 7926 | ac4ee69743e33a76e5a3f6a0b6146e3c1798a93959ec93d2f2685ae9722ec800 |
@@ -172,6 +172,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/vm/test_rollback_review.py](../../scripts/lab/vm/test_rollback_review.py) | developer tooling | 7044 | 904459b4ef0c356e385c9fb482a26d5ce8cfd82860de5d301beffce2c21f7587 |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |
 | [scripts/test_p0_gate_processes.sh](../../scripts/test_p0_gate_processes.sh) | developer tooling | 2536 | c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6 |
+| [scripts/test_p0_policy_schema_contract.py](../../scripts/test_p0_policy_schema_contract.py) | developer tooling | 3731 | 610eae06481b7cd1785b5008f074d35cf16995cbf6d316edc31f338200f69888 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |
 | [testdata/cloud-migration-inventory.synthetic.json](../../testdata/cloud-migration-inventory.synthetic.json) | synthetic test fixture | 1789 | 2618790838ad824c21fb0c3b1ab5956edd45fb027fbfb5cc61af228271a5b0af |
 | [testdata/fleet-config-intent.synthetic.json](../../testdata/fleet-config-intent.synthetic.json) | synthetic test fixture | 1147 | 1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a |

@@ -31,6 +31,10 @@ Read in this order, **before editing any documentation or code**:
 
 ## Latest Core P0 code and test evidence (2026-10-14)
 
+- [Protocol/port policy schema parity](../architecture/p0-policy-rule-conflict-audit.md) — TCP/UDP explicit wildcard `destinationPort=0` accepted, while ICMP/ICMPv6 nonzero port rejected; [contract regression](../../scripts/test_p0_policy_schema_contract.py) verifies this alongside rescue requirements and reserved source aliases. Go is authoritative and there is no active firewall executor.
+
+- [Deny-default rescue declaration schema parity](../architecture/p0-policy-rule-conflict-audit.md) — public JSON Schema now rejects `drop/reject` policies without enabled emergencyAccess and at least one CIDR, matching existing Go validation; [repeatable contract check](../../scripts/test_p0_policy_schema_contract.py) covers explicit positive/negative cases. Declaration-only, no verified rescue reachability or firewall APPLY.
+
 - [Actual Gate HMAC/Ed25519 canonical signature hardening](../architecture/p0-local-control-gate.md) — development source and RED→GREEN negative tests on HOMESV confirm lowercase hex-only authenticators, denying alternate text representations before replay state changes; no human owner authorization, privileged executor or kernel enforcement.
 
 - [Policy rule precedence and CIDR-set union audit](../architecture/p0-policy-rule-conflict-audit.md) — actual static Go policy analyzer, IPv4/IPv6 alias coverage, advisory-only boundaries; extension verified on HOMESV at local source commit `834100a6671c45404d6a52f5a0ef26441d2711f7`. Published Git SHA must be independently confirmed.
