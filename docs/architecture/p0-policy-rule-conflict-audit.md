@@ -16,9 +16,17 @@ Primary sources: [Policy validation](../../internal/policy/validate.go), [confli
 - `DIFFERENT_ACTIONS_OVERLAP`: different actions overlap, but full shadowing was not proven; **a narrow allow before a broad drop is a reviewable intended exception**, not automatically invalid or dangerous.
 - Zero findings means **only no pairwise issue detected within this simplified declared-policy model**, not no lockout risk, verified real rescue route or safe kernel policy.
 
-**Bounded completeness:** hard ceilings of 8,192 rule pairs, 100,000 prefix comparisons and 128 findings. If exhausted, `Complete=false`, `Status=INCOMPLETE_REVIEW_REQUIRED`, and `LimitedBy` indicates why; never convert partial inspection to a false clean audit. Analyzing an otherwise valid large policy does not silently approve it. Source-list unions may cover more than an individual prefix; the analyzer is deliberately conservative and does not claim exhaustive semantic equivalence.
+**Bounded completeness:** hard ceilings of 8,192 rule pairs, 100,000 prefix comparisons and 128 findings. If exhausted, `Complete=false`, `Status=INCOMPLETE_REVIEW_REQUIRED`, and `LimitedBy` indicates why; never convert partial inspection to a false clean audit. Analyzing an otherwise valid large policy does not silently approve it. A single earlier rule's CIDR-set source **now supports exact, bounded union coverage** of a later CIDR by multiple same-family subnets, but **coverage by several different earlier rules together remains unmodeled**; this does not claim exhaustive policy/kernel equivalence.
 
 CLI source: `lunactl firewall policies analyze <policy.json>` prints strict JSON `lightluna.rule-conflicts/v1alpha1`. `Enforceable=false`, `KernelWrites=false` for all completed or limited reports. **No HTTP listener, privileged IPC, nft call, file-write, actual rule application, Gate permission, signed owner approval, watchdog modification, NetBird or Cloud integration.**
+
+## Bounded CIDR-set union coverage — Core continuation (2026-10-14)
+
+**Implemented source-only extension**, parent Git `feat/p0-standalone-foundation@3d5a88cc1a190b7c39263fc85ad04b0539d6894e`: [`conflict_union.go`](../../internal/policy/conflict_union.go) derives inclusive last addresses for canonical IPv4/IPv6 prefixes and tests whether a sorted union of earlier-rule source intervals covers a later prefix **without gaps**. [`compareSources`](../../internal/policy/conflicts.go) still enforces `MaxCIDRComparisons=100000` while collecting source intervals and returns `INCOMPLETE_REVIEW_REQUIRED` on exhaustion. Prefix-set size stays bounded by `Bundle.Validate` (at most 256 alias members), and no IP iteration over a full /0 or /32/128 range occurs.
+
+Examples: earlier `192.0.2.0/25` + `192.0.2.128/25` and later `192.0.2.0/24` now report `LATER_RULE_SHADOWED`; missing a /26 yields `DIFFERENT_ACTIONS_OVERLAP` if actions differ. Likewise, two IPv6 /33 parts can cover a /32; mixed IPv4/IPv6 entries cannot bridge address-family gaps. [`conflict_union_test.go`](../../internal/policy/conflict_union_test.go) includes positive/negative policy cases, exhaustive combinations of four /30 pieces of a /28 and four /128 pieces of a /126, plus IPv4/IPv6 address-space endpoint and comparison-budget tests. These are **bounded static correctness tests only**.
+
+Limitations remain: an `any` later rule is treated conservatively rather than proving two-family full coverage; combining **multiple earlier terminal rules** is not analyzed as a collective union; connection state, kernel hook priority, Docker/UFW and emergency-access viability remain UNKNOWN. The analyzer cannot authorize owner approvals, ban/enforcement, nft operations or a claim that remote rescue is safe.
 
 ## Offline verification and nonclaims
 

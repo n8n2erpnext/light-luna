@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## Core P0 exact CIDR-set union coverage within a single earlier rule (2026-10-14, source only)
+
+- [`internal/policy/conflict_union.go`](../../internal/policy/conflict_union.go) → `prefixLast` computes inclusive IPv4/IPv6 network interval end; `unionContainsPrefix` sorts and merges overlapping/adjacent canonical prefix intervals and refuses coverage if **any gap remains**. Called only by [`compareSources`](../../internal/policy/conflicts.go) after existing strict `Bundle.Validate`, with a bounded prefix-comparison budget.
+- [`internal/policy/conflict_union_test.go`](../../internal/policy/conflict_union_test.go) → /25+/25 ⇒ /24 shadow, missing quarter ⇒ only partial overlap, IPv6 /33+/33 ⇒ /32 shadow, cross-family noncoverage, property checks on all 4-part subsets and max-address/budget handling. Pure-Go tests, no actual nft, subprocess, network, Gate/Executor or auth.
+- **Limits:** only unions within one earlier rule's CIDR-set; no cross-rule joint coverage, `any` target dual-family completeness, rescue-route verification or privileged execution. Read-only advisory flags `KernelWrites=false`, `Enforceable=false`; parked observability code unchanged.
+
 ## Core P0 policy family validation and static precedence audit (2026-10-14, source + CLI)
 
 - `cmd/lunactl/main.go` `firewall policies analyze <file>` → strict `policy.Decode` → [`policy.AnalyzeConflicts`](../../internal/policy/conflicts.go) → bounded, deterministic **advisory JSON**. `Status`, `Complete`, `LimitedBy`, rule pairs/CIDR comparison counts, and pairs of UUID/priority/action are reported; **always** `Enforceable=false`, `KernelWrites=false`. No privileged Gate/IPC/nft call or kernel changes.

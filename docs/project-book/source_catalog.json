@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 36672,
-      "sha256": "1adb69bc50f77245e8da67c970ec533731c1735ae648c56618b88fabf2485703"
+      "bytes": 37273,
+      "sha256": "71746814091de6312d5cc18c9b06c70e578e4c2779bb2c4918af1d4228d8178f"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -371,8 +371,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 4703,
-      "sha256": "9727ab9ab59826857108a450c0a7611022754943767147a49850ec7daa85c206"
+      "bytes": 6598,
+      "sha256": "bdf865b7e14858e106b59c304a49b4ba803b004be61d8f42dd0e047c4fb47d1e"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -627,11 +627,25 @@
       "sha256": "5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e"
     },
     {
+      "path": "internal/policy/conflict_union.go",
+      "category": "implementation",
+      "title": "conflict_union",
+      "bytes": 1963,
+      "sha256": "ef18b4e66a6aec79ff5be01f403849f272225a0b3f8ee28e5ddcb5574110bd94"
+    },
+    {
+      "path": "internal/policy/conflict_union_test.go",
+      "category": "unit / negative tests",
+      "title": "conflict_union_test",
+      "bytes": 4238,
+      "sha256": "c6f32f4346beaa6bcdb408fe8b601e669862b2449f44b912db8d8165202e3d4c"
+    },
+    {
       "path": "internal/policy/conflicts.go",
       "category": "implementation",
       "title": "conflicts",
-      "bytes": 5401,
-      "sha256": "60f42d8d1df24546fc6e8b2afebf4706c84b528c0faf5e4a3700fad29f15e8fc"
+      "bytes": 5740,
+      "sha256": "ddeb64a0a2ad0f17227a335dbf21056b99e7dcc2c5cf037a7b8d39d44fcd050e"
     },
     {
       "path": "internal/policy/conflicts_test.go",

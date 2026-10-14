@@ -5,6 +5,10 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
 
+## Core P0 CIDR-set union analysis refinement (2026-10-14)
+
+[Canonical policy audit](../architecture/p0-policy-rule-conflict-audit.md): the existing offline `AnalyzeConflicts` now detects full later-rule coverage by **multiple CIDR members of one earlier alias**, not merely an individual ancestor CIDR. [`conflict_union.go`](../../internal/policy/conflict_union.go) handles bounded sorted IPv4/IPv6 address intervals; [property and negative tests](../../internal/policy/conflict_union_test.go) show contiguous halves shadow, gap means partial overlap, and mixed IP families never falsely combine. No live Gate/Executor, kernel firewall or owner approval was changed; Prometheus/Grafana/notification integration remains frozen. P0 OPEN, G-STANDALONE BLOCKED.
+
 ## Core P0 policy family and rule precedence implementation (2026-10-14)
 
 [Core contract](../architecture/p0-policy-rule-conflict-audit.md): `policy.Validate` now rejects `icmp`/IPv6 and `icmpv6`/IPv4 source mismatch for literals **and every CIDR-set member**. New [static analyzer](../../internal/policy/conflicts.go) identifies a later rule fully shadowed by an earlier terminal action or a partial opposing overlap under declared priority/port/source semantics, with deterministic bounded JSON and explicit incomplete/budget status. [CLI](../../cmd/lunactl/main.go) supports `firewall policies analyze <file>`; a valid intentional narrow allow before a broad drop is not automatically rejected. Verified by [Go tests](../../internal/policy/conflicts_test.go), policy ICMP family negative tests and inert sample CLI. **No kernel writes, no owner/executor authority, no real firewall rule, no packaging or G-STANDALONE acceptance.** This is the active Core workstream; observability and notifications stay frozen.

@@ -89,17 +89,25 @@ func compareSources(a, b matchSources, counter *int) (overlaps, covers, limit bo
 	covers = true
 	for _, bp := range b.prefixes {
 		contained := false
+		fragments := make([]netip.Prefix, 0, len(a.prefixes))
 		for _, ap := range a.prefixes {
 			if *counter >= MaxCIDRComparisons {
 				return false, false, true
 			}
 			*counter = *counter + 1
-			if prefixContains(ap, bp) || prefixContains(bp, ap) {
-				overlaps = true
-			}
 			if prefixContains(ap, bp) {
+				overlaps = true
 				contained = true
+			} else if prefixContains(bp, ap) {
+				overlaps = true
+				fragments = append(fragments, ap)
 			}
+		}
+		// Each earlier alias can be a *union* of disjoint networks.
+		// Prove full coverage only if all address gaps are closed,
+		// never merely because the sets overlap.
+		if !contained && unionContainsPrefix(bp, fragments) {
+			contained = true
 		}
 		if !contained {
 			covers = false

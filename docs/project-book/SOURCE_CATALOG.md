@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 36672 | 1adb69bc50f77245e8da67c970ec533731c1735ae648c56618b88fabf2485703 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 37273 | 71746814091de6312d5cc18c9b06c70e578e4c2779bb2c4918af1d4228d8178f |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -59,7 +59,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-lxd-cross-uid-lab.md](../../docs/architecture/p0-lxd-cross-uid-lab.md) | architecture / design source | 9657 | f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828 |
 | [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
-| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 4703 | 9727ab9ab59826857108a450c0a7611022754943767147a49850ec7daa85c206 |
+| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 6598 | bdf865b7e14858e106b59c304a49b4ba803b004be61d8f42dd0e047c4fb47d1e |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
@@ -96,7 +96,9 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/observability/synthetic_test.go](../../internal/observability/synthetic_test.go) | unit / negative tests | 5685 | e4db732e67fc9d5873928a705126d6a28da426c2512b03696f27d4548aad553e |
 | [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2826 | 3c3e4ea7ad1bd408b55c08674fc16e52151afba70a5e8fabab2f2437eeabe8e4 |
 | [internal/offline/replay_test.go](../../internal/offline/replay_test.go) | unit / negative tests | 3359 | 5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e |
-| [internal/policy/conflicts.go](../../internal/policy/conflicts.go) | implementation | 5401 | 60f42d8d1df24546fc6e8b2afebf4706c84b528c0faf5e4a3700fad29f15e8fc |
+| [internal/policy/conflict_union.go](../../internal/policy/conflict_union.go) | implementation | 1963 | ef18b4e66a6aec79ff5be01f403849f272225a0b3f8ee28e5ddcb5574110bd94 |
+| [internal/policy/conflict_union_test.go](../../internal/policy/conflict_union_test.go) | unit / negative tests | 4238 | c6f32f4346beaa6bcdb408fe8b601e669862b2449f44b912db8d8165202e3d4c |
+| [internal/policy/conflicts.go](../../internal/policy/conflicts.go) | implementation | 5740 | ddeb64a0a2ad0f17227a335dbf21056b99e7dcc2c5cf037a7b8d39d44fcd050e |
 | [internal/policy/conflicts_test.go](../../internal/policy/conflicts_test.go) | unit / negative tests | 4667 | 11bd520ee3f4f0aabb0b89a7f8130a886787cffb9030b797d936bb5998999182 |
 | [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2058 | 8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164 |
