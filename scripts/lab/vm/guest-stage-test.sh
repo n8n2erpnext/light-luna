@@ -2,6 +2,8 @@
 # P0 VM ONLY: typed inert staging intent + synthetic scoped nft lab commit.
 # Does not implement a production privileged Policy Executor/rollback.
 set -euo pipefail
+# Cleanup belongs strictly to the top-level Bash process, never its children.
+main_bash_pid="$BASHPID"
 [[ "$(id -u)" == 0 ]] || { echo "GUEST_ROOT_REQUIRED" >&2; exit 2; }
 [[ -f /etc/light-luna-p0-kernel-vm ]] || { echo "MISSING_VM_MARKER" >&2; exit 2; }
 [[ "$(systemd-detect-virt)" == kvm ]] || { echo "VM_KERNEL_REQUIRED" >&2; exit 2; }
@@ -24,19 +26,23 @@ assert s["history"]==["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY
   rm -f -- "$state"
 fi
-rm -f -- "$work/stage-watchdog.log" "$work/stage-watchdog-done" "$work/stage-nft.nft" "$work/stage-netprobe.log"
+rm -f -- "$work/stage-watchdog.log" "$work/stage-watchdog-done" "$work/stage-nft.nft" "$work/stage-netprobe.log" "$work/auto-watchdog-ready.json" "$work/auto-watchdog-done.json"
 src="luna_stage_src_$$"
 dst="luna_stage_dst_$$"
 server_pid=""
 anchor_pid=""
+keeper_pid=""
+keeper_unit=""
 watchdog_pid=""
 controller_pid=""
 cleanup(){
+  [[ "$BASHPID" == "$main_bash_pid" ]] || return 0
  [[ -z "$controller_pid" ]] || kill "$controller_pid" 2>/dev/null || true
  [[ -z "$server_pid" ]] || kill "$server_pid" 2>/dev/null || true
  [[ -z "$anchor_pid" ]] || kill "$anchor_pid" 2>/dev/null || true
  [[ -z "$watchdog_pid" ]] || kill "$watchdog_pid" 2>/dev/null || true
  [[ -z "${unit:-}" ]] || { systemctl stop "$unit.timer" >/dev/null 2>&1 || true; systemctl stop "$unit.service" >/dev/null 2>&1 || true; }
+ [[ -z "$keeper_unit" ]] || systemctl stop "$keeper_unit.service" >/dev/null 2>&1 || true
  ip netns exec "$dst" nft delete table inet luna_p0_stage >/dev/null 2>&1 || true
  ip netns delete "$src" >/dev/null 2>&1 || true
  ip netns delete "$dst" >/dev/null 2>&1 || true
@@ -122,12 +128,57 @@ for _ in $(seq 1 40);do
 done
 [[ "$anchor_netns" == "$name_netns" ]] || { echo "VM_ANCHOR_NAMESPACE_WRONG" >&2;exit 3; }
 echo "VM_STAGE_ANCHOR_NETNS_VERIFIED"
+# PID1-managed keeper survives termination of the lxc-exec shell-owned
+# anchor; watchdog always uses this independent keeper PID/inode.
+keeper_unit="luna-p0-stage-keeper-$$"
+systemd-run --unit="$keeper_unit" --property=TimeoutStopSec=2 /usr/bin/nsenter -t "$anchor_pid" -n /usr/bin/sleep 240 > "$work/stage-keeper.log" 2>&1
+for _ in $(seq 1 80);do
+ keeper_pid="$(systemctl show "$keeper_unit.service" -p MainPID --value)"
+ [[ "$keeper_pid" =~ ^[1-9][0-9]*$ ]] && [[ "$(readlink "/proc/$keeper_pid/ns/net" 2>/dev/null || true)" == "$anchor_netns" ]] && break
+ sleep .05
+done
+[[ "$keeper_pid" =~ ^[1-9][0-9]*$ ]] && [[ "$(readlink "/proc/$keeper_pid/ns/net" 2>/dev/null || true)" == "$anchor_netns" ]] || { echo "VM_KEEPER_NOT_READY";exit 3; }
+kill "$anchor_pid" 2>/dev/null || true
+wait "$anchor_pid" 2>/dev/null || true
+anchor_pid=""
+[[ "$(readlink "/proc/$keeper_pid/ns/net")" == "$anchor_netns" ]] || exit 3
+echo "VM_STAGE_INDEPENDENT_NAMESPACE_KEEPER_READY_PASS"
 python3 "$journal" transition VALIDATED
 # Second VALIDATED attempts are rejected, not silently idempotent.
 if python3 "$journal" transition VALIDATED >/dev/null 2>&1;then
  echo "VM_REPEATED_VALIDATION_ACCEPTED";exit 3
 fi
 echo "VM_STAGE_DUPLICATE_TRANSITION_DENIED_PASS"
+if [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 ]];then
+  # Arm an independent VM PID1 watchdog and confirm READY before nft -f.
+  # No second explicit rollback trigger is allowed in this mode.
+  unit="luna-p0-auto-wd-$$"
+  anchor_ticks="$(python3 - "$keeper_pid" <<'PY'
+from pathlib import Path
+import sys
+s=Path("/proc/"+sys.argv[1]+"/stat").read_text().rsplit(") ",1)[1].split()
+print(s[19])
+PY
+)"
+  systemd-run --unit="$unit" --property=RuntimeMaxSec=20s /usr/bin/python3 "$work/guest-auto-watchdog.py" "$keeper_pid" "$anchor_ticks" "$anchor_netns" > "$work/stage-watchdog.log" 2>&1
+  for _ in $(seq 1 70);do
+    [[ -f "$work/auto-watchdog-ready.json" ]] && break
+    if [[ "$(systemctl is-failed "$unit.service" || true)" == failed ]];then
+      journalctl -u "$unit.service" -o cat -n 18 --no-pager >&2
+      echo "VM_AUTOWATCHDOG_SERVICE_FAILED_BEFORE_READY" >&2;exit 3
+    fi
+    sleep .05
+  done
+  [[ -f "$work/auto-watchdog-ready.json" ]] || { echo "VM_AUTOWATCHDOG_NEVER_ARMED" >&2;exit 3; }
+  python3 - "$work/auto-watchdog-ready.json" "$manifest" <<'PY'
+import json,sys,time
+r=json.load(open(sys.argv[1]));m=json.load(open(sys.argv[2]))
+assert r["armed"] is True and r["stageId"]==m["stageId"]
+assert r["ttlSeconds"]==m["ttlSeconds"]
+assert r["deadlineMonotonic"]-time.monotonic()>=5, "TTL too near; cannot commit safely"
+PY
+  echo "VM_AUTO_WATCHDOG_PRECOMMIT_READY_PASS"
+fi
 ttl="$(python3 - "$manifest" <<'PY'
 import json,sys
 with open(sys.argv[1],encoding="utf-8") as f:m=json.load(f)
@@ -138,9 +189,9 @@ PY
 # Start a separate-session watchdog BEFORE installing the synthetic hook.
 # It has fixed table+namespace arguments and a short TTL. No host namespace.
 # Systemd transient VM timer survives a killed controller and shell teardown.
-unit="luna-p0-stage-wd-$$"
-# Stage TTL bounds are validated but automatic execution is NOT proven.
-# Separate transient service is triggered after simulated controller death.
+if [[ "${LUNA_VM_AUTO_TTL:-0}" != 1 ]];then unit="luna-p0-stage-wd-$$";fi
+# Default mode demonstrates explicitly triggered recovery after controller death.
+# Auto mode already armed its independent monotonic watchdog above.
 ip netns exec "$dst" nft -f "$work/stage-nft.nft"
 python3 "$journal" transition COMMITTED_SYNTHETIC
 if python3 "$journal" transition COMMITTED_SYNTHETIC >/dev/null 2>&1;then
@@ -157,15 +208,34 @@ for rule in 'tcp dport 18080' 'udp dport 18081' 'icmpv6 type echo-request';do
  }
 done
 echo "VM_STAGE_TCP_UDP_IPV6_DROP_COUNTER_PASS"
-(sleep 30) &
+sleep 30 &
 controller_pid=$!
 kill "$controller_pid" 2>/dev/null || true
 wait "$controller_pid" 2>/dev/null || true
 controller_pid=""
 echo "VM_STAGE_CONTROLLER_KILLED"
-systemd-run --wait --collect --unit="$unit" /bin/bash "$work/guest-rollback.sh" "$dst" luna_p0_stage "$work/stage-watchdog-done" "$anchor_pid" "$anchor_netns" > "$work/stage-watchdog.log" 2>&1 || { cat "$work/stage-watchdog.log" >&2;exit 3; }
-[[ -f "$work/stage-watchdog-done" ]] || { echo "VM_STAGE_SEPARATE_ROLLBACK_MISSING";cat "$work/stage-watchdog.log" >&2;exit 3; }
-echo "VM_STAGE_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS"
+if [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 ]];then
+  # Crucially: no controller command to revert. Only observe watchdog output.
+  for _ in $(seq 1 185);do
+    [[ -f "$work/auto-watchdog-done.json" ]] && break
+    sleep .10
+  done
+  if [[ ! -f "$work/auto-watchdog-done.json" ]];then
+    journalctl -u "$unit.service" -o cat -n 30 --no-pager >&2
+    echo "VM_AUTOWATCHDOG_TTL_EXPIRED_WITHOUT_ROLLBACK" >&2;exit 3
+  fi
+  python3 - "$work/auto-watchdog-done.json" <<'PY'
+import json,sys
+d=json.load(open(sys.argv[1]))
+assert d["status"]=="AUTO_ROLLBACK_CONFIRMED"
+assert 0<=d["lagSeconds"]<=3.5,d
+print("VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS")
+PY
+else
+  systemd-run --wait --collect --unit="$unit" /bin/bash "$work/guest-rollback.sh" "$dst" luna_p0_stage "$work/stage-watchdog-done" "$keeper_pid" "$anchor_netns" > "$work/stage-watchdog.log" 2>&1 || { cat "$work/stage-watchdog.log" >&2;exit 3; }
+  [[ -f "$work/stage-watchdog-done" ]] || { echo "VM_STAGE_SEPARATE_ROLLBACK_MISSING";cat "$work/stage-watchdog.log" >&2;exit 3; }
+  echo "VM_STAGE_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS"
+fi
 ip netns exec "$src" python3 "$probe" client accept
 ip netns exec "$src" ping -6 -n -c 1 -W 2 fd42:198:19::1 >/dev/null
 if ip netns exec "$dst" nft list tables | grep -q luna_p0_stage;then echo "VM_STAGE_TABLE_REMAINS";exit 3;fi
@@ -175,5 +245,9 @@ with open(sys.argv[1],encoding="utf-8") as f:s=json.load(f)
 assert s["state"] == "ROLLED_BACK"
 assert s["history"] == ["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY
-echo "VM_STAGE_SEPARATE_SERVICE_ROLLBACK_IPV6_TCP_UDP_RESTORED_PASS"
+if [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 ]];then
+  echo "VM_STAGE_AUTONOMOUS_TTL_IPV6_TCP_UDP_RESTORED_PASS"
+else
+  echo "VM_STAGE_SEPARATE_SERVICE_ROLLBACK_IPV6_TCP_UDP_RESTORED_PASS"
+fi
 echo "VM_STAGE_SYNTHETIC_TRANSACTION_TEST_PASS"

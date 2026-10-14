@@ -4,6 +4,8 @@
 # It never runs nftables on the HOMESV host. It tests unhooked Light Luna
 # source preview separately from an explicitly synthetic VM-only hook.
 set -euo pipefail
+# Cleanup belongs strictly to the top-level Bash process, never its children.
+main_bash_pid="$BASHPID"
 [[ "$(id -u)" == "0" ]] || { echo "GUEST_ROOT_REQUIRED" >&2; exit 2; }
 [[ -f /etc/light-luna-p0-kernel-vm ]] || { echo "VM_MARKER_MISSING" >&2; exit 2; }
 [[ "$(ls -1 /sys/class/net)" == "lo" ]] || { echo "VM_NIC_PRESENT_ABORT" >&2; exit 2; }
@@ -17,11 +19,17 @@ preview="$work/nft-preview.nft"
 # Idempotent lab reruns may remove only these fixed synthetic result files.
 rm -f -- "$work/watchdog-done" "$work/watchdog.log" "$work/invalid.log" "$work/bad.nft" "$work/synthetic-drop.nft"
 watchdog_pid=""
+anchor_pid=""
+keeper_pid=""
+keeper_unit=""
 controller_pid=""
 cleanup(){
+  [[ "$BASHPID" == "$main_bash_pid" ]] || return 0
   [[ -z "$controller_pid" ]] || kill "$controller_pid" 2>/dev/null || true
   [[ -z "$watchdog_pid" ]] || kill "$watchdog_pid" 2>/dev/null || true
+  [[ -z "$anchor_pid" ]] || kill "$anchor_pid" 2>/dev/null || true
   [[ -z "${unit:-}" ]] || { systemctl stop "$unit.timer" >/dev/null 2>&1 || true; systemctl stop "$unit.service" >/dev/null 2>&1 || true; }
+  [[ -z "$keeper_unit" ]] || systemctl stop "$keeper_unit.service" >/dev/null 2>&1 || true
   ip netns exec "$dst" nft delete table inet luna_p0_vmtest 2>/dev/null || true
   ip netns delete "$src" 2>/dev/null || true
   ip netns delete "$dst" 2>/dev/null || true
@@ -70,6 +78,31 @@ if ip netns exec "$src" ping -n -c 1 -W 1 198.18.0.1 >/dev/null 2>&1;then
 fi
 ip netns exec "$dst" nft list chain inet luna_p0_vmtest input | grep -Eq 'counter packets [1-9][0-9]*'
 echo "VM_PACKET_DROP_COUNTER_PASS"
+ip netns exec "$dst" sleep 90 &
+anchor_pid=$!
+expected_netns="$(ip netns exec "$dst" readlink /proc/self/ns/net)"
+anchor_netns=""
+for _ in $(seq 1 40);do
+  anchor_netns="$(readlink "/proc/$anchor_pid/ns/net" 2>/dev/null || true)"
+  [[ "$anchor_netns" == "$expected_netns" ]] && break
+  kill -0 "$anchor_pid" 2>/dev/null || exit 3
+  sleep .05
+done
+[[ "$anchor_netns" == "$expected_netns" ]] || { echo "VM_OLD_TEST_NETNS_ANCHOR_FAILED";exit 3; }
+echo "VM_OLD_TEST_NETNS_ANCHOR_PASS"
+keeper_unit="luna-p0-old-keeper-$$"
+systemd-run --unit="$keeper_unit" --property=TimeoutStopSec=2 /usr/bin/nsenter -t "$anchor_pid" -n /usr/bin/sleep 240 > "$work/keeper.log" 2>&1
+for _ in $(seq 1 80);do
+  keeper_pid="$(systemctl show "$keeper_unit.service" -p MainPID --value)"
+  [[ "$keeper_pid" =~ ^[1-9][0-9]*$ ]] && [[ "$(readlink "/proc/$keeper_pid/ns/net" 2>/dev/null || true)" == "$anchor_netns" ]] && break
+  sleep .05
+done
+[[ "$keeper_pid" =~ ^[1-9][0-9]*$ ]] && [[ "$(readlink "/proc/$keeper_pid/ns/net")" == "$anchor_netns" ]] || { echo "VM_OLD_KEEPER_FAIL";exit 3; }
+kill "$anchor_pid" 2>/dev/null || true
+wait "$anchor_pid" 2>/dev/null || true
+anchor_pid=""
+[[ "$(readlink "/proc/$keeper_pid/ns/net")" == "$anchor_netns" ]] || exit 3
+echo "VM_OLD_TEST_INDEPENDENT_NAMESPACE_KEEPER_PASS"
 # Start rollback in a separate session/process. Kill a stand-in controller;
 # watchdog must independently delete ONLY this synthetic VM-namespace table.
 # Transient systemd timer runs independently of caller's shell/session.
@@ -78,13 +111,13 @@ unit="luna-p0-wd-$$"
 # Automatic TTL timer is NOT validated on this VM (flaky start); use a
 # deterministically triggered, separate systemd service as a bounded test.
 # Driver triggers the independent rollback only after killing controller.
-(sleep 30) &
+sleep 30 &
 controller_pid=$!
 kill "$controller_pid" 2>/dev/null || true
 wait "$controller_pid" 2>/dev/null || true
 controller_pid=""
 echo "SYNTHETIC_CONTROLLER_TERMINATED"
-systemd-run --wait --collect --unit="$unit" /bin/bash "$work/guest-rollback.sh" "$dst" luna_p0_vmtest "$work/watchdog-done" > "$work/watchdog.log" 2>&1 || { cat "$work/watchdog.log" >&2;exit 3; }
+systemd-run --wait --collect --unit="$unit" /bin/bash "$work/guest-rollback.sh" "$dst" luna_p0_vmtest "$work/watchdog-done" "$keeper_pid" "$anchor_netns" > "$work/watchdog.log" 2>&1 || { cat "$work/watchdog.log" >&2;exit 3; }
 [[ -f "$work/watchdog-done" ]] || { echo "EXTERNAL_SERVICE_REVERT_MISSING";cat "$work/watchdog.log" >&2;exit 3; }
 echo "VM_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS"
 ip netns exec "$src" ping -n -c 1 -W 2 198.18.0.1 >/dev/null

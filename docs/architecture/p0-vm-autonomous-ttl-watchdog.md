@@ -1,0 +1,83 @@
+# P0 autonomous TTL watchdog — independent KVM guest lab
+
+**Scope:** HOMESV `light-luna-p0-nftvm` (LXD KVM VM, separate Linux kernel, NIC-less). Development-only synthetic nft table, not product kernel enforcement.
+**Date:** 2026-10-14. Branch `feat/p0-standalone-foundation`.
+**Status:** **3/3 consecutive full KVM VM suites PASS after the final keeper/cleanup fix**. The automatically triggered synthetic rollback was observed in all three runs, including restored IPv4/IPv6 TCP/UDP. No production or G-STANDALONE claim.
+
+## Why the first watchdog attempt was not accepted
+
+Earlier source code proved only that a **separately triggered service** can undo a synthetic nft rule. It did **not** prove a service autonomously fires when TTL expires. Attempts using detached `setsid`, `systemd-run` with an internal `sleep`, and transient systemd timers intermittently failed to complete. Their failures were recorded and the gate remained open.
+
+We identified two independent VM-test harness concerns:
+
+1. `ip netns` names created from `lxc exec` may not be visible in the VM's systemd PID1 **mount namespace**. A rollback service cannot rely on a named netns being visible. The systemd process must target the network namespace of a **verified process PID**.
+2. A test shell's short-lived background PID could disappear when the simulated controller terminated. The guest suite now uses a **PID1-managed systemd namespace keeper** started via `nsenter -t <initial-anchor-pid> -n sleep 240`. It validates `/proc/<keeper-pid>/ns/net` matches the expected namespace inode before terminating the original controller-owned anchor. [Keeper smoke fixture](../../scripts/lab/vm/guest-keeper-smoke.sh) explicitly demonstrated the keeper survives that original anchor being terminated. Both legacy ICMP and new stage tests use the keeper. Cleanup is scoped to the **top-level Bash PID** to prevent child/subshell exit traps stopping the keeper early.
+
+## VM-only prototype runtime boundary
+
+| Module | Implemented VM proof | Production nonclaim |
+|---|---|---|
+| `vmstage.Build` and `lunactl vm stage-intent` | Inert, hash-identified source manifest with bounded TTL | Not a policy permit or owner approval |
+| [Guest single-controller journal](../../scripts/lab/vm/guest-stage-journal.py) | Rejects invalid schema/TTL/stage ID, repeated and out-of-order transitions; fsync+atomic rename | No multi-client locking, signed receipt, boot epoch or hostile-root protection |
+| [Independent keeper](../../scripts/lab/vm/guest-keeper-smoke.sh) | VM systemd service owns stable netns PID independent of controller-owned shell | Not a production service/account installer |
+| [Autonomous watchdog](../../scripts/lab/vm/guest-auto-watchdog.py) | Separate VM PID1 service; validates root/KVM/no NIC, manifest, journal state, process start ticks+netns inode; emits fsynced READY before any rule is installed | No production privileged executor, durable rescue, hardware clock/host reboot proof |
+| [Synthetic nft stage test](../../scripts/lab/vm/guest-stage-test.sh) | Requires READY and ≥5 seconds remaining before committing fixed VM-netns table; drops synthetic TCP/UDP/IPv6, kills controller placeholder, **does not trigger rollback** in auto mode | Never applies Light Luna's unhooked nft compiler output |
+| [VM host runner](../../scripts/lab/vm/run-tests.sh) | Runs original unhooked grammar test, explicit separate-service revert and new autonomous TTL test with TTL 10s | No Docker/UFW/NetBird coexistence, outside reachability or actual customer hosts |
+
+## State and deadline sequence
+
+```text
+HOMESV (nonprivileged CLI)                   KVM guest without NIC
+        │                                        │
+ typed inert manifest --------------------> exact schema/hash/TTL validation
+                                               STAGED → VALIDATED
+                                               │
+                                independent systemd keeper holds target netns
+                                               │
+                           watchdog (PID1) checks expected PID birth + net inode
+                                               │
+                           verifies synthetic table does not yet exist
+                                               │
+                 atomic READY with monotonic arm/deadline/TTL and stage ID
+                                               │
+                    test refuses commit unless >=5s before expiry
+                                               │
+             ONLY FIXED GUEST-NETNS SYNTHETIC nft hook applied
+                                               │
+                            journal COMMITTED_SYNTHETIC
+                                               │
+                            positive drop counters and probes
+                                               │
+                            simulated controller terminated
+                                               │
+                           watchdog wakes at monotonic deadline
+                                               │
+                     verify keeper PID birth+netns inode again
+                                               │
+                     nft delete ONLY `inet luna_p0_stage`
+                                               │
+                         verify table no longer exists
+                                               │
+                       journal terminal ROLLED_BACK
+                                               │
+                    atomic DONE receipt with elapsed/lag evidence
+                                               │
+                   verify IPv4/IPv6, TCP/UDP probes restored
+```
+
+The deadline is **relative to arming**, not commit. This is intentionally conservative: commit occurs only if there are at least five seconds remaining. The lab requires `DONE.status=AUTO_ROLLBACK_CONFIRMED`, journal terminal `ROLLED_BACK`, no nft table after cleanup, and measured monotonic completion lag ≤3.5s. These numeric limits are **test acceptance settings**, not an SLA or guaranteed production latency.
+
+## Safety behavior / negative cases
+
+- When PID, process birth time or network namespace inode changes before rollback, **refuse unsafe namespace entry** rather than possibly modifying an unrelated namespace. This needs a separate rescue solution in the eventual product, because refusing the wrong target is not the same as restoring a valid target.
+- If a transaction is not actually committed at expiry, no success receipt is recorded; a synthetic table seen unexpectedly is still removed in a fail-closed way.
+- If journal is corrupt, missing or a table disappears before verification, do not issue `AUTO_ROLLBACK_CONFIRMED`.
+- The separate service never accepts a table name from the product or user; it can touch only the fixed `luna_p0_stage` table in the verified VM target namespace.
+- No LXD NIC, LXD bridge, host nft apply, Cloud, NetBird, live WAF or eBPF/XDP involvement.
+- Reconciliations after interrupted negative test runs are **manual and evidence-based**; no silent journal reset.
+
+## Evidence and follow-up
+
+The first complete VM run returned `VM_AUTO_WATCHDOG_PRECOMMIT_READY_PASS`, `VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS`, `VM_STAGE_AUTONOMOUS_TTL_IPV6_TCP_UDP_RESTORED_PASS` and `VM_KERNEL_STAGE_AND_AUTONOMOUS_TTL_TESTS_EXECUTED`. An independent receipt reported monotonic completion `0.079s` after its scheduled deadline in that one observation. **This is one measured result, not a latency percentile or reliability guarantee.**
+
+**Final acceptance evidence:** Three consecutive post-fix full VM suites returned exit 0 and the marker `FULL_LAB_THREE_POSTFIX_CONSECUTIVE_PASS`; each auto phase emitted `VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS` and restored IPv4/IPv6 TCP/UDP. Final observed journal was `ROLLED_BACK`, no guest nft tables or named netns. Failures before the keeper/cleanup fix were not counted as passing runs. One readable final per-run receipt remains in the guest; no aggregate latency percentile is claimed. **Still not tested:** actual process/executor death rather than placeholder, VM restart during pending transaction, boot reconciliation, power-loss/snapshot rollback, host firewall coexistence, multiple clients, hostile VM root, signed owner auth, load/stress/race, release installation or ARM compatibility. Keep G-STANDALONE blocked.

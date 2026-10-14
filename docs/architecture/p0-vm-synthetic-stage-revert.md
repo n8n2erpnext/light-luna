@@ -1,11 +1,15 @@
 # P0 VM typed staging and explicitly triggered independent rollback — verified
 
-Status: **IMPLEMENTED typed inert intent and VM synthetic transaction; full combined suite PASS twice after guarded cleanup. Timed TTL watchdog NOT verified. Not a product executor.**
+Status: **Historical explicit-service milestone PASS x2; the later [autonomous TTL watchdog](p0-vm-autonomous-ttl-watchdog.md) PASSED three consecutive full KVM suites. Both remain development-only synthetic VM labs, NOT product executors.**
 Date: 2026-10-14
 Branch: `feat/p0-standalone-foundation`; obtain actual HEAD with `git rev-parse HEAD`.
 Scope: HOMESV host / LXD KVM `light-luna-p0-nftvm` with independent guest kernel and **no NIC**.
 Previous lab evidence: [kernel/nft grammar and synthetic packet rollback](p0-lxd-kernel-nft-rollback.md). This is a new stage-state verification increment, not proof of production policy enforcement.
 Primary sources: [VM-only typed Go intent](../../internal/vmstage/plan.go), [Go tests](../../internal/vmstage/plan_test.go), [CLI](../../cmd/lunactl/main.go), [host runner](../../scripts/lab/vm/run-tests.sh), [VM-stage journal](../../scripts/lab/vm/guest-stage-journal.py), [VM-stage guest test](../../scripts/lab/vm/guest-stage-test.sh), [VM watchdog payload](../../scripts/lab/vm/guest-rollback.sh), [TCP/UDP fixture](../../scripts/lab/vm/guest-netprobe.py), [old regression](../../scripts/lab/vm/guest-nft-test.sh). [Security obligations](../07-SECURITY-SAFETY.md).
+
+## Subsequent autonomous TTL milestone (2026-10-14)
+
+[Latest independent-KVM watchdog and measured results](p0-vm-autonomous-ttl-watchdog.md) supersede the earlier unverified-timer outcome below: after adding an independent systemd keeper process and monotonic service arming-before-commit handshake, **three full post-fix VM suites PASS** with autonomous TTL rollback. The original transient timer failures below remain historically accurate and are retained for debugging. Boot/power-loss rescue and production owner authorization remain **NOT tested**.
 
 ## New code reachable today
 

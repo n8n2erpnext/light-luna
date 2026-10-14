@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## P0 VM automatic monotonic TTL watchdog — independent service lab PASS x3 (2026-10-14)
+
+[Verified implementation](architecture/p0-vm-autonomous-ttl-watchdog.md) adds `guest-auto-watchdog.py` to the existing **synthetic-only** KVM VM stage flow, with strict no-NIC/KVM checks, stage ID and journal verification, exact PID process birth+netns inode, atomic READY before commit and autonomous monotonic expiry→nft table removal→journal `ROLLED_BACK`→DONE. A PID1-controlled systemd namespace keeper persists independently after original lxc-exec shell anchor termination. One-shot previous timer approaches were flaky; the new explicit autonomously armed service has **three consecutive combined VM regression PASS** after cleanup-PID scoping, with restored IPv4/IPv6 TCP/UDP. No Light Luna-generated rule was applied; this is **not** production privileged executor or reboot-safe rescue.
+
 ## P0 typed synthetic VM transaction contract and bounded recovery test (2026-10-14)
 
 [Stage contract](architecture/p0-vm-synthetic-stage-revert.md) now implemented in `internal/vmstage`, exposed as `lunactl vm stage-intent <policy> <TTL>`: **non-enforcing** manifest pinned to policy digest/revision/table, TTL bounds and four phase labels. The VM test uses an fsynced **single-process mock journal** and a separate systemd rollback service explicitly triggered by the test harness; negative cases reject wrong TTL/stage ID, duplicate and out-of-order progression. TCP/UDP and IPv6 synthetic hooks show packet DROP with nft counters then restored connectivity. Combined VM suite **PASS x2**. Prior independent `systemd-run --on-active` TTL timer was unreliable: **automatic TTL rollback NOT proved**; this is not an authorization gate, product executor or host policy apply. Interrupted journal states were manually reconciled after verified cleanup, with pre-commit abort evidence archived.

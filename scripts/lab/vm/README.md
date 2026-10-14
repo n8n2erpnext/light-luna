@@ -2,6 +2,12 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Autonomous TTL lab update (2026-10-14)
+
+[Latest design, failures and acceptance](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md): `run-tests.sh` now performs **three separate VM-only phases**: old nft syntax+ICMP explicit service revert, staged TCP/UDP/IPv6 explicit service revert, and *independently armed autonomous monotonic TTL revert* of the fixed synthetic table. Both original suites now use systemd keeper units for named network namespaces created from `lxc exec`; the auto service writes atomic READY before commit, then acts on TTL **without a second controller trigger**. All three phases **PASS across three consecutive full post-fix runs**. Verification requires a terminal `ROLLED_BACK` journal, validated DONE receipt, restored probes, and no guest nft/netns. No Light Luna-generated kernel hook is applied.
+
+The earlier note below saying autonomous timer was not verified documents the *previous* flaky transient timer implementation, not the current monotonic independent-service test. **Still no real product executor, reboot/power-loss rescue, owner authentication or G-STANDALONE.**
+
 ## Live instance
 
 - Name: `light-luna-p0-nftvm`, type **VIRTUAL-MACHINE** (not LXD container).

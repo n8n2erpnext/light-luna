@@ -51,9 +51,14 @@ lxc file push scripts/lab/vm/guest-nft-test.sh "$instance/opt/luna-p0-kernel-tes
 lxc exec "$instance" -- bash /opt/luna-p0-kernel-tests/guest-nft-test.sh
 # New typed VM-only staging intent. This is a manifest, NOT a system call.
 "$tmp/lunactl" vm stage-intent testdata/host-baseline.json 8 > "$tmp/stage-intent.json"
-for name in guest-stage-test.sh guest-stage-journal.py guest-netprobe.py;do
+for name in guest-stage-test.sh guest-stage-journal.py guest-netprobe.py guest-auto-watchdog.py;do
  lxc file push "scripts/lab/vm/$name" "$instance/opt/luna-p0-kernel-tests/$name" --mode=0700 >/dev/null 2>&1
 done
 lxc file push "$tmp/stage-intent.json" "$instance/opt/luna-p0-kernel-tests/stage-intent.json" --mode=0600 >/dev/null 2>&1
 lxc exec "$instance" -- bash /opt/luna-p0-kernel-tests/guest-stage-test.sh
-echo "VM_KERNEL_AND_STAGE_TESTS_EXECUTED"
+# This is a NEW stage transaction: watchdog MUST arm on its own before
+# synthetic nft commit, and MUST roll back without another controller call.
+"$tmp/lunactl" vm stage-intent testdata/host-baseline.json 10 > "$tmp/stage-intent-auto.json"
+lxc file push "$tmp/stage-intent-auto.json" "$instance/opt/luna-p0-kernel-tests/stage-intent.json" --mode=0600 >/dev/null 2>&1
+lxc exec "$instance" -- env LUNA_VM_AUTO_TTL=1 bash /opt/luna-p0-kernel-tests/guest-stage-test.sh
+echo "VM_KERNEL_STAGE_AND_AUTONOMOUS_TTL_TESTS_EXECUTED"

@@ -70,10 +70,13 @@
       "vmStageSequence": "KVM_guest_synthetic_stage_validate_commit_revert_with_negative_tests_PASS_twice",
       "vmStagePacketProbes": "PASS_twice_VM_only_IPV4_IPV6_TCP_UDP_synthetic_drop_counters_restored",
       "vmStageRollbackService": "PASS_twice_explicit_independent_systemd_service_trigger_after_controller_placeholder_killed",
-      "vmStageAutonomousTTLWatchdog": "NOT_VERIFIED_systemd_timer_and_detached_sleep_repeated_timeouts",
-      "vmStageNamespaceAnchor": "PASS_verified_PID_net_inode_nsenter_under_VM_mount_namespace_difference",
+      "vmStageAutonomousTTLWatchdog": "PASS_3_consecutive_full_KVM_suites_independent_monotonic_systemd_service_ready_before_synthetic_commit_no_second_trigger; not production/reboot rescue",
+      "vmStageNamespaceAnchor": "PASS_systemd_Pid1_keeper_survives_shell_anchor_termination_pid_birth_and_netns_inode_verified",
       "vmStageInterruptedJournal": "guarded_manual_reconcile_PASS_precommit_abort_evidence_archived_and_postcommit_clean_rollback",
       "vmStageProductionExecutor": "NOT_IMPLEMENTED_no_product_generated_hook_applied",
+      "vmStageAutonomousTTLProof": "PASS_three_consecutive_full_VM_runs_10s_monotonic_TTL_stage_AUTO_ROLLBACK_CONFIRMED_journal_terminal_ipv4_ipv6_tcp_udp_restored",
+      "vmStageAutomaticBootRecovery": "NOT_TESTED_VM_reboot_or_power_loss_during_pending_policy",
+      "vmStageAutonomousTTLReceipt": "sample_0_079_seconds_lag_one_run_not_a_SLA",
       "journalRecovery": "restart_replay_pass_corrupt_journal_fails_closed_not_power_loss_tested",
       "productionKeyCustody": "not_implemented_test_only_shared_key_private_0600_same_uid",
       "controlGateRaceDetector": "not_run_gcc_missing_cgo_required",
@@ -133,7 +136,8 @@
     "p0Ed25519Identity": "docs/architecture/p0-ed25519-agent-gate-identity.md",
     "p0LxdCrossUidLab": "docs/architecture/p0-lxd-cross-uid-lab.md",
     "p0LxdKernelNftLab": "docs/architecture/p0-lxd-kernel-nft-rollback.md",
-    "p0VmStageRevert": "docs/architecture/p0-vm-synthetic-stage-revert.md"
+    "p0VmStageRevert": "docs/architecture/p0-vm-synthetic-stage-revert.md",
+    "p0VmAutonomousTTLWatchdog": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

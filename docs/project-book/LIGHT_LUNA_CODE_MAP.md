@@ -10,6 +10,12 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## VM-only autonomous TTL watchdog + systemd netns keeper (2026-10-14 — PASS x3)
+
+- [`guest-auto-watchdog.py`](../../scripts/lab/vm/guest-auto-watchdog.py) runs as transient PID1-managed **systemd service** in the exact NIC-less KVM guest, checks manifest+journal+proc birth ticks+netns inode, writes fsynced READY before synthetic hook is applied, waits on monotonic TTL (10s VM acceptance), deletes only `inet luna_p0_stage` via verified keeper namespace, verifies absence, journals `ROLLED_BACK` and records fsynced DONE/lag. **No owner identity or production executor**.
+- [`guest-keeper-smoke.sh`](../../scripts/lab/vm/guest-keeper-smoke.sh) proves an independent PID1 systemd process retains a netns after original shell anchor termination. Both [old synthetic ICMP](../../scripts/lab/vm/guest-nft-test.sh) and [staging suites](../../scripts/lab/vm/guest-stage-test.sh) now use keeper, not a short-lived shell PID, and limit EXIT/TERM cleanup to original top-level Bash PID. [VM runner](../../scripts/lab/vm/run-tests.sh) now exercises: original syntax/drop/explicit revert, stage explicit revert, stage **automatic TTL revert without second trigger**.
+- **Three full consecutive post-fix VM runs PASS**, with IPv4/IPv6 TCP/UDP restored and guest nft/netns clean; [evidence/limitations](../architecture/p0-vm-autonomous-ttl-watchdog.md). Still no boot reconciliation, real owner auth, or production nft hook/privilege holder.
+
 ## VM-only staging intent, guest journal and explicit independent revert (2026-10-14 — EXECUTED)
 
 - `cmd/lunactl.run` → `vm stage-intent <policy> <TTL>` → [`policy.Decode`](../../internal/policy/model.go) → [`vmstage.Build`](../../internal/vmstage/plan.go) → [`nftpreview.Compile`](../../internal/nftpreview/compile.go) → **JSON inert manifest** (revision, policy SHA, deterministic stage ID, bounded TTL, `kernelWrites=false`, `ownerApproved=false`). [Go tests](../../internal/vmstage/plan_test.go) assert stable ID and invalid TTL/policy refusal.
