@@ -62,6 +62,8 @@
       "p0NewReplayJournalNegativeTests": "PASS_new_0600_file_reopen_existing_directory_hardlink_invalid_closed_file_sync_symlink_parent_sync; 3x_Go_tests",
       "p0NewReplayJournalIntegrationTests": "PASS_NONROOT_HMAC_and_ED25519_two_process_restart_replay_and_corrupt_journal_denied_APPLY_always_denied",
       "p0NewReplayJournalLimit": "NO_PHYSICAL_POWER_LOSS_PROOF_NO_SIGNED_HUMAN_OWNER_AUTH_NO_EXECUTOR_NO_KERNEL_WRITES",
+      "p0GateCanonicalHMACEd25519Encoding": "SOURCE_ONLY_GATE_REJECTS_UPPERCASE_HEX_ALIAS_FOR_HMAC_AND_ED25519_BEFORE_REPLAY_RECORD;_NO_APPLY_OR_EXECUTOR_CHANGE",
+      "p0GateCanonicalEncodingTests": "PASS_RED_GREEN_HMAC_AND_ED25519_NEGATIVES_CANONICAL_PREVIEW_ONCE_REPLAY_DENIED;_EXISTING_TWO_PROCESS_RESTART_SUITES_PASS;_NO_NEW_JOURNAL_ALIAS_TEST",
       "p0DetachedOfflineReviewer": "IMPLEMENTED_source_only_independent_agent_and_reviewer_test_Ed25519_signatures_exact_intent_digest_nonce_policy_revision_operation_ttl_bounded_memory_replay_not_wired_to_Gate",
       "p0OfflineReviewAuthority": "CRYPTOGRAPHIC_TEST_MATCH_ONLY_HumanOwnerAuthenticated_FALSE_GrantsApply_FALSE_KernelWrites_FALSE_DurableReplay_FALSE",
       "p0OfflineReviewSecurityTests": "PASS_dual_keys_separate_signature_and_digest_scope_mutation_bad_origin_ttl_downgrade_replay_review_id_and_agent_intent_test_budget",

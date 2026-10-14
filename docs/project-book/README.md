@@ -31,6 +31,8 @@ Read in this order, **before editing any documentation or code**:
 
 ## Latest Core P0 code and test evidence (2026-10-14)
 
+- [Actual Gate HMAC/Ed25519 canonical signature hardening](../architecture/p0-local-control-gate.md) — development source and RED→GREEN negative tests on HOMESV confirm lowercase hex-only authenticators, denying alternate text representations before replay state changes; no human owner authorization, privileged executor or kernel enforcement.
+
 - [Policy rule precedence and CIDR-set union audit](../architecture/p0-policy-rule-conflict-audit.md) — actual static Go policy analyzer, IPv4/IPv6 alias coverage, advisory-only boundaries; extension verified on HOMESV at local source commit `834100a6671c45404d6a52f5a0ef26441d2711f7`. Published Git SHA must be independently confirmed.
 - [Core Code Map](LIGHT_LUNA_CODE_MAP.md), [chronological Worklog](LIGHT_LUNA_WORKLOG.md), [machine-readable Project Truth](PROJECT_TRUTH_STATUS.json) and [Source Catalog](SOURCE_CATALOG.md) are the canonical route to implemented modules, tests, and current release gates.
 - **No standalone release or real kernel enforcement:** P0 OPEN, G-STANDALONE BLOCKED. Prometheus/Grafana/notification adapters are **future architecture only**, paused by owner priority.

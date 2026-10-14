@@ -8,6 +8,10 @@ Sources: [Ed25519 signer/verifier](../../internal/controlgate/control.go), [Ed j
 Security rules: [Safety](../07-SECURITY-SAFETY.md), [self-defense](../adr/ADR-028-self-defense-host-compromise.md), [project truth](../project-book/PROJECT_TRUTH_STATUS.json)
 Commit: verify actual `feat/p0-standalone-foundation` HEAD; no release tag or production deployment asserted.
 
+## Canonical Agent signature spelling — development source hardening (2026-10-14)
+
+[`Boundary.Evaluate`](../../internal/controlgate/control.go) now refuses uppercase hexadecimal spellings of a valid Agent Ed25519 signature. It verifies canonical lowercase hex round-trip **before** the existing pinned-key signature check or replay recording. The [negative unit test](../../internal/controlgate/ed25519_test.go) was RED against previous code and GREEN after the change, checking that invalid aliases leave replay untouched and that a canonical signed preview works once. Existing Ed25519 two-process Linux restart/corruption tests PASS. This change does **not** authenticate a human owner, authorize APPLY, integrate offline reviewer proof, or add privileged executor/kernel operations.
+
 ## Purpose and flow
 
 The previous HMAC prototype required **both** demo processes to read the **same secret**. This incremental contract eliminates that sharing for the new Ed25519 mode: the Agent signs with a private key, while Gate holds **only a pinned public key** and cannot produce valid Agent-signed requests using its stored verification material.

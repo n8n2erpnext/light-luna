@@ -46,6 +46,33 @@ func gateFixture(t *testing.T, key []byte) *Boundary {
 	}
 	return b
 }
+
+// A valid HMAC has one canonical textual representation in the local Gate.
+// An uppercase spelling of valid bytes must fail before consuming replay state.
+func TestNoncanonicalHMACEncodingDeniedWithoutSpendingReplay(t *testing.T) {
+	key := bytes.Repeat([]byte{77}, 32)
+	p := baseline(t)
+	now := time.Date(2026, 10, 14, 13, 0, 0, 0, time.UTC)
+	msg := signedFixture(t, key, p, now)
+	alias := msg
+	alias.MACSHA256 = strings.ToUpper(msg.MACSHA256)
+	if alias.MACSHA256 == msg.MACSHA256 {
+		t.Fatal("fixture HMAC has no lowercase hex letters")
+	}
+	gate := gateFixture(t, key)
+	got := gate.Evaluate(alias, p, now)
+	if got.Decision != "REJECTED" || got.KernelWrites ||
+		got.ExecutorStatus != "NOT_AVAILABLE" || len(gate.seen) != 0 {
+		t.Fatalf("noncanonical HMAC accepted or spent replay: %+v", got)
+	}
+	if good := gate.Evaluate(msg, p, now); good.Decision != "ADVISORY_ONLY" || good.KernelWrites {
+		t.Fatalf("canonical HMAC denied: %+v", good)
+	}
+	if again := gate.Evaluate(msg, p, now); again.Decision != "REJECTED" {
+		t.Fatalf("canonical HMAC replay accepted: %+v", again)
+	}
+}
+
 func TestValidPreviewAndReplay(t *testing.T) {
 	key := bytes.Repeat([]byte{41}, 32)
 	p := baseline(t)

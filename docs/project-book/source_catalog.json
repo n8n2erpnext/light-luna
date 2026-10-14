@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 41941,
-      "sha256": "06c839bd4647213f60e7feabdfdee2335ff72b8045f1b413904680ea9a5f366a"
+      "bytes": 42709,
+      "sha256": "e1e3580de774ff0f9efe79c344291b3f071c4f5f7edad1aeb3425b8057991476"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -322,8 +322,8 @@
       "path": "docs/architecture/p0-ed25519-agent-gate-identity.md",
       "category": "architecture / design source",
       "title": "P0 Agent/Gate Ed25519 Identity Boundary and Group-Owned Unix Socket",
-      "bytes": 8743,
-      "sha256": "b9bf3368028d12f5fa61b14b29810942721c7926ffc5a3aefa010575d6a5f4b6"
+      "bytes": 9533,
+      "sha256": "a2bc529cb73e1b773215b42786db1671fc77a727ba6e2473f68b6955107d8b00"
     },
     {
       "path": "docs/architecture/p0-flow-simulator.md",
@@ -343,8 +343,8 @@
       "path": "docs/architecture/p0-local-control-gate.md",
       "category": "architecture / design source",
       "title": "P0 Local Control Gate — Authenticated Intent, Replay and Safe Denial",
-      "bytes": 6704,
-      "sha256": "c4a52cafb1edb078df7abb7a3307ce2e2ad772dcb12c31452f865396721ab9e9"
+      "bytes": 8453,
+      "sha256": "77340ac493583db44485dd04e185f7d66b2a06dfa4a24915de83e7cbedd931f1"
     },
     {
       "path": "docs/architecture/p0-lxd-cross-uid-lab.md",
@@ -448,22 +448,22 @@
       "path": "internal/controlgate/control.go",
       "category": "implementation",
       "title": "control",
-      "bytes": 9918,
-      "sha256": "b44933e8e8dc4948b14a90192f6a7d0358eee685242708670ecc54e44131334d"
+      "bytes": 10048,
+      "sha256": "23a7f4a1fa3b4741fbbe2a5a6c419719fe84160304e0e2f5f332d727ff6065be"
     },
     {
       "path": "internal/controlgate/control_test.go",
       "category": "unit / negative tests",
       "title": "control_test",
-      "bytes": 6274,
-      "sha256": "6695647816fce6f63b9b64ee0cc8a80807c8bd3f33c1b7c7039345d5ec2c3061"
+      "bytes": 7354,
+      "sha256": "9a8dbdd596604dcecfca2f387fe10bcf387d83eb306e5f824eebacd03a2d58c7"
     },
     {
       "path": "internal/controlgate/ed25519_test.go",
       "category": "unit / negative tests",
       "title": "ed25519_test",
-      "bytes": 2448,
-      "sha256": "0daa97aa1458b3889cbc2aecd614a1d163411885f7dc6ca114f407206729e5c3"
+      "bytes": 3735,
+      "sha256": "f18bc2bb1e22b3afe027a54e2bff3e0763921370df033a8fb6846c8665eadc46"
     },
     {
       "path": "internal/controlgate/journal_linux.go",

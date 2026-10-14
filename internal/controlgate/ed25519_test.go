@@ -9,6 +9,39 @@ import (
 	"time"
 )
 
+// Ed25519 bytes must not be accepted under multiple textual spellings.
+// Rejection precedes any replay journal or in-memory replay mutation.
+func TestNoncanonicalEd25519EncodingDeniedWithoutSpendingReplay(t *testing.T) {
+	pub, priv, err := ed25519.GenerateKey(rand.Reader)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := baseline(t)
+	now := time.Date(2026, 10, 14, 13, 0, 0, 0, time.UTC)
+	agentIntent := signedFixture(t, bytes.Repeat([]byte{71}, 32), p, now).Intent
+	msg, err := SignEd25519(priv, agentIntent)
+	if err != nil {
+		t.Fatal(err)
+	}
+	alias := msg
+	alias.SignatureEd25519 = strings.ToUpper(msg.SignatureEd25519)
+	if alias.SignatureEd25519 == msg.SignatureEd25519 {
+		t.Fatal("fixture Ed25519 signature has no lowercase hex letters")
+	}
+	gate := gateFromPub(t, pub)
+	got := gate.Evaluate(alias, p, now)
+	if got.Decision != "REJECTED" || got.KernelWrites ||
+		got.ExecutorStatus != "NOT_AVAILABLE" || len(gate.seen) != 0 {
+		t.Fatalf("noncanonical Ed25519 accepted or spent replay: %+v", got)
+	}
+	if good := gate.Evaluate(msg, p, now); good.Decision != "ADVISORY_ONLY" || good.KernelWrites {
+		t.Fatalf("canonical Ed25519 denied: %+v", good)
+	}
+	if again := gate.Evaluate(msg, p, now); again.Decision != "REJECTED" {
+		t.Fatalf("canonical Ed25519 replay accepted: %+v", again)
+	}
+}
+
 func TestEd25519SignatureIsolationAndDowngrade(t *testing.T) {
 	pub, priv, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {

@@ -185,8 +185,9 @@ func (b *Boundary) Evaluate(message SignedIntent, p policy.Bundle, now time.Time
 			return b.deny(i.RequestID, "invalid or mixed Ed25519 authenticator")
 		}
 		rawSig, e := hex.DecodeString(message.SignatureEd25519)
-		if e != nil || len(rawSig) != ed25519.SignatureSize {
-			return b.deny(i.RequestID, "invalid Ed25519 encoding")
+		if e != nil || len(rawSig) != ed25519.SignatureSize ||
+			hex.EncodeToString(rawSig) != message.SignatureEd25519 {
+			return b.deny(i.RequestID, "noncanonical Ed25519 encoding")
 		}
 		payload := append([]byte("lightluna.local-control.ed25519/v1alpha1\x00"), canonicalBytes...)
 		if !ed25519.Verify(b.publicKey, payload, rawSig) {
@@ -197,8 +198,9 @@ func (b *Boundary) Evaluate(message SignedIntent, p policy.Bundle, now time.Time
 			return b.deny(i.RequestID, "mixed or missing HMAC authenticator")
 		}
 		rawMAC, e := hex.DecodeString(message.MACSHA256)
-		if e != nil || len(rawMAC) != sha256.Size {
-			return b.deny(i.RequestID, "invalid authenticator")
+		if e != nil || len(rawMAC) != sha256.Size ||
+			hex.EncodeToString(rawMAC) != message.MACSHA256 {
+			return b.deny(i.RequestID, "noncanonical HMAC authenticator")
 		}
 		mac := hmac.New(sha256.New, b.key)
 		mac.Write([]byte(Protocol + "\x00"))

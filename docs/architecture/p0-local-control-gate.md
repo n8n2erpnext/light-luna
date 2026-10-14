@@ -7,6 +7,14 @@ Primary source: [controlgate Go implementation](../../internal/controlgate/contr
 Prior implementation: [Synthetic Flow Simulator](p0-flow-simulator.md), [unhooked nft preview](p0-nft-unhooked-compiler.md)
 Git evidence: use current commit SHA on `feat/p0-standalone-foundation` after source verification. **No deployed services or production controls are implied.**
 
+## Canonical HMAC/Ed25519 wire encoding (2026-10-14 — Go source and negative tests)
+
+**Implemented in development `Boundary.Evaluate`; this is input-normalization hardening, NOT new authorization.** Previously the signature/MAC decoder accepted uppercase hexadecimal aliases of otherwise valid Ed25519 and HMAC bytes and could return `ADVISORY_ONLY`. The Gate now requires that `hex.EncodeToString(decoded)` exactly equals the presented string for both mutually exclusive authentication modes, before signature comparison or touching replay state. This matches the separate [detached reviewer strictness](p0-offline-owner-review-separation.md) without wiring that experimental reviewer into the Gate.
+
+[HMAC negative test](../../internal/controlgate/control_test.go) and [Ed25519 negative test](../../internal/controlgate/ed25519_test.go) proved **RED on the prior code → GREEN after correction**: an uppercase alias of a real valid signature returns `REJECTED` and does not consume in-memory replay entries; the canonical encoding still produces an advisory-only preview exactly once, with subsequent replay denied. Real Linux two-process HMAC and Ed25519 smoke tests continue to exercise canonical signatures. **No dedicated new journal alias test was added in this increment**; the existing restart, corruption and lock suites still pass.
+
+Only signature text acceptance changed: no new keys, authenticated human owner, elevation, Gate APPLY permission, persistent trusted consent, kernel calls, VM transaction or Cloud/NetBird effects. Signed `APPLY_POLICY` remains categorically `REJECTED`, `executorStatus=NOT_AVAILABLE`, `kernelWrites=false`. No live nft/KVM kernel tests were run for this Go-only change. P0 OPEN, G-STANDALONE BLOCKED.
+
 ## Actual runnable code and entrypoints
 
 ```sh
