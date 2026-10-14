@@ -46,6 +46,14 @@ print("P0_NFT_UNHOOKED_COMPILER_NO_EXECUTOR_PASS")
 PY
 lxc exec "$instance" -- install -d -m 0700 /opt/luna-p0-kernel-tests
 lxc file push "$tmp/nft-preview.nft" "$instance/opt/luna-p0-kernel-tests/nft-preview.nft" --mode=0600 >/dev/null 2>&1
+lxc file push scripts/lab/vm/guest-rollback.sh "$instance/opt/luna-p0-kernel-tests/guest-rollback.sh" --mode=0700 >/dev/null 2>&1
 lxc file push scripts/lab/vm/guest-nft-test.sh "$instance/opt/luna-p0-kernel-tests/guest-nft-test.sh" --mode=0700 >/dev/null 2>&1
 lxc exec "$instance" -- bash /opt/luna-p0-kernel-tests/guest-nft-test.sh
-echo "VM_KERNEL_TESTS_EXECUTED"
+# New typed VM-only staging intent. This is a manifest, NOT a system call.
+"$tmp/lunactl" vm stage-intent testdata/host-baseline.json 8 > "$tmp/stage-intent.json"
+for name in guest-stage-test.sh guest-stage-journal.py guest-netprobe.py;do
+ lxc file push "scripts/lab/vm/$name" "$instance/opt/luna-p0-kernel-tests/$name" --mode=0700 >/dev/null 2>&1
+done
+lxc file push "$tmp/stage-intent.json" "$instance/opt/luna-p0-kernel-tests/stage-intent.json" --mode=0600 >/dev/null 2>&1
+lxc exec "$instance" -- bash /opt/luna-p0-kernel-tests/guest-stage-test.sh
+echo "VM_KERNEL_AND_STAGE_TESTS_EXECUTED"

@@ -22,7 +22,7 @@ LUNA_LXD_USE_SUDO=1 bash scripts/lab/vm/run-tests.sh
 
 `run-tests.sh` insists on the **exact** VM name and profile, type `VIRTUAL-MACHINE`, independent guest kernel, `kvm` detection and loopback-only NIC inventory before copying anything. It builds the **current** Go `lunactl` and produces an unhooked policy preview from `testdata/host-baseline.json`. The compiler's flags must say `kernelWrites=false`, `syntaxChecked=false`, `kernelCompatibilityChecked=false`, and the text must have no `hook` statement. The text is pushed to the VM and passed only to **`nft -c`** in a fresh network namespace. It is **never applied**.
 
-The guest test script creates **two throwaway network namespaces within the separate VM kernel** and joins them with a synthetic veth pair. It confirms an ICMP packet can pass, uses `nft -c` to validate the Light Luna preview, rejects intentionally malformed nft syntax, then installs a **separately authored synthetic drop rule** inside the *VM destination namespace only*. It verifies ping is blocked and a drop counter increments. It starts a timer in a separate process/session, kills a stand-in controller and verifies the timer **deletes only the synthetic table**, after which ping succeeds again. Guest cleanup removes both namespaces and rule fixtures.
+The guest test script creates **two throwaway network namespaces within the separate VM kernel** and joins them with a synthetic veth pair. It confirms an ICMP packet can pass, uses `nft -c` to validate the Light Luna preview, rejects intentionally malformed nft syntax, then installs a **separately authored synthetic drop rule** inside the *VM destination namespace only*. It verifies ping is blocked and a drop counter increments. It kills a stand-in controller, then **explicitly triggers an independent transient systemd rollback service** that deletes only the synthetic table and restores traffic. **Automatic TTL expiration is not verified**; earlier systemd timers timed out in this VM and must not be counted as PASS. Guest cleanup removes both namespaces and rule fixtures.
 
 Expected PASS markers:
 
@@ -34,9 +34,18 @@ LIGHT_LUNA_UNHOOKED_NFT_KERNEL_SYNTAX_PASS
 INVALID_NFT_NEGATIVE_PASS
 VM_PACKET_DROP_COUNTER_PASS
 SYNTHETIC_CONTROLLER_TERMINATED
-VM_WATCHDOG_ROLLBACK_PACKET_RESTORED_PASS
+VM_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS
+VM_SEPARATE_SERVICE_ROLLBACK_PACKET_RESTORED_PASS
 VM_ISOLATED_NFT_SYNTAX_FLOW_ROLLBACK_PASS
-VM_KERNEL_TESTS_EXECUTED
+VM_STAGE_TTL_AND_STAGE_ID_NEGATIVE_PASS
+VM_STAGE_OUT_OF_ORDER_DENIED_PASS
+VM_STAGE_DUPLICATE_COMMIT_DENIED_PASS
+VM_STAGE_ANCHOR_NETNS_VERIFIED
+VM_STAGE_TCP_UDP_IPV6_DROP_COUNTER_PASS
+VM_STAGE_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS
+VM_STAGE_SEPARATE_SERVICE_ROLLBACK_IPV6_TCP_UDP_RESTORED_PASS
+VM_STAGE_SYNTHETIC_TRANSACTION_TEST_PASS
+VM_KERNEL_AND_STAGE_TESTS_EXECUTED
 ```
 
 ## Fresh lab setup and cleanup
@@ -49,7 +58,7 @@ For destructive cleanup, `LUNA_LXD_USE_SUDO=1 LUNA_LXD_VM_DELETE_ACK=DELETE_LIGH
 
 1. The kernel in VM is separate from HOMESV, but this does NOT prove future production executor, safety guarantees against a compromised hypervisor, or LXD/QEMU isolation certifications.
 2. The Light Luna compiler emits **UNHOOKED text** only; acceptance is **real kernel syntax** via `nft -c`. It does NOT test Light Luna enforcement, coexistence with Docker/UFW, routing, NAT, VPN, remote admin reachability or true policy default drop.
-3. The **synthetic-only** VM hook and 3-second watchdog demonstrate packet drop, counter and timer-based revert **inside guest namespace**. They are NOT the production privileged executor/transaction manager, nor durable rescue after crash, power loss or reboot.
+3. The **synthetic-only** VM hook and separate systemd rollback service demonstrate packet drop, counters and explicitly triggered revert **inside the VM guest namespace**. Timed automatic rollback has been flaky and is **NOT PASSED**. They are NOT the production privileged executor/transaction manager, nor durable rescue after crash, power loss or reboot.
 4. Never apply synthetic drop rules, nft tests or future XDP programs on HOMESV. Keep kernel tests in a separate virtual machine. No Cloud, NetBird or original Sentinel integrations are touched.
 
 [Current P0 architecture and verified scope](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md)

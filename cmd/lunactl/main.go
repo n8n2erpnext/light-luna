@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/n8n2erpnext/light-luna/internal/controlgate"
@@ -15,10 +16,11 @@ import (
 	"github.com/n8n2erpnext/light-luna/internal/offline"
 	"github.com/n8n2erpnext/light-luna/internal/policy"
 	"github.com/n8n2erpnext/light-luna/internal/strictjson"
+	"github.com/n8n2erpnext/light-luna/internal/vmstage"
 )
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file> | firewall policies simulate <policy-file> <synthetic-flow-file> | control selftest <policy-file> | control ipc-selftest <policy-file>")
+	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file> | firewall policies simulate <policy-file> <synthetic-flow-file> | control selftest <policy-file> | control ipc-selftest <policy-file> | vm stage-intent <policy-file> <ttl-seconds>")
 }
 func pretty(v any) error {
 	data, err := json.MarshalIndent(v, "", "  ")
@@ -83,6 +85,26 @@ func run(args []string) error {
 			return fmt.Errorf("local control selftest: %w", err)
 		}
 		return pretty(result)
+	}
+	if len(args) == 4 && args[0] == "vm" && args[1] == "stage-intent" {
+		f, err := os.Open(args[2])
+		if err != nil {
+			return fmt.Errorf("open policy: %w", err)
+		}
+		defer f.Close()
+		p, err := policy.Decode(f)
+		if err != nil {
+			return fmt.Errorf("invalid policy: %w", err)
+		}
+		ttl, err := strconv.Atoi(args[3])
+		if err != nil {
+			return fmt.Errorf("invalid TTL: %w", err)
+		}
+		intent, err := vmstage.Build(p, ttl)
+		if err != nil {
+			return fmt.Errorf("VM stage intent: %w", err)
+		}
+		return pretty(intent)
 	}
 	if len(args) == 5 && args[0] == "firewall" && args[1] == "policies" && args[2] == "simulate" {
 		f, err := os.Open(args[3])

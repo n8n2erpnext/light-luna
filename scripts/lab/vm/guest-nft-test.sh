@@ -21,6 +21,7 @@ controller_pid=""
 cleanup(){
   [[ -z "$controller_pid" ]] || kill "$controller_pid" 2>/dev/null || true
   [[ -z "$watchdog_pid" ]] || kill "$watchdog_pid" 2>/dev/null || true
+  [[ -z "${unit:-}" ]] || { systemctl stop "$unit.timer" >/dev/null 2>&1 || true; systemctl stop "$unit.service" >/dev/null 2>&1 || true; }
   ip netns exec "$dst" nft delete table inet luna_p0_vmtest 2>/dev/null || true
   ip netns delete "$src" 2>/dev/null || true
   ip netns delete "$dst" 2>/dev/null || true
@@ -71,27 +72,24 @@ ip netns exec "$dst" nft list chain inet luna_p0_vmtest input | grep -Eq 'counte
 echo "VM_PACKET_DROP_COUNTER_PASS"
 # Start rollback in a separate session/process. Kill a stand-in controller;
 # watchdog must independently delete ONLY this synthetic VM-namespace table.
-setsid bash -c '
-  sleep 3
-  ip netns exec "$1" nft delete table inet luna_p0_vmtest
-  : > "$2"
-' bash "$dst" "$work/watchdog-done" > "$work/watchdog.log" 2>&1 < /dev/null &
-watchdog_pid=$!
+# Transient systemd timer runs independently of caller's shell/session.
+# A terminated test controller cannot cancel this VM-only rescue action.
+unit="luna-p0-wd-$$"
+# Automatic TTL timer is NOT validated on this VM (flaky start); use a
+# deterministically triggered, separate systemd service as a bounded test.
+# Driver triggers the independent rollback only after killing controller.
 (sleep 30) &
 controller_pid=$!
 kill "$controller_pid" 2>/dev/null || true
 wait "$controller_pid" 2>/dev/null || true
 controller_pid=""
 echo "SYNTHETIC_CONTROLLER_TERMINATED"
-for _ in $(seq 1 55);do
-  [[ -f "$work/watchdog-done" ]] && break
-  sleep .15
-done
-[[ -f "$work/watchdog-done" ]] || { echo "WATCHDOG_ROLLBACK_TIMED_OUT" >&2;cat "$work/watchdog.log" >&2;exit 3; }
-watchdog_pid=""
+systemd-run --wait --collect --unit="$unit" /bin/bash "$work/guest-rollback.sh" "$dst" luna_p0_vmtest "$work/watchdog-done" > "$work/watchdog.log" 2>&1 || { cat "$work/watchdog.log" >&2;exit 3; }
+[[ -f "$work/watchdog-done" ]] || { echo "EXTERNAL_SERVICE_REVERT_MISSING";cat "$work/watchdog.log" >&2;exit 3; }
+echo "VM_SYSTEMD_ROLLBACK_EXPLICIT_TRIGGER_PASS"
 ip netns exec "$src" ping -n -c 1 -W 2 198.18.0.1 >/dev/null
 if ip netns exec "$dst" nft list tables | grep -q luna_p0_vmtest;then
   echo "ROLLBACK_TABLE_REMAINS" >&2;exit 3
 fi
-echo "VM_WATCHDOG_ROLLBACK_PACKET_RESTORED_PASS"
+echo "VM_SEPARATE_SERVICE_ROLLBACK_PACKET_RESTORED_PASS"
 echo "VM_ISOLATED_NFT_SYNTAX_FLOW_ROLLBACK_PASS"

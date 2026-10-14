@@ -74,6 +74,10 @@ After the test, `lxc exec light-luna-p0-nftvm -- ip netns list` returned empty; 
 
 **Warning:** even though this is a VM, a hypervisor or kernel vulnerability can theoretically cross boundaries. Do not test untrusted malware or dangerous kernel exploit code here. This lab is only for valid, bounded, synthetic nft/netns traffic tests.
 
+## Later VM staging and rollback reliability clarification (2026-10-14)
+
+The follow-up [typed VM-stage verification](p0-vm-synthetic-stage-revert.md) added TCP/UDP/IPv6 synthetic tests, a guarded journal and **explicitly triggered** systemd revert. It also exposed nondeterministic `setsid`/`systemd-run` TTL automatic timer behavior on the lab VM; therefore **automatic timed rollback is NOT verified**, even though the original one-shot synthetic demo had passed earlier. After explicit recovery of interrupted journal state, the **combined test suite passed twice consecutively** with independently triggered rollback. No product executor or owner rescue can be claimed from this test.
+
 ## Next engineering gate
 
 1. Move **advisory policy → typed nft staging plan** behind a fail-closed Gate with independent commit/revert phases. Keep the **production executor absent** until owner signs off on the full isolation and recovery acceptance.

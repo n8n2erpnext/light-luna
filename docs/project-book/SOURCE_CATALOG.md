@@ -8,13 +8,13 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 22619 | f020ef2c2bb34c19ae3940af477a16654bfb43b4cb4ed654ddfe78c3adda321a |
+| [README.md](../../README.md) | repository contract | 23591 | daddfc61ebabcffbd8c77291dead687ee427cbe8c89146bfa4efda0b9559e1a6 |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/luna-agent/ed_linux.go](../../cmd/luna-agent/ed_linux.go) | executable entry | 2116 | 6420a0eb3316408b33bb68fce8bad78afdad50dba11ef25fbb8fa61b3a8b95c3 |
 | [cmd/luna-agent/main.go](../../cmd/luna-agent/main.go) | executable entry | 2839 | cfd8e12440334d74d5330a15c6378499437765f9ec8cd69b4bf02adad4c3a1ff |
 | [cmd/luna-brain/main.go](../../cmd/luna-brain/main.go) | executable entry | 1240 | 151fbcc6f2f02e4ebbe60c8c08707780f0391d3416cabd4fa7a28df2e99a87aa |
 | [cmd/luna-gate/main.go](../../cmd/luna-gate/main.go) | executable entry | 3686 | b7c6591f1e988e24410e6f644cf0c5fee1b86018be68cbc4aad705880469b3d4 |
-| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 4411 | 5631421e4a9e20d844dbfe447da14a1b1d76a7e7c194db73fb3625d8429ec5ad |
+| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 5044 | c08a694b267d61b5034eb51b8db042d54f9c9bfb177b1149711bd940ffadd786 |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
 | [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 8202 | 5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
@@ -26,11 +26,11 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 24041 | 73fe183fa70bf00b7b3cf320312d3459a3e8067b124734fb152e211a579a51a6 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 24971 | c34e57fce2bd10c32197d72a91a7af27ecef80a6ffb33e98d5384a61ae91703e |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6148 | d3914223b111c9e4bda808f152f85393b3653b3d19b8c069356f3d96548a2443 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
-| [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 9156 | e30813690feb02cb737854cbd440e51a9d494d948b1431d534a015c2d7ec2a42 |
+| [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 10200 | 7f8f8be4b8a4874d635c61fef67c342d80aa930d50d703bf19c42fdfa3c5f520 |
 | [docs/16-P0-HOMESV-HANDOFF-2026-10-13.md](../../docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | historical / handoff | 4896 | d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d |
 | [docs/adr/ADR-020-go-core-python-optional.md](../../docs/adr/ADR-020-go-core-python-optional.md) | architecture / design source | 5620 | faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8 |
 | [docs/adr/ADR-021-ebpf-observability-xdp-optional.md](../../docs/adr/ADR-021-ebpf-observability-xdp-optional.md) | architecture / design source | 9161 | 13e96c807dbedba32f9cb43a4046a9b4808e549fed57ffd20a35c6535f5200ff |
@@ -55,9 +55,10 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-linux-unix-ipc.md](../../docs/architecture/p0-linux-unix-ipc.md) | architecture / design source | 8818 | 36c508ec0638e2f29d46e4bc0bb3b6b30b625ce054db1c824f6de43eff6c2779 |
 | [docs/architecture/p0-local-control-gate.md](../../docs/architecture/p0-local-control-gate.md) | architecture / design source | 6704 | c4a52cafb1edb078df7abb7a3307ce2e2ad772dcb12c31452f865396721ab9e9 |
 | [docs/architecture/p0-lxd-cross-uid-lab.md](../../docs/architecture/p0-lxd-cross-uid-lab.md) | architecture / design source | 9657 | f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828 |
-| [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 6668 | a93c73cadf81d62ccb0232d02b5b930d54fb5290025cb8c5664322ebd1d837a9 |
+| [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
+| [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10230 | a59bd5a91e96cae313cb10942f02c23db10522d0c217eed5e8fb3d42387fd9e2 |
 | [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
 | [docs/architecture/unified-account-cloud-fleet-control.md](../../docs/architecture/unified-account-cloud-fleet-control.md) | architecture / design source | 12528 | 00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db |
 | [docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md](../../docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | architecture / design source | 9393 | bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4 |
@@ -85,7 +86,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/localipc/unix_linux_test.go](../../internal/localipc/unix_linux_test.go) | unit / negative tests | 7631 | 97490fbcee80571304be120d76893f67c7bb7bc820272ffdd2f9e0e8ec638678 |
 | [internal/nftpreview/compile.go](../../internal/nftpreview/compile.go) | implementation | 5668 | 793e040063d77d3dfbbae9c924e3d65df8a53b1015a55388c07573627a9b36c5 |
 | [internal/nftpreview/compile_test.go](../../internal/nftpreview/compile_test.go) | unit / negative tests | 4253 | 804729d2e9b5f84607f24bce06b0c6279e3e95848778ddb0c7463ac4cf367a8b |
-| [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2719 | a4771f2cb25af034d02bddab0748c4df487076922b26497b78ba798028eeb53d |
+| [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2826 | 3c3e4ea7ad1bd408b55c08674fc16e52151afba70a5e8fabab2f2437eeabe8e4 |
 | [internal/offline/replay_test.go](../../internal/offline/replay_test.go) | unit / negative tests | 3359 | 5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e |
 | [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2058 | 8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164 |
@@ -94,6 +95,8 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 5324 | d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d |
 | [internal/strictjson/decode.go](../../internal/strictjson/decode.go) | implementation | 2771 | d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26 |
 | [internal/strictjson/decode_test.go](../../internal/strictjson/decode_test.go) | unit / negative tests | 801 | d90a7ab46bca5c7b9ad105716e54509e72937534b21645d5f4cff2620ff9782d |
+| [internal/vmstage/plan.go](../../internal/vmstage/plan.go) | implementation | 2419 | 8ebfd304695037b39b620a282400e7c52c99a5063885ecb452cd756e8e8274b1 |
+| [internal/vmstage/plan_test.go](../../internal/vmstage/plan_test.go) | unit / negative tests | 1340 | d7f7fea6930238fcd4e7a269472437e695a51bb45356e3ff79afc8a0d0853a15 |
 | [schemas/cloud-migration-inventory-v1alpha1.schema.json](../../schemas/cloud-migration-inventory-v1alpha1.schema.json) | API contract (partial semantic) | 6989 | 33874323e7c4ad81febe3ceb770999058dd420eabbd247f1ddaf1b35abef34fd |
 | [schemas/component-install-state-v1alpha1.schema.json](../../schemas/component-install-state-v1alpha1.schema.json) | API contract (partial semantic) | 5685 | c440b17d37251000562963f0856711383599d38341b90dce4597233f2cc95cbc |
 | [schemas/component-release-manifest-v1alpha1.schema.json](../../schemas/component-release-manifest-v1alpha1.schema.json) | API contract (partial semantic) | 6493 | 50b04800ee75252a660665d7e189a0ee9d668dfdf6b7e28fa107f2bb6fe5e92e |
@@ -110,11 +113,16 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/lxd/delete-lab.sh](../../scripts/lab/lxd/delete-lab.sh) | developer tooling | 1061 | 5690849e9eae48bd04b6cc9e07a8817d56a3c01ccf865f4832ce88c8bdbcb584 |
 | [scripts/lab/lxd/guest-test.sh](../../scripts/lab/lxd/guest-test.sh) | developer tooling | 6943 | bc3e91f788baa8faf0752da349177b5e41d15df6a7ec815666c0664b68cbee95 |
 | [scripts/lab/lxd/run-tests.sh](../../scripts/lab/lxd/run-tests.sh) | developer tooling | 2270 | a3ec932220e5578c44773f2c28eeb6220030f6489b028dcdc3229a5699d41639 |
-| [scripts/lab/vm/README.md](../../scripts/lab/vm/README.md) | developer tooling | 4751 | 6f82c872d375b2554709ca7adbb24a1bf626355de61953f38325e966433e24f9 |
+| [scripts/lab/vm/README.md](../../scripts/lab/vm/README.md) | developer tooling | 5364 | 8d2ed56837c9f40df8aac560f08b4b5acbf352860a9e492c385eb51502914eba |
 | [scripts/lab/vm/create-vm.sh](../../scripts/lab/vm/create-vm.sh) | developer tooling | 1954 | db0e0df40add52f1e1221fc51cfa646a11c30a7c941d7ec50b3eb27a59e8f57c |
 | [scripts/lab/vm/delete-vm.sh](../../scripts/lab/vm/delete-vm.sh) | developer tooling | 679 | a5dc36c94b6c85e851e8edaa1ea4683c0e629754b8f5bc13684f4fe3dd7d48c2 |
-| [scripts/lab/vm/guest-nft-test.sh](../../scripts/lab/vm/guest-nft-test.sh) | developer tooling | 4349 | 3d1e6daa63e3835a0a5836395a0ba99144ece395967ea3e9576d1b66e410ec1c |
-| [scripts/lab/vm/run-tests.sh](../../scripts/lab/vm/run-tests.sh) | developer tooling | 2782 | 5746a800d11fe7e9c2a4dc7d98f47175ecae61de6b60798e170330cf27694240 |
+| [scripts/lab/vm/guest-netprobe.py](../../scripts/lab/vm/guest-netprobe.py) | developer tooling | 2301 | 8b1f6f80a6f78f868d47d4e91f29ce3613898693ee38882dbf1f1caed316bcf0 |
+| [scripts/lab/vm/guest-nft-test.sh](../../scripts/lab/vm/guest-nft-test.sh) | developer tooling | 4839 | e305ecdb51c8c412e39c1ea450fb8337cb379c0af49d3a73adf0e4f6708e74c1 |
+| [scripts/lab/vm/guest-rollback.sh](../../scripts/lab/vm/guest-rollback.sh) | developer tooling | 1706 | b09c6680ae14c93b9f0d817b879935b073d287f71a07c839c26c0c1d94e7715c |
+| [scripts/lab/vm/guest-stage-journal.py](../../scripts/lab/vm/guest-stage-journal.py) | developer tooling | 4909 | b19b8ca2bafe9aa5d697d8c7a5ed6c7b14a09e0236f35ce3337a00bb6ffeb92e |
+| [scripts/lab/vm/guest-stage-test.sh](../../scripts/lab/vm/guest-stage-test.sh) | developer tooling | 8418 | 49938846bbb359e851b32fb9771c22f1740e6c4650fe149aaf25f25f8e64acc4 |
+| [scripts/lab/vm/reconcile-interrupted-stage.sh](../../scripts/lab/vm/reconcile-interrupted-stage.sh) | developer tooling | 2325 | 884e57bf989384f9241615826efa46cc960689f16a09af7b21eeb302f1af781d |
+| [scripts/lab/vm/run-tests.sh](../../scripts/lab/vm/run-tests.sh) | developer tooling | 3472 | 054ca508efe1c8f98533f5874782c4022a6843b46611bae7c46012c1f9cb7cd5 |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |
 | [scripts/test_p0_gate_processes.sh](../../scripts/test_p0_gate_processes.sh) | developer tooling | 2536 | c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |
