@@ -9,6 +9,16 @@ main_bash_pid="$BASHPID"
 [[ "$(systemd-detect-virt)" == kvm ]] || { echo "VM_KERNEL_REQUIRED" >&2; exit 2; }
 [[ "$(ls -1 /sys/class/net)" == lo ]] || { echo "NIC_PRESENT" >&2; exit 2; }
 fault_mode="${LUNA_VM_FAULT:-none}"
+fallback_mode="${LUNA_VM_FALLBACK:-0}"
+[[ "$fallback_mode" == 0 || "$fallback_mode" == 1 ]] || { echo "INVALID_FALLBACK_MODE" >&2;exit 2; }
+if [[ "$fallback_mode" == 1 ]];then
+  [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FALLBACK_ACK:-}" == "ENABLE_GUEST_SYNTHETIC_FALLBACK" ]] || {
+    echo "VM_FALLBACK_EXPLICIT_ACK_REQUIRED" >&2;exit 2;
+  }
+  [[ "$fault_mode" == keeper_postcommit || "$fault_mode" == watchdog_postcommit ]] || {
+    echo "FALLBACK_MODE_ONLY_POSTCOMMIT_FAULTS" >&2;exit 2;
+  }
+fi
 case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
 if [[ "$fault_mode" != none ]];then
  [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FAULT_ACK:-}" == "KILL_VM_SYNTHETIC_KEEPER_OR_WATCHDOG" ]] || {
@@ -37,6 +47,11 @@ PY
 fi
 [[ ! -e "$work/stage-fault-evidence.json" ]] || { echo "PREVIOUS_FAULT_EVIDENCE_UNARCHIVED_REFUSE" >&2;exit 3; }
 rm -f -- "$work/stage-watchdog.log" "$work/stage-watchdog-done" "$work/stage-nft.nft" "$work/stage-netprobe.log" "$work/auto-watchdog-ready.json" "$work/auto-watchdog-done.json"
+[[ "$fallback_mode" == 0 ]] || {
+  [[ ! -e "$work/fallback-ready.json" && ! -e "$work/fallback-done.json" && ! -e "$work/fallback-rejected.json" ]] || {
+    echo "PREVIOUS_FALLBACK_EVIDENCE_REFUSE" >&2;exit 3;
+  }
+}
 src="luna_stage_src_$$"
 dst="luna_stage_dst_$$"
 server_pid=""
@@ -44,6 +59,7 @@ anchor_pid=""
 keeper_pid=""
 keeper_unit=""
 watchdog_pid=""
+fallback_unit=""
 controller_pid=""
 cleanup(){
   [[ "$BASHPID" == "$main_bash_pid" ]] || return 0
@@ -53,6 +69,7 @@ cleanup(){
  [[ -z "$watchdog_pid" ]] || kill "$watchdog_pid" 2>/dev/null || true
  [[ -z "${unit:-}" ]] || { systemctl stop "$unit.timer" >/dev/null 2>&1 || true; systemctl stop "$unit.service" >/dev/null 2>&1 || true; }
  [[ -z "$keeper_unit" ]] || systemctl stop "$keeper_unit.service" >/dev/null 2>&1 || true
+ [[ -z "$fallback_unit" ]] || systemctl stop "$fallback_unit.service" >/dev/null 2>&1 || true
  ip netns exec "$dst" nft delete table inet luna_p0_stage >/dev/null 2>&1 || true
  ip netns delete "$src" >/dev/null 2>&1 || true
  ip netns delete "$dst" >/dev/null 2>&1 || true
@@ -190,6 +207,29 @@ assert r["ttlSeconds"]==m["ttlSeconds"]
 assert r["deadlineMonotonic"]-time.monotonic()>=5, "TTL too near; cannot commit safely"
 PY
   echo "VM_AUTO_WATCHDOG_PRECOMMIT_READY_PASS"
+  if [[ "$fallback_mode" == 1 ]];then
+    fallback_unit="luna-p0-fallback-$$"
+    systemd-run --unit="$fallback_unit" --property=RuntimeMaxSec=22s /usr/bin/nsenter -t "$keeper_pid" -n /usr/bin/python3 "$work/guest-fallback-supervisor.py" "$keeper_pid" "$anchor_ticks" "$anchor_netns" "$unit.service" "$keeper_unit.service" > "$work/fallback-launch.log" 2>&1
+    for _ in $(seq 1 70);do
+      [[ -f "$work/fallback-ready.json" ]] && break
+      if [[ "$(systemctl is-failed "$fallback_unit.service" || true)" == failed ]];then
+        journalctl -u "$fallback_unit.service" -o cat -n 15 --no-pager >&2
+        echo "VM_FALLBACK_SERVICE_FAILED_PRECOMMIT" >&2;exit 3
+      fi
+      sleep .05
+    done
+    [[ -f "$work/fallback-ready.json" ]] || { echo "VM_FALLBACK_NOT_READY" >&2;exit 3; }
+    python3 - "$work/fallback-ready.json" "$work/auto-watchdog-ready.json" <<'PY'
+import json,sys,time
+f=json.load(open(sys.argv[1]));p=json.load(open(sys.argv[2]))
+assert f["stageId"]==p["stageId"] and f["bootId"]==p["bootId"]
+assert f["netnsInode"]==p["netnsInode"]
+assert f["deadlineMonotonic"]==p["deadlineMonotonic"]
+assert f["deadlineMonotonic"]-time.monotonic()>=4.0
+assert f["kernelWrites"] is False and f["ownerApproved"] is False
+PY
+    echo "VM_FALLBACK_INDEPENDENT_PID1_READY_BEFORE_COMMIT_PASS"
+  fi
   if [[ "$fault_mode" == keeper_precommit ]];then
     # Fault only a specific transient PID1-managed lab keeper (never systemd).
     systemctl kill --kill-who=main --signal=SIGKILL "$keeper_unit.service"
@@ -237,9 +277,38 @@ if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit
   sleep .3
   [[ "$(systemctl show "$victim" -p MainPID --value)" == 0 ]] || { echo "FAULT_SERVICE_DEATH_UNVERIFIED";exit 3; }
   echo "VM_FAULT_SERVICE_POSTCOMMIT_KILLED"
-  # Verify no false DONE, confirm synthetic table still exists after TTL.
-  python3 "$work/guest-fault-evidence.py" observe "$fault_mode" "$unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
-  echo "VM_FAULT_POSTCOMMIT_UNRECOVERED_RECORDED_PASS"
+  if [[ "$fallback_mode" == 1 ]];then
+    for _ in $(seq 1 145);do
+      [[ -f "$work/fallback-done.json" ]] && break
+      [[ -f "$work/fallback-rejected.json" ]] && break
+      sleep .10
+    done
+    [[ -s "$work/fallback-done.json" && ! -e "$work/fallback-rejected.json" ]] || {
+      journalctl -u "$fallback_unit.service" -o cat -n 25 --no-pager >&2
+      echo "VM_FALLBACK_NOT_CONFIRMED" >&2;exit 3;
+    }
+    python3 - "$work/fallback-done.json" "$state" <<'PY'
+import json,sys
+from pathlib import Path
+d=json.load(open(sys.argv[1]));j=json.load(open(sys.argv[2]))
+boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+assert d["status"]=="SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED"
+assert d["bootId"]==boot and j["bootId"]==boot
+assert j["state"]=="ROLLED_BACK" and len(j["history"])==4
+assert d["stageId"]==j["stageId"] and d["syntheticGuestOnly"] is True
+PY
+    [[ ! -e "$work/auto-watchdog-done.json" ]] || { echo "PRIMARY_FALSE_DONE_AFTER_SIGKILL";exit 3; }
+    ip netns exec "$src" python3 "$probe" client accept
+    ip netns exec "$src" ping -6 -n -c 1 -W 2 fd42:198:19::1 >/dev/null
+    if ip netns exec "$dst" nft list table inet luna_p0_stage >/dev/null 2>&1;then
+      echo "SYNTHETIC_TABLE_STILL_PRESENT_AFTER_FALLBACK";exit 3
+    fi
+    echo "VM_FALLBACK_POSTCOMMIT_SYNTHETIC_IPV4_IPV6_TCP_UDP_RESTORED_PASS"
+  else
+    # No fallback in prior fault suite; must detect the still-enforced policy.
+    python3 "$work/guest-fault-evidence.py" observe "$fault_mode" "$unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
+    echo "VM_FAULT_POSTCOMMIT_UNRECOVERED_RECORDED_PASS"
+  fi
   exit 0
 fi
 sleep 30 &

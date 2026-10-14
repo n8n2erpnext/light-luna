@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 27576,
-      "sha256": "bb65eaf6bd5874bbcc4747da855b81d9cae8e6e81266a6ef5a03af59d02ba981"
+      "bytes": 28467,
+      "sha256": "64d4d9b6d360dd8e44f5bea9b8784541ebf8abdb558accf7f52850f4dd2afc68"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -364,8 +364,8 @@
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
       "category": "architecture / design source",
       "title": "P0 autonomous TTL watchdog — independent KVM guest lab",
-      "bytes": 16412,
-      "sha256": "cf8fd842d2f26b251f5818b9284039710e0c97e9f9d2432cea76ff7df90a6e52"
+      "bytes": 20065,
+      "sha256": "177964fd4e5382a87a5bbc7bd050ca4b84bbe2aae04c125aa975afcfd2b920dd"
     },
     {
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
@@ -756,8 +756,8 @@
       "path": "scripts/lab/vm/README.md",
       "category": "developer tooling",
       "title": "Light Luna P0 kernel-separated LXD VM",
-      "bytes": 10726,
-      "sha256": "1d60b4bee0f14c74a61361457d8e443ff1b9d9f4e774542a8ae98a02998a6eef"
+      "bytes": 12249,
+      "sha256": "278dfed4bb1eb281a05761faa84dded72c2909bf9fce3d33f6b342f822e275e5"
     },
     {
       "path": "scripts/lab/vm/create-vm.sh",
@@ -800,6 +800,13 @@
       "title": "guest-boot-inspect",
       "bytes": 6645,
       "sha256": "e73b55d52de037ebc351affbbe32dd9ff39b2d0ac1dc1c7a76c21bfac2f22096"
+    },
+    {
+      "path": "scripts/lab/vm/guest-fallback-supervisor.py",
+      "category": "developer tooling",
+      "title": "guest-fallback-supervisor",
+      "bytes": 9325,
+      "sha256": "6ed79c05fc9f1d9d0cb27c10e7e6d3554dd8dd1a2616291c2cdd9c8b0a13de4c"
     },
     {
       "path": "scripts/lab/vm/guest-fault-evidence.py",
@@ -854,8 +861,8 @@
       "path": "scripts/lab/vm/guest-stage-test.sh",
       "category": "developer tooling",
       "title": "guest-stage-test",
-      "bytes": 14189,
-      "sha256": "208facbcd842ab3b30cfd4f95651b9debbeca89d454832f72d83f170ab67c012"
+      "bytes": 17676,
+      "sha256": "d43addeca532ebd1ab11e7dfd84d439937bb1db6233fefda454b641d6da63a8a"
     },
     {
       "path": "scripts/lab/vm/reconcile-interrupted-stage.sh",
@@ -863,6 +870,13 @@
       "title": "reconcile-interrupted-stage",
       "bytes": 2486,
       "sha256": "48eb49b628946a4a7ad3e97286dabe9623353c1da0ec030b7bca4ccecc8b6784"
+    },
+    {
+      "path": "scripts/lab/vm/run-fallback-faults.sh",
+      "category": "developer tooling",
+      "title": "run-fallback-faults",
+      "bytes": 3044,
+      "sha256": "9535f33f34b494dd1f8245e91100b53637a71a73875eb92d1f6f09c3db79ef90"
     },
     {
       "path": "scripts/lab/vm/run-reboot-fault.sh",
@@ -898,6 +912,13 @@
       "title": "test_boot_journal",
       "bytes": 3640,
       "sha256": "2db755fcc952ccb9c5229ac80003f3f3f98626466bc181557079207de438699d"
+    },
+    {
+      "path": "scripts/lab/vm/test_fallback_supervisor.py",
+      "category": "developer tooling",
+      "title": "test_fallback_supervisor",
+      "bytes": 3045,
+      "sha256": "1a6551156d5f42d37f1b6bbe4637ff11af8cd75fb75c636a312e6a8301394151"
     },
     {
       "path": "scripts/test_p0_ed25519_identities.sh",

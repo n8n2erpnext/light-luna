@@ -2,6 +2,18 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Independent namespace-pinning fallback (2026-10-14 — KVM synthetic PASS only)
+
+[Full evidence, limits and source](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-fallback-supervisor.py` runs as a **second** VM PID1-managed process, entering the exact guest test namespace before commit and keeping it pinned independently of the keeper. Opt-in `LUNA_VM_FALLBACK=1` and explicit fallback ACK apply only to postcommit keeper/watchdog SIGKILL fault modes; the normal stage test still defaults to no fallback. It validates boot/stage/namespace/deadline and exact nft JSON test-rule shape before deleting only `inet luna_p0_stage`, then checks absence and writes a separate **synthetic-only** DONE receipt.
+
+To reproduce after ensuring a clean terminal VM journal and choosing a new evidence tag (do not overwrite archives):
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_P0_FALLBACK_TEST_ACK=TEST_GUEST_ONLY_SYNTHETIC_FALLBACK LUNA_VM_EVIDENCE_TAG=your-unique-lab-tag bash scripts/lab/vm/run-fallback-faults.sh
+```
+
+Two executions of both `keeper_postcommit` and `watchdog_postcommit` fault cases PASS, including the stricter JSON rule validator. Post-fault traffic recovery is verified **before test cleanup**; a later clean VM inventory confirms empty root nft and named netns. Twelve offline whitelist positive/negative tests PASS. **No real Light Luna kernel enforcement, production deployment, signed owner authentication, persistent daemon or independent power-loss rescue** has been built or demonstrated.
+
 ## Three real isolated service-death fault injections (2026-10-14)
 
 [Architecture, evidence, nonclaims](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-stage-test.sh` has explicit `LUNA_VM_FAULT` modes `keeper_precommit`, `keeper_postcommit` and `watchdog_postcommit`. They deliberately SIGKILL only their own temporary systemd MainPID **inside the no-NIC KVM guest**. `guest-fault-evidence.py` observes the failed unit after the monotonic deadline; for both postcommit cases the fixed synthetic nft table remains until the test EXIT cleanup. **No recovery or automatic rollback success is claimed.** After scoped guest cleanup, `guest-archive-fault.py` requires a separate exact acknowledgment and archives the still-incomplete stage journal unchanged along with a failure record; no-ack is rejected.

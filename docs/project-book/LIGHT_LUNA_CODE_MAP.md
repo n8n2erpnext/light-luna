@@ -16,6 +16,13 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - `guest-auto-watchdog.py` → boot identity verified before READY and before namespace-targeted TTL rollback; READY/DONE receipts carry the ID. `guest-stage-test.sh` verifies receipts, and `reconcile-interrupted-stage.sh` refuses cross-boot terminal transitions.
 - `test_boot_journal.py` → 5 offline unit tests (new-boot refusal, legacy refusal, duplicate-key denial, etc.). **Effects:** synthetic VM journal/receipt writes only, no product policy apply. Standalone KVM suite on the modified source returned exit 0 with original explicit and automatic TTL regression markers; this is **not a real VM reboot, automatic boot reconciliation, signed owner authorization, or product executor**.
 
+## Independent guest-netns fallback (2026-10-14 — VM-only source/runtime PASS)
+
+- `scripts/lab/vm/guest-stage-test.sh` → opt-in `LUNA_VM_FALLBACK=1` with separately acknowledged synthetic-fault mode → launches `systemd-run` `nsenter -n` to start `guest-fallback-supervisor.py` **inside the exact VM destination netns** before synthetic commit and requires its fsynced READY receipt. Default normal stage behavior is unchanged.
+- `guest-fallback-supervisor.py` → validates KVM/no NIC/marker, keeper start ticks, exact netns/boot/stage and primary READY; observes service death and monotonic TTL; checks nft JSON **exact three synthetic rules**, deletes only `inet luna_p0_stage` in its own pinned VM test netns, checks absence, advances single-controller journal and writes synthetic-only fallback DONE. **Kernel side effect exists only for this explicitly armed guest-only test.**
+- `scripts/lab/vm/run-fallback-faults.sh` → exact-VM guarded/ACKed runner; two real SIGKILL modes, independent fallback receipt and packet restoration verified before fixture cleanup. Preserves separate per-run journal/READY/DONE evidence, refuses overwrite.
+- `scripts/lab/vm/test_fallback_supervisor.py` → 12 offline rule whitelist positive/negative cases. Two full 2-case VM runs PASS. **NOT** packaged guardian, production executor, owner signing, concurrency-safe transactional recovery, reboot rescue, or G-STANDALONE.
+
 ## VM temporary service death fault path (2026-10-14 — real KVM SIGKILL, failure evidence PASS)
 
 - `scripts/lab/vm/run-service-faults.sh` (explicit ack, exactly named NIC-less KVM VM/profiling guard) → `guest-stage-test.sh` with `LUNA_VM_AUTO_TTL=1` and enumerated fault modes. It SIGKILLs **only** per-test transient systemd keeper/watchdog MainPID, before/after a synthetic test-netns table commit. The host runner requires no guest nft/named netns left after the shell's scoped EXIT cleanup, no DONE and an incomplete journal before any archive.
