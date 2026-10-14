@@ -28,6 +28,18 @@ func prefix(s string) error {
 	return nil
 }
 
+// sourceMatchesProtocol keeps ICMP address-family validation consistent across
+// policy parsing, flow simulation, and unhooked nft preview.
+func sourceMatchesProtocol(protocol string, source netip.Prefix) bool {
+	if protocol == "icmp" {
+		return source.Addr().Is4()
+	}
+	if protocol == "icmpv6" {
+		return source.Addr().Is6()
+	}
+	return true
+}
+
 func (b Bundle) Validate() error {
 	if b.APIVersion != "lightluna.io/v1alpha1" || b.Kind != "PolicyBundle" {
 		return fmt.Errorf("unsupported apiVersion or kind")
@@ -61,6 +73,7 @@ func (b Bundle) Validate() error {
 		return fmt.Errorf("policy size limits exceeded")
 	}
 	aliases := make(map[string]string, len(b.Spec.Aliases))
+	cidrAliasPrefixes := make(map[string][]netip.Prefix, len(b.Spec.Aliases))
 	for i, a := range b.Spec.Aliases {
 		if len(a.ID) < 2 || !nameRE.MatchString(a.ID) {
 			return fmt.Errorf("aliases[%d]: invalid id", i)
@@ -75,6 +88,7 @@ func (b Bundle) Validate() error {
 			return fmt.Errorf("aliases[%d]: values length invalid", i)
 		}
 		seen := map[string]bool{}
+		var resolvedCIDRs []netip.Prefix
 		for j, raw := range a.Values {
 			var canonical string
 			if a.Type == "cidr-set" {
@@ -86,6 +100,8 @@ func (b Bundle) Validate() error {
 					return fmt.Errorf("aliases[%d].values[%d]: %w", i, j, err)
 				}
 				canonical = value
+				pr, _ := netip.ParsePrefix(value) // canonical CIDR already validated
+				resolvedCIDRs = append(resolvedCIDRs, pr)
 			} else {
 				var value int
 				if err := json.Unmarshal(raw, &value); err != nil || value < 1 || value > 65535 {
@@ -99,6 +115,9 @@ func (b Bundle) Validate() error {
 			seen[canonical] = true
 		}
 		aliases[a.ID] = a.Type
+		if a.Type == "cidr-set" {
+			cidrAliasPrefixes[a.ID] = resolvedCIDRs
+		}
 	}
 	ids := map[string]bool{}
 	priorities := map[int]bool{}
@@ -131,9 +150,18 @@ func (b Bundle) Validate() error {
 			if kind != "cidr-set" {
 				return fmt.Errorf("rules[%d]: source alias must be cidr-set", i)
 			}
+			for _, pr := range cidrAliasPrefixes[r.Source] {
+				if !sourceMatchesProtocol(r.Protocol, pr) {
+					return fmt.Errorf("rules[%d]: source alias %q contains CIDR family incompatible with %s", i, r.Source, r.Protocol)
+				}
+			}
 		} else if r.Source != "any" {
 			if err := prefix(r.Source); err != nil {
 				return fmt.Errorf("rules[%d]: source %q is neither CIDR nor cidr-set: %w", i, r.Source, err)
+			}
+			pr, _ := netip.ParsePrefix(r.Source) // canonical CIDR already validated
+			if !sourceMatchesProtocol(r.Protocol, pr) {
+				return fmt.Errorf("rules[%d]: source CIDR family incompatible with %s", i, r.Protocol)
 			}
 		}
 		if r.DestinationPort != 0 {

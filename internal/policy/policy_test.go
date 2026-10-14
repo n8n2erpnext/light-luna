@@ -2,6 +2,7 @@ package policy
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"strings"
 	"testing"
@@ -77,6 +78,56 @@ func TestRejectMalformedPolicies(t *testing.T) {
 		})
 	}
 }
+
+// Family agreement is enforced at the policy trust boundary, not deferred to
+// nft-preview. A source alias is rejected if ANY member is incompatible.
+func TestICMPSourceFamiliesValidateConsistently(t *testing.T) {
+	base, err := decode(t, fixture(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	tests := []struct {
+		name        string
+		protocol    string
+		source      string
+		aliasValues []string
+		reject      bool
+	}{
+		{"IPv4 ICMP literal", "icmp", "192.0.2.0/24", nil, false},
+		{"IPv6 ICMPv6 literal", "icmpv6", "2001:db8::/32", nil, false},
+		{"IPv6 for IPv4 ICMP", "icmp", "2001:db8::/32", nil, true},
+		{"IPv4 for ICMPv6", "icmpv6", "192.0.2.0/24", nil, true},
+		{"any allowed for ICMP", "icmp", "any", nil, false},
+		{"any allowed for ICMPv6", "icmpv6", "any", nil, false},
+		{"IPv4 alias for IPv4 ICMP", "icmp", "trusted-admin", nil, false},
+		{"IPv4 alias rejected for ICMPv6", "icmpv6", "trusted-admin", nil, true},
+		{"mixed alias rejected for IPv4 ICMP", "icmp", "trusted-admin", []string{"192.0.2.14/32", "2001:db8::/32"}, true},
+		{"mixed alias rejected for ICMPv6", "icmpv6", "trusted-admin", []string{"192.0.2.14/32", "2001:db8::/32"}, true},
+		{"IPv6 alias for ICMPv6", "icmpv6", "trusted-admin", []string{"2001:db8::/32"}, false},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			b := base
+			b.Spec.Rules = append([]Rule(nil), base.Spec.Rules...)
+			b.Spec.Aliases = append([]Alias(nil), base.Spec.Aliases...)
+			if tc.aliasValues != nil {
+				b.Spec.Aliases[0].Values = nil
+				for _, cidr := range tc.aliasValues {
+					raw, _ := json.Marshal(cidr)
+					b.Spec.Aliases[0].Values = append(b.Spec.Aliases[0].Values, raw)
+				}
+			}
+			b.Spec.Rules[1].Protocol = tc.protocol
+			b.Spec.Rules[1].Source = tc.source
+			b.Spec.Rules[1].DestinationPort = 0
+			err := b.Validate()
+			if (err != nil) != tc.reject {
+				t.Fatalf("reject=%v got err=%v", tc.reject, err)
+			}
+		})
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")

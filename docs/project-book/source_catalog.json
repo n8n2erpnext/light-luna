@@ -56,8 +56,8 @@
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 5044,
-      "sha256": "c08a694b267d61b5034eb51b8db042d54f9c9bfb177b1149711bd940ffadd786"
+      "bytes": 5272,
+      "sha256": "f3f19b771783d55795cc01c61cd11ada05e2fdb68a3ff96d212a16359a95f048"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 35884,
-      "sha256": "8c5a4cf982fe2a05bf16b84a1b9dfc69c6156a9cdd0e03d9d719f11fd17cd6b6"
+      "bytes": 36672,
+      "sha256": "1adb69bc50f77245e8da67c970ec533731c1735ae648c56618b88fabf2485703"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -366,6 +366,13 @@
       "title": "P0 nftables Compiler — Unhooked Preview Only",
       "bytes": 4841,
       "sha256": "8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed"
+    },
+    {
+      "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
+      "category": "architecture / design source",
+      "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
+      "bytes": 4703,
+      "sha256": "9727ab9ab59826857108a450c0a7611022754943767147a49850ec7daa85c206"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -620,6 +627,20 @@
       "sha256": "5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e"
     },
     {
+      "path": "internal/policy/conflicts.go",
+      "category": "implementation",
+      "title": "conflicts",
+      "bytes": 5401,
+      "sha256": "60f42d8d1df24546fc6e8b2afebf4706c84b528c0faf5e4a3700fad29f15e8fc"
+    },
+    {
+      "path": "internal/policy/conflicts_test.go",
+      "category": "unit / negative tests",
+      "title": "conflicts_test",
+      "bytes": 4667,
+      "sha256": "11bd520ee3f4f0aabb0b89a7f8130a886787cffb9030b797d936bb5998999182"
+    },
+    {
       "path": "internal/policy/duplicate_keys_test.go",
       "category": "unit / negative tests",
       "title": "duplicate_keys_test",
@@ -637,8 +658,8 @@
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 3082,
-      "sha256": "fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96"
+      "bytes": 5018,
+      "sha256": "6bb9263a20f343217e16f99892e363f4fe0e6e5697306c1204f6bd1f6152388f"
     },
     {
       "path": "internal/policy/preview.go",
@@ -651,8 +672,8 @@
       "path": "internal/policy/validate.go",
       "category": "implementation",
       "title": "validate",
-      "bytes": 5324,
-      "sha256": "d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d"
+      "bytes": 6425,
+      "sha256": "eba6c295b454f529f0ea616f0b3973f45849533d2f554f53ed3e7cdd32900932"
     },
     {
       "path": "internal/strictjson/decode.go",

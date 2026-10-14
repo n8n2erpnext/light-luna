@@ -44,6 +44,7 @@ Scope: document ownership and historical path mapping
 | [Local Runtime Foundation](../architecture/local-runtime-foundation.md) | IMPLEMENTED P0 separate CLI/Brain build targets and synthetic offline Brain→inert Gate replay; no real firewall/host sensor/service |
 | [Unhooked nftables Compiler](../architecture/p0-nft-unhooked-compiler.md) | IMPLEMENTED source-only nftables regular-chain text preview, no hook/kernel apply or nft -c syntax proof |
 | [Synthetic P0 Flow Simulator](../architecture/p0-flow-simulator.md) | IMPLEMENTED pure-Go synthetic declared-policy matcher and admin lockout *warning*; all kernel verdicts UNKNOWN |
+| [P0 Core Rule Conflict Audit](../architecture/p0-policy-rule-conflict-audit.md) | **IMPLEMENTED source/CLI only:** ICMP source family validation + bounded pure-Go precedence/shadow/overlap review; no authority or nft write |
 | [P0 Local Control Gate](../architecture/p0-local-control-gate.md) | IMPLEMENTED in-process HMAC/revision/nonce gate and denial-only apply selftest; no socket/auth system/executor |
 | [P0 Linux Unix Socket IPC](../architecture/p0-linux-unix-ipc.md) | IMPLEMENTED real kernel UDS/SO_PEERCRED transport and cross-process Go tests; demo is NOT production-separated Agent/Gate and cannot enforce firewall |
 | [P0 Separate Agent/Gate and Replay Journal](../architecture/p0-two-process-gate-and-journal.md) | IMPLEMENTED two separate dev binaries, same-UID temporary shared secret, bounded fsynced journal across Gate restarts; NOT production service identity, executor or rollback |

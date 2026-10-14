@@ -21,6 +21,13 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## Core P0 policy family validation and static precedence audit (2026-10-14, source + CLI)
+
+- `cmd/lunactl/main.go` `firewall policies analyze <file>` → strict `policy.Decode` → [`policy.AnalyzeConflicts`](../../internal/policy/conflicts.go) → bounded, deterministic **advisory JSON**. `Status`, `Complete`, `LimitedBy`, rule pairs/CIDR comparison counts, and pairs of UUID/priority/action are reported; **always** `Enforceable=false`, `KernelWrites=false`. No privileged Gate/IPC/nft call or kernel changes.
+- `internal/policy/validate.go` source family check → reject `icmp` with IPv6 CIDR and `icmpv6` with IPv4 CIDR, **including every member** of `cidr-set` aliases; `any` stays valid. This removes a mismatch between basic validation and the existing nft preview/flow simulator.
+- `internal/policy/conflicts.go` → sorted first-terminal rule overlap analysis, nonterminal `log` handling, alias prefixes and wildcard TCP/UDP ports; explicit **INCOMPLETE_REVIEW_REQUIRED** after bounded pair, CIDR or finding checks. See [unit tests](../../internal/policy/conflicts_test.go), [family test matrix](../../internal/policy/policy_test.go), [canonical contract](../architecture/p0-policy-rule-conflict-audit.md). A narrow `accept` before broad `drop` is **reviewable overlap**, not automatically rejected.
+- Status: **development source/CLI tested, NOT a real firewall**; does not prove remote admin reachability, owner authentication, kernel precedence, rescue operation, or G-STANDALONE. Prometheus/notifications remain parked.
+
 ## Read-only FD-held nsfs namespace audit — KVM proven (2026-10-14)
 
 - `scripts/lab/vm/guest-boot-inspect.py` → `inspect_kernel` returns `foreignNetnsFdHolders` alongside root nft / named netns / non-root process network namespaces. Bounded guest `/proc/<pid>/fd` scan checks foreign `net:[...]` link targets OR nsfs `st_dev/st_ino` differing from PID1 netns, including renamed/unlinked bound namespace FDs. **Side effects: read-only proc/stat/nft inventory**, no kernel mutations; missing or invalid FD field → fail closed.

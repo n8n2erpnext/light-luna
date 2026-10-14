@@ -14,7 +14,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [cmd/luna-agent/main.go](../../cmd/luna-agent/main.go) | executable entry | 2839 | cfd8e12440334d74d5330a15c6378499437765f9ec8cd69b4bf02adad4c3a1ff |
 | [cmd/luna-brain/main.go](../../cmd/luna-brain/main.go) | executable entry | 1240 | 151fbcc6f2f02e4ebbe60c8c08707780f0391d3416cabd4fa7a28df2e99a87aa |
 | [cmd/luna-gate/main.go](../../cmd/luna-gate/main.go) | executable entry | 3686 | b7c6591f1e988e24410e6f644cf0c5fee1b86018be68cbc4aad705880469b3d4 |
-| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 5044 | c08a694b267d61b5034eb51b8db042d54f9c9bfb177b1149711bd940ffadd786 |
+| [cmd/lunactl/main.go](../../cmd/lunactl/main.go) | executable entry | 5272 | f3f19b771783d55795cc01c61cd11ada05e2fdb68a3ff96d212a16359a95f048 |
 | [docs/00-VISION-BRAND.md](../../docs/00-VISION-BRAND.md) | architecture / design source | 3512 | 4966df87e4995d9a3a7a3dd8e4af89efe8c24ad2458f718f320e8367d00cc364 |
 | [docs/01-ARCHITECTURE.md](../../docs/01-ARCHITECTURE.md) | architecture / design source | 8202 | 5fd5fee794f81b8d69c7fb7a25d2a13be9c712f289063e3f894a5f095fab8e26 |
 | [docs/02-FIREWALL-ENGINE.md](../../docs/02-FIREWALL-ENGINE.md) | architecture / design source | 5328 | 47ebb88be9176273b8473f4a9581c538601eada1ab0e72f6fc2997766526a7f1 |
@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 35884 | 8c5a4cf982fe2a05bf16b84a1b9dfc69c6156a9cdd0e03d9d719f11fd17cd6b6 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 36672 | 1adb69bc50f77245e8da67c970ec533731c1735ae648c56618b88fabf2485703 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -59,6 +59,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-lxd-cross-uid-lab.md](../../docs/architecture/p0-lxd-cross-uid-lab.md) | architecture / design source | 9657 | f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828 |
 | [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
+| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 4703 | 9727ab9ab59826857108a450c0a7611022754943767147a49850ec7daa85c206 |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
@@ -95,11 +96,13 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/observability/synthetic_test.go](../../internal/observability/synthetic_test.go) | unit / negative tests | 5685 | e4db732e67fc9d5873928a705126d6a28da426c2512b03696f27d4548aad553e |
 | [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2826 | 3c3e4ea7ad1bd408b55c08674fc16e52151afba70a5e8fabab2f2437eeabe8e4 |
 | [internal/offline/replay_test.go](../../internal/offline/replay_test.go) | unit / negative tests | 3359 | 5eed4afa1b3038e7e0c12f1e070928ab56317d398026751dd4151d2ea2948e0e |
+| [internal/policy/conflicts.go](../../internal/policy/conflicts.go) | implementation | 5401 | 60f42d8d1df24546fc6e8b2afebf4706c84b528c0faf5e4a3700fad29f15e8fc |
+| [internal/policy/conflicts_test.go](../../internal/policy/conflicts_test.go) | unit / negative tests | 4667 | 11bd520ee3f4f0aabb0b89a7f8130a886787cffb9030b797d936bb5998999182 |
 | [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
 | [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2058 | 8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164 |
-| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 3082 | fb7df3902263b5ce411a6fecc92e79f093ae90bbfaa1454337fe76c5ff195e96 |
+| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 5018 | 6bb9263a20f343217e16f99892e363f4fe0e6e5697306c1204f6bd1f6152388f |
 | [internal/policy/preview.go](../../internal/policy/preview.go) | implementation | 1720 | 326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362 |
-| [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 5324 | d693de86a166ba0d7b0518429876b8a07828f953e8b6f78c5776735e5c51f49d |
+| [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 6425 | eba6c295b454f529f0ea616f0b3973f45849533d2f554f53ed3e7cdd32900932 |
 | [internal/strictjson/decode.go](../../internal/strictjson/decode.go) | implementation | 2771 | d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26 |
 | [internal/strictjson/decode_test.go](../../internal/strictjson/decode_test.go) | unit / negative tests | 801 | d90a7ab46bca5c7b9ad105716e54509e72937534b21645d5f4cff2620ff9782d |
 | [internal/vmstage/plan.go](../../internal/vmstage/plan.go) | implementation | 2419 | 8ebfd304695037b39b620a282400e7c52c99a5063885ecb452cd756e8e8274b1 |
