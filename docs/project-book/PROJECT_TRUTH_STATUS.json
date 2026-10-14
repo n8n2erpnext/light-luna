@@ -75,6 +75,8 @@
       "vmStageInterruptedJournal": "guarded_manual_reconcile_PASS_precommit_abort_evidence_archived_and_postcommit_clean_rollback",
       "vmStageProductionExecutor": "NOT_IMPLEMENTED_no_product_generated_hook_applied",
       "vmStageAutonomousTTLProof": "PASS_three_consecutive_full_VM_runs_10s_monotonic_TTL_stage_AUTO_ROLLBACK_CONFIRMED_journal_terminal_ipv4_ipv6_tcp_udp_restored",
+      "vmStageJournalBootId": "SOURCE_IMPLEMENTED_kernel_boot_id_pinned_STAGED_and_cross_boot_denied",
+      "vmStageBootIdRegression": "PASS_5_python_unit_tests_plus_one_full_KVM_suite_explicit_and_auto_TTL; no_real_reboot",
       "vmStageAutomaticBootRecovery": "NOT_TESTED_VM_reboot_or_power_loss_during_pending_policy",
       "vmStageAutonomousTTLReceipt": "sample_0_079_seconds_lag_one_run_not_a_SLA",
       "journalRecovery": "restart_replay_pass_corrupt_journal_fails_closed_not_power_loss_tested",

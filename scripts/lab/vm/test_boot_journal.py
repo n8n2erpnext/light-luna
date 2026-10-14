@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+"""Offline, unprivileged P0 VM journal boot-identity regression tests.
+
+No LXD, nft, kernel mutation, device access or privileges.
+"""
+import importlib.util
+import json
+import tempfile
+import unittest
+from pathlib import Path
+from unittest import mock
+
+MODULE = Path(__file__).with_name("guest-stage-journal.py")
+spec = importlib.util.spec_from_file_location("luna_stage_journal_under_test", MODULE)
+journal = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(journal)
+
+BOOT_A = "11111111-2222-4333-8444-555555555555"
+BOOT_B = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee"
+
+class BootJournalTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="luna-boot-identity-")
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.patch_root = mock.patch.object(journal, "ROOT", self.root)
+        self.patch_journal = mock.patch.object(journal, "JOURNAL", self.root / "stage-journal.json")
+        self.patch_root.start()
+        self.patch_journal.start()
+        self.addCleanup(self.patch_root.stop)
+        self.addCleanup(self.patch_journal.stop)
+        self.manifest = {"stageId": "vm-test-boot-identity"}
+
+    def state(self):
+        return json.loads(journal.JOURNAL.read_text(encoding="utf-8"))
+
+    def test_same_boot_progresses_then_reboot_denies_transition(self):
+        with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+            journal.transition("init", "STAGED", self.manifest)
+            journal.transition("transition", "VALIDATED", self.manifest)
+            self.assertEqual(self.state()["bootId"], BOOT_A)
+        with mock.patch.object(journal, "boot_id", return_value=BOOT_B):
+            with self.assertRaisesRegex(ValueError, "different Linux boot"):
+                journal.transition("transition", "COMMITTED_SYNTHETIC", self.manifest)
+        self.assertEqual(self.state()["state"], "VALIDATED")
+        self.assertEqual(len(self.state()["history"]), 2)
+
+    def test_old_journal_without_boot_id_denied(self):
+        journal.JOURNAL.write_text(
+            json.dumps({"stageId": self.manifest["stageId"], "state": "STAGED", "history": ["STAGED"]}),
+            encoding="utf-8",
+        )
+        with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+            with self.assertRaisesRegex(ValueError, "journal mismatch"):
+                journal.transition("transition", "VALIDATED", self.manifest)
+        self.assertNotIn("bootId", self.state())
+
+    def test_corrupt_or_duplicate_journal_denied(self):
+        journal.JOURNAL.write_text('{"stageId":"x","state":"STAGED","state":"VALIDATED"}', encoding="utf-8")
+        with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+            with self.assertRaisesRegex(ValueError, "duplicate JSON key"):
+                journal.transition("transition", "VALIDATED", self.manifest)
+
+    def test_journal_is_bound_at_init_and_cannot_be_reinitialized(self):
+        with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+            journal.transition("init", "STAGED", self.manifest)
+            with self.assertRaisesRegex(ValueError, "previous transaction"):
+                journal.transition("init", "STAGED", self.manifest)
+        self.assertEqual(self.state()["bootId"], BOOT_A)
+
+    def test_unavailable_kernel_boot_id_fails_closed(self):
+        with mock.patch.object(Path, "read_text", return_value="not-a-boot-id"):
+            with self.assertRaisesRegex(ValueError, "invalid kernel boot ID"):
+                journal.boot_id()
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

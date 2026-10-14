@@ -364,8 +364,8 @@
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
       "category": "architecture / design source",
       "title": "P0 autonomous TTL watchdog — independent KVM guest lab",
-      "bytes": 8421,
-      "sha256": "6139eda35e7b27e0e5abe895b966fb7c9c37bd67bd4a74bbd2e0755c4722b6d3"
+      "bytes": 9921,
+      "sha256": "9ea3611234181723b86340a6beb94b8f051ea14a67b38013d0d99dba05ef9f3b"
     },
     {
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
@@ -756,8 +756,8 @@
       "path": "scripts/lab/vm/README.md",
       "category": "developer tooling",
       "title": "Light Luna P0 kernel-separated LXD VM",
-      "bytes": 6486,
-      "sha256": "90b579672caef5913ebd73172d6758125ea7ff6a288408168e76d8b46ed061bb"
+      "bytes": 7137,
+      "sha256": "c6adc1364a83710331034d809efd8731326b2e5075778bc79e48bc2346facc7d"
     },
     {
       "path": "scripts/lab/vm/create-vm.sh",
@@ -777,8 +777,8 @@
       "path": "scripts/lab/vm/guest-auto-watchdog.py",
       "category": "developer tooling",
       "title": "guest-auto-watchdog",
-      "bytes": 5326,
-      "sha256": "e824fd2731c4eaa1ac0a23d7dacd6d4ccdba1b5bbd20609d5b8cc77017f75fb6"
+      "bytes": 5667,
+      "sha256": "293cd6b6b7c420c228690f730ed8de30b22864b3782afd6c164e1d7118df61e0"
     },
     {
       "path": "scripts/lab/vm/guest-keeper-smoke.sh",
@@ -812,22 +812,22 @@
       "path": "scripts/lab/vm/guest-stage-journal.py",
       "category": "developer tooling",
       "title": "guest-stage-journal",
-      "bytes": 4909,
-      "sha256": "b19b8ca2bafe9aa5d697d8c7a5ed6c7b14a09e0236f35ce3337a00bb6ffeb92e"
+      "bytes": 5556,
+      "sha256": "428ccaab01783c95203c22f93ed64231f167f6c5105f4c0483ee4d01e6741c4c"
     },
     {
       "path": "scripts/lab/vm/guest-stage-test.sh",
       "category": "developer tooling",
       "title": "guest-stage-test",
-      "bytes": 11918,
-      "sha256": "666182df83036d6832eb5e53d97130be32729ed6c511b504bf1ecbe11f2a3bc9"
+      "bytes": 12347,
+      "sha256": "398a732e085a8ecde4cad1de4f75f22d0c9074d50b6ca50bd70b7d0bf54a72cd"
     },
     {
       "path": "scripts/lab/vm/reconcile-interrupted-stage.sh",
       "category": "developer tooling",
       "title": "reconcile-interrupted-stage",
-      "bytes": 2325,
-      "sha256": "884e57bf989384f9241615826efa46cc960689f16a09af7b21eeb302f1af781d"
+      "bytes": 2486,
+      "sha256": "48eb49b628946a4a7ad3e97286dabe9623353c1da0ec030b7bca4ccecc8b6784"
     },
     {
       "path": "scripts/lab/vm/run-tests.sh",
@@ -835,6 +835,13 @@
       "title": "run-tests",
       "bytes": 3976,
       "sha256": "144ef2bea03133afb9c98e6a80866a4fbedaecc797ae9bad4487b267516c3759"
+    },
+    {
+      "path": "scripts/lab/vm/test_boot_journal.py",
+      "category": "developer tooling",
+      "title": "test_boot_journal",
+      "bytes": 3640,
+      "sha256": "2db755fcc952ccb9c5229ac80003f3f3f98626466bc181557079207de438699d"
     },
     {
       "path": "scripts/test_p0_ed25519_identities.sh",

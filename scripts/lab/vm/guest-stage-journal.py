@@ -23,6 +23,14 @@ EXPECTED_KEYS = {"schema","mode","policyName","policyRevision","sourcePreviewHas
                  "stageId","table","ttlSeconds","phases","effect",
                  "kernelWrites","ownerApproved","scope"}
 
+def boot_id():
+    # A kernel boot boundary must not reuse a synthetic transaction identity.
+    # Linux boot_id is regenerated on each boot and is not owner authentication.
+    value = Path("/proc/sys/kernel/random/boot_id").read_text(encoding="ascii").strip()
+    if not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}", value) or value == "00000000-0000-0000-0000-000000000000":
+        raise ValueError("missing or invalid kernel boot ID")
+    return value
+
 def unique_pairs(pairs):
     output = {}
     for key, value in pairs:
@@ -83,11 +91,13 @@ def transition(command, target, m):
             raise ValueError("previous transaction not cleared; fail closed")
         if target != "STAGED":
             raise ValueError("invalid initial state")
-        state = {"stageId": m["stageId"],"state":"STAGED","history":["STAGED"]}
+        state = {"stageId": m["stageId"],"bootId":boot_id(),"state":"STAGED","history":["STAGED"]}
     else:
         state = safe_load(JOURNAL)
-        if set(state) != {"stageId","state","history"} or state["stageId"] != m["stageId"]:
+        if set(state) != {"stageId","bootId","state","history"} or state["stageId"] != m["stageId"]:
             raise ValueError("journal mismatch")
+        if state["bootId"] != boot_id():
+            raise ValueError("journal belongs to a different Linux boot; independent recovery required")
         history = state["history"]
         if not isinstance(history,list) or history != PHASES[:len(history)] or state["state"] != history[-1]:
             raise ValueError("journal history invalid")

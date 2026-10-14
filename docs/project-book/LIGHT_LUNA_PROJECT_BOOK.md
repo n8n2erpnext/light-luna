@@ -5,6 +5,10 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
 
+## P0 synthetic journal boot identity boundary (2026-10-14)
+
+The [VM watchdog architecture/verification record](../architecture/p0-vm-autonomous-ttl-watchdog.md) has a new source-level kernel `boot_id` guard in the synthetic staging journal and watchdog READY/DONE receipts. A subsequent transition or rollback using a different/unknown boot ID is denied rather than trusting recycled process identities. [Five isolated offline tests](../../scripts/lab/vm/test_boot_journal.py) PASS; the no-NIC KVM suite also returned exit 0 with the previous packet and TTL markers. **No VM reboot with an active policy, power-loss recovery, production transaction keeper or automatic boot reconciliation is proven.** Development continues at P0, standalone gate blocked.
+
 ## Latest verified P0 increment — independent auto-TTL rollback in KVM lab (2026-10-14)
 
 [Autonomous VM watchdog contract](../architecture/p0-vm-autonomous-ttl-watchdog.md) is now implemented in the *synthetic-only* KVM laboratory: a PID1 service verifies exact keeper process birth/netns inode, fsyncs an arm-READY record before synthetic commit, expires on monotonic TTL, deletes its **fixed guest-netns** nft table, verifies removal and journals terminal `ROLLED_BACK`/DONE. A separate systemd namespace keeper survives termination of the controller-owned anchor. [Combined VM scripts](../../scripts/lab/vm/README.md) **PASS three consecutive post-fix full suites**, including restored TCP/UDP and IPv6 with no manual second rollback command. This is **not a Light Luna privileged executor, owner acceptance, kernel safety certification, host deployment or reboot-proof rescue**; P0 and G-STANDALONE still open.

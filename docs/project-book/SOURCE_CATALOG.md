@@ -58,7 +58,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
-| [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 8421 | 6139eda35e7b27e0e5abe895b966fb7c9c37bd67bd4a74bbd2e0755c4722b6d3 |
+| [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 9921 | 9ea3611234181723b86340a6beb94b8f051ea14a67b38013d0d99dba05ef9f3b |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
 | [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
 | [docs/architecture/unified-account-cloud-fleet-control.md](../../docs/architecture/unified-account-cloud-fleet-control.md) | architecture / design source | 12528 | 00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db |
@@ -114,18 +114,19 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/lxd/delete-lab.sh](../../scripts/lab/lxd/delete-lab.sh) | developer tooling | 1061 | 5690849e9eae48bd04b6cc9e07a8817d56a3c01ccf865f4832ce88c8bdbcb584 |
 | [scripts/lab/lxd/guest-test.sh](../../scripts/lab/lxd/guest-test.sh) | developer tooling | 6943 | bc3e91f788baa8faf0752da349177b5e41d15df6a7ec815666c0664b68cbee95 |
 | [scripts/lab/lxd/run-tests.sh](../../scripts/lab/lxd/run-tests.sh) | developer tooling | 2270 | a3ec932220e5578c44773f2c28eeb6220030f6489b028dcdc3229a5699d41639 |
-| [scripts/lab/vm/README.md](../../scripts/lab/vm/README.md) | developer tooling | 6486 | 90b579672caef5913ebd73172d6758125ea7ff6a288408168e76d8b46ed061bb |
+| [scripts/lab/vm/README.md](../../scripts/lab/vm/README.md) | developer tooling | 7137 | c6adc1364a83710331034d809efd8731326b2e5075778bc79e48bc2346facc7d |
 | [scripts/lab/vm/create-vm.sh](../../scripts/lab/vm/create-vm.sh) | developer tooling | 1954 | db0e0df40add52f1e1221fc51cfa646a11c30a7c941d7ec50b3eb27a59e8f57c |
 | [scripts/lab/vm/delete-vm.sh](../../scripts/lab/vm/delete-vm.sh) | developer tooling | 679 | a5dc36c94b6c85e851e8edaa1ea4683c0e629754b8f5bc13684f4fe3dd7d48c2 |
-| [scripts/lab/vm/guest-auto-watchdog.py](../../scripts/lab/vm/guest-auto-watchdog.py) | developer tooling | 5326 | e824fd2731c4eaa1ac0a23d7dacd6d4ccdba1b5bbd20609d5b8cc77017f75fb6 |
+| [scripts/lab/vm/guest-auto-watchdog.py](../../scripts/lab/vm/guest-auto-watchdog.py) | developer tooling | 5667 | 293cd6b6b7c420c228690f730ed8de30b22864b3782afd6c164e1d7118df61e0 |
 | [scripts/lab/vm/guest-keeper-smoke.sh](../../scripts/lab/vm/guest-keeper-smoke.sh) | developer tooling | 1534 | 2a51e7b38d332179cafbf0091925e2a2b329a5bca715d2f2a1cb37c182e66f2b |
 | [scripts/lab/vm/guest-netprobe.py](../../scripts/lab/vm/guest-netprobe.py) | developer tooling | 2301 | 8b1f6f80a6f78f868d47d4e91f29ce3613898693ee38882dbf1f1caed316bcf0 |
 | [scripts/lab/vm/guest-nft-test.sh](../../scripts/lab/vm/guest-nft-test.sh) | developer tooling | 6504 | 8d13aff15384d48fd1ffe65ee6918e34931729be93b494b04cddd2371777f3e9 |
 | [scripts/lab/vm/guest-rollback.sh](../../scripts/lab/vm/guest-rollback.sh) | developer tooling | 2005 | 9d508139218b0d134cbeb14cfe7a23b2f7ede70cd9bfaf4806eabd28111266fa |
-| [scripts/lab/vm/guest-stage-journal.py](../../scripts/lab/vm/guest-stage-journal.py) | developer tooling | 4909 | b19b8ca2bafe9aa5d697d8c7a5ed6c7b14a09e0236f35ce3337a00bb6ffeb92e |
-| [scripts/lab/vm/guest-stage-test.sh](../../scripts/lab/vm/guest-stage-test.sh) | developer tooling | 11918 | 666182df83036d6832eb5e53d97130be32729ed6c511b504bf1ecbe11f2a3bc9 |
-| [scripts/lab/vm/reconcile-interrupted-stage.sh](../../scripts/lab/vm/reconcile-interrupted-stage.sh) | developer tooling | 2325 | 884e57bf989384f9241615826efa46cc960689f16a09af7b21eeb302f1af781d |
+| [scripts/lab/vm/guest-stage-journal.py](../../scripts/lab/vm/guest-stage-journal.py) | developer tooling | 5556 | 428ccaab01783c95203c22f93ed64231f167f6c5105f4c0483ee4d01e6741c4c |
+| [scripts/lab/vm/guest-stage-test.sh](../../scripts/lab/vm/guest-stage-test.sh) | developer tooling | 12347 | 398a732e085a8ecde4cad1de4f75f22d0c9074d50b6ca50bd70b7d0bf54a72cd |
+| [scripts/lab/vm/reconcile-interrupted-stage.sh](../../scripts/lab/vm/reconcile-interrupted-stage.sh) | developer tooling | 2486 | 48eb49b628946a4a7ad3e97286dabe9623353c1da0ec030b7bca4ccecc8b6784 |
 | [scripts/lab/vm/run-tests.sh](../../scripts/lab/vm/run-tests.sh) | developer tooling | 3976 | 144ef2bea03133afb9c98e6a80866a4fbedaecc797ae9bad4487b267516c3759 |
+| [scripts/lab/vm/test_boot_journal.py](../../scripts/lab/vm/test_boot_journal.py) | developer tooling | 3640 | 2db755fcc952ccb9c5229ac80003f3f3f98626466bc181557079207de438699d |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |
 | [scripts/test_p0_gate_processes.sh](../../scripts/test_p0_gate_processes.sh) | developer tooling | 2536 | c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |

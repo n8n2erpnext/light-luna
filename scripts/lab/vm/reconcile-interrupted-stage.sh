@@ -26,7 +26,9 @@ work=/opt/luna-p0-kernel-tests
 current_state="$(python3 - "$work/stage-journal.json" <<'PY'
 import json,sys
 with open(sys.argv[1]) as f: j=json.load(f)
-assert set(j)=={"stageId","state","history"}
+from pathlib import Path
+assert set(j)=={"stageId","bootId","state","history"}
+assert j["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip(), "REBOOT_REQUIRES_INDEPENDENT_BOOT_INSPECTION"
 assert isinstance(j["stageId"],str)
 state=j["state"]
 prefix=["STAGED","VALIDATED","COMMITTED_SYNTHETIC"]

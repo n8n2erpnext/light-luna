@@ -20,7 +20,9 @@ if [[ -e "$state" ]];then
   python3 - "$state" <<'PY'
 import json,sys
 with open(sys.argv[1],encoding="utf-8") as f:s=json.load(f)
-assert set(s)=={"stageId","state","history"}
+assert set(s)=={"stageId","bootId","state","history"}
+from pathlib import Path
+assert s["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 assert s["state"]=="ROLLED_BACK"
 assert s["history"]==["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY
@@ -173,7 +175,9 @@ PY
   python3 - "$work/auto-watchdog-ready.json" "$manifest" <<'PY'
 import json,sys,time
 r=json.load(open(sys.argv[1]));m=json.load(open(sys.argv[2]))
+from pathlib import Path
 assert r["armed"] is True and r["stageId"]==m["stageId"]
+assert r["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 assert r["ttlSeconds"]==m["ttlSeconds"]
 assert r["deadlineMonotonic"]-time.monotonic()>=5, "TTL too near; cannot commit safely"
 PY
@@ -227,7 +231,9 @@ if [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 ]];then
   python3 - "$work/auto-watchdog-done.json" <<'PY'
 import json,sys
 d=json.load(open(sys.argv[1]))
+from pathlib import Path
 assert d["status"]=="AUTO_ROLLBACK_CONFIRMED"
+assert d["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 assert 0<=d["lagSeconds"]<=3.5,d
 print("VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS")
 PY
@@ -242,6 +248,8 @@ if ip netns exec "$dst" nft list tables | grep -q luna_p0_stage;then echo "VM_ST
 python3 - "$state" <<'PY'
 import json,sys
 with open(sys.argv[1],encoding="utf-8") as f:s=json.load(f)
+from pathlib import Path
+assert s["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 assert s["state"] == "ROLLED_BACK"
 assert s["history"] == ["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY

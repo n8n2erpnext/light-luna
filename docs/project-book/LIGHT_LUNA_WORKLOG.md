@@ -154,6 +154,16 @@ Scope: durable decisions, verified engineering milestones and blockers
 - **Source/delivery checks:** all VM shell scripts `bash -n` PASS, all Python VM fixtures `py_compile` PASS, `go test -count=3 ./...` PASS, `go vet ./...` PASS, Project Truth JSON PASS and docs catalog **131 indexed sources and links PASS**; `git diff --check` PASS. These are source checks, not new kernel safety evidence.
 - **Remaining gates:** VM reboot during active synthetic rule and correct boot reconciliation, independent rescue when keeper dies, power-loss durability, stress/race, multi-controller signed owner approval, production dispatcher/privileged executor, coexistence with Docker/UFW/NetBird, installer/updater and host safety are **not verified**. [Detailed evidence](../architecture/p0-vm-autonomous-ttl-watchdog.md). P0/G-STANDALONE remain OPEN/BLOCKED.
 
+## 2026-10-14 — Synthetic journal boot-ID guard and KVM regression
+
+- Parent development SHA before edits: `0cea7c9b967cbdbd84f94412c4b8db0ff8d4730e`. HOMESV `feat/p0-standalone-foundation`; code and KVM tests remain **development-only**.
+- Source: `scripts/lab/vm/guest-stage-journal.py` pins validated Linux kernel `boot_id` on STAGED; any later mismatched/unknown or legacy 3-field record is denied without state advancement. `guest-auto-watchdog.py` stamps READY/DONE and rechecks before any namespace-targeted rollback. `guest-stage-test.sh` checks receipts; explicit interrupted-stage reconciliation refuses a cross-boot journal.
+- New offline test `scripts/lab/vm/test_boot_journal.py` **5/5 PASS**, including a simulated subsequent boot, legacy journal, corrupt duplicate keys and invalid boot ID. `py_compile` and changed shell syntax PASS.
+- Existing **terminal ROLLED_BACK** three-key journal in the no-NIC guest was archived as `stage-journal.legacy-pre-bootid-20261014.json` after confirming VM identity, no guest nft tables, no named netns and no distinct live process network namespaces. This was a bounded operator evidence-preserving migration, not automatic deletion or acceptance of a pending transaction.
+- Ran full KVM regression with changed source: exit **0**, separate guest kernel confirmed; unhooked compiler `nft -c`, negative syntax, synthetic ICMP/TCP/UDP/IPv6 drop counters, explicit service rollback, independently armed monotonic TTL watchdog and restored synthetic traffic PASS. `VM_KERNEL_STAGE_AND_AUTONOMOUS_TTL_TESTS_EXECUTED` and `VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS` observed.
+- One `wait_for: No record of process` stderr diagnostic from old guest ICMP fixture remained nonfatal; investigate separately before release qualification. **Not verified:** an actual guest reboot/power cut during committed policy, boot-time reconciler, keeper-death handling, production signed receipts, owner-authenticated executor, host firewall coexistence, Cloud/NetBird.
+- P0 **OPEN**, G-STANDALONE **BLOCKED**. No host nftables change, NetBird operation, Cloud operation or production install.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

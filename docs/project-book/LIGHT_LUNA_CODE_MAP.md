@@ -10,6 +10,12 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Synthetic journal/receipt Linux boot ID boundary (2026-10-14)
+
+- `guest-stage-journal.py` → `boot_id()` → kernel `/proc/sys/kernel/random/boot_id`; `transition(init)` pins it to the guest-only journal; `transition(next)` rejects mismatched/legacy records. Only a single-controller laboratory journal is implemented.
+- `guest-auto-watchdog.py` → boot identity verified before READY and before namespace-targeted TTL rollback; READY/DONE receipts carry the ID. `guest-stage-test.sh` verifies receipts, and `reconcile-interrupted-stage.sh` refuses cross-boot terminal transitions.
+- `test_boot_journal.py` → 5 offline unit tests (new-boot refusal, legacy refusal, duplicate-key denial, etc.). **Effects:** synthetic VM journal/receipt writes only, no product policy apply. Standalone KVM suite on the modified source returned exit 0 with original explicit and automatic TTL regression markers; this is **not a real VM reboot, automatic boot reconciliation, signed owner authorization, or product executor**.
+
 ## VM-only autonomous TTL watchdog + systemd netns keeper (2026-10-14 — PASS x3)
 
 - [`guest-auto-watchdog.py`](../../scripts/lab/vm/guest-auto-watchdog.py) runs as transient PID1-managed **systemd service** in the exact NIC-less KVM guest, checks manifest+journal+proc birth ticks+netns inode, writes fsynced READY before synthetic hook is applied, waits on monotonic TTL (10s VM acceptance), deletes only `inet luna_p0_stage` via verified keeper namespace, verifies absence, journals `ROLLED_BACK` and records fsynced DONE/lag. **No owner identity or production executor**.

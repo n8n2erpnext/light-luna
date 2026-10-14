@@ -4,6 +4,14 @@
 **Date:** 2026-10-14. Branch `feat/p0-standalone-foundation`.
 **Status:** **3/3 consecutive full KVM VM suites PASS after the final keeper/cleanup fix**. The automatically triggered synthetic rollback was observed in all three runs, including restored IPv4/IPv6 TCP/UDP. No production or G-STANDALONE claim.
 
+## Boot identity hardening — source + negative tests (2026-10-14)
+
+The VM-only `guest-stage-journal.py` records the Linux kernel `/proc/sys/kernel/random/boot_id` on `STAGED` and refuses later transitions from a different boot or from legacy records without a boot ID. `guest-auto-watchdog.py` checks that ID before arming and before namespace-targeted rollback, and records it in READY/DONE receipts. `guest-stage-test.sh` checks receipts; `reconcile-interrupted-stage.sh` refuses cross-boot journal reuse. This prevents stale PID/netns/monotonic records being accepted as if they belonged to the new boot.
+
+[Offline regression tests](../../scripts/lab/vm/test_boot_journal.py) cover same-boot transitions, simulated reboot denial, missing boot ID, duplicate JSON keys and invalid boot ID. **Not a real VM reboot, a power-loss test, a boot-time reconciler or a product rollback guarantee.** A stale-boot transaction still needs independent guest-kernel inspection and explicit operator reconciliation; no automatic journal state transition is authorized.
+
+The regression after boot-ID hardening included one complete KVM runner with exit 0, retained the `VM_AUTO_TTL_EXPIRY_NO_TRIGGER_ROLLBACK_PASS` marker, and restored synthetic IPv4/IPv6 TCP/UDP. A harmless shell diagnostic (`wait_for: No record of process`) appeared on stderr in the old ICMP guest test; it did not fail the suite and still merits a separate harness review. This latest run is not an additional three-run statistical claim.
+
 ## Why the first watchdog attempt was not accepted
 
 Earlier source code proved only that a **separately triggered service** can undo a synthetic nft rule. It did **not** prove a service autonomously fires when TTL expires. Attempts using detached `setsid`, `systemd-run` with an internal `sleep`, and transient systemd timers intermittently failed to complete. Their failures were recorded and the gate remained open.

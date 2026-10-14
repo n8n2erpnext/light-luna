@@ -71,6 +71,9 @@ def main():
     spec.loader.exec_module(mod)
     manifest=mod.manifest()
     journal=mod.safe_load(mod.JOURNAL)
+    current_boot=mod.boot_id()
+    if journal.get("bootId")!=current_boot:
+        raise ValueError("stale or missing journal boot ID before arm")
     if journal["stageId"]!=manifest["stageId"] or journal["state"]!="VALIDATED":
         raise ValueError("journal was not VALIDATED before watchdog arming")
     if READY.exists() or DONE.exists():
@@ -80,7 +83,7 @@ def main():
     ttl=manifest["ttlSeconds"]
     armed=time.monotonic()
     deadline=armed+ttl
-    save(READY,{"stageId":manifest["stageId"],"anchorPid":pid,
+    save(READY,{"stageId":manifest["stageId"],"bootId":current_boot,"anchorPid":pid,
                 "anchorBirthTicks":ticks,"netnsInode":inode,
                 "armedMonotonic":armed,"deadlineMonotonic":deadline,
                 "ttlSeconds":ttl,"armed":True})
@@ -90,10 +93,12 @@ def main():
         if remain<=0:break
         time.sleep(min(0.2,remain))
     # All kernel operations are limited to an already-verified guest-only netns.
+    if mod.boot_id()!=current_boot:
+        raise ValueError("kernel boot ID changed while watchdog was armed")
     if birth(pid)!=ticks or namespace(pid)!=inode:
         raise ValueError("anchor identity no longer trusted at rollback")
     latest=mod.safe_load(mod.JOURNAL)
-    if latest["stageId"]!=manifest["stageId"]:
+    if latest.get("bootId")!=current_boot or latest["stageId"]!=manifest["stageId"]:
         raise ValueError("transaction changed while watchdog armed")
     existing=run_nft(pid,"list","table","inet",TABLE,expect_success=False)
     if latest["state"]!="COMMITTED_SYNTHETIC":
@@ -107,7 +112,7 @@ def main():
         raise ValueError("synthetic table still exists after deletion")
     mod.transition("transition","ROLLED_BACK",manifest)
     completed=time.monotonic()
-    save(DONE,{"stageId":manifest["stageId"],"status":"AUTO_ROLLBACK_CONFIRMED",
+    save(DONE,{"stageId":manifest["stageId"],"bootId":current_boot,"status":"AUTO_ROLLBACK_CONFIRMED",
                "completedMonotonic":completed,"deadlineMonotonic":deadline,
                "lagSeconds":max(0.0,completed-deadline)})
     print("VM_AUTO_WATCHDOG_SELF_TRIGGERED_ROLLBACK_PASS",flush=True)
