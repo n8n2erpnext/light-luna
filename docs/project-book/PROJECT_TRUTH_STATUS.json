@@ -123,7 +123,10 @@
       "cloudConsensusAndBulletins": "decided_design_not_implemented",
       "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
       "malwareScanning": "optional_future_not_installed",
-      "cloudClientTrustQuarantine": "decided_design_not_implemented"
+      "cloudClientTrustQuarantine": "decided_design_not_implemented",
+      "localObservabilityDecision": "ADR_029_DECIDED_PROMETHEUS_METRICS_GRAFANA_OWNER_SCOPED_BAN_AND_EVENT_READ_API_DESIGN_ONLY_NO_LISTENER",
+      "notificationAdaptersDecision": "ADR_029_DECIDED_TELEGRAM_DISCORD_SLACK_SMTP_OUTBOUND_OPT_IN_ASYNC_QUEUE_DESIGN_ONLY_NO_CREDENTIALS_OR_SENDS",
+      "localObservabilityIsolation": "STANDALONE_OFFLINE_UNPRIVILEGED_EXPORTER_DISABLED_BY_DEFAULT_NO_UNBOUNDED_SOURCE_IP_LABELS_NO_KERNEL_WRITE_AUTHORITY"
     }
   },
   "gates": {
@@ -164,6 +167,8 @@
     "threatBulletinSchema": "schemas/threat-bulletin-v1alpha1.schema.json",
     "selfDefenseDecision": "docs/adr/ADR-028-self-defense-host-compromise.md",
     "hostCompromiseArchitecture": "docs/architecture/host-self-defense-and-compromise-containment.md",
+    "localObservabilityDecision": "docs/adr/ADR-029-local-observability-and-notifications.md",
+    "localObservabilityArchitecture": "docs/architecture/local-observability-and-notifications.md",
     "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json",
     "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md",
     "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md",

@@ -39,6 +39,8 @@
 
 | ADR-028 | **DECIDED** | [Self-defense, Linux Host Guardian and compromise/Cloud containment](adr/ADR-028-self-defense-host-compromise.md): verify Light Luna runtime/integrity, optional Linux process/file/egress evidence and bounded malware scanning, quarantine compromised clients' Cloud influence, local recovery; no claim XDP scans malware or kernel-root compromise is self-attestable; NOT IMPLEMENTED |
 
+| ADR-029 | **DECIDED, NOT IMPLEMENTED** | [Local Prometheus/Grafana observability + owner notifications](adr/ADR-029-local-observability-and-notifications.md): low-cardinality `/metrics` for verified ban/health counters, authenticated read-only event/ban API, opt-in asynchronous Telegram/Discord/Slack/SMTP adapters; no external dependency for standalone firewall, no public telemetry endpoint by default, no real integrations yet. |
+
 ## Change process
 
 Any change to a DECIDED architectural constraint requires a new ADR, migration impact, rollback plan and explicit owner acceptance. Proposed items are not existing implementations. Operational safety guarantees must be proven in tests, not marketing copy.

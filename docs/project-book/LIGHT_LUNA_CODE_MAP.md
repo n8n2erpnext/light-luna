@@ -10,6 +10,12 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Planned local telemetry and notification module boundaries — ADR-029 (DESIGN ONLY)
+
+- **Proposed**, not reachable source entry point: versioned internal ban/event observation ledger → unprivileged aggregate metrics provider → optional local `GET /metrics` exporter consumed by Prometheus/Grafana; independent owner-authenticated `GET /v1/status`, `/v1/bans`, `/v1/events` and `/v1/notifications/status`. **No handler, server, data store, metric registry or test currently exists.**
+- **Proposed**, not reachable source entry point: verified local security event → bounded local outbox → dedicated outgoing Telegram/Discord/Slack/SMTP adapters with retry/dedupe, secret isolation and owner opt-in. **No transport plugin, token, webhook or SMTP runtime exists.** Neither exporter nor notifier is allowed to invoke nft or privileged Policy Gate.
+- Owning contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md), decision [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Future implementation must create source + negative tests and revise this map's labels from **PROPOSED** only after proven runtime evidence.
+
 ## VM-only receipt fsync/ENOSPC fault harness (2026-10-14 — tested, not production)
 
 - `scripts/lab/vm/test_rollback_fsync_faults.py` → load `guest-rollback-receipts.py` with `ROOT` redirected to a unique temporary directory → inject `OSError(EIO)` at file/dir `os.fsync` callsites or `ENOSPC` at `os.open`; verify simulated continuation into kernel action stops if `prepare` raises; later failures never write DONE; retain orphan and historical observations, reject truncated JSON. **No actual nft call**, no stage journal write.

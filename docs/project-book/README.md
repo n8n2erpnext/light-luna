@@ -26,7 +26,8 @@ Read in this order, **before editing any documentation or code**:
 19. [ADR-026](../adr/ADR-026-unified-account-remote-fleet-control.md) and [unified account/fleet design](../architecture/unified-account-cloud-fleet-control.md) — Cloud and local share identity after optional enrollment, with offline owner recovery and local approval. Not implemented.
 20. [ADR-027](../adr/ADR-027-collective-threat-immunity.md) and [immune-style threat intelligence](../architecture/federated-immune-threat-intelligence.md) — owner-decided shared behavior/scenario awareness, never global ban from one report. Not implemented.
 21. [ADR-028](../adr/ADR-028-self-defense-host-compromise.md) and [Host Guardian architecture](../architecture/host-self-defense-and-compromise-containment.md) — protect Light Luna itself, detect supported host compromise, quarantine untrusted Cloud inputs; NOT IMPLEMENTED.
-22. [../../README.md](../../README.md) — public product introduction and constraints.
+22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
+23. [../../README.md](../../README.md) — public product introduction and constraints.
 
 ## Source precedence
 

@@ -5,6 +5,10 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
 
+## Owner-decided Prometheus/Grafana ban observability and alerts (2026-10-14; design only)
+
+[ADR-029](../adr/ADR-029-local-observability-and-notifications.md) confirms future **Prometheus-compatible low-cardinality `/metrics`**, Grafana views for **verified applied vs pending/unknown/expired bans**, separately authenticated **read-only** local ban/event APIs and asynchronous opt-in notifications via **Telegram, Discord, Slack and SMTP mail**. The [architecture](../architecture/local-observability-and-notifications.md) fixes the separation of actual kernel/Policy Gate receipts from mere Brain proposals and requires secrets/redaction, bounded queues, retry/dedupe, no external dependency of standalone security enforcement and no NetBird work before G-STANDALONE. These are **future P1/P2 product features, not existing P0 HTTP services, ban exporters, dashboards, webhook/SMTP sends or live kernel rules**. Work on P0 crash/durable receipt safety remains higher priority and proceeds independently.
+
 ## P0 synthetic journal boot identity boundary (2026-10-14)
 
 The [VM watchdog architecture/verification record](../architecture/p0-vm-autonomous-ttl-watchdog.md) has a new source-level kernel `boot_id` guard in the synthetic staging journal and watchdog READY/DONE receipts. A subsequent transition or rollback using a different/unknown boot ID is denied rather than trusting recycled process identities. [Five isolated offline tests](../../scripts/lab/vm/test_boot_journal.py) PASS; the no-NIC KVM suite also returned exit 0 with the previous packet and TTL markers. **No VM reboot with an active policy, power-loss recovery, production transaction keeper or automatic boot reconciliation is proven.** Development continues at P0, standalone gate blocked.

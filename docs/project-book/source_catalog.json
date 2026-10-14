@@ -140,15 +140,15 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 32967,
-      "sha256": "74bdab454cd7b9ebb8e17f51738c7aa13eae7265321d1949eecd295131cb04d0"
+      "bytes": 33917,
+      "sha256": "57a17ef7e05582584724f567072e826595881f8b7c3ae236e0c8dadcd41efa93"
     },
     {
       "path": "docs/12-ADRS.md",
       "category": "decision / roadmap",
       "title": "12 — Architecture Decision Register",
-      "bytes": 6148,
-      "sha256": "d3914223b111c9e4bda808f152f85393b3653b3d19b8c069356f3d96548a2443"
+      "bytes": 6585,
+      "sha256": "20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38"
     },
     {
       "path": "docs/13-REFERENCES.md",
@@ -242,6 +242,13 @@
       "sha256": "8a8ea248ab3b86420db772dd5ea680ed7ae74058e37400590356ecd616e2f649"
     },
     {
+      "path": "docs/adr/ADR-029-local-observability-and-notifications.md",
+      "category": "architecture / design source",
+      "title": "ADR-029 — Local Observability API and Multi-Channel Security Notifications",
+      "bytes": 9555,
+      "sha256": "f6afb1ffe5c96bcdad67be6bf43ab1a961248d9eeb22a47db19cde9ae0a8c11b"
+    },
+    {
       "path": "docs/architecture/cloud-migration-and-recovery.md",
       "category": "architecture / design source",
       "title": "Light Luna Cloud Migration and Disaster Recovery — Operator Runbook",
@@ -268,6 +275,13 @@
       "title": "Self-Defense, Host Threat Detection and Cloud/Peer Containment",
       "bytes": 14047,
       "sha256": "cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead"
+    },
+    {
+      "path": "docs/architecture/local-observability-and-notifications.md",
+      "category": "architecture / design source",
+      "title": "Light Luna Local Observability API, Ban State and Multi-Channel Notifications",
+      "bytes": 15902,
+      "sha256": "968206a471530179449fca8601b605cd0ed08860ffc4305981f7290d7a3234fd"
     },
     {
       "path": "docs/architecture/local-runtime-foundation.md",
