@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 local authenticated control intent proof (2026-10-14; no IPC/executor)
+
+[Local control boundary](architecture/p0-local-control-gate.md) is implemented in `internal/controlgate` with HMAC-SHA256, domain-separated typed intent, pinned local actor/site/policy digest/revision, strict expiry and bounded replay protection against repeated nonce/request IDs. `lunactl control selftest <policy>` demonstrates ephemeral authentication, tampering/replay rejection and a **denial-only APPLY_POLICY** path. This is an **in-process test**, not OS peer authentication, durable replay state, rescue reachability, privileged executor or production device account support. Next: isolated local IPC framing/credential verification (without privileges), then a separately guarded executor and independent rollback in a disposable VM. Do not promote P0 to G-STANDALONE.
+
 ## P0 pure-Go flow simulator implementation (2026-10-14)
 
 [Flow simulator](architecture/p0-flow-simulator.md) is now callable from `lunactl firewall policies simulate <policy-file> <synthetic-flow-file>`. It evaluates current policy's **declared** TCP/UDP/ICMP/ICMPv6 flow intent, ordered rules, CIDR alias, nonterminal log and inbound default; output no-match remains `UNSPECIFIED`. It marks management-critical denial `POTENTIAL_LOCKOUT` but never claims actual route reachability; every `effectiveVerdict` and external firewall state stays `UNKNOWN`. JSON size/event caps, negative tests and Go vet pass. **Next P0 exit prerequisites:** isolated kernel syntax/packet tests and independent trusted rescue/rollback, not Cloud/NetBird.

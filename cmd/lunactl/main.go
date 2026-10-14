@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/n8n2erpnext/light-luna/internal/controlgate"
 	"github.com/n8n2erpnext/light-luna/internal/flowsim"
 	"github.com/n8n2erpnext/light-luna/internal/foundation"
 	"github.com/n8n2erpnext/light-luna/internal/nftpreview"
@@ -15,7 +17,7 @@ import (
 )
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file> | firewall policies simulate <policy-file> <synthetic-flow-file>")
+	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file> | firewall policies simulate <policy-file> <synthetic-flow-file> | control selftest <policy-file>")
 }
 func pretty(v any) error {
 	data, err := json.MarshalIndent(v, "", "  ")
@@ -48,6 +50,22 @@ func run(args []string) error {
 			return fmt.Errorf("invalid replay: %w", err)
 		}
 		return pretty(report)
+	}
+	if len(args) == 3 && args[0] == "control" && args[1] == "selftest" {
+		f, err := os.Open(args[2])
+		if err != nil {
+			return fmt.Errorf("open policy: %w", err)
+		}
+		defer f.Close()
+		p, err := policy.Decode(f)
+		if err != nil {
+			return fmt.Errorf("invalid policy: %w", err)
+		}
+		result, err := controlgate.SelfTest(p, time.Now().UTC())
+		if err != nil {
+			return fmt.Errorf("local control selftest: %w", err)
+		}
+		return pretty(result)
 	}
 	if len(args) == 5 && args[0] == "firewall" && args[1] == "policies" && args[2] == "simulate" {
 		f, err := os.Open(args[3])

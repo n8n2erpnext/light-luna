@@ -98,6 +98,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Source-level unit/CLI tests cover source trust assumptions, malformed/duplicate cases, port/family rejection and **management-critical flow lockout warnings**; effective verdict is always **UNKNOWN** and the simulator never imports unrelated kernel/firewall state. [Full tested scope and gaps](../architecture/p0-flow-simulator.md).
 - Kept real nft apply, Cloud, device enrollment and NetBird absent. P0 and G-STANDALONE remain OPEN/BLOCKED; no production firewall or existing Sentinel/Light Remote data modified.
 
+## 2026-10-14 — HOMESV direct GitHub SSH and local control-gate code
+
+- Inspected HOMESV's existing per-repository deploy key and confirmed `git ls-remote` initially failed solely on missing SSH GitHub `known_hosts` entry. Matched GitHub's published **Ed25519 SHA256 host fingerprint** before writing the public host key; then verified remote branch reads with the existing local key. Subsequent commits are pushed **directly from HOMESV**, not relayed through VPS-ARM. Private key bytes were not printed, copied or stored in the repo.
+- Implemented [`internal/controlgate`](../../internal/controlgate/control.go) and [CLI selftest](../../internal/controlgate/selftest.go): short-lived HMAC-authenticated, local-owner-only proposals pinned to site/actor/policy SHA256 and revision; nonce+request replay cache, clock window, fail-closed store capacity, and explicit denial of signed APPLY. [Exact implementation and limitations](../architecture/p0-local-control-gate.md).
+- Added negative/concurrency tests for expiry/future, forged MAC, local identity, stale/different policy, weak key, duplicate nonce/request, and attempted enforcement. Normal Go unit tests, vet, local CLI selftest, catalog and amd64/arm64 builds passed. `go test -race` **not verified**: CGO requires gcc, which is unavailable on HOMESV. Run race instrumentation in CI/build runner later. No actual IPC/OS peer auth, privileged command, Cloud call, NetBird integration or firewall modification.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

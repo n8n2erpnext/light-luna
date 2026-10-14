@@ -48,6 +48,10 @@
       "nftUnhookedPreview": "implemented_source_unit_tests_pass_syntax_not_kernel_checked",
       "flowSimulator": "implemented_pure_go_synthetic_intent_only_all_effective_verdicts_UNKNOWN",
       "managementLockoutDetection": "synthetic_POTENTIAL_LOCKOUT_warning_not_a_verified_recovery_path",
+      "localControlBoundary": "HMAC_signed_ephemeral_in_process_selftest_only_not_ipc_or_executor",
+      "replayProtection": "bounded_in_memory_nonce_and_request_id_only_not_durable",
+      "controlGateRaceDetector": "not_run_gcc_missing_cgo_required",
+      "githubFromHomesv": "verified_direct_SSH_using_existing_deploy_key_and_checked_host_fingerprint",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
       "cloudConsensusAndBulletins": "decided_design_not_implemented",
       "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
@@ -96,7 +100,8 @@
     "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json",
     "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md",
     "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md",
-    "p0FlowSimulator": "docs/architecture/p0-flow-simulator.md"
+    "p0FlowSimulator": "docs/architecture/p0-flow-simulator.md",
+    "p0LocalControlGate": "docs/architecture/p0-local-control-gate.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

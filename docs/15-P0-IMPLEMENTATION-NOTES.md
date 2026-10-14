@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Authenticated control-gate prototype (2026-10-14)
+
+[Source-level control gate](architecture/p0-local-control-gate.md) and `lunactl control selftest` now model authenticated signed local proposals using an ephemeral injected key, exact policy content/revision, expiring nonce and request IDs. Replays, unsigned/tampered changes, stale policy and **every enforcement attempt** are rejected. All receipts show `kernelWrites=false`; no IPC, service, persistent replay storage, local user authentication, restricted privileged executor or rollback exists. HOMESV's existing GitHub deploy key is usable directly after adding a **verified GitHub SSH host key** to `known_hosts`, avoiding the earlier VPS-ARM relay. This Git transport configuration does not change Light Luna runtime.
+
 ## Current flow simulator development slice (2026-10-14)
 
 [Source-level P0 flow simulator](architecture/p0-flow-simulator.md) adds `internal/flowsim`, a strict bounded synthetic flow fixture and `lunactl firewall policies simulate <policy> <flows>`. It matches intent in rule priority order, flags **potential SSH/management lockout**, reports an undefined output default as `UNSPECIFIED`, and labels every effective kernel verdict `UNKNOWN` because it does **not** model Docker/UFW coexistence, routing or conntrack. This remains non-enforcing and has no actual netns/nft kernel test or owner recovery mechanism.

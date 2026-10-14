@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 17243,
-      "sha256": "6c3f3f9a906b8b409076f08b7a9f7bfefb43cc41397ce0651635e968746367da"
+      "bytes": 17997,
+      "sha256": "3b0ea041322c8780e4c994dd15fd8422d0194981251d742144720b460198e656"
     },
     {
       "path": "SECURITY.md",
@@ -35,8 +35,8 @@
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 3347,
-      "sha256": "98d3a375f66252d678684b14f115c071d6073e33d7f480d41f0720a0509f8492"
+      "bytes": 3893,
+      "sha256": "27ca37d215bc38756727073319c6186008915f09172ad85c8c17a25b8eb67b0e"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -119,8 +119,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 17977,
-      "sha256": "3b37eaeb2e6b885f47345c96abc5b0630006bf2331c4cb9d8b7b8c8a30af5afe"
+      "bytes": 18836,
+      "sha256": "3ce0540269c899e030db7d9d093fa59dff44c60b05527e1dced4824bec9fa822"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -147,8 +147,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 3522,
-      "sha256": "e8681cdbc3e4859099e72779c841043cbbf603ade776ac0cd1d0f8f2fe52c5ff"
+      "bytes": 4303,
+      "sha256": "7606433975332d839b48ae4532d7f2c02a0a2a98b5ef9e381f95d8bc1970f1ff"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -291,6 +291,13 @@
       "sha256": "02f6cbd70f2ba1a47d8d50c626b1403569d45f4316701a9dd9cdf62c2b98880b"
     },
     {
+      "path": "docs/architecture/p0-local-control-gate.md",
+      "category": "architecture / design source",
+      "title": "P0 Local Control Gate — Authenticated Intent, Replay and Safe Denial",
+      "bytes": 6118,
+      "sha256": "c9920a0cbdad6ab2a1e970f6ba4f32ed858883dfe898a508822549ed36890e14"
+    },
+    {
       "path": "docs/architecture/p0-nft-unhooked-compiler.md",
       "category": "architecture / design source",
       "title": "P0 nftables Compiler — Unhooked Preview Only",
@@ -331,6 +338,27 @@
       "title": "basic",
       "bytes": 1682,
       "sha256": "db90c6b351b1c3058c6b8a4e81dc7caa4fe567f81cd0d4e4abb0f41242125d96"
+    },
+    {
+      "path": "internal/controlgate/control.go",
+      "category": "implementation",
+      "title": "control",
+      "bytes": 7203,
+      "sha256": "462d7fa4141bc4edfe297a03fd7953fbc10d8e26c337c9cf20600c7af0b7e75a"
+    },
+    {
+      "path": "internal/controlgate/control_test.go",
+      "category": "unit / negative tests",
+      "title": "control_test",
+      "bytes": 6274,
+      "sha256": "6695647816fce6f63b9b64ee0cc8a80807c8bd3f33c1b7c7039345d5ec2c3061"
+    },
+    {
+      "path": "internal/controlgate/selftest.go",
+      "category": "implementation",
+      "title": "selftest",
+      "bytes": 2644,
+      "sha256": "ba053625b3bbdc358a4d3f3e166b18ce090266904d1f821e85c1a63f4935d645"
     },
     {
       "path": "internal/flowsim/simulate.go",
@@ -385,8 +413,8 @@
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
-      "bytes": 2172,
-      "sha256": "2329d3d99c950098ed87ba52a9cfedaa52df19ce6561b080a81f0d84e51f78d1"
+      "bytes": 2274,
+      "sha256": "1cdad113b175a9a48ceaec00900eb4585e6e7431efdc864ea3680f28ec94f537"
     },
     {
       "path": "internal/offline/replay_test.go",

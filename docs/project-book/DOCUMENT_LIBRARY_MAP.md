@@ -36,6 +36,7 @@ Scope: document ownership and historical path mapping
 | [Local Runtime Foundation](../architecture/local-runtime-foundation.md) | IMPLEMENTED P0 separate CLI/Brain build targets and synthetic offline Brain→inert Gate replay; no real firewall/host sensor/service |
 | [Unhooked nftables Compiler](../architecture/p0-nft-unhooked-compiler.md) | IMPLEMENTED source-only nftables regular-chain text preview, no hook/kernel apply or nft -c syntax proof |
 | [Synthetic P0 Flow Simulator](../architecture/p0-flow-simulator.md) | IMPLEMENTED pure-Go synthetic declared-policy matcher and admin lockout *warning*; all kernel verdicts UNKNOWN |
+| [P0 Local Control Gate](../architecture/p0-local-control-gate.md) | IMPLEMENTED in-process HMAC/revision/nonce gate and denial-only apply selftest; no socket/auth system/executor |
 | [Host Guardian & Containment Architecture](../architecture/host-self-defense-and-compromise-containment.md) | Linux process/file/egress observation, integrity/attestation ceiling, safe local isolation and Cloud untrusted-ingress separation |
 | [Host Integrity Report schema](../../schemas/host-integrity-report-v1alpha1.schema.json) | Design-only host status/device authentication vs trust, cloud contribution quarantine, no direct execution |
 | [Synthetic compromised host fixture](../../testdata/host-integrity-report.synthetic.json) | Synthetic status with suspected compromise, no actual files/processes scanned |
