@@ -2,6 +2,18 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Journal-terminal-before-DONE failure / immutable observation receipts (2026-10-14)
+
+[Architecture and correct acceptance limits](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). Both PID1 rollback services now require `guest-rollback-receipts.py` delivered by every KVM host runner, and write non-overwriting, file+directory fsynced **prepared → kernel-absent → journal-terminal** observations under the existing rollback flock. No observation receipt is a signature, an owner grant, an atomic nft+journal commit or permission to auto-reconcile a missing DONE.
+
+On the exact disposable no-NIC VM, after a clean terminal synthetic stage, test a fallback `os._exit(73)` **after terminal journal, before DONE**, and explicitly preserve missing-DONE evidence:
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_VM_TERMINAL_FAULT_ACK=TEST_ONLY_GUEST_TERMINAL_WITHOUT_DONE LUNA_VM_EVIDENCE_TAG=unique-tag bash scripts/lab/vm/run-terminal-receipt-fault.sh
+```
+
+Verified lab marker: `VM_GUEST_TERMINAL_WITHOUT_DONE_FAILURE_INJECTION_PASS`; status is `TERMINAL_JOURNAL_DONE_MISSING_REVIEW_REQUIRED`, never a forged DONE. Prior harness observer failures require explicit **post-cleanup** review; `guest-preserve-terminal-review.py` distinguishes such evidence from observations made before the test EXIT trap. Once an operator archives a fault, the active journal is absent and normal `run-tests.sh` must explicitly establish a new synthetic transaction before further fault runners. Do not delete/archive evidence as part of an automatic retry.
+
 ## Cooperative rollback writer lock — isolated VM only (2026-10-14)
 
 [Canonical architecture and bounded test evidence](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). The primary watchdog and independently netns-pinned fallback now **both require** `guest-rollback-fence.py`, delivered by the main KVM runner and all synthetic fault runners. Its `fcntl.flock` is held across current journal/boot revalidation, fixed guest-netns nft rollback, journal fsync, and success receipt; no process may claim success based on a stale pre-lock read. The lock file is a persistent VM-local `0600` inode; do not remove it between transactions. Without the fence, primary/fallback fail closed.

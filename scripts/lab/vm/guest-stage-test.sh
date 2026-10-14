@@ -15,11 +15,11 @@ if [[ "$fallback_mode" == 1 ]];then
   [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FALLBACK_ACK:-}" == "ENABLE_GUEST_SYNTHETIC_FALLBACK" ]] || {
     echo "VM_FALLBACK_EXPLICIT_ACK_REQUIRED" >&2;exit 2;
   }
-  [[ "$fault_mode" == keeper_postcommit || "$fault_mode" == watchdog_postcommit || "$fault_mode" == primary_race || "$fault_mode" == fallback_after_delete ]] || {
+  [[ "$fault_mode" == keeper_postcommit || "$fault_mode" == watchdog_postcommit || "$fault_mode" == primary_race || "$fault_mode" == fallback_after_delete || "$fault_mode" == fallback_after_terminal ]] || {
     echo "FALLBACK_MODE_ONLY_POSTCOMMIT_FAULTS" >&2;exit 2;
   }
 fi
-case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit|primary_race|fallback_after_delete) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
+case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit|primary_race|fallback_after_delete|fallback_after_terminal) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
 if [[ "$fault_mode" != none ]];then
  [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FAULT_ACK:-}" == "KILL_VM_SYNTHETIC_KEEPER_OR_WATCHDOG" ]] || {
    echo "EXPLICIT_VM_FAULT_ACK_REQUIRED" >&2;exit 2;
@@ -215,6 +215,10 @@ PY
       [[ "${LUNA_VM_FALLBACK_CRASH_ACK:-}" == VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE ]] || { echo "FAILPOINT_ACK_MISSING";exit 2; }
       fallback_env=(--setenv=LUNA_VM_FALLBACK_CRASH_ACK=VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE)
       fallback_arg=(--lab-fault-after-delete)
+    elif [[ "$fault_mode" == fallback_after_terminal ]];then
+      [[ "${LUNA_VM_FALLBACK_CRASH_ACK:-}" == VM_ONLY_CRASH_AFTER_JOURNAL_TERMINAL ]] || { echo "FAILPOINT_TERMINAL_ACK_MISSING";exit 2; }
+      fallback_env=(--setenv=LUNA_VM_FALLBACK_CRASH_ACK=VM_ONLY_CRASH_AFTER_JOURNAL_TERMINAL)
+      fallback_arg=(--lab-fault-after-terminal)
     elif [[ "$fault_mode" == primary_race ]];then
       [[ "${LUNA_VM_FALLBACK_RACE_ACK:-}" == VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE ]] || { echo "RACE_MODE_ACK_MISSING";exit 2; }
       fallback_env=(--setenv=LUNA_VM_FALLBACK_RACE_ACK=VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE)
@@ -282,17 +286,17 @@ for rule in 'tcp dport 18080' 'udp dport 18081' 'icmpv6 type echo-request';do
  }
 done
 echo "VM_STAGE_TCP_UDP_IPV6_DROP_COUNTER_PASS"
-if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit || "$fault_mode" == fallback_after_delete ]];then
-  if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == fallback_after_delete ]];then victim="$unit.service";else victim="$keeper_unit.service";fi
+if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit || "$fault_mode" == fallback_after_delete || "$fault_mode" == fallback_after_terminal ]];then
+  if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == fallback_after_delete || "$fault_mode" == fallback_after_terminal ]];then victim="$unit.service";else victim="$keeper_unit.service";fi
   systemctl kill --kill-who=main --signal=SIGKILL "$victim"
   sleep .3
   [[ "$(systemctl show "$victim" -p MainPID --value)" == 0 ]] || { echo "FAULT_SERVICE_DEATH_UNVERIFIED";exit 3; }
   echo "VM_FAULT_SERVICE_POSTCOMMIT_KILLED"
-  if [[ "$fault_mode" == fallback_after_delete ]];then
+  if [[ "$fault_mode" == fallback_after_delete || "$fault_mode" == fallback_after_terminal ]];then
     # The primary is SIGKILLed; fallback deletes the ONLY fixed test table
     # then os._exit(72) before journal/DONE persistence. Observe BEFORE trap.
-    python3 "$work/guest-fault-evidence.py" observe fallback_after_delete "$fallback_unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
-    echo "VM_FALLBACK_AFTER_DELETE_CRASH_INCONSISTENT_JOURNAL_DETECTED_PASS"
+    python3 "$work/guest-fault-evidence.py" observe "$fault_mode" "$fallback_unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
+    echo "VM_FALLBACK_AFTER_DELETE_OR_TERMINAL_CRASH_EVIDENCE_PASS"
     exit 0
   fi
   if [[ "$fallback_mode" == 1 ]];then

@@ -119,13 +119,16 @@ def main():
     if sorted(os.listdir("/sys/class/net"))!=["lo"] or cmd("systemd-detect-virt").stdout.strip()!="kvm":
         raise ValueError("only NIC-less KVM VM allowed")
     if len(sys.argv) not in (6,7):
-        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit [--lab-fault-after-delete|--lab-race-at-deadline]")
+        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit [--lab-fault-after-delete|--lab-fault-after-terminal|--lab-race-at-deadline]")
     crash_after_delete = len(sys.argv)==7 and sys.argv[6]=="--lab-fault-after-delete"
+    crash_after_terminal = len(sys.argv)==7 and sys.argv[6]=="--lab-fault-after-terminal"
     race_at_deadline = len(sys.argv)==7 and sys.argv[6]=="--lab-race-at-deadline"
-    if len(sys.argv)==7 and not (crash_after_delete or race_at_deadline):
+    if len(sys.argv)==7 and not (crash_after_delete or crash_after_terminal or race_at_deadline):
         raise ValueError("unknown VM-only fault mode")
     if crash_after_delete and os.environ.get("LUNA_VM_FALLBACK_CRASH_ACK") != "VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE":
         raise ValueError("VM-only crash failpoint not explicitly acknowledged")
+    if crash_after_terminal and os.environ.get("LUNA_VM_FALLBACK_CRASH_ACK") != "VM_ONLY_CRASH_AFTER_JOURNAL_TERMINAL":
+        raise ValueError("terminal/DONE crash failpoint not explicitly acknowledged")
     if race_at_deadline and os.environ.get("LUNA_VM_FALLBACK_RACE_ACK") != "VM_ONLY_PRIMARY_FALLBACK_SAME_DEADLINE":
         raise ValueError("simultaneous-deadline lab check not acknowledged")
     keeper=int(sys.argv[1])
@@ -191,21 +194,34 @@ def main():
         snapshot=cmd("nft","-j","list","table","inet",TABLE)
         if snapshot.returncode!=0 or not fixed_synthetic_table(json.loads(snapshot.stdout)):
             raise ValueError("synthetic table shape invalid under fence; refuse deletion")
-        # ONLY the fixed test table in the already-pinned guest namespace.
+        receipt_path=ROOT/"guest-rollback-receipts.py"
+        if receipt_path.is_symlink() or not receipt_path.is_file():
+            raise ValueError("VM-only rollback receipt helper missing")
+        receipt_spec=importlib.util.spec_from_file_location("vm_fallback_receipts",receipt_path)
+        receipts=importlib.util.module_from_spec(receipt_spec)
+        receipt_spec.loader.exec_module(receipts)
+        epoch=receipts.prepare(plan["stageId"],boot,netns,primary,"fallback")
+        # A unique, fsynced PREPARED receipt must precede kernel writes.
         removed=cmd("nft","delete","table","inet",TABLE)
         if removed.returncode!=0 or cmd("nft","list","table","inet",TABLE).returncode==0:
             raise ValueError("fixed synthetic table rollback could not be verified")
-        # This still is NOT atomic across kernel and journal disk fsync;
-        # process termination drops flock and must NOT imply success.
+        receipts.advance(epoch,"kernel-absent",plan["stageId"],boot,netns,"fallback")
         if crash_after_delete:
             print("VM_FALLBACK_FAILPOINT_AFTER_DELETE_BEFORE_JOURNAL", flush=True)
             os._exit(72)
         mod.transition("transition","ROLLED_BACK",plan)
+        receipts.advance(epoch,"journal-terminal",plan["stageId"],boot,netns,"fallback")
+        if crash_after_terminal:
+            # Process death AFTER fsynced terminal journal and observation,
+            # BEFORE DONE; never infer success without an actual DONE.
+            print("VM_FALLBACK_FAILPOINT_AFTER_TERMINAL_BEFORE_DONE",flush=True)
+            os._exit(73)
         persist(DONE,{"schema":"lightluna.vm-fallback-done/v1alpha1",
                       "status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",
                       "stageId":plan["stageId"],"bootId":boot,"netnsInode":netns,
                       "deadlineMonotonic":deadline,"completedMonotonic":time.monotonic(),
-                      "ownerApproved":False,"syntheticGuestOnly":True,"rollbackFenced":True})
+                      "ownerApproved":False,"syntheticGuestOnly":True,
+                      "rollbackFenced":True,"rollbackObservationEpoch":epoch})
     print("VM_FALLBACK_INDEPENDENT_PID1_SYNTHETIC_ROLLBACK_PASS",flush=True)
 
 

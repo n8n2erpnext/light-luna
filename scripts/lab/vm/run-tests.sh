@@ -51,7 +51,7 @@ lxc file push scripts/lab/vm/guest-nft-test.sh "$instance/opt/luna-p0-kernel-tes
 lxc exec "$instance" -- bash /opt/luna-p0-kernel-tests/guest-nft-test.sh
 # New typed VM-only staging intent. This is a manifest, NOT a system call.
 "$tmp/lunactl" vm stage-intent testdata/host-baseline.json 8 > "$tmp/stage-intent.json"
-for name in guest-stage-test.sh guest-stage-journal.py guest-netprobe.py guest-auto-watchdog.py guest-rollback-fence.py;do
+for name in guest-stage-test.sh guest-stage-journal.py guest-netprobe.py guest-auto-watchdog.py guest-rollback-fence.py guest-rollback-receipts.py guest-fallback-supervisor.py;do
  lxc file push "scripts/lab/vm/$name" "$instance/opt/luna-p0-kernel-tests/$name" --mode=0700 >/dev/null 2>&1
 done
 lxc file push "$tmp/stage-intent.json" "$instance/opt/luna-p0-kernel-tests/stage-intent.json" --mode=0600 >/dev/null 2>&1

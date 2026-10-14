@@ -25,7 +25,7 @@ assert j["state"]=="ROLLED_BACK" and j["bootId"]==Path("/proc/sys/kernel/random/
 assert not subprocess.check_output(["nft","list","tables"],text=True).strip()
 assert not subprocess.check_output(["ip","netns","list"],text=True).strip()
 '
-for file in guest-stage-test.sh guest-fallback-supervisor.py guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py guest-auto-watchdog.py guest-rollback-fence.py;do
+for file in guest-stage-test.sh guest-fallback-supervisor.py guest-fault-evidence.py guest-archive-fault.py guest-boot-inspect.py guest-auto-watchdog.py guest-rollback-fence.py guest-rollback-receipts.py;do
  lxc file push "scripts/lab/vm/$file" "$vm/opt/luna-p0-kernel-tests/$file" --mode=0700 >/dev/null
 done
 tag="${LUNA_VM_EVIDENCE_TAG:-race-crash-initial}"

@@ -18,7 +18,7 @@ FAULT = ROOT / "stage-fault-evidence.json"
 READY = ROOT / "auto-watchdog-ready.json"
 DONE = ROOT / "auto-watchdog-done.json"
 MOD = ROOT / "guest-stage-journal.py"
-MODES = {"keeper_precommit", "keeper_postcommit", "watchdog_postcommit", "fallback_after_delete"}
+MODES = {"keeper_precommit", "keeper_postcommit", "watchdog_postcommit", "fallback_after_delete", "fallback_after_terminal"}
 
 
 def run(*args):
@@ -42,7 +42,7 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
         raise ValueError("guest NIC detected")
     if run("systemd-detect-virt").stdout.strip() != "kvm":
         raise ValueError("not KVM")
-    expected_watchdog_prefix = "luna-p0-fallback-" if mode == "fallback_after_delete" else "luna-p0-auto-wd-"
+    expected_watchdog_prefix = "luna-p0-fallback-" if mode in ("fallback_after_delete","fallback_after_terminal") else "luna-p0-auto-wd-"
     if mode not in MODES or not watchdog.startswith(expected_watchdog_prefix) or not keeper.startswith("luna-p0-stage-keeper-"):
         raise ValueError("invalid fault mode/unit identity")
     if FAULT.exists() or FAULT.is_symlink() or DONE.exists() or DONE.is_symlink():
@@ -61,6 +61,8 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
     timeout = ready["deadlineMonotonic"] + 1.25 - time.monotonic()
     if timeout > 12:
         raise ValueError("deadline is not bounded")
+    if mode == "fallback_after_terminal" and journal.get("state") != "COMMITTED_SYNTHETIC":
+        raise ValueError("terminal-crash observer was not started during committed stage")
     if timeout > 0:
         time.sleep(timeout)
     if DONE.exists() or DONE.is_symlink():
@@ -69,11 +71,30 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
     main_pid = run("systemctl", "show", killed, "-p", "MainPID", "--value")
     if main_pid.returncode != 0 or main_pid.stdout.strip() != "0":
         raise ValueError("killed service is not stopped")
-    expected = "VALIDATED" if mode == "keeper_precommit" else "COMMITTED_SYNTHETIC"
+    if mode == "fallback_after_terminal":
+        # Reload only once the systemd MainPID has exited, so the journal
+        # is not sampled while the intentionally successful terminal
+        # transition is in flight. This does NOT imply a success DONE.
+        journal = mod.safe_load(mod.JOURNAL)
+    expected = ("VALIDATED" if mode == "keeper_precommit" else
+                "ROLLED_BACK" if mode == "fallback_after_terminal" else "COMMITTED_SYNTHETIC")
     if journal.get("state") != expected:
         raise ValueError("unexpected pre-read state")
     latest = mod.safe_load(mod.JOURNAL)
-    if latest != journal:
+    if mode == "fallback_after_terminal":
+        # A bounded stable-read sequence handles the narrow fsync/rename
+        # publication interval without accepting a journal that keeps moving.
+        for _ in range(12):
+            if latest == journal:
+                break
+            time.sleep(0.05)
+            journal = mod.safe_load(mod.JOURNAL)
+            latest = mod.safe_load(mod.JOURNAL)
+        if (latest != journal or set(latest) != {"stageId","bootId","state","history"}
+            or latest["history"] != mod.PHASES or latest["state"] != "ROLLED_BACK"
+            or latest["bootId"] != boot or latest["stageId"] != manifest["stageId"]):
+            raise ValueError("terminal journal not stable/valid after process death")
+    elif latest != journal:
         raise ValueError("journal mutated during fault observation")
     # Only the guest's specifically named synthetic private namespace may be inspected.
     table_observed = False
@@ -83,11 +104,10 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
             raise ValueError("fault target is not the expected synthetic namespace")
         result = run("ip", "netns", "exec", netns, "nft", "list", "table", "inet", "luna_p0_stage")
         table_observed = result.returncode == 0
-        if mode == "fallback_after_delete":
-            if table_observed or DONE.exists():
-                raise ValueError("crash after delete requires absent table and no primary DONE")
-            # A missing table while journal remains COMMITTED is a genuine
-            # atomicity gap; never claim rollback success from this observation.
+        if mode in ("fallback_after_delete","fallback_after_terminal"):
+            if table_observed or DONE.exists() or (ROOT/"fallback-done.json").exists():
+                raise ValueError("postdelete crash requires absent table and no success DONE")
+            # Terminal journal alone does not constitute a DONE receipt.
         elif not table_observed:
             raise ValueError("synthetic table unexpectedly absent; cannot claim un-recovered filter")
     else:
@@ -104,7 +124,9 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
         "serviceMainPIDIsZero": True,
         "syntheticRuleStillPresent": table_observed,
         "kernelAbsentJournalIncomplete": mode == "fallback_after_delete",
-        "status": "FAILURE_DETECTED_NOT_RECOVERED",
+        "terminalJournalWithoutDone": mode == "fallback_after_terminal",
+        "status": ("TERMINAL_JOURNAL_DONE_MISSING_REVIEW_REQUIRED" if mode == "fallback_after_terminal"
+                   else "FAILURE_DETECTED_NOT_RECOVERED"),
         "kernelWrites": False,
         "ownerApproved": False,
         "automaticRollbackConfirmed": False,

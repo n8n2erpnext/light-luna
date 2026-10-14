@@ -21,7 +21,7 @@ j=json.loads((p/"stage-journal.json").read_text())
 assert m["ttlSeconds"]==10 and m["kernelWrites"] is False and m["ownerApproved"] is False
 assert j["state"]=="ROLLED_BACK" and j["bootId"]==Path("/proc/sys/kernel/random/boot_id").read_text().strip()
 '
-for file in guest-fallback-supervisor.py guest-stage-test.sh guest-auto-watchdog.py guest-rollback-fence.py;do
+for file in guest-fallback-supervisor.py guest-stage-test.sh guest-auto-watchdog.py guest-rollback-fence.py guest-rollback-receipts.py;do
  lxc file push "scripts/lab/vm/$file" "$vm/opt/luna-p0-kernel-tests/$file" --mode=0700 >/dev/null
 done
 for mode in keeper_postcommit watchdog_postcommit;do

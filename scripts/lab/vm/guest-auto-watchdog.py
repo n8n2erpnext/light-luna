@@ -108,21 +108,40 @@ def main():
     with fence.guard(mod,manifest["stageId"],current_boot) as latest:
         if birth(pid)!=ticks or namespace(pid)!=inode:
             raise ValueError("keeper identity changed while waiting on rollback fence")
-        existing=run_nft(pid,"list","table","inet",TABLE,expect_success=False)
+        snapshot=run_nft(pid,"-j","list","table","inet",TABLE,expect_success=False)
         if latest["state"]!="COMMITTED_SYNTHETIC":
-            # Never delete a noncommitted or externally changed nft rule.
             raise ValueError("not committed at TTL under fence; no kernel mutation or success receipt")
-        if existing.returncode!=0:
+        if snapshot.returncode!=0:
             raise ValueError("table already missing under fence; no unverifiable success")
+        # Primary must use the same fixed three-rule validator as fallback.
+        guard_source=ROOT/"guest-fallback-supervisor.py"
+        if guard_source.is_symlink() or not guard_source.is_file():
+            raise ValueError("missing synthetic whitelist validator")
+        validator_spec=importlib.util.spec_from_file_location("vm_primary_nft_shape",guard_source)
+        validator=importlib.util.module_from_spec(validator_spec)
+        validator_spec.loader.exec_module(validator)
+        if not validator.fixed_synthetic_table(json.loads(snapshot.stdout)):
+            raise ValueError("primary refused foreign or altered nft table")
+        receipt_source=ROOT/"guest-rollback-receipts.py"
+        if receipt_source.is_symlink() or not receipt_source.is_file():
+            raise ValueError("VM-only rollback receipt helper missing")
+        receipt_spec=importlib.util.spec_from_file_location("vm_primary_rollback_receipts",receipt_source)
+        receipts=importlib.util.module_from_spec(receipt_spec)
+        receipt_spec.loader.exec_module(receipts)
+        ready=mod.safe_load(READY)
+        epoch=receipts.prepare(manifest["stageId"],current_boot,inode,ready,"primary")
+        # PREPARED receipt has been fsynced before the first kernel mutation.
         run_nft(pid,"delete","table","inet",TABLE)
         if run_nft(pid,"list","table","inet",TABLE,expect_success=False).returncode==0:
             raise ValueError("synthetic table remains after fenced deletion")
+        receipts.advance(epoch,"kernel-absent",manifest["stageId"],current_boot,inode,"primary")
         mod.transition("transition","ROLLED_BACK",manifest)
+        receipts.advance(epoch,"journal-terminal",manifest["stageId"],current_boot,inode,"primary")
         completed=time.monotonic()
         save(DONE,{"stageId":manifest["stageId"],"bootId":current_boot,"status":"AUTO_ROLLBACK_CONFIRMED",
                    "completedMonotonic":completed,"deadlineMonotonic":deadline,
                    "lagSeconds":max(0.0,completed-deadline),
-                   "rollbackFenced":True})
+                   "rollbackFenced":True,"rollbackObservationEpoch":epoch})
     print("VM_AUTO_WATCHDOG_SELF_TRIGGERED_ROLLBACK_PASS",flush=True)
 
 if __name__=="__main__":
