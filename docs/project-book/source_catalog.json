@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 47461,
-      "sha256": "c058e966e54a1c45aea6835b8d0acb56968d2a19072663e1982dc964db050063"
+      "bytes": 48327,
+      "sha256": "b90b0a69406bb55df819539f53e4c945c416975193ccc11b9cf032f0fefba566"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 20010,
-      "sha256": "fd928469e2f99c6eda1587c819272a116d9aa7a205bc6b27355abde21623f63c"
+      "bytes": 22366,
+      "sha256": "c6a554725264228dd98618dfc6d0d6372e348e46e69f9ae84f0e27c5fd198e81"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -714,15 +714,15 @@
       "path": "internal/policy/model.go",
       "category": "implementation",
       "title": "model",
-      "bytes": 2068,
-      "sha256": "8b713c471f551981f7a5b4496d540f5d233bd279e79a1a71fde8a9bccb33eaa5"
+      "bytes": 2214,
+      "sha256": "41ac27ab8d50a74d29496b8f5747f181ab778d3607113d6ad483fbf00255fc4c"
     },
     {
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 11986,
-      "sha256": "0c44a3487f01eb5e23c794ebe6863e030ae97aad1532ab81ee09f6e92adeba68"
+      "bytes": 14939,
+      "sha256": "19d4a3b5eb47d29987fb59c7cc38d13be137a7b0d46a9e6fda294fff6f316886"
     },
     {
       "path": "internal/policy/preview.go",
@@ -730,6 +730,13 @@
       "title": "preview",
       "bytes": 1720,
       "sha256": "326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362"
+    },
+    {
+      "path": "internal/policy/required_keys.go",
+      "category": "implementation",
+      "title": "required_keys",
+      "bytes": 3069,
+      "sha256": "8528ac01890fa2ebdddec1b1ecd6135b1e84bbd14d1be5ac317395722d52f6e9"
     },
     {
       "path": "internal/policy/validate.go",
@@ -1162,8 +1169,8 @@
       "path": "scripts/test_p0_policy_schema_contract.py",
       "category": "developer tooling",
       "title": "test_p0_policy_schema_contract",
-      "bytes": 8251,
-      "sha256": "2aa4c6e750267c9c529eab68b520eaae2c1133cbd5bc94cd85283718e231861b"
+      "bytes": 10182,
+      "sha256": "f38cb49a59e82bbb00a11befe66661ce78dbc02cea7ad6d1015e6b5474e29776"
     },
     {
       "path": "scripts/update_doc_catalog.py",

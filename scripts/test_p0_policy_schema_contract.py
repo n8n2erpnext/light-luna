@@ -77,6 +77,20 @@ def verify_contract(verify_cli: bool) -> None:
         ("alias member", ("spec", "aliases", 0, "values", 0), False, False),
         ("metadata revision", ("metadata", "revision"), False, False),
     )
+    required_key_scenarios = (
+        ("emergencyAccess", ("spec", "emergencyAccess")),
+        ("emergency enabled", ("spec", "emergencyAccess", "enabled")),
+        ("emergency networks", ("spec", "emergencyAccess", "networks")),
+        ("autonomous allowRealBans", ("spec", "autonomous", "allowRealBans")),
+        ("autonomous maxBanTtlSeconds", ("spec", "autonomous", "maxBanTtlSeconds")),
+    )
+    casefold_scenarios = (
+        ("root Spec", ("spec",), "Spec"),
+        ("emergency Enabled", ("spec", "emergencyAccess", "enabled"), "Enabled"),
+        ("metadata Revision", ("metadata", "revision"), "Revision"),
+        ("rule Action", ("spec", "rules", 0, "action"), "Action"),
+        ("alias Type", ("spec", "aliases", 0, "type"), "Type"),
+    )
     note_scenarios = (
         ("ordinary note", "Safe note", True),
         ("empty note", "", True),
@@ -132,6 +146,32 @@ def verify_contract(verify_cli: bool) -> None:
         value[key_path[-1]] = None
         cases.append((f"explicit null/{name}", bundle, False))
 
+    for name, key_path in required_key_scenarios:
+        bundle = copy.deepcopy(baseline)
+        bundle["spec"]["defaultInbound"] = "accept"
+        parent = bundle
+        for key in key_path[:-1]:
+            parent = parent[key]
+        del parent[key_path[-1]]
+        cases.append((f"missing required/{name}", bundle, False))
+
+    for name, key_path, folded in casefold_scenarios:
+        bundle = copy.deepcopy(baseline)
+        bundle["spec"]["defaultInbound"] = "accept"
+        parent = bundle
+        for key in key_path[:-1]:
+            parent = parent[key]
+        parent[folded] = parent.pop(key_path[-1])
+        cases.append((f"casefolded key/{name}", bundle, False))
+
+    for optional in ("rules", "aliases"):
+        bundle = copy.deepcopy(baseline)
+        bundle["spec"]["defaultInbound"] = "accept"
+        del bundle["spec"][optional]
+        if optional == "aliases":
+            bundle["spec"]["rules"][1]["source"] = "any"
+        cases.append((f"omitted optional/{optional}", bundle, True))
+
     # Build once into a temporary directory; all policy files are synthetic and
     # discarded. Running `validate` is non-enforcing and never touches nft.
     with tempfile.TemporaryDirectory(prefix="lightluna-schema-contract-") as tmp:
@@ -176,7 +216,10 @@ def verify_contract(verify_cli: bool) -> None:
         f"({len(scenarios)} rescue + {len(port_scenarios)} port + "
         f"2 alias + {len(note_scenarios)} note + "
         f"{len(revision_scenarios)} revision + "
-        f"{len(null_scenarios)} explicit-null = {len(cases)} cases; "
+        f"{len(null_scenarios)} explicit-null + "
+        f"{len(required_key_scenarios)} missing-required + "
+        f"{len(casefold_scenarios)} casefolded-key + 2 optional-omissions "
+        f"= {len(cases)} cases; "
         f"Go CLI parity={'PASS' if verify_cli else 'NOT_RUN'})"
     )
 

@@ -321,6 +321,90 @@ func TestDecodeRejectExplicitNullFields(t *testing.T) {
 	}
 }
 
+// The public schema declares several mandatory keys. Unlike a JSON
+// Schema object, Go structs silently default omitted keys, and encoding/json
+// also accepts case-insensitive field spellings. The policy file boundary
+// must require the actual case-sensitive contract without requiring optional
+// arrays or ports.
+func TestDecodeRejectMissingOrCaseFoldedRequiredKeys(t *testing.T) {
+	tests := []struct {
+		name   string
+		change func(map[string]any)
+	}{
+		{"missing emergency object", func(b map[string]any) {
+			delete(b["spec"].(map[string]any), "emergencyAccess")
+		}},
+		{"missing emergency enabled", func(b map[string]any) {
+			delete(b["spec"].(map[string]any)["emergencyAccess"].(map[string]any), "enabled")
+		}},
+		{"missing emergency networks", func(b map[string]any) {
+			delete(b["spec"].(map[string]any)["emergencyAccess"].(map[string]any), "networks")
+		}},
+		{"missing autonomous allowRealBans", func(b map[string]any) {
+			delete(b["spec"].(map[string]any)["autonomous"].(map[string]any), "allowRealBans")
+		}},
+		{"missing autonomous maxBanTtlSeconds", func(b map[string]any) {
+			delete(b["spec"].(map[string]any)["autonomous"].(map[string]any), "maxBanTtlSeconds")
+		}},
+		{"folded root Spec", func(b map[string]any) {
+			b["Spec"] = b["spec"]
+			delete(b, "spec")
+		}},
+		{"folded emergency Enabled", func(b map[string]any) {
+			e := b["spec"].(map[string]any)["emergencyAccess"].(map[string]any)
+			e["Enabled"] = e["enabled"]
+			delete(e, "enabled")
+		}},
+		{"folded metadata Revision", func(b map[string]any) {
+			m := b["metadata"].(map[string]any)
+			m["Revision"] = m["revision"]
+			delete(m, "revision")
+		}},
+		{"folded rule Action", func(b map[string]any) {
+			r := b["spec"].(map[string]any)["rules"].([]any)[0].(map[string]any)
+			r["Action"] = r["action"]
+			delete(r, "action")
+		}},
+		{"folded alias Type", func(b map[string]any) {
+			a := b["spec"].(map[string]any)["aliases"].([]any)[0].(map[string]any)
+			a["Type"] = a["type"]
+			delete(a, "type")
+		}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			var b map[string]any
+			if err := json.Unmarshal(fixture(t), &b); err != nil {
+				t.Fatal(err)
+			}
+			b["spec"].(map[string]any)["defaultInbound"] = "accept"
+			tc.change(b)
+			data, err := json.Marshal(b)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := decode(t, data); err == nil {
+				t.Fatalf("accepted missing or case-folded required field: %s", tc.name)
+			}
+		})
+	}
+	// Actual optional properties stay optional. Absence is not a null token.
+	var b map[string]any
+	if err := json.Unmarshal(fixture(t), &b); err != nil {
+		t.Fatal(err)
+	}
+	b["spec"].(map[string]any)["defaultInbound"] = "accept"
+	delete(b["spec"].(map[string]any), "rules")
+	delete(b["spec"].(map[string]any), "aliases")
+	raw, err := json.Marshal(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := decode(t, raw); err != nil {
+		t.Fatalf("rejecting optional omitted rules and aliases: %v", err)
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")

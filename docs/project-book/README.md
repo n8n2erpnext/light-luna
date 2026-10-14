@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 source verification — exact required keys (2026-10-15)
+
+- [Required PolicyBundle key case/presence audit](../architecture/p0-policy-rule-conflict-audit.md) — initial real Go CLI mismatch and ten-case prepatch RED established; [exact case-sensitive key checker](../../internal/policy/required_keys.go) passes post-edit Go regression GREEN ×3. The expanded [real CLI/schema suite](../../scripts/test_p0_policy_schema_contract.py) passes 59/59, retaining optional-omission positives. Full Go suite/vet, process scripts, offline VM tests and cross-builds PASS. Non-enforcing source only.
+
 ## Latest Core P0 code and test evidence (2026-10-15)
 
 - [PolicyBundle null-tolerant Go decoding corrected](../architecture/p0-policy-rule-conflict-audit.md) — [`policy.Decode`](../../internal/policy/model.go) uses opt-in [`strictjson.DecodeRejectNull`](../../internal/strictjson/decode.go) to reject explicit JSON nulls, preserving all other callers. [Real CLI parity suite](../../scripts/test_p0_policy_schema_contract.py) now checks **47 bounded cases**; [Go policy regression](../../internal/policy/policy_test.go) observed RED→GREEN. No privileged policy apply.

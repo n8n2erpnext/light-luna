@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 47461 | c058e966e54a1c45aea6835b8d0acb56968d2a19072663e1982dc964db050063 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 48327 | b90b0a69406bb55df819539f53e4c945c416975193ccc11b9cf032f0fefba566 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -61,7 +61,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-offline-owner-review-separation.md](../../docs/architecture/p0-offline-owner-review-separation.md) | architecture / design source | 12586 | 7b0c3e4e2dddee2258bbb780a1b9a34e4c404c8d7074d3473635ea1c48a95c23 |
 | [docs/architecture/p0-owner-key-lifecycle-revocation-contract.md](../../docs/architecture/p0-owner-key-lifecycle-revocation-contract.md) | architecture / design source | 8347 | 3eb17d1d4ac66a9769596a8dcc225017997eb13bc8bb23e82bf116bad8b86ff3 |
-| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 20010 | fd928469e2f99c6eda1587c819272a116d9aa7a205bc6b27355abde21623f63c |
+| [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 22366 | c6a554725264228dd98618dfc6d0d6372e348e46e69f9ae84f0e27c5fd198e81 |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 12601 | 0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
@@ -108,9 +108,10 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/policy/conflicts.go](../../internal/policy/conflicts.go) | implementation | 6141 | aefdd5d8333a1f1a31aa8f4091b08525501a7913f20a14e6724d637377f2bf1d |
 | [internal/policy/conflicts_test.go](../../internal/policy/conflicts_test.go) | unit / negative tests | 6517 | 22d08e9cd7c5a98b2afc825e524e955adc67ce9afbfc40e02a12ca38397c6cc7 |
 | [internal/policy/duplicate_keys_test.go](../../internal/policy/duplicate_keys_test.go) | unit / negative tests | 664 | 43d77f206cfbc65c18a6cb4a76091bb5df65d7f54bda0042d30c21171f904b9b |
-| [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2068 | 8b713c471f551981f7a5b4496d540f5d233bd279e79a1a71fde8a9bccb33eaa5 |
-| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 11986 | 0c44a3487f01eb5e23c794ebe6863e030ae97aad1532ab81ee09f6e92adeba68 |
+| [internal/policy/model.go](../../internal/policy/model.go) | implementation | 2214 | 41ac27ab8d50a74d29496b8f5747f181ab778d3607113d6ad483fbf00255fc4c |
+| [internal/policy/policy_test.go](../../internal/policy/policy_test.go) | unit / negative tests | 14939 | 19d4a3b5eb47d29987fb59c7cc38d13be137a7b0d46a9e6fda294fff6f316886 |
 | [internal/policy/preview.go](../../internal/policy/preview.go) | implementation | 1720 | 326e9320a4cff44cf6edb08af2f78311558b8d7c2a3dd3798b0c9957b2d24362 |
+| [internal/policy/required_keys.go](../../internal/policy/required_keys.go) | implementation | 3069 | 8528ac01890fa2ebdddec1b1ecd6135b1e84bbd14d1be5ac317395722d52f6e9 |
 | [internal/policy/validate.go](../../internal/policy/validate.go) | implementation | 6695 | 93512a2f20ada6f6ebc56bf5b685f263e1d5aa16439bebc489930e52152a9c77 |
 | [internal/strictjson/decode.go](../../internal/strictjson/decode.go) | implementation | 3405 | c3a8c00be9dba8e4370f45228d3d95970c6aa8c537a9a435286615b479c711be |
 | [internal/strictjson/decode_test.go](../../internal/strictjson/decode_test.go) | unit / negative tests | 1872 | b2cdfcf48ab8cd6c7cc15441d1d781054db64af7cea0218ac321f43de4536c4c |
@@ -172,7 +173,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/vm/test_rollback_review.py](../../scripts/lab/vm/test_rollback_review.py) | developer tooling | 7044 | 904459b4ef0c356e385c9fb482a26d5ce8cfd82860de5d301beffce2c21f7587 |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |
 | [scripts/test_p0_gate_processes.sh](../../scripts/test_p0_gate_processes.sh) | developer tooling | 2536 | c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6 |
-| [scripts/test_p0_policy_schema_contract.py](../../scripts/test_p0_policy_schema_contract.py) | developer tooling | 8251 | 2aa4c6e750267c9c529eab68b520eaae2c1133cbd5bc94cd85283718e231861b |
+| [scripts/test_p0_policy_schema_contract.py](../../scripts/test_p0_policy_schema_contract.py) | developer tooling | 10182 | f38cb49a59e82bbb00a11befe66661ce78dbc02cea7ad6d1015e6b5474e29776 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |
 | [testdata/cloud-migration-inventory.synthetic.json](../../testdata/cloud-migration-inventory.synthetic.json) | synthetic test fixture | 1789 | 2618790838ad824c21fb0c3b1ab5956edd45fb027fbfb5cc61af228271a5b0af |
 | [testdata/fleet-config-intent.synthetic.json](../../testdata/fleet-config-intent.synthetic.json) | synthetic test fixture | 1147 | 1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a |

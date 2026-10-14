@@ -3,6 +3,7 @@
 package policy
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
 
@@ -58,7 +59,11 @@ type Autonomous struct {
 // and policy semantics. No kernel/netfilter operation is performed.
 func Decode(r io.Reader) (Bundle, error) {
 	var b Bundle
-	if err := strictjson.DecodeRejectNull(r, MaxPolicyBytes, &b); err != nil {
+	var original bytes.Buffer
+	if err := strictjson.DecodeRejectNull(io.TeeReader(r, &original), MaxPolicyBytes, &b); err != nil {
+		return b, err
+	}
+	if err := requireExactPolicyKeys(original.Bytes()); err != nil {
 		return b, err
 	}
 	if err := b.Validate(); err != nil {
