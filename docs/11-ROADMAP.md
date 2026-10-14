@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 service death and missing fallback rollback (2026-10-14 — lab detection PASS)
+
+[Source and verification](architecture/p0-vm-autonomous-ttl-watchdog.md): a no-NIC KVM VM experiment with 3 real SIGKILL cases demonstrates `keeper_precommit` leaves a noncommitted `VALIDATED` journal, while `keeper_postcommit` and `watchdog_postcommit` leave actual guest-netns synthetic nft drops **active after the monotonic deadline**. No false DONE or `ROLLED_BACK` receipt was generated. A scope-bound EXIT trap and independent manual archive cleared the synthetic **lab** footprint and preserved evidence without claiming an autonomous rescue. This is an **unresolved P0 product capability gap:** independent fallback supervision/recovery and owner-authenticated policy control still need to be designed and tested. G-STANDALONE remains BLOCKED.
+
 ## P0 actual forced KVM reboot / stale journal inspection — lab PASS (2026-10-14)
 
 [Verified source and bounded experiment](architecture/p0-vm-autonomous-ttl-watchdog.md): a no-NIC independent-kernel VM ran a fixed synthetic guest-netns ICMP DROP with positive packet counter and journal `COMMITTED_SYNTHETIC`, then only that VM was forcibly stopped/restarted. Linux boot ID changed; read-only inventory observed no root nft/named/foreign-process netns, but the stale journal was **not** marked `ROLLED_BACK`. Cross-boot transition was denied and an explicitly acknowledged separate operator step archived evidence unchanged. 14 new offline inspection tests + existing 5 boot-ID tests PASS, and full KVM regression passed after inspection/archive. **Not a production reboot-rescue system or verified power-loss rollback; P0 and G-STANDALONE remain OPEN/BLOCKED.**

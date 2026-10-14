@@ -2,6 +2,18 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Three real isolated service-death fault injections (2026-10-14)
+
+[Architecture, evidence, nonclaims](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-stage-test.sh` has explicit `LUNA_VM_FAULT` modes `keeper_precommit`, `keeper_postcommit` and `watchdog_postcommit`. They deliberately SIGKILL only their own temporary systemd MainPID **inside the no-NIC KVM guest**. `guest-fault-evidence.py` observes the failed unit after the monotonic deadline; for both postcommit cases the fixed synthetic nft table remains until the test EXIT cleanup. **No recovery or automatic rollback success is claimed.** After scoped guest cleanup, `guest-archive-fault.py` requires a separate exact acknowledgment and archives the still-incomplete stage journal unchanged along with a failure record; no-ack is rejected.
+
+Lab runner (disruptive to temporary guest-only services; the named VM, profile and no-NIC checks are mandatory):
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_P0_SERVICE_FAULT_ACK=KILL_ONLY_ISOLATED_VM_LAB_SERVICES bash scripts/lab/vm/run-service-faults.sh
+```
+
+A no-ACK attempt against `guest-stage-test.sh` was denied before changing journal state. After the three fault cases, the **normal nonfault full KVM suite was rerun and PASS**, with terminal `ROLLED_BACK` and empty observed guest nft/named netns. Two nonfatal `wait_for: No record of process` shell diagnostics were observed and remain a fixture-quality issue. One full 3-mode execution **PASS** with marker `VM_THREE_SERVICE_DEATH_FAULTS_DETECTED_AND_ARCHIVED_PASS`. The runner preserves fixed per-mode archival files and refuses overwriting them; do not erase history merely to rerun. Synthetic service failure **exposes missing failover** and must not be reported as live firewall crash recovery. Normal `run-tests.sh` is independent and uses the default `LUNA_VM_FAULT=none` path.
+
 ## Forced reboot of committed guest-only synthetic stage (2026-10-14)
 
 Verified isolated fault-injection: `guest-boot-inspect.py` is **read-only**, checks exact no-NIC KVM guest, journal boot ID and bounded root nft/named/process netns inventory; it never clears journals or grants approval. `test_boot_inspect.py` runs 14 offline tests.

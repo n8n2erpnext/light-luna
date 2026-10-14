@@ -8,6 +8,13 @@ main_bash_pid="$BASHPID"
 [[ -f /etc/light-luna-p0-kernel-vm ]] || { echo "MISSING_VM_MARKER" >&2; exit 2; }
 [[ "$(systemd-detect-virt)" == kvm ]] || { echo "VM_KERNEL_REQUIRED" >&2; exit 2; }
 [[ "$(ls -1 /sys/class/net)" == lo ]] || { echo "NIC_PRESENT" >&2; exit 2; }
+fault_mode="${LUNA_VM_FAULT:-none}"
+case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
+if [[ "$fault_mode" != none ]];then
+ [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FAULT_ACK:-}" == "KILL_VM_SYNTHETIC_KEEPER_OR_WATCHDOG" ]] || {
+   echo "EXPLICIT_VM_FAULT_ACK_REQUIRED" >&2;exit 2;
+ }
+fi
 work=/opt/luna-p0-kernel-tests
 journal="$work/guest-stage-journal.py"
 probe="$work/guest-netprobe.py"
@@ -28,6 +35,7 @@ assert s["history"]==["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY
   rm -f -- "$state"
 fi
+[[ ! -e "$work/stage-fault-evidence.json" ]] || { echo "PREVIOUS_FAULT_EVIDENCE_UNARCHIVED_REFUSE" >&2;exit 3; }
 rm -f -- "$work/stage-watchdog.log" "$work/stage-watchdog-done" "$work/stage-nft.nft" "$work/stage-netprobe.log" "$work/auto-watchdog-ready.json" "$work/auto-watchdog-done.json"
 src="luna_stage_src_$$"
 dst="luna_stage_dst_$$"
@@ -182,6 +190,17 @@ assert r["ttlSeconds"]==m["ttlSeconds"]
 assert r["deadlineMonotonic"]-time.monotonic()>=5, "TTL too near; cannot commit safely"
 PY
   echo "VM_AUTO_WATCHDOG_PRECOMMIT_READY_PASS"
+  if [[ "$fault_mode" == keeper_precommit ]];then
+    # Fault only a specific transient PID1-managed lab keeper (never systemd).
+    systemctl kill --kill-who=main --signal=SIGKILL "$keeper_unit.service"
+    sleep .3
+    [[ "$(systemctl show "$keeper_unit.service" -p MainPID --value)" == 0 ]] || { echo "KEEPER_DEATH_UNVERIFIED";exit 3; }
+    echo "VM_FAULT_KEEPER_PRECOMMIT_KILLED"
+    # Watchdog must refuse success after its pinned keeper PID is gone.
+    python3 "$work/guest-fault-evidence.py" observe keeper_precommit "$unit.service" "$keeper_unit.service"
+    echo "VM_FAULT_KEEPER_PRECOMMIT_NO_SUCCESS_PASS"
+    exit 0
+  fi
 fi
 ttl="$(python3 - "$manifest" <<'PY'
 import json,sys
@@ -212,6 +231,17 @@ for rule in 'tcp dport 18080' 'udp dport 18081' 'icmpv6 type echo-request';do
  }
 done
 echo "VM_STAGE_TCP_UDP_IPV6_DROP_COUNTER_PASS"
+if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit ]];then
+  if [[ "$fault_mode" == watchdog_postcommit ]];then victim="$unit.service";else victim="$keeper_unit.service";fi
+  systemctl kill --kill-who=main --signal=SIGKILL "$victim"
+  sleep .3
+  [[ "$(systemctl show "$victim" -p MainPID --value)" == 0 ]] || { echo "FAULT_SERVICE_DEATH_UNVERIFIED";exit 3; }
+  echo "VM_FAULT_SERVICE_POSTCOMMIT_KILLED"
+  # Verify no false DONE, confirm synthetic table still exists after TTL.
+  python3 "$work/guest-fault-evidence.py" observe "$fault_mode" "$unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
+  echo "VM_FAULT_POSTCOMMIT_UNRECOVERED_RECORDED_PASS"
+  exit 0
+fi
 sleep 30 &
 controller_pid=$!
 kill "$controller_pid" 2>/dev/null || true

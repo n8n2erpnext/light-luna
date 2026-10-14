@@ -16,6 +16,13 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - `guest-auto-watchdog.py` → boot identity verified before READY and before namespace-targeted TTL rollback; READY/DONE receipts carry the ID. `guest-stage-test.sh` verifies receipts, and `reconcile-interrupted-stage.sh` refuses cross-boot terminal transitions.
 - `test_boot_journal.py` → 5 offline unit tests (new-boot refusal, legacy refusal, duplicate-key denial, etc.). **Effects:** synthetic VM journal/receipt writes only, no product policy apply. Standalone KVM suite on the modified source returned exit 0 with original explicit and automatic TTL regression markers; this is **not a real VM reboot, automatic boot reconciliation, signed owner authorization, or product executor**.
 
+## VM temporary service death fault path (2026-10-14 — real KVM SIGKILL, failure evidence PASS)
+
+- `scripts/lab/vm/run-service-faults.sh` (explicit ack, exactly named NIC-less KVM VM/profiling guard) → `guest-stage-test.sh` with `LUNA_VM_AUTO_TTL=1` and enumerated fault modes. It SIGKILLs **only** per-test transient systemd keeper/watchdog MainPID, before/after a synthetic test-netns table commit. The host runner requires no guest nft/named netns left after the shell's scoped EXIT cleanup, no DONE and an incomplete journal before any archive.
+- `guest-fault-evidence.py` → read-only stage+boot+READY+unit/timer checks; for postcommit cases it observes fixed guest test table **still present past TTL**. It writes atomic/fsynced `FAILURE_DETECTED_NOT_RECOVERED` evidence, not an enforcement log or rollback receipt.
+- `guest-archive-fault.py` → explicit independent ack → `guest-boot-inspect.py` read-only kernel inventory and current-boot interrupted state → archive **unmodified incomplete journal** and fault evidence. No `ROLLED_BACK` transition; no kernel writes.
+- **Verified:** 3 actual VM SIGKILL cases PASS detection, postcommit failures remained blocked after expiry. **Not implemented:** replacement watchdog, independent rescue after keeper loss, policy executor, signed owner auth, installed production services and safe real-network enforcement.
+
 ## Read-only reboot inventory, forced fault injection and explicit archival (2026-10-14 — actual KVM lab PASS)
 
 - `scripts/lab/vm/guest-boot-inspect.py` → `assert_guest` (root, KVM, no NIC, marker) → `inspect_kernel` (read-only `nft -j list ruleset`, `ip netns list`, /proc process netns) + `guest-stage-journal.py` (manifest/journal/boot ID) → `classify` (pure return; no repair). **Kernel side effects: NONE.** A stale committed journal returns `CROSS_BOOT_NO_KERNEL_STATE_OBSERVED_REVIEW_REQUIRED` with `autoReconciliationAllowed=false`. [14 pure regression tests](../../scripts/lab/vm/test_boot_inspect.py).
