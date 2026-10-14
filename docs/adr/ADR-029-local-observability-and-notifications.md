@@ -7,6 +7,10 @@ Source baseline: `feat/p0-standalone-foundation@de2063fe04eb09476017f9c58e16a347
 Supersedes: none; extends [ADR-005/006/019](../12-ADRS.md), [ADR-024](ADR-024-offline-base-independent-component-updates.md), [ADR-026](ADR-026-unified-account-remote-fleet-control.md), [ADR-027](ADR-027-collective-threat-immunity.md), [ADR-028](ADR-028-self-defense-host-compromise.md)
 Primary sources: [Observability and notifications architecture](../architecture/local-observability-and-notifications.md), [Project Book](../project-book/LIGHT_LUNA_PROJECT_BOOK.md), [Security boundaries](../07-SECURITY-SAFETY.md)
 
+## Owner implementation-priority clarification — 2026-10-14
+
+The owner explicitly reaffirmed **CORE LIGHT LUNA FIRST** after reviewing premature P0 synthetic observability/event source work. This ADR remains a **record of future architectural requirements only**, not a current implementation task or authorization to deploy metrics, Grafana, notifications, API servers, provider adapters, durable outbox or additional synthetic telemetry code. Existing inert Go prototypes are **parked** and must not be expanded. Standalone Core (policy engine, signed local Gate/Executor, rollback/recovery, Host/Edge packaging and tests) must be delivered and reviewed first; implementation of the integrations requires a **separate explicit owner priority decision**. Ignore older phased schedules below as an active implementation queue. NetBird retains its independent post-G-STANDALONE owner-approval gate.
+
 ## Owner decision
 
 Light Luna **must** provide a documented **Prometheus-compatible metrics API** consumable by a Prometheus server and Grafana, showing **ban state and security/health statistics**; it must also provide owner-configured outbound notifications through **Telegram, Discord, Slack and email (SMTP)**. Observing the number of blocks alone is insufficient: the product must distinguish observed attacks, proposed decisions, approved decisions, executor-applied vs failed/reverted/expired bans, health, freshness and evidence quality. See the [concrete contract](../architecture/local-observability-and-notifications.md).

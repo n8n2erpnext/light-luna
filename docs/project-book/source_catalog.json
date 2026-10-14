@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 35597,
-      "sha256": "fa9182c05c36d1ac7931e73dbdb012114ca349aa809c0c3a2b1a296809c45d28"
+      "bytes": 35884,
+      "sha256": "8c5a4cf982fe2a05bf16b84a1b9dfc69c6156a9cdd0e03d9d719f11fd17cd6b6"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -245,8 +245,8 @@
       "path": "docs/adr/ADR-029-local-observability-and-notifications.md",
       "category": "architecture / design source",
       "title": "ADR-029 — Local Observability API and Multi-Channel Security Notifications",
-      "bytes": 9555,
-      "sha256": "f6afb1ffe5c96bcdad67be6bf43ab1a961248d9eeb22a47db19cde9ae0a8c11b"
+      "bytes": 10456,
+      "sha256": "92e16cf81904ebf679e53be6e08c5109c7adcf5a143e210b787ec198a39d0ada"
     },
     {
       "path": "docs/architecture/cloud-migration-and-recovery.md",
@@ -280,8 +280,8 @@
       "path": "docs/architecture/local-observability-and-notifications.md",
       "category": "architecture / design source",
       "title": "Light Luna Local Observability API, Ban State and Multi-Channel Notifications",
-      "bytes": 20618,
-      "sha256": "c49300d2eb074c6a29450636b1a7c3c39ceb44a97fea8f59a19e49eda48e3486"
+      "bytes": 21496,
+      "sha256": "207f04dcd628267547f5982bbea073f8cafb1df039dae3f794772313a4c2ab39"
     },
     {
       "path": "docs/architecture/local-runtime-foundation.md",

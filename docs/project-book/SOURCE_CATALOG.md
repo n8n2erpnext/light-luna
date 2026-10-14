@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 35597 | fa9182c05c36d1ac7931e73dbdb012114ca349aa809c0c3a2b1a296809c45d28 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 35884 | 8c5a4cf982fe2a05bf16b84a1b9dfc69c6156a9cdd0e03d9d719f11fd17cd6b6 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -41,12 +41,12 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/adr/ADR-026-unified-account-remote-fleet-control.md](../../docs/adr/ADR-026-unified-account-remote-fleet-control.md) | architecture / design source | 10572 | 70709597254185d4d002101f924546aef3b385b5791cb1b7232155e832db7b67 |
 | [docs/adr/ADR-027-collective-threat-immunity.md](../../docs/adr/ADR-027-collective-threat-immunity.md) | architecture / design source | 10408 | 7bf4e1de8985c342a8d607c46c8877a4acc698115b8ee92938852bb9fdc72e21 |
 | [docs/adr/ADR-028-self-defense-host-compromise.md](../../docs/adr/ADR-028-self-defense-host-compromise.md) | architecture / design source | 10231 | 8a8ea248ab3b86420db772dd5ea680ed7ae74058e37400590356ecd616e2f649 |
-| [docs/adr/ADR-029-local-observability-and-notifications.md](../../docs/adr/ADR-029-local-observability-and-notifications.md) | architecture / design source | 9555 | f6afb1ffe5c96bcdad67be6bf43ab1a961248d9eeb22a47db19cde9ae0a8c11b |
+| [docs/adr/ADR-029-local-observability-and-notifications.md](../../docs/adr/ADR-029-local-observability-and-notifications.md) | architecture / design source | 10456 | 92e16cf81904ebf679e53be6e08c5109c7adcf5a143e210b787ec198a39d0ada |
 | [docs/architecture/cloud-migration-and-recovery.md](../../docs/architecture/cloud-migration-and-recovery.md) | architecture / design source | 12602 | a8f34f1673ac14119dc5149f632348f2dceb6cd39dfa7b93de52ecf760c755f0 |
 | [docs/architecture/cloud-portability-and-scale.md](../../docs/architecture/cloud-portability-and-scale.md) | architecture / design source | 13871 | 7bda870322b8c38ace5d633f6126e2e1d7d3b92429e0dace83df1cf53a7019ce |
 | [docs/architecture/federated-immune-threat-intelligence.md](../../docs/architecture/federated-immune-threat-intelligence.md) | architecture / design source | 13527 | e836f45626e1dedd7a5f9cc4e48d9f40d1ecc9122fcd034f0876cf8018aa97a6 |
 | [docs/architecture/host-self-defense-and-compromise-containment.md](../../docs/architecture/host-self-defense-and-compromise-containment.md) | architecture / design source | 14047 | cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead |
-| [docs/architecture/local-observability-and-notifications.md](../../docs/architecture/local-observability-and-notifications.md) | architecture / design source | 20618 | c49300d2eb074c6a29450636b1a7c3c39ceb44a97fea8f59a19e49eda48e3486 |
+| [docs/architecture/local-observability-and-notifications.md](../../docs/architecture/local-observability-and-notifications.md) | architecture / design source | 21496 | 207f04dcd628267547f5982bbea073f8cafb1df039dae3f794772313a4c2ab39 |
 | [docs/architecture/local-runtime-foundation.md](../../docs/architecture/local-runtime-foundation.md) | architecture / design source | 6372 | d942a064d1417d50bff19752b5b94444fdbbd05fa3c4e32efae71086d1276874 |
 | [docs/architecture/luna-brain-v2.md](../../docs/architecture/luna-brain-v2.md) | architecture / design source | 13959 | 312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a |
 | [docs/architecture/luna-cloud-intelligence.md](../../docs/architecture/luna-cloud-intelligence.md) | architecture / design source | 12541 | ba37f8fd66a18e8f80482dc7b1ee49b9ed1e48d551234ec06e1d6657bb542ff7 |
