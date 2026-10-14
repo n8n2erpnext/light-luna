@@ -50,7 +50,10 @@
       "managementLockoutDetection": "synthetic_POTENTIAL_LOCKOUT_warning_not_a_verified_recovery_path",
       "localControlBoundary": "HMAC_signed_ephemeral_controlgate_test_plus_Linux_local_UDS_prototype_no_executor",
       "linuxUnixIPC": "real_linux_socket_so_peercred_same_uid_cross_process_test_no_production_service",
-      "replayProtection": "bounded_in_memory_nonce_and_request_id_only_not_durable",
+      "replayProtection": "in_memory_for_lunactl_selftest_plus_bounded_fsynced_restart_replay_journal_for_manual_test_gate_only",
+      "separateAgentGateProcesses": "implemented_manual_linux_dev_binaries_same_uid_not_production_service_isolation",
+      "journalRecovery": "restart_replay_pass_corrupt_journal_fails_closed_not_power_loss_tested",
+      "productionKeyCustody": "not_implemented_test_only_shared_key_private_0600_same_uid",
       "controlGateRaceDetector": "not_run_gcc_missing_cgo_required",
       "githubFromHomesv": "verified_direct_SSH_using_existing_deploy_key_and_checked_host_fingerprint",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
@@ -103,7 +106,8 @@
     "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md",
     "p0FlowSimulator": "docs/architecture/p0-flow-simulator.md",
     "p0LocalControlGate": "docs/architecture/p0-local-control-gate.md",
-    "p0LinuxUnixIPC": "docs/architecture/p0-linux-unix-ipc.md"
+    "p0LinuxUnixIPC": "docs/architecture/p0-linux-unix-ipc.md",
+    "p0SeparateAgentGate": "docs/architecture/p0-two-process-gate-and-journal.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

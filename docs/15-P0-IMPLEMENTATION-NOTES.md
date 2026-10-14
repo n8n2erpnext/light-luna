@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Separate P0 Linux Agent/Gate processes with restart replay (2026-10-14)
+
+[Current developer implementation and evidence](architecture/p0-two-process-gate-and-journal.md): `luna-gate` (explicit foreground unprivileged 1–30s serve lease), `luna-agent` (one-shot signed client), private throwaway `internal/devkeys`, and locked append-only `fsync` replay journal `internal/controlgate/journal_linux.go`. End-to-end test uses **two actual PIDs**, stops/restarts the Gate and verifies previously used requests still reject; invalid journal prevents Gate startup. The same-UID key is an **insecure production pattern** deliberately restricted to temporary tests. No production owner auth, separate UID sandbox, durable power-loss proof, privileged executor, Cloud, NetBird or kernel actions. This updates but does not delete the earlier in-process and UDS transport snapshots below.
+
 ## Actual Linux Unix socket IPC prototype (2026-10-14)
 
 [Source and tests](architecture/p0-linux-unix-ipc.md) prove a **real, bounded Linux Unix socket**, kernel-level peer UID check using `SO_PEERCRED`, owner-private temporary socket, strict JSON frame input, timeout/concurrency limits and a **distinct test subprocess** connecting to the P0 unprivileged gate. The `lunactl control ipc-selftest` output is labeled `SAME_PROCESS_GOROUTINES_REAL_LINUX_UNIX_SOCKET_NO_EXECUTOR`; **production separated Agent/Gate daemons, persistent replay, OIDC and isolated owner/session keys remain absent**. All resulting receipts are advisory or rejected; no nftables kernel modifications. Do not assume same UID proves real owner identity.

@@ -63,6 +63,10 @@ Synthetic local test client (same UID)                  Mock Policy Gate server
 - Reject oversize frame length and invalid/duplicate-key JSON without a successful receipt. Verify hard maximum frame output size.
 - Shutdown by caller-owned context and listener close; socket temporary directory removed and no permanent daemon started.
 
+## Later implementation — actual separate test binaries and journal
+
+[The follow-up development slice](p0-two-process-gate-and-journal.md) now provides manually launched `luna-gate`/`luna-agent` in **two separate OS processes**, plus a locked fsynced replay journal that persists nonce/request ID across normal Gate restarts. Both still use a shared key under **the same developer UID**; that is **not distinct service identity/production auth**. The original `lunactl control ipc-selftest` remains an in-process socket demonstration, and neither mode can apply rules to the kernel.
+
 ## Next safe increment
 
 1. Implement **dedicated unprivileged process** with a **protected authenticated local key broker** and independently verifiable UID/group model, not demo same-UID.

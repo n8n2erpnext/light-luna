@@ -57,6 +57,11 @@ type Boundary struct {
 	actorID string
 	mu      sync.Mutex
 	seen    map[string]time.Time
+	journal replayWriter
+}
+
+type replayWriter interface {
+	record(id, nonce string, expires time.Time) error
 }
 
 func NewBoundary(ephemeralKey []byte, siteID, actorID string) (*Boundary, error) {
@@ -126,45 +131,53 @@ func rejected(id, reason string) Receipt {
 		ExecutorStatus: "NOT_AVAILABLE", KernelWrites: false, ReplayProtection: "IN_MEMORY_ONLY"}
 }
 
+func (b *Boundary) deny(id, reason string) Receipt {
+	r := rejected(id, reason)
+	if b.journal != nil {
+		r.ReplayProtection = "FSYNC_JOURNAL_DEMO_ONLY"
+	}
+	return r
+}
+
 // Evaluate is intentionally unable to invoke anything privileged. All requests
 // for APPLY_POLICY are rejected even if signed, fresh and owner-scoped.
 func (b *Boundary) Evaluate(message SignedIntent, p policy.Bundle, now time.Time) Receipt {
 	i := message.Intent
 	if err := i.Validate(); err != nil {
-		return rejected(i.RequestID, err.Error())
+		return b.deny(i.RequestID, err.Error())
 	}
 	rawMAC, err := hex.DecodeString(message.MACSHA256)
 	if err != nil || len(rawMAC) != sha256.Size {
-		return rejected(i.RequestID, "invalid authenticator")
+		return b.deny(i.RequestID, "invalid authenticator")
 	}
 	canonicalBytes, err := canonical(i)
 	if err != nil {
-		return rejected(i.RequestID, "invalid canonical intent")
+		return b.deny(i.RequestID, "invalid canonical intent")
 	}
 	mac := hmac.New(sha256.New, b.key)
 	mac.Write([]byte(Protocol + "\x00"))
 	mac.Write(canonicalBytes)
 	if !hmac.Equal(rawMAC, mac.Sum(nil)) {
-		return rejected(i.RequestID, "invalid authenticator")
+		return b.deny(i.RequestID, "invalid authenticator")
 	}
 	if i.SiteID != b.siteID || i.ActorID != b.actorID {
-		return rejected(i.RequestID, "actor/site boundary mismatch")
+		return b.deny(i.RequestID, "actor/site boundary mismatch")
 	}
 	if now.Before(i.IssuedUTC.Add(-30*time.Second)) || !now.Before(i.ExpiresUTC) {
-		return rejected(i.RequestID, "stale or not-yet-valid control intent")
+		return b.deny(i.RequestID, "stale or not-yet-valid control intent")
 	}
 	if err := p.Validate(); err != nil {
-		return rejected(i.RequestID, "invalid local policy")
+		return b.deny(i.RequestID, "invalid local policy")
 	}
 	if i.PolicyName != p.Metadata.Name || i.ExpectedRevision != p.Metadata.Revision {
-		return rejected(i.RequestID, "local policy revision mismatch")
+		return b.deny(i.RequestID, "local policy revision mismatch")
 	}
 	preview, err := policy.MakePreview(p)
 	if err != nil {
-		return rejected(i.RequestID, "policy content validation failed")
+		return b.deny(i.RequestID, "policy content validation failed")
 	}
 	if i.PolicyHashSHA256 != preview.HashSHA256 {
-		return rejected(i.RequestID, "local policy content hash mismatch")
+		return b.deny(i.RequestID, "local policy content hash mismatch")
 	}
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -176,20 +189,31 @@ func (b *Boundary) Evaluate(message SignedIntent, p policy.Bundle, now time.Time
 		}
 	}
 	if _, exists := b.seen["nonce:"+i.Nonce]; exists {
-		return rejected(i.RequestID, "replayed control nonce")
+		return b.deny(i.RequestID, "replayed control nonce")
 	}
 	if _, exists := b.seen["request:"+i.RequestID]; exists {
-		return rejected(i.RequestID, "replayed control request ID")
+		return b.deny(i.RequestID, "replayed control request ID")
 	}
 	if len(b.seen)+2 > MaxReplayRecords {
-		return rejected(i.RequestID, "replay budget exhausted; fail closed")
+		return b.deny(i.RequestID, "replay budget exhausted; fail closed")
+	}
+	if b.journal != nil {
+		if err := b.journal.record(i.RequestID, i.Nonce, i.ExpiresUTC); err != nil {
+			return b.deny(i.RequestID, "durable replay journal unavailable; fail closed")
+		}
 	}
 	b.seen["nonce:"+i.Nonce] = i.ExpiresUTC
 	b.seen["request:"+i.RequestID] = i.ExpiresUTC
 	if i.Operation == "APPLY_POLICY" {
-		return rejected(i.RequestID, "P0 has no privileged executor, lease or independently verified rollback")
+		return b.deny(i.RequestID, "P0 has no privileged executor, lease or independently verified rollback")
 	}
 	return Receipt{Schema: "lightluna.control-receipt/v1alpha1", RequestID: i.RequestID,
 		Decision: "ADVISORY_ONLY", Reason: fmt.Sprintf("Authorized synthetic preview for policy revision %d; no real execution", p.Metadata.Revision),
-		ExecutorStatus: "NOT_AVAILABLE", KernelWrites: false, ReplayProtection: "IN_MEMORY_ONLY"}
+		ExecutorStatus: "NOT_AVAILABLE", KernelWrites: false, ReplayProtection: b.replayMode()}
+}
+func (b *Boundary) replayMode() string {
+	if b.journal != nil {
+		return "FSYNC_JOURNAL_DEMO_ONLY"
+	}
+	return "IN_MEMORY_ONLY"
 }

@@ -38,6 +38,7 @@ Scope: document ownership and historical path mapping
 | [Synthetic P0 Flow Simulator](../architecture/p0-flow-simulator.md) | IMPLEMENTED pure-Go synthetic declared-policy matcher and admin lockout *warning*; all kernel verdicts UNKNOWN |
 | [P0 Local Control Gate](../architecture/p0-local-control-gate.md) | IMPLEMENTED in-process HMAC/revision/nonce gate and denial-only apply selftest; no socket/auth system/executor |
 | [P0 Linux Unix Socket IPC](../architecture/p0-linux-unix-ipc.md) | IMPLEMENTED real kernel UDS/SO_PEERCRED transport and cross-process Go tests; demo is NOT production-separated Agent/Gate and cannot enforce firewall |
+| [P0 Separate Agent/Gate and Replay Journal](../architecture/p0-two-process-gate-and-journal.md) | IMPLEMENTED two separate dev binaries, same-UID temporary shared secret, bounded fsynced journal across Gate restarts; NOT production service identity, executor or rollback |
 | [Host Guardian & Containment Architecture](../architecture/host-self-defense-and-compromise-containment.md) | Linux process/file/egress observation, integrity/attestation ceiling, safe local isolation and Cloud untrusted-ingress separation |
 | [Host Integrity Report schema](../../schemas/host-integrity-report-v1alpha1.schema.json) | Design-only host status/device authentication vs trust, cloud contribution quarantine, no direct execution |
 | [Synthetic compromised host fixture](../../testdata/host-integrity-report.synthetic.json) | Synthetic status with suspected compromise, no actual files/processes scanned |
