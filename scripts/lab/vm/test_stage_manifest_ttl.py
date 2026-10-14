@@ -39,7 +39,7 @@ def manifest(ttl: int) -> dict:
         "table": journal.TABLE,
         "ttlSeconds": ttl,
         "phases": list(journal.PHASES),
-        "effect": "synthetic lab intent only",
+        "effect": journal.EFFECT,
         "kernelWrites": False,
         "ownerApproved": False,
         "scope": "KVM_GUEST_PRIVATE_NETNS_ONLY",
@@ -85,6 +85,24 @@ class StageTTLIdentityTests(unittest.TestCase):
         self.write(data)
         with self.assertRaisesRegex(ValueError, "stage id mismatch"):
             journal.manifest()
+
+    def test_forged_effect_claim_rejected(self):
+        for forged in ("kernel rules applied", "owner authorized", None):
+            with self.subTest(effect=forged):
+                data = manifest(8)
+                data["effect"] = forged
+                self.write(data)
+                with self.assertRaisesRegex(ValueError, "unsafe manifest"):
+                    journal.manifest()
+
+    def test_revision_must_be_exact_integer(self):
+        for wrong in (True, 1.0):
+            with self.subTest(revision=wrong):
+                data = manifest(8)
+                data["policyRevision"] = wrong
+                self.write(data)
+                with self.assertRaisesRegex(ValueError, "unsafe manifest"):
+                    journal.manifest()
 
     def test_invalid_ttl_rejected_even_with_recomputed_id(self):
         for ttl in (0, 11):

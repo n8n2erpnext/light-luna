@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 guest stage manifest anti-forgery metadata check (2026-10-15)
+
+- **Path:** [guest-stage-journal.py `manifest()`](../../scripts/lab/vm/guest-stage-journal.py) validates fixed guest-only manifest schema, policy name/revision, TTL-bound ID, `kernelWrites=false`, `ownerApproved=false` and now requires **exact inert effect text** plus **`type(policyRevision) is int`**, not Python's permissive equality for `True` or `1.0`.
+- **Evidence:** five fabricated field values were accepted before change (RED); [expanded seven-test manifest suite](../../scripts/lab/vm/test_stage_manifest_ttl.py) GREEN; **98 Python VM offline** cases PASS; independently built unprivileged `lunactl vm stage-intent` output accepted, forged effect and revision types denied. **Live VM inventory could not run**: LXD socket permission denied, no elevated fallback. Existing guest archive/journal state UNKNOWN; no live KVM run or APPLY.
+- **Source scope:** Python VM fixture parser and offline regressions only; Go builder unchanged. [Architecture](../architecture/p0-vm-synthetic-stage-revert.md). P0 OPEN/G-STANDALONE BLOCKED.
+
 ## P0 VM-only stage identity and TTL binding (2026-10-15)
 
 - **Entry:** `lunactl vm stage-intent <policy> <ttl>` → [`vmstage.Build`](../../internal/vmstage/plan.go) → [unhooked `nftpreview.Compile`](../../internal/nftpreview/compile.go) → deterministic `stageId=vm-<24 hex>` over policy digest, synthetic table and **decimal TTL**, all NUL-separated. This is only non-enforcing JSON output, `KernelWrites=false`, `OwnerApproved=false`.

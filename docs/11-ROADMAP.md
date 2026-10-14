@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — guest synthetic manifest anti-forgery metadata (2026-10-15)
+
+[VM-stage contract](architecture/p0-vm-synthetic-stage-revert.md) now refuses booleans/floats posing as integer revision 1 and arbitrary `effect` claims in the guest manifest reader. Five field-forgery negatives were RED then GREEN, seven focused tests PASS and VM **offline** suite grew to **98 PASS**; a real unprivileged Go CLI manifest parsed successfully. **Read-only access to NIC-less LXD VM was denied by socket permissions**, so current guest/journal/receipt status remains UNKNOWN; no live tests or migrations. Next valid isolated acceptance requires authorized VM inventory and safe archival review, not bypass. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud deferred; ADR-029 parked.
+
 ## Active Core P0 — synthetic VM stage identity binds declared TTL (2026-10-15)
 
 [VM-stage contract](architecture/p0-vm-synthetic-stage-revert.md) now derives synthetic stage IDs from **policy digest + isolated table + TTL**, rather than conflating different TTLs. The [Go test](../internal/vmstage/plan_test.go) was RED on the same-ID collision then GREEN; the [guest parser test](../scripts/lab/vm/test_stage_manifest_ttl.py) verifies stale ID/tampered TTL and old formula denial. **96 offline Python VM tests PASS**, and Go CLI 1s/10s output agrees with guest validator; **no new live KVM acceptance** or production kernel apply/rollback proof. P0 OPEN; G-STANDALONE BLOCKED; NetBird/Cloud deferred, ADR-029 parked.

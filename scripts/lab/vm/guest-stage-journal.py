@@ -15,6 +15,7 @@ from pathlib import Path
 SCHEMA = "lightluna.vm-stage-intent/v1alpha1"
 MODE = "SYNTHETIC_VM_ONLY_NO_EXECUTOR"
 TABLE = "luna_p0_stage"
+EFFECT = "none: manifest only; synthetic VM-only hook tested separately"
 PHASES = ["STAGED", "VALIDATED", "COMMITTED_SYNTHETIC", "ROLLED_BACK"]
 ROOT = Path("/opt/luna-p0-kernel-tests")
 MANIFEST = ROOT / "stage-intent.json"
@@ -53,7 +54,9 @@ def manifest():
         or m["table"] != TABLE or m["scope"] != "KVM_GUEST_PRIVATE_NETNS_ONLY"
         or m["kernelWrites"] is not False or m["ownerApproved"] is not False
         or m["phases"] != PHASES or m["policyName"] != "host-baseline"
-        or m["policyRevision"] != 1 or type(m["ttlSeconds"]) is not int
+        or m["effect"] != EFFECT
+        or type(m["policyRevision"]) is not int or m["policyRevision"] != 1
+        or type(m["ttlSeconds"]) is not int
         or not 1 <= m["ttlSeconds"] <= 10):
         raise ValueError("unexpected or unsafe manifest")
     hash_text = m["sourcePreviewHash"]
