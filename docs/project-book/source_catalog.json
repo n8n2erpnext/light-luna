@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 24471,
-      "sha256": "52f5a0f8e968062be2590377e9dace6cd1462e65c143f9c85ace61d83663f998"
+      "bytes": 25316,
+      "sha256": "d661d9431a50809b089a0fd7891d4b6537c4bf6bd8c0c648ffbca63f68eab2e1"
     },
     {
       "path": "SECURITY.md",
@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 25868,
-      "sha256": "7051a88018fd1a27122205dfdd3c9c467337eac188b4fd6a336b0f7bfb4c76c9"
+      "bytes": 26735,
+      "sha256": "2650f08b6e8fd68979360d65198d1fbe78787960d7fe8868f1c1bb4faa0cfbb2"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -364,8 +364,8 @@
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
       "category": "architecture / design source",
       "title": "P0 autonomous TTL watchdog — independent KVM guest lab",
-      "bytes": 9921,
-      "sha256": "9ea3611234181723b86340a6beb94b8f051ea14a67b38013d0d99dba05ef9f3b"
+      "bytes": 12437,
+      "sha256": "70c7ec7a70a89c73a2bf0a60597ca0ee2a41b34741fcc053951735deb7705dd6"
     },
     {
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
@@ -756,8 +756,8 @@
       "path": "scripts/lab/vm/README.md",
       "category": "developer tooling",
       "title": "Light Luna P0 kernel-separated LXD VM",
-      "bytes": 7137,
-      "sha256": "c6adc1364a83710331034d809efd8731326b2e5075778bc79e48bc2346facc7d"
+      "bytes": 8866,
+      "sha256": "3e07000335c8bc015c96066562db96b210fc6477cf6861215288419b048db3e4"
     },
     {
       "path": "scripts/lab/vm/create-vm.sh",
@@ -774,11 +774,25 @@
       "sha256": "a5dc36c94b6c85e851e8edaa1ea4683c0e629754b8f5bc13684f4fe3dd7d48c2"
     },
     {
+      "path": "scripts/lab/vm/guest-archive-stale-boot.py",
+      "category": "developer tooling",
+      "title": "guest-archive-stale-boot",
+      "bytes": 5014,
+      "sha256": "3d75db56f8446f478443d5874fbf46b7eff87b23fdf1a3e40df5e05f83411caf"
+    },
+    {
       "path": "scripts/lab/vm/guest-auto-watchdog.py",
       "category": "developer tooling",
       "title": "guest-auto-watchdog",
       "bytes": 5667,
       "sha256": "293cd6b6b7c420c228690f730ed8de30b22864b3782afd6c164e1d7118df61e0"
+    },
+    {
+      "path": "scripts/lab/vm/guest-boot-inspect.py",
+      "category": "developer tooling",
+      "title": "guest-boot-inspect",
+      "bytes": 6645,
+      "sha256": "e73b55d52de037ebc351affbbe32dd9ff39b2d0ac1dc1c7a76c21bfac2f22096"
     },
     {
       "path": "scripts/lab/vm/guest-keeper-smoke.sh",
@@ -800,6 +814,13 @@
       "title": "guest-nft-test",
       "bytes": 6504,
       "sha256": "8d13aff15384d48fd1ffe65ee6918e34931729be93b494b04cddd2371777f3e9"
+    },
+    {
+      "path": "scripts/lab/vm/guest-prepare-reboot-fault.sh",
+      "category": "developer tooling",
+      "title": "guest-prepare-reboot-fault",
+      "bytes": 4119,
+      "sha256": "b95abe7c3061a08f98cd433068921518f17a46d7647b95145fdbc775d42f9dc4"
     },
     {
       "path": "scripts/lab/vm/guest-rollback.sh",
@@ -830,11 +851,25 @@
       "sha256": "48eb49b628946a4a7ad3e97286dabe9623353c1da0ec030b7bca4ccecc8b6784"
     },
     {
+      "path": "scripts/lab/vm/run-reboot-fault.sh",
+      "category": "developer tooling",
+      "title": "run-reboot-fault",
+      "bytes": 3765,
+      "sha256": "21c1ffe0ab09a58248f4d7bb6eab60eb6b63f3c5a1e5f03bcf20d2b284b26909"
+    },
+    {
       "path": "scripts/lab/vm/run-tests.sh",
       "category": "developer tooling",
       "title": "run-tests",
       "bytes": 3976,
       "sha256": "144ef2bea03133afb9c98e6a80866a4fbedaecc797ae9bad4487b267516c3759"
+    },
+    {
+      "path": "scripts/lab/vm/test_boot_inspect.py",
+      "category": "developer tooling",
+      "title": "test_boot_inspect",
+      "bytes": 3875,
+      "sha256": "206037b741900b0e27746106e180f2ac6536ce90eb9d015a256afa011a84f725"
     },
     {
       "path": "scripts/lab/vm/test_boot_journal.py",

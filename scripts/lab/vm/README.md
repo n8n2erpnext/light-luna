@@ -2,6 +2,20 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## Forced reboot of committed guest-only synthetic stage (2026-10-14)
+
+Verified isolated fault-injection: `guest-boot-inspect.py` is **read-only**, checks exact no-NIC KVM guest, journal boot ID and bounded root nft/named/process netns inventory; it never clears journals or grants approval. `test_boot_inspect.py` runs 14 offline tests.
+
+The explicitly acknowledged `run-reboot-fault.sh` invokes `guest-prepare-reboot-fault.sh` to demonstrate a fixed synthetic ICMP drop only in a **private network namespace inside the no-NIC VM**, then performs `lxc stop --force` and `lxc start` of **exact** `light-luna-p0-nftvm`. Run this **only** when authorized to reset the disposable lab VM; it disrupts all guest processes, not HOMESV:
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_P0_VM_REBOOT_ACK=REBOOT_ISOLATED_LUNA_P0_VM bash scripts/lab/vm/run-reboot-fault.sh
+```
+
+The verified result is `VM_FORCED_REBOOT_STALE_JOURNAL_BLOCKED_PASS`, with a different boot ID, old journal `COMMITTED_SYNTHETIC` preserved, empty observed guest nft/netns and denied cross-boot transition. The runner deliberately **does not** clean that journal. Following separate explicit operator inspection, an acknowledged guest-only `guest-archive-stale-boot.py` can archive this exact stale synthetic journal and write a report **without marking rollback**. Missing acknowledgment is denied. The prior run already did this once and retained archived evidence on the guest. Never automate archival as part of the forced-reboot runner.
+
+The full KVM regression after manual evidence preservation **PASS** and leaves no staged nft/netns. This is kernel-reset/stale-transaction detection, **not** power-loss safe production recovery or a reboot-time enforcement watchdog.
+
 ## Boot-ID journal hardening (2026-10-14)
 
 Linux `boot_id` is now pinned in the synthetic VM stage journal and watchdog READY/DONE receipts. Cross-boot state transitions and cross-boot manual interrupted-stage reconciliation reject old state. The unprivileged `python3 scripts/lab/vm/test_boot_journal.py` test suite has five passing negative/positive tests. A complete KVM regression with the new code returned exit 0 and previously established explicit/automatic TTL markers. **This does not reboot the guest and does not demonstrate crash-safe boot recovery.** Preserve archived legacy terminal records; do not silently clear incomplete journals.
