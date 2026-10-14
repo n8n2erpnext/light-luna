@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 15750,
-      "sha256": "fffd983736497fefb21ac94ff62f172684fee66f3077dd497c440db277f81837"
+      "bytes": 16533,
+      "sha256": "b37bfe1b214583cf27aee4b7b2d448b7fc005edbbf134714764c71a7dc8ded73"
     },
     {
       "path": "SECURITY.md",
@@ -35,8 +35,8 @@
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 2173,
-      "sha256": "b63cbc127bdbe5dae38fd5b0cde880cbd06b684d415d6fb8a8ce3d4897d02471"
+      "bytes": 2465,
+      "sha256": "cb934c17a79980fa5f9b659414623d129ff6d3d9dd81a56c00de086d77bff312"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -119,8 +119,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 16454,
-      "sha256": "d306621738ba6f59097122622629092cd749d259551ca68fcd2f42f406747caa"
+      "bytes": 17240,
+      "sha256": "fbe06bab81ada5a1c6367a29d9e6b1c4577c050d8c08b63e57b19cb50f6c62ec"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -147,8 +147,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 2836,
-      "sha256": "3fc3502d61828aeb54e3392fa6612c137cd758cd36258329d282916ed04faeda"
+      "bytes": 2907,
+      "sha256": "906bb6272d9e748da49eb91aea5428e7b7d7e7c57fffa454576aa3f4dd1e1eb0"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -284,6 +284,13 @@
       "sha256": "e07d464e4a59e2357a94eaffb9394e0cff07ba2dfe2ce5541073110e9b931137"
     },
     {
+      "path": "docs/architecture/p0-nft-unhooked-compiler.md",
+      "category": "architecture / design source",
+      "title": "P0 nftables Compiler — Unhooked Preview Only",
+      "bytes": 4841,
+      "sha256": "8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed"
+    },
+    {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
       "category": "architecture / design source",
       "title": "Light Luna Threat Knowledge — Trusted Feed, Exposure and Scenario Pipeline",
@@ -340,11 +347,25 @@
       "sha256": "026515247a4c2d7a759f3e295943e38d71e67f53c05897dbd2ec938295f89390"
     },
     {
+      "path": "internal/nftpreview/compile.go",
+      "category": "implementation",
+      "title": "compile",
+      "bytes": 5668,
+      "sha256": "793e040063d77d3dfbbae9c924e3d65df8a53b1015a55388c07573627a9b36c5"
+    },
+    {
+      "path": "internal/nftpreview/compile_test.go",
+      "category": "unit / negative tests",
+      "title": "compile_test",
+      "bytes": 4253,
+      "sha256": "804729d2e9b5f84607f24bce06b0c6279e3e95848778ddb0c7463ac4cf367a8b"
+    },
+    {
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
-      "bytes": 2001,
-      "sha256": "1ffdfe8f98b6d4807d7689d00d99927afe03588a9342d335fa03a34632c147d4"
+      "bytes": 2088,
+      "sha256": "9cd9a38ef546d97c30d99fcf12899aab8e67f49f97b214f0970fde385c4a8ce3"
     },
     {
       "path": "internal/offline/replay_test.go",

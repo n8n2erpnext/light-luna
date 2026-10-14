@@ -86,6 +86,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Hardened `internal/policy.Decode` by reusing `internal/strictjson`: recursively rejects duplicate JSON object keys, unknown fields, trailing data, bounded sizes; new nested-duplicate regression tests and replay positive/negative tests. Existing policy validation/preview preserved.
 - Ran Go unit tests and vet, standalone Brain replay/snapshot, and separate `linux/amd64`+`linux/arm64` cross-builds with network-disabled Go tooling. **Not a kernel/firewall/Cloud or malware scanning test**; no live infrastructure touched.
 
+## 2026-10-14 — P0 unhooked nftables text compiler
+
+- Implemented `internal/nftpreview.Compile` and `lunactl firewall policies nft-preview`: policy validation → stable source alias expansion/order → scoped `table inet luna_p0_preview` **regular chains without hooks**, JSON plan reporting **no kernel effect, no syntax check**. No privileged executor, base-chain policy, default DROP, emergency route, Cloud or NetBird.
+- Added deterministic tests for rule priority, protocol/family combinations, unsafe mismatch rejection, expansion caps, and malicious note non-interpolation. Existing parser/Brain/CLI tests and Go vet passed.
+- Verified HOMESV nftables v1.0.9 availability but `unshare --user --map-root-user --net` not permitted. **Skipped `nft -c` instead of touching parent-host network namespace**, recorded isolated-VM grammar test as next dependency; see [compiler truth/verification](../architecture/p0-nft-unhooked-compiler.md).
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

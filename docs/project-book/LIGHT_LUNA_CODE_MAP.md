@@ -10,6 +10,10 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Unhooked nftables policy compiler (2026-10-14 — SOURCE IMPLEMENTED)
+
+`cmd/lunactl.main` → `firewall policies nft-preview <file>` → [policy.Decode](../../internal/policy/model.go) (strict JSON + semantic validation) → [nftpreview.Compile](../../internal/nftpreview/compile.go) → deterministic JSON `Plan`. [Tests](../../internal/nftpreview/compile_test.go) include priority order, mixed IPv4/IPv6, unknown family/protocol rejection, expansion limits and safety against note injection. The module **only generates unhooked regular-chain text**, cannot call `nft`, access a kernel or implement emergency rescue. It makes `syntaxChecked=false` and `kernelCompatibilityChecked=false` explicit. [Verification/limits](../architecture/p0-nft-unhooked-compiler.md) note that HOMESV unprivileged user/network namespaces are unavailable, therefore **no `nft -c` grammar/kernel test** was run. Both `lunactl` and `luna-brain` remain buildable Linux amd64/arm64. The older source map sections below describe the historical baseline and do not override this new reachable path.
+
 ## Current executable P0 foundation (2026-10-14; source-level verification only)
 
 [Local runtime foundation](../architecture/local-runtime-foundation.md) supersedes the **older snapshot below** for current source reachability. It is still **not deployed** and only operates on local files or synthetic replay. Git SHA: use the tip of `feat/p0-standalone-foundation` at evaluation time rather than the historical `9ae27b2` in the original sections.

@@ -7,13 +7,14 @@ import (
 	"os"
 
 	"github.com/n8n2erpnext/light-luna/internal/foundation"
+	"github.com/n8n2erpnext/light-luna/internal/nftpreview"
 	"github.com/n8n2erpnext/light-luna/internal/offline"
 	"github.com/n8n2erpnext/light-luna/internal/policy"
 	"github.com/n8n2erpnext/light-luna/internal/strictjson"
 )
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file>")
+	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file>")
 }
 func pretty(v any) error {
 	data, err := json.MarshalIndent(v, "", "  ")
@@ -47,7 +48,7 @@ func run(args []string) error {
 		}
 		return pretty(report)
 	}
-	if len(args) != 4 || args[0] != "firewall" || args[1] != "policies" || (args[2] != "validate" && args[2] != "preview") {
+	if len(args) != 4 || args[0] != "firewall" || args[1] != "policies" || (args[2] != "validate" && args[2] != "preview" && args[2] != "nft-preview") {
 		usage()
 		return fmt.Errorf("unsupported command")
 	}
@@ -63,6 +64,13 @@ func run(args []string) error {
 	if args[2] == "validate" {
 		fmt.Printf("VALID: %s revision %d (no rules applied)\n", p.Metadata.Name, p.Metadata.Revision)
 		return nil
+	}
+	if args[2] == "nft-preview" {
+		compiled, err := nftpreview.Compile(p)
+		if err != nil {
+			return fmt.Errorf("nft preview: %w", err)
+		}
+		return pretty(compiled)
 	}
 	plan, err := policy.MakePreview(p)
 	if err != nil {

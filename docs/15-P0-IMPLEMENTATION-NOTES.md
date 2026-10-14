@@ -24,7 +24,7 @@ go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 
 ## Non-claims and strict prohibitions
 
-- There is NO nft rule generation, `nft -c` compatibility test, kernel transaction, privileged executor, watchdog, rollback, rescue path, WebUI, service, network simulator, log collector, firewall installer, ban or NetBird connector in this first slice.
+- There is now only inert unhooked text generation (see architecture/p0-nft-unhooked-compiler.md), but NO `nft -c` compatibility test, kernel transaction, privileged executor, watchdog, rollback, rescue path, WebUI, service, network simulator, log collector, firewall installer, ban or NetBird connector in this first slice.
 - Policy JSON Schema covers declarative syntax; the CLI additionally checks CIDR network masking, duplicate identities and cross-field constraints. They must remain aligned and will need schema conformance testing.
 - No real firewall changes, no production test, no permissions escalation and no networking side effects are authorized by these files.
 - Never run `nft add`/`nft flush`/`iptables -F` on a host as part of this scaffold.

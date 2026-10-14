@@ -21,7 +21,7 @@
       "python_ml_worker": "optional_unprivileged_worker_not_implemented",
       "javascript_mjs": "not_default_brain_runtime",
       "sqlite": "proposed_storage",
-      "nftables": "primary_firewall_backend_not_implemented",
+      "nftables": "unhooked_text_compiler_only_no_executor_or_kernel_apply",
       "ebpf_tracing": "optional_future_observability_not_implemented",
       "xdp": "optional_future_ingress_mitigation_not_implemented"
     },
@@ -31,7 +31,7 @@
       "cliValidatePreview": "pass",
       "crossBuildAmd64": "pass",
       "crossBuildArm64": "pass",
-      "kernelNamespaceTests": "not_run",
+      "kernelNamespaceTests": "not_run_unshare_netns_unavailable",
       "productionInstalled": false,
       "brainV2Implementation": "demo_heuristic_replay_only_not_live_or_model",
       "threatIntelIntegration": "not_started",
@@ -45,6 +45,7 @@
       "independentBrainBuild": "implemented_cli_only_not_process_or_ipc",
       "guardianStatus": "UNKNOWN_NOT_INSTALLED",
       "nestedJSONDuplicateRejection": "implemented_in_policy_and_replay",
+      "nftUnhookedPreview": "implemented_source_unit_tests_pass_syntax_not_kernel_checked",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
       "cloudConsensusAndBulletins": "decided_design_not_implemented",
       "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
@@ -91,7 +92,8 @@
     "selfDefenseDecision": "docs/adr/ADR-028-self-defense-host-compromise.md",
     "hostCompromiseArchitecture": "docs/architecture/host-self-defense-and-compromise-containment.md",
     "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json",
-    "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md"
+    "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md",
+    "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",
