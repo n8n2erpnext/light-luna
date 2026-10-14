@@ -59,6 +59,7 @@ type OfflineReviewVerifier struct {
 	mu                          sync.Mutex
 	seen                        map[string]time.Time
 	seenRequests                map[string]time.Time
+	journal                     replayWriter
 }
 
 func NewOfflineReviewVerifier(agentPub, reviewerPub ed25519.PublicKey, siteID, actorID, reviewerID string) (*OfflineReviewVerifier, error) {
@@ -194,6 +195,14 @@ func (v *OfflineReviewVerifier) Check(agent SignedIntent, review SignedReviewEvi
 	}
 	if len(v.seen) >= MaxOfflineReviewSeen || len(v.seenRequests) >= MaxOfflineReviewSeen {
 		return deniedReview("review memory replay budget exhausted")
+	}
+	// For the optional offline journal path, persist BOTH replay dimensions
+	// under the verifier mutex before reporting a cryptographic test match.
+	// A failed/uncertain append never downgrades to memory-only acceptance.
+	if v.journal != nil {
+		if err := v.journal.record(e.ReviewID, digest, e.ExpiresUTC); err != nil {
+			return deniedReview("offline review replay journal unavailable")
+		}
 	}
 	v.seen[e.ReviewID] = e.ExpiresUTC
 	v.seenRequests[digest] = e.ExpiresUTC
