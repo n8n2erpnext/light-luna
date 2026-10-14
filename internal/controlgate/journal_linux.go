@@ -7,6 +7,7 @@ package controlgate
 import (
 	"bufio"
 	"bytes"
+	"crypto/ed25519"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -156,6 +157,23 @@ func NewBoundaryWithJournal(key []byte, siteID, actorID, path string, now time.T
 		return nil, nil, err
 	}
 	b, err := NewBoundary(key, siteID, actorID)
+	if err != nil {
+		j.Close()
+		return nil, nil, err
+	}
+	b.seen = seen
+	b.journal = j
+	return b, j, nil
+}
+
+// NewEd25519BoundaryWithJournal keeps only the Agent public key on Gate.
+// This is still a development-only journal without power-loss/rollback proof.
+func NewEd25519BoundaryWithJournal(publicKey ed25519.PublicKey, siteID, actorID, path string, now time.Time) (*Boundary, *ReplayJournal, error) {
+	j, seen, err := OpenReplayJournal(path, now)
+	if err != nil {
+		return nil, nil, err
+	}
+	b, err := NewEd25519Boundary(publicKey, siteID, actorID)
 	if err != nil {
 		j.Close()
 		return nil, nil, err

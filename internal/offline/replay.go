@@ -27,6 +27,7 @@ func Snapshot() foundation.LocalSnapshot {
 			{Module: "luna-gate", Version: AppVersion, State: "MANUAL_NONROOT_DEV_PROCESS_ONLY"},
 			{Module: "luna-agent", Version: AppVersion, State: "ONE_SHOT_DEV_CLIENT_ONLY"},
 			{Module: "replay-journal", Version: AppVersion, State: "FSYNC_RESTART_TEST_ONLY"},
+			{Module: "ed25519-agent-gate-identity", Version: AppVersion, State: "SAME_UID_DEV_TEST_ONLY"},
 			{Module: "brain-basic", Version: brain.Version, State: "SYNTHETIC_REPLAY_ONLY"},
 			{Module: "host-guardian", Version: "not-installed", State: "UNKNOWN_NO_SENSORS"},
 			{Module: "ebpf-observer", Version: "not-installed", State: "NOT_INSTALLED"},

@@ -191,6 +191,12 @@ func serveOne(c *net.UnixConn, allowedUID uint32, boundary *controlgate.Boundary
 // belongs to the same local UID. A same-UID malicious process is NOT excluded;
 // production IPC still needs dedicated UIDs/key custody/owner auth.
 func Call(ctx context.Context, path string, message controlgate.SignedIntent) (controlgate.Receipt, error) {
+	return CallExpectedGateUID(ctx, path, message, uint32(os.Geteuid()))
+}
+
+// CallExpectedGateUID supports a separately provisioned Gate OS identity.
+// It does not authenticate the human owner or establish response MAC signing.
+func CallExpectedGateUID(ctx context.Context, path string, message controlgate.SignedIntent, expectedGateUID uint32) (controlgate.Receipt, error) {
 	var out controlgate.Receipt
 	if err := message.Intent.Validate(); err != nil {
 		return out, err
@@ -215,7 +221,7 @@ func Call(ctx context.Context, path string, message controlgate.SignedIntent) (c
 		return out, errors.New("unexpected non-Unix connection")
 	}
 	uid, err := peerUID(c)
-	if err != nil || uid != uint32(os.Geteuid()) {
+	if err != nil || uid != expectedGateUID {
 		return out, errors.New("IPC server UID mismatch")
 	}
 	deadline := time.Now().Add(SocketTimeout)

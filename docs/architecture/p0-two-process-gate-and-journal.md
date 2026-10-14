@@ -64,6 +64,10 @@ Go unit tests run without CGO. The `go test -race` detector still requires a CI 
 - `scripts/update_doc_catalog.py --check --check-links`: **99 indexed sources PASS**; `git diff --check`: PASS. Compiler/job results are from HOMESV source checks, not deployed acceptance.
 - Race detector `go test -race` still **NOT verified** on HOMESV because `gcc` is unavailable; this is a CI/isolated-runner follow-up. No nft/kernel capability tests were attempted.
 
+## Subsequent Ed25519 key separation mode (not part of the original HMAC proof)
+
+[Ed25519 Agent/Gate verification](p0-ed25519-agent-gate-identity.md) adds a **separate** test mode in the same binaries: the Agent alone reads an Ed25519 private key and Gate only reads a pinned public key, with group Unix socket UID/GID checks. The previous HMAC mode documented above is still used for regression. New same-UID Ed mode does **not** prove distinct Linux service user deployment.
+
 ## What to implement before production
 
 1. **Different service UIDs, OS peer credential policy and process sandbox**, with separate rights for broker, Agent, Gate and never-shared owner secrets. There must be no private key file jointly readable by potentially hostile same-UID processes in production.

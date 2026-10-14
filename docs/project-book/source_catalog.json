@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 19552,
-      "sha256": "6d21ba6f892920254358c060514c5a902edd1f0401bc6b2fb72fa622ab76a738"
+      "bytes": 20326,
+      "sha256": "e2d4574bc8544312cc639d2b0a70a3c9501de0b4838557bfe1216f1cd7dbdf1b"
     },
     {
       "path": "SECURITY.md",
@@ -25,11 +25,18 @@
       "sha256": "9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced"
     },
     {
+      "path": "cmd/luna-agent/ed_linux.go",
+      "category": "executable entry",
+      "title": "ed_linux",
+      "bytes": 2116,
+      "sha256": "6420a0eb3316408b33bb68fce8bad78afdad50dba11ef25fbb8fa61b3a8b95c3"
+    },
+    {
       "path": "cmd/luna-agent/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 2726,
-      "sha256": "78b5df6c6047b629847c2e839ad9c675234d208d3b45a01e4ddf371989a7d184"
+      "bytes": 2839,
+      "sha256": "cfd8e12440334d74d5330a15c6378499437765f9ec8cd69b4bf02adad4c3a1ff"
     },
     {
       "path": "cmd/luna-brain/main.go",
@@ -42,8 +49,8 @@
       "path": "cmd/luna-gate/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 2041,
-      "sha256": "52e7d060f64f9218e42e5b7863de00ab594b624ed16af434bbb84bf747948d7a"
+      "bytes": 3686,
+      "sha256": "b7c6591f1e988e24410e6f644cf0c5fee1b86018be68cbc4aad705880469b3d4"
     },
     {
       "path": "cmd/lunactl/main.go",
@@ -133,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 20755,
-      "sha256": "3c45306ac8f1e4202d2e7af048f26fbac2f5f626e42eb206cc9f3bbe75c71063"
+      "bytes": 21599,
+      "sha256": "b943eef1934cb8404cade10142cdbdf66f07d78648e296190f7c51797371a877"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -161,8 +168,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 5915,
-      "sha256": "1f95a5d132f984149bce74367c6aa7fca1a753b0ea9cfbbd31751666a1e41fc5"
+      "bytes": 6668,
+      "sha256": "e9f490018adda25a6b585ace1ecbc8ffc0b6ab6e9e29bf3d7cda9d53cd929393"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -298,6 +305,13 @@
       "sha256": "e07d464e4a59e2357a94eaffb9394e0cff07ba2dfe2ce5541073110e9b931137"
     },
     {
+      "path": "docs/architecture/p0-ed25519-agent-gate-identity.md",
+      "category": "architecture / design source",
+      "title": "P0 Agent/Gate Ed25519 Identity Boundary and Group-Owned Unix Socket",
+      "bytes": 8743,
+      "sha256": "b9bf3368028d12f5fa61b14b29810942721c7926ffc5a3aefa010575d6a5f4b6"
+    },
+    {
       "path": "docs/architecture/p0-flow-simulator.md",
       "category": "architecture / design source",
       "title": "P0 Synthetic Policy Flow Simulator — Implementation and Verification",
@@ -329,8 +343,8 @@
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
       "category": "architecture / design source",
       "title": "P0 Two-Process Agent/Gate and Restart-Persistent Replay Journal",
-      "bytes": 9605,
-      "sha256": "0c212f3f3efc03c624696728b176fabdcb1c69fe2c52d4d01588ec47572119c2"
+      "bytes": 10083,
+      "sha256": "472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674"
     },
     {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
@@ -371,8 +385,8 @@
       "path": "internal/controlgate/control.go",
       "category": "implementation",
       "title": "control",
-      "bytes": 7766,
-      "sha256": "d006f671a13012d7ef3bab5d51c8b0df385b75b277e1caa7237f521591fa3936"
+      "bytes": 9918,
+      "sha256": "b44933e8e8dc4948b14a90192f6a7d0358eee685242708670ecc54e44131334d"
     },
     {
       "path": "internal/controlgate/control_test.go",
@@ -382,11 +396,18 @@
       "sha256": "6695647816fce6f63b9b64ee0cc8a80807c8bd3f33c1b7c7039345d5ec2c3061"
     },
     {
+      "path": "internal/controlgate/ed25519_test.go",
+      "category": "unit / negative tests",
+      "title": "ed25519_test",
+      "bytes": 2448,
+      "sha256": "0daa97aa1458b3889cbc2aecd614a1d163411885f7dc6ca114f407206729e5c3"
+    },
+    {
       "path": "internal/controlgate/journal_linux.go",
       "category": "implementation",
       "title": "journal_linux",
-      "bytes": 5369,
-      "sha256": "868da6d3e7bdd3d50b96ee60f999dfd91fc35f05adee2d70d7e85d96b88f83ba"
+      "bytes": 5939,
+      "sha256": "c55d5460e5240e11d38cd709ddb8dbce92a1b998654e88f4890f9ef4e35a4ff1"
     },
     {
       "path": "internal/controlgate/journal_linux_test.go",
@@ -452,6 +473,34 @@
       "sha256": "026515247a4c2d7a759f3e295943e38d71e67f53c05897dbd2ec938295f89390"
     },
     {
+      "path": "internal/identitykeys/ed25519_linux.go",
+      "category": "implementation",
+      "title": "ed25519_linux",
+      "bytes": 4000,
+      "sha256": "e773ee499af5d6dc447d90cda6f781ea2318eb6697d1d068dd0b53bbcf25d0c5"
+    },
+    {
+      "path": "internal/identitykeys/ed25519_linux_test.go",
+      "category": "unit / negative tests",
+      "title": "ed25519_linux_test",
+      "bytes": 1698,
+      "sha256": "d2b6443c964973c1a54625357cfdbb422c51bfb996bf51744a5b737a8df1b83d"
+    },
+    {
+      "path": "internal/localipc/group_linux.go",
+      "category": "implementation",
+      "title": "group_linux",
+      "bytes": 1949,
+      "sha256": "7d3d5172815e04f84466ad88e99024ab20da1bec485c31d5f1631fb317c89cd6"
+    },
+    {
+      "path": "internal/localipc/group_linux_test.go",
+      "category": "unit / negative tests",
+      "title": "group_linux_test",
+      "bytes": 988,
+      "sha256": "1ddd0f49e35acce7a0f4502782e5711e5bc440967ce9fb72acefbf37c99ee9d9"
+    },
+    {
       "path": "internal/localipc/selftest_linux.go",
       "category": "implementation",
       "title": "selftest_linux",
@@ -462,8 +511,8 @@
       "path": "internal/localipc/unix_linux.go",
       "category": "implementation",
       "title": "unix_linux",
-      "bytes": 6835,
-      "sha256": "3e292de631e2d7b14381cd1c93548bf211bf589dd27f04fcd20a21da76d03a2f"
+      "bytes": 7205,
+      "sha256": "612207a8c934f5e28d419b2a65d414e5eb6c5da0972368970d99db07cb60ec03"
     },
     {
       "path": "internal/localipc/unix_linux_test.go",
@@ -490,8 +539,8 @@
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
-      "bytes": 2621,
-      "sha256": "9b28ef779054ee3a03440554a06d59f2a636866556a5567acd181cbd4cb1337c"
+      "bytes": 2719,
+      "sha256": "a4771f2cb25af034d02bddab0748c4df487076922b26497b78ba798028eeb53d"
     },
     {
       "path": "internal/offline/replay_test.go",
@@ -618,6 +667,13 @@
       "title": "threat-signal-v1alpha1.schema",
       "bytes": 7786,
       "sha256": "461589756fc029290943aff68f75be0c90b537fb08ca4c6c27711ef645fb2e8c"
+    },
+    {
+      "path": "scripts/test_p0_ed25519_identities.sh",
+      "category": "developer tooling",
+      "title": "test_p0_ed25519_identities",
+      "bytes": 3020,
+      "sha256": "503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49"
     },
     {
       "path": "scripts/test_p0_gate_processes.sh",

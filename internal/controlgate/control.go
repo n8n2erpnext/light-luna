@@ -4,6 +4,7 @@
 package controlgate
 
 import (
+	"crypto/ed25519"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -39,8 +40,9 @@ type Intent struct {
 	Operation        string    `json:"operation"`
 }
 type SignedIntent struct {
-	Intent    Intent `json:"intent"`
-	MACSHA256 string `json:"macSha256"`
+	Intent           Intent `json:"intent"`
+	MACSHA256        string `json:"macSha256,omitempty"`
+	SignatureEd25519 string `json:"signatureEd25519,omitempty"`
 }
 type Receipt struct {
 	Schema           string `json:"schema"`
@@ -52,12 +54,13 @@ type Receipt struct {
 	ReplayProtection string `json:"replayProtection"`
 }
 type Boundary struct {
-	key     []byte
-	siteID  string
-	actorID string
-	mu      sync.Mutex
-	seen    map[string]time.Time
-	journal replayWriter
+	key       []byte
+	publicKey ed25519.PublicKey
+	siteID    string
+	actorID   string
+	mu        sync.Mutex
+	seen      map[string]time.Time
+	journal   replayWriter
 }
 
 type replayWriter interface {
@@ -72,6 +75,18 @@ func NewBoundary(ephemeralKey []byte, siteID, actorID string) (*Boundary, error)
 		return nil, errors.New("invalid pinned local identity")
 	}
 	return &Boundary{key: append([]byte(nil), ephemeralKey...), siteID: siteID, actorID: actorID, seen: map[string]time.Time{}}, nil
+}
+
+// NewEd25519Boundary verifies signatures using only a trusted, pinned public key.
+// No Agent private signing key is copied into or needed by this Gate.
+func NewEd25519Boundary(publicKey ed25519.PublicKey, siteID, actorID string) (*Boundary, error) {
+	if len(publicKey) != ed25519.PublicKeySize {
+		return nil, errors.New("invalid Ed25519 public key size")
+	}
+	if !safeID.MatchString(siteID) || !safeID.MatchString(actorID) {
+		return nil, errors.New("invalid pinned local identity")
+	}
+	return &Boundary{publicKey: append(ed25519.PublicKey(nil), publicKey...), siteID: siteID, actorID: actorID, seen: map[string]time.Time{}}, nil
 }
 func (i Intent) Validate() error {
 	if i.Protocol != Protocol {
@@ -126,6 +141,21 @@ func Sign(key []byte, i Intent) (SignedIntent, error) {
 	mac.Write(b)
 	return SignedIntent{Intent: i, MACSHA256: hex.EncodeToString(mac.Sum(nil))}, nil
 }
+
+// SignEd25519 uses a separate domain prefix from the original HMAC scheme.
+// Mixed signatures are not permitted and protocol downgrade is never implicit.
+func SignEd25519(privateKey ed25519.PrivateKey, i Intent) (SignedIntent, error) {
+	if len(privateKey) != ed25519.PrivateKeySize {
+		return SignedIntent{}, errors.New("invalid Ed25519 private key")
+	}
+	b, err := canonical(i)
+	if err != nil {
+		return SignedIntent{}, err
+	}
+	payload := append([]byte("lightluna.local-control.ed25519/v1alpha1\x00"), b...)
+	sig := ed25519.Sign(privateKey, payload)
+	return SignedIntent{Intent: i, SignatureEd25519: hex.EncodeToString(sig)}, nil
+}
 func rejected(id, reason string) Receipt {
 	return Receipt{Schema: "lightluna.control-receipt/v1alpha1", RequestID: id, Decision: "REJECTED", Reason: reason,
 		ExecutorStatus: "NOT_AVAILABLE", KernelWrites: false, ReplayProtection: "IN_MEMORY_ONLY"}
@@ -146,19 +176,36 @@ func (b *Boundary) Evaluate(message SignedIntent, p policy.Bundle, now time.Time
 	if err := i.Validate(); err != nil {
 		return b.deny(i.RequestID, err.Error())
 	}
-	rawMAC, err := hex.DecodeString(message.MACSHA256)
-	if err != nil || len(rawMAC) != sha256.Size {
-		return b.deny(i.RequestID, "invalid authenticator")
-	}
 	canonicalBytes, err := canonical(i)
 	if err != nil {
 		return b.deny(i.RequestID, "invalid canonical intent")
 	}
-	mac := hmac.New(sha256.New, b.key)
-	mac.Write([]byte(Protocol + "\x00"))
-	mac.Write(canonicalBytes)
-	if !hmac.Equal(rawMAC, mac.Sum(nil)) {
-		return b.deny(i.RequestID, "invalid authenticator")
+	if len(b.publicKey) > 0 {
+		if message.MACSHA256 != "" || len(message.SignatureEd25519) != ed25519.SignatureSize*2 {
+			return b.deny(i.RequestID, "invalid or mixed Ed25519 authenticator")
+		}
+		rawSig, e := hex.DecodeString(message.SignatureEd25519)
+		if e != nil || len(rawSig) != ed25519.SignatureSize {
+			return b.deny(i.RequestID, "invalid Ed25519 encoding")
+		}
+		payload := append([]byte("lightluna.local-control.ed25519/v1alpha1\x00"), canonicalBytes...)
+		if !ed25519.Verify(b.publicKey, payload, rawSig) {
+			return b.deny(i.RequestID, "invalid Ed25519 signature")
+		}
+	} else {
+		if message.SignatureEd25519 != "" || message.MACSHA256 == "" {
+			return b.deny(i.RequestID, "mixed or missing HMAC authenticator")
+		}
+		rawMAC, e := hex.DecodeString(message.MACSHA256)
+		if e != nil || len(rawMAC) != sha256.Size {
+			return b.deny(i.RequestID, "invalid authenticator")
+		}
+		mac := hmac.New(sha256.New, b.key)
+		mac.Write([]byte(Protocol + "\x00"))
+		mac.Write(canonicalBytes)
+		if !hmac.Equal(rawMAC, mac.Sum(nil)) {
+			return b.deny(i.RequestID, "invalid authenticator")
+		}
 	}
 	if i.SiteID != b.siteID || i.ActorID != b.actorID {
 		return b.deny(i.RequestID, "actor/site boundary mismatch")

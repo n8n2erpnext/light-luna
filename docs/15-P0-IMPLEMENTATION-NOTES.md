@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Ed25519 private/public request signing and optional group-owned IPC (2026-10-14)
+
+[Current source design/test](architecture/p0-ed25519-agent-gate-identity.md) adds Ed25519 signing with Agent-only private key; Gate only reads the public verifier and fsynced replay journal. Both old HMAC tests and new Ed25519 tests remain separately configured, with strict **no downgrade** rule. `ListenGroup` takes pre-provisioned Gate-owned 0710 IPC directory and 0660 socket, with pinned Agent/Gate UID/GID checks; it does **not** add users or alter service permissions on HOMESV. End-to-end tests ran as separate PIDs under the **same development UID**. No production distinct-UID service, owner authorization, Cloud link, privileged executor or live nftables.
+
 ## Separate P0 Linux Agent/Gate processes with restart replay (2026-10-14)
 
 [Current developer implementation and evidence](architecture/p0-two-process-gate-and-journal.md): `luna-gate` (explicit foreground unprivileged 1–30s serve lease), `luna-agent` (one-shot signed client), private throwaway `internal/devkeys`, and locked append-only `fsync` replay journal `internal/controlgate/journal_linux.go`. End-to-end test uses **two actual PIDs**, stops/restarts the Gate and verifies previously used requests still reject; invalid journal prevents Gate startup. The same-UID key is an **insecure production pattern** deliberately restricted to temporary tests. No production owner auth, separate UID sandbox, durable power-loss proof, privileged executor, Cloud, NetBird or kernel actions. This updates but does not delete the earlier in-process and UDS transport snapshots below.

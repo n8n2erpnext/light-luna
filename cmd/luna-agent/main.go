@@ -35,6 +35,9 @@ func randomID(prefix string) (string, error) {
 	return prefix + hex.EncodeToString(data), nil
 }
 func run(args []string) error {
+	if len(args) > 0 && (args[0] == "preview-ed25519" || args[0] == "apply-ed25519") {
+		return runEd25519(args)
+	}
 	if len(args) != 3 && len(args) != 5 {
 		return errors.New("usage: luna-agent <preview|apply> <policy-file> <private-demo-dir> [request-id nonce]")
 	}

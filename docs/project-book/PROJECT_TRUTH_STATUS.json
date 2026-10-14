@@ -52,6 +52,10 @@
       "linuxUnixIPC": "real_linux_socket_so_peercred_same_uid_cross_process_test_no_production_service",
       "replayProtection": "in_memory_for_lunactl_selftest_plus_bounded_fsynced_restart_replay_journal_for_manual_test_gate_only",
       "separateAgentGateProcesses": "implemented_manual_linux_dev_binaries_same_uid_not_production_service_isolation",
+      "ed25519AgentGateIdentity": "implemented_agent_private_gate_public_request_verification_same_UID_demo_only",
+      "ed25519DowngradeProtection": "implemented_reject_mixed_or_wrong_algorithm_request",
+      "groupUnixSocket": "implemented_0710_dir_0660_socket_explicit_uid_gid_contract_not_tested_with_distinct_os_users",
+      "realDistinctUIDServiceIdentity": "not_tested_not_deployed",
       "journalRecovery": "restart_replay_pass_corrupt_journal_fails_closed_not_power_loss_tested",
       "productionKeyCustody": "not_implemented_test_only_shared_key_private_0600_same_uid",
       "controlGateRaceDetector": "not_run_gcc_missing_cgo_required",
@@ -107,7 +111,8 @@
     "p0FlowSimulator": "docs/architecture/p0-flow-simulator.md",
     "p0LocalControlGate": "docs/architecture/p0-local-control-gate.md",
     "p0LinuxUnixIPC": "docs/architecture/p0-linux-unix-ipc.md",
-    "p0SeparateAgentGate": "docs/architecture/p0-two-process-gate-and-journal.md"
+    "p0SeparateAgentGate": "docs/architecture/p0-two-process-gate-and-journal.md",
+    "p0Ed25519Identity": "docs/architecture/p0-ed25519-agent-gate-identity.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",
