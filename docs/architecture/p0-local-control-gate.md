@@ -37,6 +37,10 @@ go run ./cmd/lunactl control selftest testdata/host-baseline.json
 4. Timestamps depend on a trustworthy device clock; no clock sync, anti-rollback, durable transaction IDs, rate limiting across restarts, disaster recovery or real lease/watchdog has been implemented.
 5. The gate only uses policy digest from `policy.MakePreview` and **does not establish rescue-route reachability**, multi-tenant policy or actual kernel packet behavior. NetBird integration remains prohibited until standalone acceptance and owner signoff.
 
+## Follow-up — first real Linux socket transport now implemented
+
+The HMAC intent/gate described above remains an **in-process authentication contract**, but [the new Linux UDS integration](p0-linux-unix-ipc.md) provides real bounded Unix socket framing, `SO_PEERCRED` UID checks and a separate-process integration test. It **does not** create a production daemon or provide distinct secure key custody, durable replay, privileged execution or rollback; any older statement in this page that "no IPC exists" refers to the original in-process demo before this later source increment.
+
 ## Next implementation gate
 
 Introduce an independently testable **local Agent ↔ Brain/Policy Gate IPC** with peer credential verification and full input framing/limits, but keep all privileges off. Build the future executor as an isolated stub with a **denial-only default** before considering a temporary TTL-based staging, preflight and independent watchdog. Test in a disposable VM/network namespace that cannot touch HOMESV's production nftables, test rollback after forced process termination and loss of network; until then do not expose any apply path.

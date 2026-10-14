@@ -23,6 +23,7 @@ func Snapshot() foundation.LocalSnapshot {
 			{Module: "nft-preview-compiler", Version: AppVersion, State: "UNHOOKED_TEXT_ONLY"},
 			{Module: "flow-simulator", Version: AppVersion, State: "SYNTHETIC_INTENT_ONLY"},
 			{Module: "local-control-gate", Version: AppVersion, State: "IN_PROCESS_EPHEMERAL_AUTH_TEST_ONLY"},
+			{Module: "linux-local-ipc", Version: AppVersion, State: "UNIX_SOCKET_SELFTEST_ONLY"},
 			{Module: "brain-basic", Version: brain.Version, State: "SYNTHETIC_REPLAY_ONLY"},
 			{Module: "host-guardian", Version: "not-installed", State: "UNKNOWN_NO_SENSORS"},
 			{Module: "ebpf-observer", Version: "not-installed", State: "NOT_INSTALLED"},

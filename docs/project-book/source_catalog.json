@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 17997,
-      "sha256": "3b0ea041322c8780e4c994dd15fd8422d0194981251d742144720b460198e656"
+      "bytes": 18722,
+      "sha256": "39343bd33b2ef1e2372fce9c5938351374e02cb617e53fb906d36a11a66afbdf"
     },
     {
       "path": "SECURITY.md",
@@ -35,8 +35,8 @@
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 3893,
-      "sha256": "27ca37d215bc38756727073319c6186008915f09172ad85c8c17a25b8eb67b0e"
+      "bytes": 4411,
+      "sha256": "5631421e4a9e20d844dbfe447da14a1b1d76a7e7c194db73fb3625d8429ec5ad"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -119,8 +119,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 18836,
-      "sha256": "3ce0540269c899e030db7d9d093fa59dff44c60b05527e1dced4824bec9fa822"
+      "bytes": 19712,
+      "sha256": "1441993d80ad1ef974d3d42bf0a4b64611210d0f676fd0e2e12664561a3f26f4"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -147,8 +147,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 4303,
-      "sha256": "7606433975332d839b48ae4532d7f2c02a0a2a98b5ef9e381f95d8bc1970f1ff"
+      "bytes": 5032,
+      "sha256": "0f1fd021da07e5e8bd3779d612c91b687f1cef9cdddf52c875b30dee16ef7bbc"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -291,11 +291,18 @@
       "sha256": "02f6cbd70f2ba1a47d8d50c626b1403569d45f4316701a9dd9cdf62c2b98880b"
     },
     {
+      "path": "docs/architecture/p0-linux-unix-ipc.md",
+      "category": "architecture / design source",
+      "title": "P0 Linux Local IPC — Unix Socket and SO_PEERCRED Prototype",
+      "bytes": 8232,
+      "sha256": "b7292da4c37656fab86d1b679c8c106a4f200b015d38828943c285bc728f9724"
+    },
+    {
       "path": "docs/architecture/p0-local-control-gate.md",
       "category": "architecture / design source",
       "title": "P0 Local Control Gate — Authenticated Intent, Replay and Safe Denial",
-      "bytes": 6118,
-      "sha256": "c9920a0cbdad6ab2a1e970f6ba4f32ed858883dfe898a508822549ed36890e14"
+      "bytes": 6704,
+      "sha256": "c4a52cafb1edb078df7abb7a3307ce2e2ad772dcb12c31452f865396721ab9e9"
     },
     {
       "path": "docs/architecture/p0-nft-unhooked-compiler.md",
@@ -396,6 +403,27 @@
       "sha256": "026515247a4c2d7a759f3e295943e38d71e67f53c05897dbd2ec938295f89390"
     },
     {
+      "path": "internal/localipc/selftest_linux.go",
+      "category": "implementation",
+      "title": "selftest_linux",
+      "bytes": 3935,
+      "sha256": "693be7aa377f7f236032faffa3cf517abd38c31bde00f9e6984635c76df66b39"
+    },
+    {
+      "path": "internal/localipc/unix_linux.go",
+      "category": "implementation",
+      "title": "unix_linux",
+      "bytes": 6835,
+      "sha256": "3e292de631e2d7b14381cd1c93548bf211bf589dd27f04fcd20a21da76d03a2f"
+    },
+    {
+      "path": "internal/localipc/unix_linux_test.go",
+      "category": "unit / negative tests",
+      "title": "unix_linux_test",
+      "bytes": 7631,
+      "sha256": "97490fbcee80571304be120d76893f67c7bb7bc820272ffdd2f9e0e8ec638678"
+    },
+    {
       "path": "internal/nftpreview/compile.go",
       "category": "implementation",
       "title": "compile",
@@ -413,8 +441,8 @@
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
-      "bytes": 2274,
-      "sha256": "1cdad113b175a9a48ceaec00900eb4585e6e7431efdc864ea3680f28ec94f537"
+      "bytes": 2363,
+      "sha256": "3450993b123156a09e42041caa9140efb6b67c997abd6ae7293da77b79c27846"
     },
     {
       "path": "internal/offline/replay_test.go",

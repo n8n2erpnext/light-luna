@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Actual Linux Unix socket IPC prototype (2026-10-14)
+
+[Source and tests](architecture/p0-linux-unix-ipc.md) prove a **real, bounded Linux Unix socket**, kernel-level peer UID check using `SO_PEERCRED`, owner-private temporary socket, strict JSON frame input, timeout/concurrency limits and a **distinct test subprocess** connecting to the P0 unprivileged gate. The `lunactl control ipc-selftest` output is labeled `SAME_PROCESS_GOROUTINES_REAL_LINUX_UNIX_SOCKET_NO_EXECUTOR`; **production separated Agent/Gate daemons, persistent replay, OIDC and isolated owner/session keys remain absent**. All resulting receipts are advisory or rejected; no nftables kernel modifications. Do not assume same UID proves real owner identity.
+
 ## Authenticated control-gate prototype (2026-10-14)
 
 [Source-level control gate](architecture/p0-local-control-gate.md) and `lunactl control selftest` now model authenticated signed local proposals using an ephemeral injected key, exact policy content/revision, expiring nonce and request IDs. Replays, unsigned/tampered changes, stale policy and **every enforcement attempt** are rejected. All receipts show `kernelWrites=false`; no IPC, service, persistent replay storage, local user authentication, restricted privileged executor or rollback exists. HOMESV's existing GitHub deploy key is usable directly after adding a **verified GitHub SSH host key** to `known_hosts`, avoiding the earlier VPS-ARM relay. This Git transport configuration does not change Light Luna runtime.
