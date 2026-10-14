@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 16533,
-      "sha256": "b37bfe1b214583cf27aee4b7b2d448b7fc005edbbf134714764c71a7dc8ded73"
+      "bytes": 17243,
+      "sha256": "6c3f3f9a906b8b409076f08b7a9f7bfefb43cc41397ce0651635e968746367da"
     },
     {
       "path": "SECURITY.md",
@@ -35,8 +35,8 @@
       "path": "cmd/lunactl/main.go",
       "category": "executable entry",
       "title": "main",
-      "bytes": 2465,
-      "sha256": "cb934c17a79980fa5f9b659414623d129ff6d3d9dd81a56c00de086d77bff312"
+      "bytes": 3347,
+      "sha256": "98d3a375f66252d678684b14f115c071d6073e33d7f480d41f0720a0509f8492"
     },
     {
       "path": "docs/00-VISION-BRAND.md",
@@ -119,8 +119,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 17240,
-      "sha256": "fbe06bab81ada5a1c6367a29d9e6b1c4577c050d8c08b63e57b19cb50f6c62ec"
+      "bytes": 17977,
+      "sha256": "3b37eaeb2e6b885f47345c96abc5b0630006bf2331c4cb9d8b7b8c8a30af5afe"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -147,8 +147,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 2907,
-      "sha256": "906bb6272d9e748da49eb91aea5428e7b7d7e7c57fffa454576aa3f4dd1e1eb0"
+      "bytes": 3522,
+      "sha256": "e8681cdbc3e4859099e72779c841043cbbf603ade776ac0cd1d0f8f2fe52c5ff"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -284,6 +284,13 @@
       "sha256": "e07d464e4a59e2357a94eaffb9394e0cff07ba2dfe2ce5541073110e9b931137"
     },
     {
+      "path": "docs/architecture/p0-flow-simulator.md",
+      "category": "architecture / design source",
+      "title": "P0 Synthetic Policy Flow Simulator — Implementation and Verification",
+      "bytes": 5616,
+      "sha256": "02f6cbd70f2ba1a47d8d50c626b1403569d45f4316701a9dd9cdf62c2b98880b"
+    },
+    {
       "path": "docs/architecture/p0-nft-unhooked-compiler.md",
       "category": "architecture / design source",
       "title": "P0 nftables Compiler — Unhooked Preview Only",
@@ -326,6 +333,20 @@
       "sha256": "db90c6b351b1c3058c6b8a4e81dc7caa4fe567f81cd0d4e4abb0f41242125d96"
     },
     {
+      "path": "internal/flowsim/simulate.go",
+      "category": "implementation",
+      "title": "simulate",
+      "bytes": 7639,
+      "sha256": "2457689821fe2171844d1b4acb666410415d928421ff3a063e03bf55e4146eea"
+    },
+    {
+      "path": "internal/flowsim/simulate_test.go",
+      "category": "unit / negative tests",
+      "title": "simulate_test",
+      "bytes": 5506,
+      "sha256": "67732eab7488a58b51b9225a455f5800dd9f85e839b84a10a76f3d13176c44fa"
+    },
+    {
       "path": "internal/foundation/observation.go",
       "category": "implementation",
       "title": "observation",
@@ -364,8 +385,8 @@
       "path": "internal/offline/replay.go",
       "category": "implementation",
       "title": "replay",
-      "bytes": 2088,
-      "sha256": "9cd9a38ef546d97c30d99fcf12899aab8e67f49f97b214f0970fde385c4a8ce3"
+      "bytes": 2172,
+      "sha256": "2329d3d99c950098ed87ba52a9cfedaa52df19ce6561b080a81f0d84e51f78d1"
     },
     {
       "path": "internal/offline/replay_test.go",
@@ -513,6 +534,13 @@
       "title": "fleet-config-intent.synthetic",
       "bytes": 1147,
       "sha256": "1ae25bd859cd46f69eb8f7a7c357c52b034e632d3ccc3d92afb339b946d8379a"
+    },
+    {
+      "path": "testdata/flow-fixtures.synthetic.json",
+      "category": "synthetic test fixture",
+      "title": "flow-fixtures.synthetic",
+      "bytes": 1503,
+      "sha256": "271eeb363ef302017a42abc6a121ac5aede243d1aa9edef54e9bb5b894a67de2"
     },
     {
       "path": "testdata/host-baseline.json",

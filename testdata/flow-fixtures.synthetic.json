@@ -1,0 +1,59 @@
+{
+  "schema": "lightluna.flow-fixtures/v1alpha1",
+  "cases": [
+    {
+      "caseId": "admin-ssh-allowed-intent",
+      "direction": "input",
+      "sourceIp": "192.0.2.14",
+      "protocol": "tcp",
+      "destinationPort": 22,
+      "connectionState": "new",
+      "managementCritical": true
+    },
+    {
+      "caseId": "admin-other-src-lockout-risk",
+      "direction": "input",
+      "sourceIp": "198.51.100.12",
+      "protocol": "tcp",
+      "destinationPort": 22,
+      "connectionState": "new",
+      "managementCritical": true
+    },
+    {
+      "caseId": "web-8080-dropped-intent",
+      "direction": "input",
+      "sourceIp": "203.0.113.4",
+      "protocol": "tcp",
+      "destinationPort": 8080,
+      "connectionState": "new",
+      "managementCritical": false
+    },
+    {
+      "caseId": "web-443-default-drop-intent",
+      "direction": "input",
+      "sourceIp": "203.0.113.5",
+      "protocol": "tcp",
+      "destinationPort": 443,
+      "connectionState": "new",
+      "managementCritical": false
+    },
+    {
+      "caseId": "outbound-unspecified",
+      "direction": "output",
+      "sourceIp": "192.0.2.14",
+      "protocol": "tcp",
+      "destinationPort": 443,
+      "connectionState": "unknown",
+      "managementCritical": false
+    },
+    {
+      "caseId": "icmpv6-default-drop",
+      "direction": "input",
+      "sourceIp": "2001:db8::10",
+      "protocol": "icmpv6",
+      "destinationPort": 0,
+      "connectionState": "new",
+      "managementCritical": false
+    }
+  ]
+}

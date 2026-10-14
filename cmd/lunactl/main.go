@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/n8n2erpnext/light-luna/internal/flowsim"
 	"github.com/n8n2erpnext/light-luna/internal/foundation"
 	"github.com/n8n2erpnext/light-luna/internal/nftpreview"
 	"github.com/n8n2erpnext/light-luna/internal/offline"
@@ -14,7 +15,7 @@ import (
 )
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file>")
+	fmt.Fprintln(os.Stderr, "usage: lunactl version | system snapshot | brain replay <synthetic-file> | firewall policies validate <file> | firewall policies preview <file> | firewall policies nft-preview <file> | firewall policies simulate <policy-file> <synthetic-flow-file>")
 }
 func pretty(v any) error {
 	data, err := json.MarshalIndent(v, "", "  ")
@@ -45,6 +46,31 @@ func run(args []string) error {
 		report, err := offline.Replay(in)
 		if err != nil {
 			return fmt.Errorf("invalid replay: %w", err)
+		}
+		return pretty(report)
+	}
+	if len(args) == 5 && args[0] == "firewall" && args[1] == "policies" && args[2] == "simulate" {
+		f, err := os.Open(args[3])
+		if err != nil {
+			return fmt.Errorf("open policy: %w", err)
+		}
+		defer f.Close()
+		p, err := policy.Decode(f)
+		if err != nil {
+			return fmt.Errorf("invalid policy: %w", err)
+		}
+		flowsFile, err := os.Open(args[4])
+		if err != nil {
+			return fmt.Errorf("open synthetic flow file: %w", err)
+		}
+		defer flowsFile.Close()
+		var data flowsim.Fixture
+		if err := strictjson.Decode(flowsFile, flowsim.MaxInputBytes, &data); err != nil {
+			return fmt.Errorf("invalid flow fixture: %w", err)
+		}
+		report, err := flowsim.Simulate(p, data)
+		if err != nil {
+			return fmt.Errorf("flow simulation: %w", err)
 		}
 		return pretty(report)
 	}

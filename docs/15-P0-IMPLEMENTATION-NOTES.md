@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Current flow simulator development slice (2026-10-14)
+
+[Source-level P0 flow simulator](architecture/p0-flow-simulator.md) adds `internal/flowsim`, a strict bounded synthetic flow fixture and `lunactl firewall policies simulate <policy> <flows>`. It matches intent in rule priority order, flags **potential SSH/management lockout**, reports an undefined output default as `UNSPECIFIED`, and labels every effective kernel verdict `UNKNOWN` because it does **not** model Docker/UFW coexistence, routing or conntrack. This remains non-enforcing and has no actual netns/nft kernel test or owner recovery mechanism.
+
 ## Non-claims and strict prohibitions
 
 - There is now only inert unhooked text generation (see architecture/p0-nft-unhooked-compiler.md), but NO `nft -c` compatibility test, kernel transaction, privileged executor, watchdog, rollback, rescue path, WebUI, service, network simulator, log collector, firewall installer, ban or NetBird connector in this first slice.

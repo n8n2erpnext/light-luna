@@ -92,6 +92,12 @@ Scope: durable decisions, verified engineering milestones and blockers
 - Added deterministic tests for rule priority, protocol/family combinations, unsafe mismatch rejection, expansion caps, and malicious note non-interpolation. Existing parser/Brain/CLI tests and Go vet passed.
 - Verified HOMESV nftables v1.0.9 availability but `unshare --user --map-root-user --net` not permitted. **Skipped `nft -c` instead of touching parent-host network namespace**, recorded isolated-VM grammar test as next dependency; see [compiler truth/verification](../architecture/p0-nft-unhooked-compiler.md).
 
+## 2026-10-14 — P0 synthetic Flow Simulator (Go code and tests)
+
+- Implemented `internal/flowsim` and `lunactl firewall policies simulate <policy> <flows>`, strict 256 KiB/128-case input and deterministic rule intent with IPv4/IPv6, TCP/UDP/ICMPv6, CIDR aliases, log nonterminal behavior and input/output default differences.
+- Source-level unit/CLI tests cover source trust assumptions, malformed/duplicate cases, port/family rejection and **management-critical flow lockout warnings**; effective verdict is always **UNKNOWN** and the simulator never imports unrelated kernel/firewall state. [Full tested scope and gaps](../architecture/p0-flow-simulator.md).
+- Kept real nft apply, Cloud, device enrollment and NetBird absent. P0 and G-STANDALONE remain OPEN/BLOCKED; no production firewall or existing Sentinel/Light Remote data modified.
+
 ## Standing limitations
 
 No production server, WebUI, autonomous firewall, WAF or NetBird connector. Development tests do not satisfy P0 or G-STANDALONE. Future handoffs are historical, Code Map/Git/test evidence take precedence.

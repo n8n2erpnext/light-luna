@@ -46,6 +46,8 @@
       "guardianStatus": "UNKNOWN_NOT_INSTALLED",
       "nestedJSONDuplicateRejection": "implemented_in_policy_and_replay",
       "nftUnhookedPreview": "implemented_source_unit_tests_pass_syntax_not_kernel_checked",
+      "flowSimulator": "implemented_pure_go_synthetic_intent_only_all_effective_verdicts_UNKNOWN",
+      "managementLockoutDetection": "synthetic_POTENTIAL_LOCKOUT_warning_not_a_verified_recovery_path",
       "communityBehaviorSignalSync": "decided_design_not_implemented",
       "cloudConsensusAndBulletins": "decided_design_not_implemented",
       "hostGuardianAndSelfIntegrity": "decided_design_not_implemented",
@@ -93,7 +95,8 @@
     "hostCompromiseArchitecture": "docs/architecture/host-self-defense-and-compromise-containment.md",
     "hostIntegrityReportSchema": "schemas/host-integrity-report-v1alpha1.schema.json",
     "localRuntimeFoundation": "docs/architecture/local-runtime-foundation.md",
-    "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md"
+    "unhookedNftCompiler": "docs/architecture/p0-nft-unhooked-compiler.md",
+    "p0FlowSimulator": "docs/architecture/p0-flow-simulator.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",

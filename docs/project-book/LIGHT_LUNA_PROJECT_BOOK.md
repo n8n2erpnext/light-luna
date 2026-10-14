@@ -24,7 +24,7 @@ Light Luna is an independent, installable Linux **software firewall first**, wit
 - **Go-native Luna Brain — owner-approved architecture direction, NOT IMPLEMENTED**: deterministic analytics, evidence correlation and typed recommendations should use Go; even with Go shared across components, Brain cannot access the privileged executor. See [ADR-020](../adr/ADR-020-go-core-python-optional.md).
 - **Python — optional worker only, NOT IMPLEMENTED**: selective, justified ML/stats/inference work using separate sandboxed unprivileged process, bounded CPU/memory/time and versioned inputs/outputs; no mandatory Python runtime for normal Host/Edge operation. `.mjs` is no longer the default Brain choice.
 - **SQLite — local store proposal only**: no database schema or service yet.
-- **nftables — future enforcement backend**: no compiler, transaction, watchdog, kernel change, service or real rules deployed.
+- **nftables — future enforcement backend**: source-only **unhooked text preview compiler and synthetic policy-intent Flow Simulator exist**; no complete nftables apply compiler/transaction, watchdog, kernel change, service or real rules deployed.
 
 Rust, a **mandatory Python runtime**, and a separate Node backend are not required by the P0 firewall. Python 3 currently runs only the docs catalog tool; a future optional ML worker is permitted but does not yet exist. React/TypeScript WebUI and SQLite remain proposals rather than delivered code.
 
@@ -65,6 +65,10 @@ After read-only inspection of the independent VPS-ARM Sentinel services, the sou
 ## Owner-decided Light Luna self-defense and compromised-client containment (not implemented)
 
 [ADR-028](../adr/ADR-028-self-defense-host-compromise.md) adds a mandatory **Self-Integrity Guardian** and a path for host process/file/egress threat detection, safe local containment and Cloud quarantine of compromised submissions. [Architecture](../architecture/host-self-defense-and-compromise-containment.md) separates XDP ingress filtering from optional eBPF tracing, OS events, integrity checks and bounded on-demand malware scanning; kernel/root compromise can falsify host evidence, requiring a trusted external rescue/credential rotation. A compromised but authenticated device cannot directly distribute trusted global patterns, signed KnowledgePacks, software updates or peer actions. Nothing has been attached to kernel, scanned, quarantined or enforced in current Light Luna P0 source.
+
+## Implemented synthetic Flow Simulator (2026-10-14, not a firewall)
+
+[Flow Simulator implementation and verification](../architecture/p0-flow-simulator.md) adds a real pure-Go `internal/flowsim` entry called by `lunactl firewall policies simulate`; its input consists exclusively of synthetic cases. It evaluates policy intent for IPv4/IPv6, TCP/UDP and ICMP, priority and alias resolution, and flags potential administration lockout in a fixture. It **cannot** establish actual kernel behavior: every effective verdict and external firewall state is `UNKNOWN`; output default has no schema and is `UNSPECIFIED`. Unit tests/CLI/vet passed; no physical or virtual firewall/netns was changed. This does not advance G-STANDALONE to PASS.
 
 ## Verified unhooked nftables text compilation (2026-10-14, not a firewall)
 

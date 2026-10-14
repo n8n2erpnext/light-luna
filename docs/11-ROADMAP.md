@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 pure-Go flow simulator implementation (2026-10-14)
+
+[Flow simulator](architecture/p0-flow-simulator.md) is now callable from `lunactl firewall policies simulate <policy-file> <synthetic-flow-file>`. It evaluates current policy's **declared** TCP/UDP/ICMP/ICMPv6 flow intent, ordered rules, CIDR alias, nonterminal log and inbound default; output no-match remains `UNSPECIFIED`. It marks management-critical denial `POTENTIAL_LOCKOUT` but never claims actual route reachability; every `effectiveVerdict` and external firewall state stays `UNKNOWN`. JSON size/event caps, negative tests and Go vet pass. **Next P0 exit prerequisites:** isolated kernel syntax/packet tests and independent trusted rescue/rollback, not Cloud/NetBird.
+
 ## Additional P0 compiler implementation — source verified, not kernel verified (2026-10-14)
 
 [Unhooked nft preview compiler](architecture/p0-nft-unhooked-compiler.md): `lunactl firewall policies nft-preview <fixture>` emits deterministic bounded `table inet` regular chains **without any base-chain hooks, default policy, or executor**; IPv4/IPv6 family mismatches and unbounded alias expansion are rejected. Its JSON status truthfully reports no kernel writes and `syntaxChecked=false`. HOMESV has nftables 1.0.9 but cannot create an isolated unprivileged network namespace; **do not run `nft -c` against the parent machine**. The next gate is an isolated disposable VM/nft grammar test, then a safe flow simulator and independent auth/rollback; this is NOT a standalone firewall.
