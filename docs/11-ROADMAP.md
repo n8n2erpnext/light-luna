@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 dual-arm and crashpoint transaction consistency (2026-10-14 — VM-only detection PASS)
+
+[Bounded evidence, implementation, remaining blockers](architecture/p0-vm-autonomous-ttl-watchdog.md): healthy primary and prearmed fallback finished with only **primary DONE**, while fallback separately recorded `PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER`. At a deterministic fault after fallback's **fixed guest-netns nft delete** but before journal fsync, evidence showed journal **`COMMITTED_SYNTHETIC` with no nft table** and no false `ROLLED_BACK` or success DONE. Operator-acknowledged archival preserved the inconsistency. This is not transaction atomicity: a future single-writer lock/owner fencing, durable pre/post receipts, recovery authority and disk/power-failure matrix remain P0 blockers. G-STANDALONE remains BLOCKED.
+
 ## P0 independent fallback for guest synthetic service death (2026-10-14 — VM lab PASS)
 
 [Source, boundaries and verification](architecture/p0-vm-autonomous-ttl-watchdog.md): the new separately armed PID1-managed guest-netns fallback survives a primary watchdog or namespace keeper SIGKILL, validates exact synthetic nft table structure, restores guest-private IPv4/IPv6 TCP/UDP, and records a distinct synthetic-only receipt. Two runs of both postcommit SIGKILL cases PASS after a strict nft JSON guard; 12 rule-whitelist unit tests PASS. This updates the prior observed *missing backup* gap **only for a no-NIC disposable VM experiment**. It does not pass the P0 release gate without owner-authenticated privileged executor, signed receipt recovery, service installer, concurrent journal safety, real host coexistence and crash/reboot/power-loss verification. NetBird remains deferred.

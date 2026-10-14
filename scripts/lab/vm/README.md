@@ -2,6 +2,18 @@
 
 **Status (2026-10-14): DEPLOYED and kernel/namespace nft tests PASS on HOMESV.** LXD 5.21.8, KVM, local Ubuntu 24.04 VM image release 20260926. Repo branch `feat/p0-standalone-foundation`, see latest HEAD and [evidence document](../../../docs/architecture/p0-lxd-kernel-nft-rollback.md).
 
+## VM-only dual-arm arbitration and crash-consistency detection (2026-10-14)
+
+[Canonical evidence and remaining gaps](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). The `primary_race` fault mode dual-arms primary and independent fallback while keeping the primary alive. On the tested timeline only the primary rolls back; fallback records `PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER` (REJECTED, **not** DONE). The `fallback_after_delete` mode SIGKILLs the primary, lets fallback remove the **fixed** guest synthetic nft table, then forces `os._exit(72)` **before** terminal journal persistence; this deliberately produces **absent kernel table + outstanding `COMMITTED_SYNTHETIC` journal**, with neither service claiming success. The VM fault observer and explicit manual archive preserve the inconsistency without rewriting it into rollback.
+
+Run only on exact prechecked no-NIC lab VM and with a fresh unique archival tag:
+
+```bash
+LUNA_LXD_USE_SUDO=1 LUNA_VM_RACE_CRASH_ACK=TEST_ONLY_NIC_LESS_KVM_RACE_CRASH LUNA_VM_EVIDENCE_TAG=unique-tag bash scripts/lab/vm/run-race-crash-tests.sh
+```
+
+The runner was executed with exit 0, both assertions PASS and archives retained. After archive, the active journal is **absent** by design until the next ordinary `run-tests.sh` creates a fresh stage. This is a **crash-inconsistency detector, not automatic power-loss recovery**. It does not test simultaneous deletion, disk tear, or a product firewall.
+
 ## Independent namespace-pinning fallback (2026-10-14 — KVM synthetic PASS only)
 
 [Full evidence, limits and source](../../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md). `guest-fallback-supervisor.py` runs as a **second** VM PID1-managed process, entering the exact guest test namespace before commit and keeping it pinned independently of the keeper. Opt-in `LUNA_VM_FALLBACK=1` and explicit fallback ACK apply only to postcommit keeper/watchdog SIGKILL fault modes; the normal stage test still defaults to no fallback. It validates boot/stage/namespace/deadline and exact nft JSON test-rule shape before deleting only `inet luna_p0_stage`, then checks absence and writes a separate **synthetic-only** DONE receipt.

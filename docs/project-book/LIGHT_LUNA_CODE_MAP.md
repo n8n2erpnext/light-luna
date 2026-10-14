@@ -16,6 +16,13 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - `guest-auto-watchdog.py` → boot identity verified before READY and before namespace-targeted TTL rollback; READY/DONE receipts carry the ID. `guest-stage-test.sh` verifies receipts, and `reconcile-interrupted-stage.sh` refuses cross-boot terminal transitions.
 - `test_boot_journal.py` → 5 offline unit tests (new-boot refusal, legacy refusal, duplicate-key denial, etc.). **Effects:** synthetic VM journal/receipt writes only, no product policy apply. Standalone KVM suite on the modified source returned exit 0 with original explicit and automatic TTL regression markers; this is **not a real VM reboot, automatic boot reconciliation, signed owner authorization, or product executor**.
 
+## Controlled dual-arm arbitration and after-delete crash failpoint (2026-10-14; development source and KVM test only)
+
+- `scripts/lab/vm/guest-stage-test.sh` → exact opt-in `primary_race` (two prearmed services, no SIGKILL) or `fallback_after_delete` (primary SIGKILL, fallback service test-only `os._exit(72)` after fixed nft delete). Fault ACK, fallback ACK and special crash ACK required; regular `LUNA_VM_FAULT=none` remains unchanged.
+- `scripts/lab/vm/guest-fallback-supervisor.py` → strict VM-only optional crashpoint between verified fixed nft deletion and `journal.transition(ROLLED_BACK)`; no fallback DONE is written. Healthy primary path writes fallback `REJECTED` with no kernel mutation.
+- `scripts/lab/vm/guest-fault-evidence.py` → in a post-delete crash, confirms fallback MainPID exited, fixed table absent and journal `COMMITTED_SYNTHETIC`, fsyncs **failure evidence**, never success receipt. `guest-archive-fault.py` → explicit ACK after clean kernel inventory, preserves **still-incomplete** journal/error evidence.
+- `scripts/lab/vm/run-race-crash-tests.sh` → guarded exact KVM/no-NIC host runner, checks guest packet probes and post-run nft/netns inventories, requires unique tag for archived READY/REJECTED/DONE failure evidence. **Tested:** healthy-primary arbitration and one exact after-delete process crash. **Not tested:** simultaneous last-millisecond takeover, journal lock/fencing, recovery after crash, production policy executor.
+
 ## Independent guest-netns fallback (2026-10-14 — VM-only source/runtime PASS)
 
 - `scripts/lab/vm/guest-stage-test.sh` → opt-in `LUNA_VM_FALLBACK=1` with separately acknowledged synthetic-fault mode → launches `systemd-run` `nsenter -n` to start `guest-fallback-supervisor.py` **inside the exact VM destination netns** before synthetic commit and requires its fsynced READY receipt. Default normal stage behavior is unchanged.

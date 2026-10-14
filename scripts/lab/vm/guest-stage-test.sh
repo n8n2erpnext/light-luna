@@ -15,11 +15,11 @@ if [[ "$fallback_mode" == 1 ]];then
   [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FALLBACK_ACK:-}" == "ENABLE_GUEST_SYNTHETIC_FALLBACK" ]] || {
     echo "VM_FALLBACK_EXPLICIT_ACK_REQUIRED" >&2;exit 2;
   }
-  [[ "$fault_mode" == keeper_postcommit || "$fault_mode" == watchdog_postcommit ]] || {
+  [[ "$fault_mode" == keeper_postcommit || "$fault_mode" == watchdog_postcommit || "$fault_mode" == primary_race || "$fault_mode" == fallback_after_delete ]] || {
     echo "FALLBACK_MODE_ONLY_POSTCOMMIT_FAULTS" >&2;exit 2;
   }
 fi
-case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
+case "$fault_mode" in none|keeper_precommit|keeper_postcommit|watchdog_postcommit|primary_race|fallback_after_delete) ;; *) echo "UNRECOGNIZED_FAULT_MODE" >&2; exit 2;; esac
 if [[ "$fault_mode" != none ]];then
  [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 && "${LUNA_VM_FAULT_ACK:-}" == "KILL_VM_SYNTHETIC_KEEPER_OR_WATCHDOG" ]] || {
    echo "EXPLICIT_VM_FAULT_ACK_REQUIRED" >&2;exit 2;
@@ -209,7 +209,14 @@ PY
   echo "VM_AUTO_WATCHDOG_PRECOMMIT_READY_PASS"
   if [[ "$fallback_mode" == 1 ]];then
     fallback_unit="luna-p0-fallback-$$"
-    systemd-run --unit="$fallback_unit" --property=RuntimeMaxSec=22s /usr/bin/nsenter -t "$keeper_pid" -n /usr/bin/python3 "$work/guest-fallback-supervisor.py" "$keeper_pid" "$anchor_ticks" "$anchor_netns" "$unit.service" "$keeper_unit.service" > "$work/fallback-launch.log" 2>&1
+    fallback_env=()
+    fallback_arg=()
+    if [[ "$fault_mode" == fallback_after_delete ]];then
+      [[ "${LUNA_VM_FALLBACK_CRASH_ACK:-}" == VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE ]] || { echo "FAILPOINT_ACK_MISSING";exit 2; }
+      fallback_env=(--setenv=LUNA_VM_FALLBACK_CRASH_ACK=VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE)
+      fallback_arg=(--lab-fault-after-delete)
+    fi
+    systemd-run --unit="$fallback_unit" --property=RuntimeMaxSec=22s "${fallback_env[@]}" /usr/bin/nsenter -t "$keeper_pid" -n /usr/bin/python3 "$work/guest-fallback-supervisor.py" "$keeper_pid" "$anchor_ticks" "$anchor_netns" "$unit.service" "$keeper_unit.service" "${fallback_arg[@]}" > "$work/fallback-launch.log" 2>&1
     for _ in $(seq 1 70);do
       [[ -f "$work/fallback-ready.json" ]] && break
       if [[ "$(systemctl is-failed "$fallback_unit.service" || true)" == failed ]];then
@@ -271,12 +278,19 @@ for rule in 'tcp dport 18080' 'udp dport 18081' 'icmpv6 type echo-request';do
  }
 done
 echo "VM_STAGE_TCP_UDP_IPV6_DROP_COUNTER_PASS"
-if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit ]];then
-  if [[ "$fault_mode" == watchdog_postcommit ]];then victim="$unit.service";else victim="$keeper_unit.service";fi
+if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == keeper_postcommit || "$fault_mode" == fallback_after_delete ]];then
+  if [[ "$fault_mode" == watchdog_postcommit || "$fault_mode" == fallback_after_delete ]];then victim="$unit.service";else victim="$keeper_unit.service";fi
   systemctl kill --kill-who=main --signal=SIGKILL "$victim"
   sleep .3
   [[ "$(systemctl show "$victim" -p MainPID --value)" == 0 ]] || { echo "FAULT_SERVICE_DEATH_UNVERIFIED";exit 3; }
   echo "VM_FAULT_SERVICE_POSTCOMMIT_KILLED"
+  if [[ "$fault_mode" == fallback_after_delete ]];then
+    # The primary is SIGKILLed; fallback deletes the ONLY fixed test table
+    # then os._exit(72) before journal/DONE persistence. Observe BEFORE trap.
+    python3 "$work/guest-fault-evidence.py" observe fallback_after_delete "$fallback_unit.service" "$keeper_unit.service" "$keeper_pid" "$anchor_netns" "$dst"
+    echo "VM_FALLBACK_AFTER_DELETE_CRASH_INCONSISTENT_JOURNAL_DETECTED_PASS"
+    exit 0
+  fi
   if [[ "$fallback_mode" == 1 ]];then
     for _ in $(seq 1 145);do
       [[ -f "$work/fallback-done.json" ]] && break
@@ -352,6 +366,21 @@ assert s["bootId"]==Path('/proc/sys/kernel/random/boot_id').read_text().strip()
 assert s["state"] == "ROLLED_BACK"
 assert s["history"] == ["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]
 PY
+if [[ "$fault_mode" == primary_race ]];then
+  # Wait for fallback's independent observation after primary DONE.
+  for _ in $(seq 1 45);do
+    [[ -s "$work/fallback-rejected.json" ]] && break
+    sleep .10
+  done
+  python3 - "$work/fallback-rejected.json" <<'PY'
+import json,sys
+from pathlib import Path
+r=json.loads(Path(sys.argv[1]).read_text())
+assert r["status"]=="PRIMARY_ALREADY_TERMINAL_NO_TAKEOVER"
+assert not Path("/opt/luna-p0-kernel-tests/fallback-done.json").exists()
+PY
+  echo "VM_PRIMARY_FALLBACK_DUAL_ARM_NO_DUPLICATE_ROLLBACK_PASS"
+fi
 if [[ "${LUNA_VM_AUTO_TTL:-0}" == 1 ]];then
   echo "VM_STAGE_AUTONOMOUS_TTL_IPV6_TCP_UDP_RESTORED_PASS"
 else

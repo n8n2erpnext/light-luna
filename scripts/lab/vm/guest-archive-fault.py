@@ -34,7 +34,7 @@ def main():
         raise ValueError("unexpected post-cleanup inspection result")
     mode = fault.get("mode")
     expected = "VALIDATED" if mode == "keeper_precommit" else "COMMITTED_SYNTHETIC"
-    if (mode not in ("keeper_precommit","keeper_postcommit","watchdog_postcommit")
+    if (mode not in ("keeper_precommit","keeper_postcommit","watchdog_postcommit","fallback_after_delete")
         or state.get("state")!=expected
         or fault.get("expectedJournal")!=expected
         or fault.get("bootId")!=state_module.boot_id()
@@ -45,7 +45,8 @@ def main():
         or fault.get("status")!="FAILURE_DETECTED_NOT_RECOVERED"
         or fault.get("kernelWrites") is not False
         or fault.get("automaticRollbackConfirmed") is not False
-        or fault.get("syntheticRuleStillPresent") is not (mode!="keeper_precommit")):
+        or fault.get("syntheticRuleStillPresent") is not (mode in ("keeper_postcommit","watchdog_postcommit"))
+        or (mode=="fallback_after_delete" and fault.get("kernelAbsentJournalIncomplete") is not True)):
         raise ValueError("fault evidence does not match incomplete journal")
     if (ROOT / "auto-watchdog-done.json").exists():
         raise ValueError("unexpected autonomous success receipt")

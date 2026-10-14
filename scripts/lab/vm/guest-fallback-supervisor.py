@@ -118,8 +118,12 @@ def main():
         raise ValueError("root VM marker required")
     if sorted(os.listdir("/sys/class/net"))!=["lo"] or cmd("systemd-detect-virt").stdout.strip()!="kvm":
         raise ValueError("only NIC-less KVM VM allowed")
-    if len(sys.argv)!=6:
-        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit")
+    if len(sys.argv) not in (6,7):
+        raise ValueError("usage keeperPID keeperTicks targetNetns mainUnit keeperUnit [--lab-fault-after-delete]")
+    crash_after_delete = len(sys.argv)==7
+    if crash_after_delete and (sys.argv[6] != "--lab-fault-after-delete"
+        or os.environ.get("LUNA_VM_FALLBACK_CRASH_ACK") != "VM_ONLY_CRASH_AFTER_SYNTHETIC_DELETE"):
+        raise ValueError("VM-only crash failpoint not explicitly acknowledged")
     keeper=int(sys.argv[1])
     ticks=int(sys.argv[2])
     netns=sys.argv[3]
@@ -181,6 +185,11 @@ def main():
         raise ValueError("fixed synthetic table rollback could not be verified")
     # Atomic fsync journal progression is a lab-only single-controller proof.
     # Crash between nft delete and journal write remains unresolved (fail closed).
+    if crash_after_delete:
+        # Guest-only deterministic crash point after verified nft deletion,
+        # before terminal journal or DONE receipt. No background cleanup.
+        print("VM_FALLBACK_FAILPOINT_AFTER_DELETE_BEFORE_JOURNAL", flush=True)
+        os._exit(72)
     mod.transition("transition","ROLLED_BACK",plan)
     persist(DONE,{"schema":"lightluna.vm-fallback-done/v1alpha1",
                   "status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",

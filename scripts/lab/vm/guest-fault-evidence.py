@@ -18,7 +18,7 @@ FAULT = ROOT / "stage-fault-evidence.json"
 READY = ROOT / "auto-watchdog-ready.json"
 DONE = ROOT / "auto-watchdog-done.json"
 MOD = ROOT / "guest-stage-journal.py"
-MODES = {"keeper_precommit", "keeper_postcommit", "watchdog_postcommit"}
+MODES = {"keeper_precommit", "keeper_postcommit", "watchdog_postcommit", "fallback_after_delete"}
 
 
 def run(*args):
@@ -42,7 +42,8 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
         raise ValueError("guest NIC detected")
     if run("systemd-detect-virt").stdout.strip() != "kvm":
         raise ValueError("not KVM")
-    if mode not in MODES or not watchdog.startswith("luna-p0-auto-wd-") or not keeper.startswith("luna-p0-stage-keeper-"):
+    expected_watchdog_prefix = "luna-p0-fallback-" if mode == "fallback_after_delete" else "luna-p0-auto-wd-"
+    if mode not in MODES or not watchdog.startswith(expected_watchdog_prefix) or not keeper.startswith("luna-p0-stage-keeper-"):
         raise ValueError("invalid fault mode/unit identity")
     if FAULT.exists() or FAULT.is_symlink() or DONE.exists() or DONE.is_symlink():
         raise ValueError("preexisting fault or success evidence")
@@ -82,7 +83,12 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
             raise ValueError("fault target is not the expected synthetic namespace")
         result = run("ip", "netns", "exec", netns, "nft", "list", "table", "inet", "luna_p0_stage")
         table_observed = result.returncode == 0
-        if not table_observed:
+        if mode == "fallback_after_delete":
+            if table_observed or DONE.exists():
+                raise ValueError("crash after delete requires absent table and no primary DONE")
+            # A missing table while journal remains COMMITTED is a genuine
+            # atomicity gap; never claim rollback success from this observation.
+        elif not table_observed:
             raise ValueError("synthetic table unexpectedly absent; cannot claim un-recovered filter")
     else:
         if pid or netns or inode:
@@ -97,6 +103,7 @@ def inspect(mode, watchdog, keeper, pid=None, inode=None, netns=None, *, root=RO
         "watchdogDonePresent": False,
         "serviceMainPIDIsZero": True,
         "syntheticRuleStillPresent": table_observed,
+        "kernelAbsentJournalIncomplete": mode == "fallback_after_delete",
         "status": "FAILURE_DETECTED_NOT_RECOVERED",
         "kernelWrites": False,
         "ownerApproved": False,
