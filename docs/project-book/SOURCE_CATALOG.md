@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 37273 | 71746814091de6312d5cc18c9b06c70e578e4c2779bb2c4918af1d4228d8178f |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 38028 | 008ce73dca004f71c32ec91efbdd2e3abf91a1bb783a8be020a2d18365233b07 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -60,7 +60,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 7358 | ebb68953993128f04d9a914e21e4611af7bec5269f73f9caf76c97661ba42ec3 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 6598 | bdf865b7e14858e106b59c304a49b4ba803b004be61d8f42dd0e047c4fb47d1e |
-| [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
+| [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 12601 | 0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
 | [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 10845 | 1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4 |
 | [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
@@ -71,8 +71,8 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/controlgate/control.go](../../internal/controlgate/control.go) | implementation | 9918 | b44933e8e8dc4948b14a90192f6a7d0358eee685242708670ecc54e44131334d |
 | [internal/controlgate/control_test.go](../../internal/controlgate/control_test.go) | unit / negative tests | 6274 | 6695647816fce6f63b9b64ee0cc8a80807c8bd3f33c1b7c7039345d5ec2c3061 |
 | [internal/controlgate/ed25519_test.go](../../internal/controlgate/ed25519_test.go) | unit / negative tests | 2448 | 0daa97aa1458b3889cbc2aecd614a1d163411885f7dc6ca114f407206729e5c3 |
-| [internal/controlgate/journal_linux.go](../../internal/controlgate/journal_linux.go) | implementation | 5939 | c55d5460e5240e11d38cd709ddb8dbce92a1b998654e88f4890f9ef4e35a4ff1 |
-| [internal/controlgate/journal_linux_test.go](../../internal/controlgate/journal_linux_test.go) | unit / negative tests | 3417 | 32edbd280237be4eaf0abb43b47cff901d3775a57562fd32060eb124ea898ca6 |
+| [internal/controlgate/journal_linux.go](../../internal/controlgate/journal_linux.go) | implementation | 7192 | 851fb17275cedba3f11af446bc009944a1570e56b733f2c658cb26ac939d4e22 |
+| [internal/controlgate/journal_linux_test.go](../../internal/controlgate/journal_linux_test.go) | unit / negative tests | 5993 | 6241c56215afe8fb4c8de1b02858a3a8a6204ec7cc4f04b889e074faf447a847 |
 | [internal/controlgate/selftest.go](../../internal/controlgate/selftest.go) | implementation | 2644 | ba053625b3bbdc358a4d3f3e166b18ce090266904d1f821e85c1a63f4935d645 |
 | [internal/devkeys/keys_linux.go](../../internal/devkeys/keys_linux.go) | implementation | 2762 | ccb44c02f619062431e748c3f6c540af641c43a73eec61d75a1bf56b17d2b30f |
 | [internal/devkeys/keys_linux_test.go](../../internal/devkeys/keys_linux_test.go) | unit / negative tests | 1182 | 13fb0d57f6e3ae229ffb37d6a15b6fbbcaa4c5e2dde19d721be8523fa942601b |

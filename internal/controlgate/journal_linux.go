@@ -35,6 +35,26 @@ type ReplayJournal struct {
 	failed bool
 }
 
+// syncCreatedJournalEntry establishes the filesystem ordering for a NEW
+// replay journal: first file inode/content, then the owning directory entry.
+// A failure must prevent Gate startup. It does not claim hardware power-loss
+// durability or atomic replay-acknowledgment semantics.
+func syncCreatedJournalEntry(f *os.File, dir string) error {
+	if err := f.Sync(); err != nil {
+		return err
+	}
+	fd, err := syscall.Open(dir, syscall.O_RDONLY|syscall.O_DIRECTORY|syscall.O_NOFOLLOW|syscall.O_CLOEXEC, 0)
+	if err != nil {
+		return err
+	}
+	syncErr := syscall.Fsync(fd)
+	closeErr := syscall.Close(fd)
+	if syncErr != nil {
+		return syncErr
+	}
+	return closeErr
+}
+
 func OpenReplayJournal(path string, now time.Time) (*ReplayJournal, map[string]time.Time, error) {
 	if os.Geteuid() == 0 {
 		return nil, nil, errors.New("replay journal must run nonroot")
@@ -48,9 +68,15 @@ func OpenReplayJournal(path string, now time.Time) (*ReplayJournal, map[string]t
 	if !ok || !info.IsDir() || info.Mode().Perm() != 0700 || owner.Uid != uint32(os.Geteuid()) {
 		return nil, nil, errors.New("replay journal parent must be private 0700 directory owned by Gate UID")
 	}
-	// O_NOFOLLOW defeats symlink tricks on the journal path; existing content
-	// must be trusted only as a candidate and revalidated on each restart.
-	fd, err := syscall.Open(path, syscall.O_RDWR|syscall.O_CREAT|syscall.O_APPEND|syscall.O_NOFOLLOW|syscall.O_CLOEXEC, 0600)
+	// Create exclusively so we know when the new directory entry must be
+	// synced. Existing files are reopened without O_CREAT; neither path
+	// follows symlinks. A race/removal fails closed, not silently recreated.
+	const flags = syscall.O_RDWR | syscall.O_APPEND | syscall.O_NOFOLLOW | syscall.O_CLOEXEC
+	fd, err := syscall.Open(path, flags|syscall.O_CREAT|syscall.O_EXCL, 0600)
+	created := err == nil
+	if errors.Is(err, syscall.EEXIST) {
+		fd, err = syscall.Open(path, flags, 0600)
+	}
 	if err != nil {
 		return nil, nil, err
 	}
@@ -74,6 +100,14 @@ func OpenReplayJournal(path string, now time.Time) (*ReplayJournal, map[string]t
 	}
 	if err := syscall.Flock(int(f.Fd()), syscall.LOCK_EX|syscall.LOCK_NB); err != nil {
 		return nil, nil, fmt.Errorf("journal already owned by another Gate: %w", err)
+	}
+	// fsync(file) alone does not guarantee the newly created filename survives
+	// a sudden crash: the parent directory entry must also be fsynced.
+	// Sync before accepting any intent; errors keep the Gate unavailable.
+	if created {
+		if err := syncCreatedJournalEntry(f, dir); err != nil {
+			return nil, nil, fmt.Errorf("new replay journal not durably named: %w", err)
+		}
 	}
 	if _, err := f.Seek(0, io.SeekStart); err != nil {
 		return nil, nil, err

@@ -8,6 +8,16 @@ Primary sources: [Gate process entrypoint](../../cmd/luna-gate/main.go), [Agent 
 Security authority: [Light Luna safety](../07-SECURITY-SAFETY.md), [ADR-028 self-defense](../adr/ADR-028-self-defense-host-compromise.md), [project truth](../project-book/PROJECT_TRUTH_STATUS.json)
 Git evidence: see current branch `feat/p0-standalone-foundation` HEAD and Worklog. This document is **not a release, kernel safety certification or packaging guide**.
 
+## First-create journal entry durability ordering (2026-10-14 — development source, nonroot verified)
+
+**Scope:** Core P0, parent feature branch commit `1611a6a6461c0f6ce61ec86eecbc516a5aaa02dd` at HOMESV prior to this increment. [Source](../../internal/controlgate/journal_linux.go) and [tests](../../internal/controlgate/journal_linux_test.go). This is a **development journal startup-safety improvement**, not production crash recovery, signed human-owner approval or privileged executor authorization.
+
+The Gate journal previously opened with `O_CREAT|O_APPEND|O_NOFOLLOW` and synced each later replay record, but did **not** explicitly sync the newly created **parent directory entry**. The code now first attempts `O_CREAT|O_EXCL|O_NOFOLLOW` to distinguish a new inode from an existing one; on `EEXIST` it opens the existing path **without `O_CREAT`** and preserves prior content. As before, it validates a private 0700 owner directory, a single-link 0600 regular file, and an exclusive nonblocking `flock`. **Only when newly created**, while locked and before accepting any signed intent, it runs `fsync(file)` then opens its parent with `O_DIRECTORY|O_NOFOLLOW` and runs `fsync(parent-directory)`. Sync/open/close error aborts startup; it does not fall back to in-memory replay protection. A second Gate still cannot take ownership of the journal.
+
+**Evidence:** three successive Go test runs across all packages, `go vet`, two nonroot, two-process HMAC and Ed25519 gate scripts (restart replay and corrupted journal deny), plus 91 offline VM Python regression tests all PASS. Added [journal unit cases](../../internal/controlgate/journal_linux_test.go) confirm new 0600 journal creation and safe reopen; reject existing directory, hardlinked replay file, attempted sync on closed fd, and symlinked parent path; confirm normal private-parent sync. No actual power interruption, disk-full crash, filesystem fault injection, or physical storage durability was measured.
+
+**Nonclaims:** fsync directory is a necessary ordering step on supported filesystems, not a guarantee against defective storage, kernel crash or power-cut. The test Agent Ed25519 key authenticates a **local test signer**, not the real owner; string role `OWNER` does not establish independent human approval. `APPLY_POLICY` remains **REJECTED** with `KernelWrites=false` and `ExecutorStatus=NOT_AVAILABLE`. This increment starts no services and modifies no live nft, firewall, host users, NetBird or Cloud. P0 OPEN, G-STANDALONE BLOCKED.
+
 ## Concrete tested execution (safe local scratch only)
 
 ```sh

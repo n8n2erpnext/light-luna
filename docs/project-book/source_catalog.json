@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 37273,
-      "sha256": "71746814091de6312d5cc18c9b06c70e578e4c2779bb2c4918af1d4228d8178f"
+      "bytes": 38028,
+      "sha256": "008ce73dca004f71c32ec91efbdd2e3abf91a1bb783a8be020a2d18365233b07"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -378,8 +378,8 @@
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
       "category": "architecture / design source",
       "title": "P0 Two-Process Agent/Gate and Restart-Persistent Replay Journal",
-      "bytes": 10083,
-      "sha256": "472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674"
+      "bytes": 12601,
+      "sha256": "0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d"
     },
     {
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
@@ -455,15 +455,15 @@
       "path": "internal/controlgate/journal_linux.go",
       "category": "implementation",
       "title": "journal_linux",
-      "bytes": 5939,
-      "sha256": "c55d5460e5240e11d38cd709ddb8dbce92a1b998654e88f4890f9ef4e35a4ff1"
+      "bytes": 7192,
+      "sha256": "851fb17275cedba3f11af446bc009944a1570e56b733f2c658cb26ac939d4e22"
     },
     {
       "path": "internal/controlgate/journal_linux_test.go",
       "category": "unit / negative tests",
       "title": "journal_linux_test",
-      "bytes": 3417,
-      "sha256": "32edbd280237be4eaf0abb43b47cff901d3775a57562fd32060eb124ea898ca6"
+      "bytes": 5993,
+      "sha256": "6241c56215afe8fb4c8de1b02858a3a8a6204ec7cc4f04b889e074faf447a847"
     },
     {
       "path": "internal/controlgate/selftest.go",

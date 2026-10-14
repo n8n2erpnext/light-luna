@@ -104,6 +104,99 @@ func TestJournalInsecurePermissionsAndSymlinkDenied(t *testing.T) {
 		t.Fatal("symlink accepted")
 	}
 }
+
+// A fresh replay journal must be an owned, single-link regular file and its
+// creation path must not be usable to accept an unsafe file object.
+func TestNewJournalCreationAndUnsafeExistingPaths(t *testing.T) {
+	if os.Geteuid() == 0 {
+		t.Skip("nonroot only")
+	}
+	dir := t.TempDir()
+	if err := os.Chmod(dir, 0700); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "replay.jsonl")
+	now := time.Date(2026, 10, 14, 12, 0, 0, 0, time.UTC)
+	j, seen, err := OpenReplayJournal(path, now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(seen) != 0 {
+		t.Fatal("fresh replay journal must have no live records")
+	}
+	info, err := os.Lstat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !info.Mode().IsRegular() || info.Mode().Perm() != 0600 {
+		t.Fatalf("unexpected journal inode or mode %v", info.Mode())
+	}
+	if err := j.Close(); err != nil {
+		t.Fatal(err)
+	}
+	// Reopening an existing, already created journal uses the strict old
+	// inode path without recreating/truncating existing evidence.
+	j2, seen, err := OpenReplayJournal(path, now)
+	if err != nil || len(seen) != 0 {
+		t.Fatalf("safe reopen denied %v", err)
+	}
+	j2.Close()
+	if err := os.Remove(path); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(path, 0700); err != nil {
+		t.Fatal(err)
+	}
+	if j3, _, err := OpenReplayJournal(path, now); err == nil {
+		j3.Close()
+		t.Fatal("existing directory accepted as journal")
+	}
+	if err := os.Remove(path); err != nil {
+		t.Fatal(err)
+	}
+	other := filepath.Join(dir, "other.jsonl")
+	if err := os.WriteFile(other, nil, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Link(other, path); err != nil {
+		t.Fatal(err)
+	}
+	if j4, _, err := OpenReplayJournal(path, now); err == nil {
+		j4.Close()
+		t.Fatal("hardlinked journal accepted")
+	}
+}
+
+func TestSyncCreatedJournalEntryFailsClosed(t *testing.T) {
+	dir := t.TempDir()
+	file, err := os.CreateTemp(dir, "source-*")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := file.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := syncCreatedJournalEntry(file, dir); err == nil {
+		t.Fatal("sync of closed file unexpectedly succeeded")
+	}
+	f, err := os.OpenFile(file.Name(), os.O_RDWR, 0600)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	alias := filepath.Join(t.TempDir(), "dir-alias")
+	if err := os.Symlink(dir, alias); err != nil {
+		t.Fatal(err)
+	}
+	if err := syncCreatedJournalEntry(f, alias); err == nil {
+		t.Fatal("symlink parent directory accepted for durability sync")
+	}
+	// Filesystem callsite accepts a genuine non-symlink private parent.
+	if err := syncCreatedJournalEntry(f, dir); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestJournalWriteFailClosed(t *testing.T) {
 	if os.Geteuid() == 0 {
 		t.Skip("nonroot only")
