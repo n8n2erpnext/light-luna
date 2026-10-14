@@ -22,6 +22,14 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## Networkless LXD Agent/Gate UID lab (2026-10-14; EXECUTED)
+
+**Latest evidence:** After the earlier denial was resolved with explicit Light Remote `lxd`/`package-manager`/`sudo-on-demand` capabilities, LXD 5.21.8 was installed. A fresh no-network unprivileged Ubuntu 24.04 container `light-luna-p0-lab` passed actual multi-UID positive/negative IPC. The expanded LXD config has no NIC; the only automatically created `lxdbr0` was removed. `LXD_DISTINCT_UID_POSITIVE_NEGATIVE_RESTART_PASS` and `LXD_CROSS_UID_TEST_RUN_COMPLETED` were observed. Initial test runner failures (Go absent from command PATH and snap confinement hiding host `/tmp`) were corrected with explicit toolchain PATH and a repo-local transient artifacts dir. Follow the latest [test evidence](architecture/p0-lxd-cross-uid-lab.md); earlier BLOCKED paragraph below is a historical pre-install snapshot.
+
+
+
+[Lab design/evidence](architecture/p0-lxd-cross-uid-lab.md) and [lab runner scripts](../scripts/lab/lxd/README.md) implement preparation-only orchestration to test **distinct Linux UIDs** and Unix group ACLs inside a disposable *NIC-less* LXD container. **Historical state, before approved installation:** the LXD snap was initially absent and installation denied. The later approved install, no-NIC container and live guest test results recorded above supersede this checkpoint. Only shell static checks are presently available; do **not** mark real multi-UID isolation or kernel nftables acceptance PASS. Container shares host kernel; LXD *VM*, not container, is needed later for netfilter/BPF tests.
+
 ## Ed25519 private/public request signing and optional group-owned IPC (2026-10-14)
 
 [Current source design/test](architecture/p0-ed25519-agent-gate-identity.md) adds Ed25519 signing with Agent-only private key; Gate only reads the public verifier and fsynced replay journal. Both old HMAC tests and new Ed25519 tests remain separately configured, with strict **no downgrade** rule. `ListenGroup` takes pre-provisioned Gate-owned 0710 IPC directory and 0660 socket, with pinned Agent/Gate UID/GID checks; it does **not** add users or alter service permissions on HOMESV. End-to-end tests ran as separate PIDs under the **same development UID**. No production distinct-UID service, owner authorization, Cloud link, privileged executor or live nftables.

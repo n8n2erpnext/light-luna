@@ -53,6 +53,14 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 LXD cross-UID isolated identity lab — deployed and tested (2026-10-14)
+
+**Latest verified result:** LXD 5.21.8 installed on HOMESV; Ubuntu 24.04 `light-luna-p0-lab` created as **unprivileged, no-NIC, no-nesting** container (2 vCPU, 1536MiB, 256 processes). Live different-UID Gate/Agent/outsider/rogue-with-test-key signed-request matrix **PASS** via `scripts/lab/lxd/run-tests.sh`: authorized synthetic preview advisory-only, APPLY denied, wrong Gate UID denied, ungrouped outsider denied, wrong UID with copied synthetic test private key denied, restart replay rejected, corrupted journal refused. Initial LXD setup bridge `lxdbr0` was removed and its default-profile NIC deleted. This unblocks *P0 local Linux peer-UID lab evidence only*: **does not establish G-STANDALONE, Linux kernel nftables behavior, power-loss journal integrity, Cloud or NetBird readiness**.
+
+
+
+[Current lab plan/evidence](architecture/p0-lxd-cross-uid-lab.md) and [five networkless LXD scripts](../scripts/lab/lxd/README.md) now define a dedicated LXD profile, no NIC, bounded CPU/RAM and a different-UID Agent/Gate/outsider/rogue-with-test-key matrix. **Historical pre-install checkpoint superseded:** the first attempt was denied; a subsequent approved Light Remote call installed LXD and executed the container tests. The verified deployment above is authoritative. `bash -n` validates source syntax only. Next real milestone is trusted local LXD installation/init with no bridge, then run tests and capture real results; a container is **not** kernel-isolated, so nftables/BPF/rollback requires a separate disposable VM.
+
 ## P0 Ed25519 request authentication and group Unix socket contract (2026-10-14)
 
 [Agent/Gate Ed25519 contract](architecture/p0-ed25519-agent-gate-identity.md) is now a runnable separate mode: `luna-gate serve-ed25519` holds a pinned Agent **public** key and replay journal; `luna-agent preview-ed25519` holds only Agent **private** signing key and validates a configured Gate UID. `ListenGroup` enforces restrictive 0710 directory/0660 socket GID and Gate UID, while `Serve` checks the allowed Agent UID. Ed25519/HMAC mixed-signature and downgrade attempts are rejected. **HOMESV proof uses same UID/GID; no real Linux account separation**, human owner login, permanent service, signed response, firewall executor, rollback or kernel changes. Next milestone is a VM multi-UID access matrix with a truly separate key broker and owner consent.

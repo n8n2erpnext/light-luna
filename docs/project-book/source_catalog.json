@@ -14,8 +14,8 @@
       "path": "README.md",
       "category": "repository contract",
       "title": "Light Luna",
-      "bytes": 20326,
-      "sha256": "e2d4574bc8544312cc639d2b0a70a3c9501de0b4838557bfe1216f1cd7dbdf1b"
+      "bytes": 21793,
+      "sha256": "4621b2c9b82e6682b0d06507f6530873baa7ec54cf2f3757a05ba16e28c37b4d"
     },
     {
       "path": "SECURITY.md",
@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 21599,
-      "sha256": "b943eef1934cb8404cade10142cdbdf66f07d78648e296190f7c51797371a877"
+      "bytes": 23211,
+      "sha256": "98f70e4cec15f87170c73e9914cdece0e3e064258772546d9ece20122761da11"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -168,8 +168,8 @@
       "path": "docs/15-P0-IMPLEMENTATION-NOTES.md",
       "category": "historical / handoff",
       "title": "15 — P0 Standalone Foundation (experimental, non-enforcing)",
-      "bytes": 6668,
-      "sha256": "e9f490018adda25a6b585ace1ecbc8ffc0b6ab6e9e29bf3d7cda9d53cd929393"
+      "bytes": 8247,
+      "sha256": "b2857f58ca6018b8c6441c894eea698326f5a945b0c9efd68200286f52ce6329"
     },
     {
       "path": "docs/16-P0-HOMESV-HANDOFF-2026-10-13.md",
@@ -331,6 +331,13 @@
       "title": "P0 Local Control Gate — Authenticated Intent, Replay and Safe Denial",
       "bytes": 6704,
       "sha256": "c4a52cafb1edb078df7abb7a3307ce2e2ad772dcb12c31452f865396721ab9e9"
+    },
+    {
+      "path": "docs/architecture/p0-lxd-cross-uid-lab.md",
+      "category": "architecture / design source",
+      "title": "P0 LXD Cross-UID Lab — Offline, No-NIC Identity Test Plan",
+      "bytes": 9657,
+      "sha256": "f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828"
     },
     {
       "path": "docs/architecture/p0-nft-unhooked-compiler.md",
@@ -667,6 +674,48 @@
       "title": "threat-signal-v1alpha1.schema",
       "bytes": 7786,
       "sha256": "461589756fc029290943aff68f75be0c90b537fb08ca4c6c27711ef645fb2e8c"
+    },
+    {
+      "path": "scripts/lab/lxd/README.md",
+      "category": "developer tooling",
+      "title": "Light Luna P0 — isolated LXD cross-UID lab",
+      "bytes": 7926,
+      "sha256": "ac4ee69743e33a76e5a3f6a0b6146e3c1798a93959ec93d2f2685ae9722ec800"
+    },
+    {
+      "path": "scripts/lab/lxd/check-host.sh",
+      "category": "developer tooling",
+      "title": "check-host",
+      "bytes": 947,
+      "sha256": "dd206af00f84593044a231b6447ad01fe7ecea7d048cd48542b53ae3cb13c992"
+    },
+    {
+      "path": "scripts/lab/lxd/create-lab.sh",
+      "category": "developer tooling",
+      "title": "create-lab",
+      "bytes": 2894,
+      "sha256": "6386ce2850d763e91b0e66ebb84985f1dbe218122ca4324508483f9739bfdb6c"
+    },
+    {
+      "path": "scripts/lab/lxd/delete-lab.sh",
+      "category": "developer tooling",
+      "title": "delete-lab",
+      "bytes": 1061,
+      "sha256": "5690849e9eae48bd04b6cc9e07a8817d56a3c01ccf865f4832ce88c8bdbcb584"
+    },
+    {
+      "path": "scripts/lab/lxd/guest-test.sh",
+      "category": "developer tooling",
+      "title": "guest-test",
+      "bytes": 6943,
+      "sha256": "bc3e91f788baa8faf0752da349177b5e41d15df6a7ec815666c0664b68cbee95"
+    },
+    {
+      "path": "scripts/lab/lxd/run-tests.sh",
+      "category": "developer tooling",
+      "title": "run-tests",
+      "bytes": 2270,
+      "sha256": "a3ec932220e5578c44773f2c28eeb6220030f6489b028dcdc3229a5699d41639"
     },
     {
       "path": "scripts/test_p0_ed25519_identities.sh",

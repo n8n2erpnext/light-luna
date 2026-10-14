@@ -5,6 +5,14 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
 
+## Latest verified P0 milestone — LXD different-UID IPC lab PASS (2026-10-14)
+
+On HOMESV, Light Remote installed LXD snap 5.21.8, initialized storage and created a networkless Ubuntu 24.04 **unprivileged** container `light-luna-p0-lab` (2 vCPU, 1536MiB memory, no NIC). Minimal LXD setup unexpectedly created `lxdbr0`, which was removed after deleting its default-profile NIC **before** creating the lab container. Current `lxc network list` shows physical interfaces only. The lab pool uses a `dir` backend, so no per-instance disk quota is guaranteed.
+
+Inside the container, **actual different Unix users** `lunagate` and `lunaagent` successfully completed Ed25519-signed advisory IPC. Other negative cases passed: denied signed APPLY, unexpected Gate UID, outsider without IPC group, **wrong UID even with copied synthetic test private key** (peer UID enforcement), replay after Gate restart and corrupt journal Gate-startup rejection. The exact test markers `LXD_DISTINCT_UID_POSITIVE_NEGATIVE_RESTART_PASS` and `LXD_CROSS_UID_TEST_RUN_COMPLETED` were observed. [Full environment and acceptance evidence](../architecture/p0-lxd-cross-uid-lab.md), [executable lab runbook](../../scripts/lab/lxd/README.md), [current Code Map](LIGHT_LUNA_CODE_MAP.md) and [Worklog](LIGHT_LUNA_WORKLOG.md).
+
+**Scope:** This demonstrates user/group access separation and Gate's Ed25519/UID policy in one LXD container. LXD containers share the host kernel; it is **not** a valid isolated-kernel nftables/XDP proof, production owner login, full host compromise protection, or G-STANDALONE. The previous project-book snapshots below are historical and may describe earlier unbuilt milestones.
+
 ## Reading contract
 
 Read [governance](LIBRARY_RULES.md), [library map](DOCUMENT_LIBRARY_MAP.md), [Code Map](LIGHT_LUNA_CODE_MAP.md), [truth status](PROJECT_TRUTH_STATUS.json), and exact source before changing implementation. Product documentation may describe intended capability, not shipped behavior.

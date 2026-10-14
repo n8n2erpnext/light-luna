@@ -10,6 +10,17 @@ Primary sources: [CLI](../../cmd/lunactl/main.go), [typed schema](../../internal
 
 For each surface ask: (1) reachable from what entry point? (2) owns, adapts, executes, or presents which truth? (3) branch/commit vs untracked state? (4) which real source/test to read next? File presence is not deployment proof. No background WebUI service, kernel supervisor, Luna process or executable policy apply exists in this baseline.
 
+## Networkless LXD distinct-UID test harness (2026-10-14 — EXECUTED CROSS-UID LAB)
+
+**Reachable actual host operations:** `sudo snap install lxd --channel=5.21/stable` completed under explicit approved device capabilities; `lxd init --minimal` created default dir pool and unexpected `lxdbr0`, which was deleted after removing its default-profile NIC. `LUNA_LXD_USE_SUDO=1 LUNA_LXD_POOL=default bash scripts/lab/lxd/create-lab.sh` created a **no-NIC unprivileged container**. `PATH=/home/ubuntu/.local/opt/go1.27.2/bin:$PATH LUNA_LXD_USE_SUDO=1 bash scripts/lab/lxd/run-tests.sh` ran actual cross-user guest tests; terminal output ends with `LXD_DISTINCT_UID_POSITIVE_NEGATIVE_RESTART_PASS`. This is a **development container sharing kernel**, not a VM packet filtering or production service admission result.
+
+
+
+- [`scripts/lab/lxd/check-host.sh`](../../scripts/lab/lxd/check-host.sh): **read-only** LXD prerequisites, daemon and storage/network inventory. The pre-install BLOCKED state is historical; LXD is now installed and the real guest run succeeded.
+- [`create-lab.sh`](../../scripts/lab/lxd/create-lab.sh): **future explicit owner invocation** after LXD installation; refuses existing profile/instance, creates dedicated profile + root disk only, 2 vCPU/1536MiB, initializes without NIC and checks expanded config before start; **completed on HOMESV after LXD installation**.
+- [`run-tests.sh`](../../scripts/lab/lxd/run-tests.sh) builds static `luna-gate`/`luna-agent` and pushes synthetic fixtures/binaries into a marker-checked LXD container; [`guest-test.sh`](../../scripts/lab/lxd/guest-test.sh) intends to create different **guest-only** UIDs/groups and test good Agent, outsider, wrong UID with copied *test key*, Gate UID pin, journal restart/corruption. **Real guest execution PASS** on separately mapped Linux UIDs; see verification markers in current section.
+- [`delete-lab.sh`](../../scripts/lab/lxd/delete-lab.sh) permits explicit removal only of a marked instance with exact owner acknowledgement, no storage pool or default profile deletion. [Truth and conditions](../architecture/p0-lxd-cross-uid-lab.md). The LXD container **shares host kernel**, so this harness is **not** an nftables/eBPF acceptance environment.
+
 ## Ed25519 Agent/Gate signer separation + group Unix socket (2026-10-14 — DEV SOURCE ONLY)
 
 - [`controlgate.SignEd25519`/`NewEd25519Boundary`](../../internal/controlgate/control.go) adds signature-based request auth with domain separation and no HMAC downgrade; [`NewEd25519BoundaryWithJournal`](../../internal/controlgate/journal_linux.go) reuses the restart replay journal. [Negative tests](../../internal/controlgate/ed25519_test.go) cover bad public key, mixed signature, tampering, replay, signed APPLY denial.
