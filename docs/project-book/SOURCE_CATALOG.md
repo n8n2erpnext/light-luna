@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 34711 | 8107354a11ed8845b2682fb7b2e2476239e621826d8998f30f67c01aa35b9f9a |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 35597 | fa9182c05c36d1ac7931e73dbdb012114ca349aa809c0c3a2b1a296809c45d28 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -46,7 +46,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/cloud-portability-and-scale.md](../../docs/architecture/cloud-portability-and-scale.md) | architecture / design source | 13871 | 7bda870322b8c38ace5d633f6126e2e1d7d3b92429e0dace83df1cf53a7019ce |
 | [docs/architecture/federated-immune-threat-intelligence.md](../../docs/architecture/federated-immune-threat-intelligence.md) | architecture / design source | 13527 | e836f45626e1dedd7a5f9cc4e48d9f40d1ecc9122fcd034f0876cf8018aa97a6 |
 | [docs/architecture/host-self-defense-and-compromise-containment.md](../../docs/architecture/host-self-defense-and-compromise-containment.md) | architecture / design source | 14047 | cb4a17e536dc74b4d0083a066dbe0ab9edd7dfdc048aacee9a4ec6c614709ead |
-| [docs/architecture/local-observability-and-notifications.md](../../docs/architecture/local-observability-and-notifications.md) | architecture / design source | 18278 | 3cc5072f39f86f4fb2895b56ea4117212f4953047aa9b85ea116e18c3afa0857 |
+| [docs/architecture/local-observability-and-notifications.md](../../docs/architecture/local-observability-and-notifications.md) | architecture / design source | 20618 | c49300d2eb074c6a29450636b1a7c3c39ceb44a97fea8f59a19e49eda48e3486 |
 | [docs/architecture/local-runtime-foundation.md](../../docs/architecture/local-runtime-foundation.md) | architecture / design source | 6372 | d942a064d1417d50bff19752b5b94444fdbbd05fa3c4e32efae71086d1276874 |
 | [docs/architecture/luna-brain-v2.md](../../docs/architecture/luna-brain-v2.md) | architecture / design source | 13959 | 312df9edc2cb60d72f227157c2792548501e6e381a48f98bfdb4ec237bc6f00a |
 | [docs/architecture/luna-cloud-intelligence.md](../../docs/architecture/luna-cloud-intelligence.md) | architecture / design source | 12541 | ba37f8fd66a18e8f80482dc7b1ee49b9ed1e48d551234ec06e1d6657bb542ff7 |
@@ -89,6 +89,8 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [internal/localipc/unix_linux_test.go](../../internal/localipc/unix_linux_test.go) | unit / negative tests | 7631 | 97490fbcee80571304be120d76893f67c7bb7bc820272ffdd2f9e0e8ec638678 |
 | [internal/nftpreview/compile.go](../../internal/nftpreview/compile.go) | implementation | 5668 | 793e040063d77d3dfbbae9c924e3d65df8a53b1015a55388c07573627a9b36c5 |
 | [internal/nftpreview/compile_test.go](../../internal/nftpreview/compile_test.go) | unit / negative tests | 4253 | 804729d2e9b5f84607f24bce06b0c6279e3e95848778ddb0c7463ac4cf367a8b |
+| [internal/observability/events.go](../../internal/observability/events.go) | implementation | 6939 | 8a40e618f70acaa765d1e83c3b67cb8657ba2bc54ae843bfcd5f0ac0bfb9b74e |
+| [internal/observability/events_test.go](../../internal/observability/events_test.go) | unit / negative tests | 9403 | 88d2678713a66f1012e6615af906bda1d477bc803abf009c46bf031cf73d6e71 |
 | [internal/observability/synthetic.go](../../internal/observability/synthetic.go) | implementation | 5294 | f9bb9877e31bfbe966a2e6ce816e2089977acaaa34ad892033ccac1704b7e0aa |
 | [internal/observability/synthetic_test.go](../../internal/observability/synthetic_test.go) | unit / negative tests | 5685 | e4db732e67fc9d5873928a705126d6a28da426c2512b03696f27d4548aad553e |
 | [internal/offline/replay.go](../../internal/offline/replay.go) | implementation | 2826 | 3c3e4ea7ad1bd408b55c08674fc16e52151afba70a5e8fabab2f2437eeabe8e4 |
@@ -110,6 +112,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [schemas/host-integrity-report-v1alpha1.schema.json](../../schemas/host-integrity-report-v1alpha1.schema.json) | API contract (partial semantic) | 8560 | e13ecbcbad7949d2499b358c6ff644e820864a4521ca1f6e2000bfa012fb86fd |
 | [schemas/knowledge-claim-v1alpha1.schema.json](../../schemas/knowledge-claim-v1alpha1.schema.json) | API contract (partial semantic) | 5036 | f0eb8f3c8a73835446fcf615d74f157299fe500915349b66f0186b0199dbf502 |
 | [schemas/local-observability-synthetic-v1alpha1.schema.json](../../schemas/local-observability-synthetic-v1alpha1.schema.json) | API contract (partial semantic) | 2030 | 53923bf5030cacea812c8c7eef3832506c5ecb14aad6c1c6205bb132299506e9 |
+| [schemas/local-security-events-synthetic-v1alpha1.schema.json](../../schemas/local-security-events-synthetic-v1alpha1.schema.json) | API contract (partial semantic) | 2428 | 59e8055932da536fb0e8bc76510856cf15922d9d33c84b229b9662a627756966 |
 | [schemas/policy-v1alpha1.schema.json](../../schemas/policy-v1alpha1.schema.json) | API contract (partial semantic) | 6108 | c91b64ef7fa7b6e10d040f984762a33d52279e2d5da37a09872686936ba82526 |
 | [schemas/threat-bulletin-v1alpha1.schema.json](../../schemas/threat-bulletin-v1alpha1.schema.json) | API contract (partial semantic) | 6726 | 6d3ea895fa66b92b889e3b0aecfc706168af6b0c76223a46f3725acaacda7b4d |
 | [schemas/threat-signal-v1alpha1.schema.json](../../schemas/threat-signal-v1alpha1.schema.json) | API contract (partial semantic) | 7786 | 461589756fc029290943aff68f75be0c90b537fb08ca4c6c27711ef645fb2e8c |
@@ -164,6 +167,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [testdata/host-baseline.json](../../testdata/host-baseline.json) | synthetic test fixture | 1296 | a32963af5ae78cb6aa4e896d0ce96fb622cc561189a5d24df349da652371aa2a |
 | [testdata/host-integrity-report.synthetic.json](../../testdata/host-integrity-report.synthetic.json) | synthetic test fixture | 1311 | d488426fb1432a0e271541b90bc4b2691df3051e179374ca794deb0c91b746bf |
 | [testdata/local-observability-synthetic.sample.json](../../testdata/local-observability-synthetic.sample.json) | synthetic test fixture | 680 | 7b2f61808858526595e0d6854818f0992f9a78a0ec20ac25fb057c108d1032c9 |
+| [testdata/local-security-events-synthetic.sample.json](../../testdata/local-security-events-synthetic.sample.json) | synthetic test fixture | 819 | b4b4278b358068f48f1598cffbcc79a67913dff6f73508329b70efa3940a6c85 |
 | [testdata/offline-brain-replay.synthetic.json](../../testdata/offline-brain-replay.synthetic.json) | synthetic test fixture | 1026 | efa3cc086f51e5432fab1f482be3f4bbfac3b48cd2196e6186e5a0ef9f33acb1 |
 | [testdata/offline-component-state.example.json](../../testdata/offline-component-state.example.json) | synthetic test fixture | 800 | 8db8b2e63f43d5bcc1fce35e6cd5a2fbb43ccdffa489f4959e52648d18887104 |
 | [testdata/threat-bulletin.synthetic.json](../../testdata/threat-bulletin.synthetic.json) | synthetic test fixture | 1072 | deb2353c3a3fc7100555b26aa47913f7847791b1c7e6266e9a0d19b8de61524a |

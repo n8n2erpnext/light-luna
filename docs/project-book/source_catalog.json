@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 34711,
-      "sha256": "8107354a11ed8845b2682fb7b2e2476239e621826d8998f30f67c01aa35b9f9a"
+      "bytes": 35597,
+      "sha256": "fa9182c05c36d1ac7931e73dbdb012114ca349aa809c0c3a2b1a296809c45d28"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -280,8 +280,8 @@
       "path": "docs/architecture/local-observability-and-notifications.md",
       "category": "architecture / design source",
       "title": "Light Luna Local Observability API, Ban State and Multi-Channel Notifications",
-      "bytes": 18278,
-      "sha256": "3cc5072f39f86f4fb2895b56ea4117212f4953047aa9b85ea116e18c3afa0857"
+      "bytes": 20618,
+      "sha256": "c49300d2eb074c6a29450636b1a7c3c39ceb44a97fea8f59a19e49eda48e3486"
     },
     {
       "path": "docs/architecture/local-runtime-foundation.md",
@@ -578,6 +578,20 @@
       "sha256": "804729d2e9b5f84607f24bce06b0c6279e3e95848778ddb0c7463ac4cf367a8b"
     },
     {
+      "path": "internal/observability/events.go",
+      "category": "implementation",
+      "title": "events",
+      "bytes": 6939,
+      "sha256": "8a40e618f70acaa765d1e83c3b67cb8657ba2bc54ae843bfcd5f0ac0bfb9b74e"
+    },
+    {
+      "path": "internal/observability/events_test.go",
+      "category": "unit / negative tests",
+      "title": "events_test",
+      "bytes": 9403,
+      "sha256": "88d2678713a66f1012e6615af906bda1d477bc803abf009c46bf031cf73d6e71"
+    },
+    {
       "path": "internal/observability/synthetic.go",
       "category": "implementation",
       "title": "synthetic",
@@ -723,6 +737,13 @@
       "title": "local-observability-synthetic-v1alpha1.schema",
       "bytes": 2030,
       "sha256": "53923bf5030cacea812c8c7eef3832506c5ecb14aad6c1c6205bb132299506e9"
+    },
+    {
+      "path": "schemas/local-security-events-synthetic-v1alpha1.schema.json",
+      "category": "API contract (partial semantic)",
+      "title": "local-security-events-synthetic-v1alpha1.schema",
+      "bytes": 2428,
+      "sha256": "59e8055932da536fb0e8bc76510856cf15922d9d33c84b229b9662a627756966"
     },
     {
       "path": "schemas/policy-v1alpha1.schema.json",
@@ -1101,6 +1122,13 @@
       "title": "local-observability-synthetic.sample",
       "bytes": 680,
       "sha256": "7b2f61808858526595e0d6854818f0992f9a78a0ec20ac25fb057c108d1032c9"
+    },
+    {
+      "path": "testdata/local-security-events-synthetic.sample.json",
+      "category": "synthetic test fixture",
+      "title": "local-security-events-synthetic.sample",
+      "bytes": 819,
+      "sha256": "b4b4278b358068f48f1598cffbcc79a67913dff6f73508329b70efa3940a6c85"
     },
     {
       "path": "testdata/offline-brain-replay.synthetic.json",

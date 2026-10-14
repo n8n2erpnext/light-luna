@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://light-luna.local/schemas/local-security-events-synthetic-v1alpha1.json",
+  "title": "Light Luna P0 synthetic security event batch; NO kernel or provider authority",
+  "description": "Inert offline test contract, not a live event ledger, signed owner receipt, notification or actual ban.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "origin",
+    "authority",
+    "events"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lightluna.synthetic-security-events/v1alpha1"
+    },
+    "origin": {
+      "const": "P0_SYNTHETIC_TEST_ONLY"
+    },
+    "authority": {
+      "const": "NO_KERNEL_OR_NOTIFICATION_AUTHORITY"
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "eventId",
+          "kind",
+          "severity",
+          "reason",
+          "occurredUtc",
+          "count",
+          "enforcementState",
+          "ownerApproved",
+          "notificationSent"
+        ],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "pattern": "^evt_[a-z0-9]{12,32}$"
+          },
+          "kind": {
+            "enum": [
+              "DETECTION",
+              "BAN_PROPOSED",
+              "BAN_REJECTED",
+              "GUARDIAN_UNKNOWN",
+              "SYSTEM_DEGRADED"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "INFO",
+              "WARN",
+              "HIGH",
+              "CRITICAL"
+            ]
+          },
+          "reason": {
+            "enum": [
+              "AUTH_FAILURE_BURST",
+              "EGRESS_FANOUT",
+              "COVERAGE_GAP",
+              "POLICY_DENIED",
+              "HEALTH_UNAVAILABLE"
+            ]
+          },
+          "occurredUtc": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000
+          },
+          "enforcementState": {
+            "const": "NOT_ENFORCED_SYNTHETIC"
+          },
+          "ownerApproved": {
+            "const": false
+          },
+          "notificationSent": {
+            "const": false
+          }
+        }
+      }
+    }
+  }
+}

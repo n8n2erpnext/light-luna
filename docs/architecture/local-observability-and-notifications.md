@@ -1,12 +1,12 @@
 # Light Luna Local Observability API, Ban State and Multi-Channel Notifications
 
-Status: **CANONICAL FUTURE ARCHITECTURE CONTRACT / NOT IMPLEMENTED**
+Status: **CANONICAL FUTURE ARCHITECTURE CONTRACT / P0 SYNTHETIC SOURCE PARTIALLY IMPLEMENTED; NO RUNTIME INTEGRATIONS**
 Date: 2026-10-14
 Scope: local Host/Edge telemetry, Prometheus scrape, Grafana dashboard, read-only ban/event API, asynchronous Telegram/Discord/Slack/email notification outbox
 Source baseline: `feat/p0-standalone-foundation@de2063fe04eb09476017f9c58e16a3472a69c0a9`; future engineer must read actual Git SHA/tests
 Supersedes: none
 Primary sources: [ADR-029](../adr/ADR-029-local-observability-and-notifications.md), [ADR-019 standalone gate](../12-ADRS.md), [Host safety](../07-SECURITY-SAFETY.md), [Local runtime](local-runtime-foundation.md), [ADR-027 signal distinction](../adr/ADR-027-collective-threat-immunity.md)
-Status boundary: ***all endpoints, adapters, databases, dashboards, credentials, services and metrics described below are proposed***. The current P0 repository only has non-enforcing local CLI/synthetic KVM test harnesses; there are NO real ban receipts from product executor and NO listener or outbound connector.
+Status boundary: ***all live endpoints, adapters, databases, dashboards, credentials and services described below remain proposed***. The P0 repository additionally has source-only synthetic snapshot/event codecs, an inert Prometheus text renderer and a simulated notification routing plan. There are NO real ban receipts from a product executor and NO listener, durable queue or outbound connector.
 
 ## P0 implemented pure synthetic metrics contract (2026-10-14; no HTTP, no bans)
 
@@ -15,6 +15,14 @@ Status boundary: ***all endpoints, adapters, databases, dashboards, credentials,
 Immutable schema identity `lightluna.synthetic-observability/v1alpha1`; `origin=P0_SYNTHETIC_TEST_ONLY` and `authority=NO_KERNEL_OR_NOTIFICATION_AUTHORITY` are required constants. Ban aggregates accept only `family=ipv4|ipv6` and `state=proposed|unknown|rejected`; **`applied_verified` is deliberately absent**. Notification queue samples allow only four fixed channel enums (`telegram`, `discord`, `slack`, `email`) and represent **hypothetical queue counts, not actual sends**. Fixed six ban combinations and four queue series are serialized in deterministic order; no dynamic labels or actual policy authority. Output metric names are prefixed `lightluna_p0_synthetic_*`, preventing accidental conflation with the proposed live `lightluna_bans_active`.
 
 Strict decoder reuses `internal/strictjson` for 16 KiB input cap, unknown key and nested duplicate-key rejection, invalid extra JSON, allowlisted enums, max 10 series, unique dimension combinations and per-count quota 1,000,000. Go tests verify deterministic output, negative raw IP/CIDR/URL/webhook/SMTP password/unbounded arbitrary label values, forged owner authority, `applied_verified` rejection, fixture decode and no real ban metrics. **This validates a P0 contract only**; it does not test actual Prometheus scrape, operational cardinality under concurrent host events, Grafana connectivity, authenticated detail API, notification outbox or external provider delivery.
+
+## P0 bounded synthetic security events and non-delivering routing (2026-10-14)
+
+**Verified at source level only.** [`internal/observability/events.go`](../../internal/observability/events.go) adds a strict, unprivileged [security-event batch schema](../../schemas/local-security-events-synthetic-v1alpha1.schema.json), [sample](../../testdata/local-security-events-synthetic.sample.json) and [Go tests](../../internal/observability/events_test.go), building on the existing [synthetic metrics codec](../../internal/observability/synthetic.go). `DecodeEventBatch` rejects unknown/duplicate JSON fields, data beyond 32 KiB, arbitrary event identity or severity/reason, timestamp without `UTC Z`, repeated event IDs, more than 64 events, count greater than 1,000,000, `BAN_APPLIED`, `APPLIED_VERIFIED`, `ownerApproved=true` and `notificationSent=true`. Only synthetic `DETECTION`, `BAN_PROPOSED`, `BAN_REJECTED`, `GUARDIAN_UNKNOWN` and `SYSTEM_DEGRADED` events are permitted, with opaque bounded event IDs and no subject IP, CIDR, URLs, email addresses, arbitrary metadata or packet payload.
+
+`PlanSyntheticNotifications` **computes data only**, accepting up to four distinct known enabled channel enums (`telegram`, `discord`, `slack`, `email`), sorting events/channels deterministically and capping plans at 128 entries. Each entry is `SIMULATED_NOT_SENT`; `DeliveryAllowed=false` is invariant. No routes produces an empty plan; unknown channels, invalid payload, excessive fan-out and duplicates are rejected. `SyntheticQueueSnapshot` converts only these inert simulated entries into fixed-channel counts for the existing `lightluna_p0_synthetic_*` Prometheus text. **This is neither an outbox nor transport, delivery proof or approval.**
+
+The source code does **not** open network listeners, send HTTP/SMTP, store a webhook/chat ID/password, create persistent queues, read kernel state, perform a ban or grant a Local Gate action. Real data models need separately verified signed executor receipts and manual owner-admission gates before any live ban-applied metrics or alert-sent semantics. Future WebUI/Prometheus/Grafana and Telegram/Discord/Slack/email work remain separate P1/P2 acceptance items.
 
 ## Goal and user-visible behavior
 

@@ -38,6 +38,9 @@ Scope: document ownership and historical path mapping
 | [P0 Synthetic Observability Go library](../../internal/observability/synthetic.go) | **SOURCE-ONLY:** pure synthetic metric text + strict aggregation; not a live exporter, applied ban or notification provider |
 | [Synthetic Observability JSON schema](../../schemas/local-observability-synthetic-v1alpha1.schema.json) | Fixed synthetic state/channel enums, no raw IP or credential fields |
 | [Synthetic Observability test fixture](../../testdata/local-observability-synthetic.sample.json) | Static P0 lab data; no device or customer observations |
+| [P0 Synthetic Security Events / simulated notifications](../../internal/observability/events.go) | **SOURCE-ONLY:** bounded validation and deterministic four-channel plans, all marked `SIMULATED_NOT_SENT`; no outbox or network sends |
+| [Synthetic Security Event JSON schema](../../schemas/local-security-events-synthetic-v1alpha1.schema.json) | Strict batch/event contract, no IP/credential/real ban authority fields |
+| [Synthetic Security Event test fixture](../../testdata/local-security-events-synthetic.sample.json) | Inert proposed/unknown events; no real device traffic |
 | [Local Runtime Foundation](../architecture/local-runtime-foundation.md) | IMPLEMENTED P0 separate CLI/Brain build targets and synthetic offline Brain→inert Gate replay; no real firewall/host sensor/service |
 | [Unhooked nftables Compiler](../architecture/p0-nft-unhooked-compiler.md) | IMPLEMENTED source-only nftables regular-chain text preview, no hook/kernel apply or nft -c syntax proof |
 | [Synthetic P0 Flow Simulator](../architecture/p0-flow-simulator.md) | IMPLEMENTED pure-Go synthetic declared-policy matcher and admin lockout *warning*; all kernel verdicts UNKNOWN |
