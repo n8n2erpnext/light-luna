@@ -7,6 +7,14 @@ Supersedes: none
 Parent source baseline: `feat/p0-standalone-foundation@98342212f328d803fd6a7c9eeddf3b9dfde6fb4a` on HOMESV; confirm final commit SHA in Git/checkpoint
 Primary sources: [Policy validation](../../internal/policy/validate.go), [conflict analyzer](../../internal/policy/conflicts.go), [unit tests](../../internal/policy/conflicts_test.go), [family negative tests](../../internal/policy/policy_test.go), [CLI](../../cmd/lunactl/main.go), [flow simulator](../../internal/flowsim/simulate.go), [nft preview](../../internal/nftpreview/compile.go)
 
+## Policy metadata revision int64 schema boundary — Core P0 (2026-10-15)
+
+**IMPLEMENTED DEVELOPMENT VALIDATION / NO PRIVILEGE OR KERNEL SIDE EFFECTS.** The authoritative [Go PolicyBundle model](../../internal/policy/model.go) stores `metadata.revision` in signed `int64`, and [`Bundle.Validate`](../../internal/policy/validate.go) requires revision at least 1. The public [JSON Schema](../../schemas/policy-v1alpha1.schema.json) previously had a lower bound but **no upper bound**, so Draft 2020-12 accepted `9223372036854775808` and even integers with dozens of digits that the Go CLI cannot decode.
+
+The schema now requires an integer between **1 and 9223372036854775807 inclusive**, preserving the Go type's representable positive range. A [Go decoding regression](../../internal/policy/policy_test.go) tests max `int64` success and rejects overflow, very large, zero and negative revision values. The existing [Python contract matrix](../../scripts/test_p0_policy_schema_contract.py) adds six matching revision cases to its 32 existing rescue/port/alias/note cases; the suite was observed **RED** on the old schema at `int64 overflow`, then **GREEN (38/38)** with `--verify-cli` building and running the real offline `lunactl firewall policies validate` on every identical synthetic JSON policy.
+
+**Limit:** JSON Schema's mathematical `integer` definition need not fully capture the textual JSON number syntax accepted by Go's `int64` decoder. This is bounded test agreement, not exhaustive schema/Go equivalence or policy safety. No owner approval, nft write, real rescue reachability, NetBird or Cloud work. P0 OPEN; G-STANDALONE BLOCKED.
+
 ## Cross-engine note-NUL rejection and real CLI parity matrix (2026-10-14)
 
 **IMPLEMENTED AS PUBLIC POLICY SCHEMA VALIDATION + OFFLINE CONTRACT TESTS; NO KERNEL WRITE.** The Go [`Bundle.Validate`](../../internal/policy/validate.go) rejects a U+0000 NUL byte in `rules[].note`, but the public [JSON Schema](../../schemas/policy-v1alpha1.schema.json) previously accepted this field. The Python Draft 2020-12 contract test reproduced **RED** (`note/NUL in note`: schema valid, expected invalid) before correction. The schema now prohibits a NUL anywhere within the optional note via `not: {pattern: "\\u0000"}`, while preserving ordinary, newline, empty and 512-byte ASCII notes.

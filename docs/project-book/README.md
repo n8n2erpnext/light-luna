@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 code and test evidence (2026-10-15)
+
+- [Metadata revision int64 schema parity](../architecture/p0-policy-rule-conflict-audit.md) — [JSON Schema](../../schemas/policy-v1alpha1.schema.json) now caps `metadata.revision` at the Go `int64` maximum. The offline [contract script](../../scripts/test_p0_policy_schema_contract.py) runs **38 bounded scenarios** against real unprivileged `lunactl` with `--verify-cli`; [Go boundary regressions](../../internal/policy/policy_test.go) cover successful maximum and invalid overflow/zero/negative values. No owner or firewall authorization.
+
 ## Latest Core P0 code and test evidence (2026-10-14)
 
 - [Schema→real Go CLI contract verification](../architecture/p0-policy-rule-conflict-audit.md) — rejects NUL in policy notes; [reusable 32-case suite](../../scripts/test_p0_policy_schema_contract.py) optionally offline-builds `lunactl` and checks every JSON fixture through the actual non-enforcing Go validation command. Bounded parity only; Go remains authoritative.

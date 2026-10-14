@@ -56,6 +56,14 @@ def verify_contract(verify_cli: bool) -> None:
         ("TCP omitted port", "tcp", None, True),
         ("ICMP omitted port", "icmp", None, True),
     )
+    revision_scenarios = (
+        ("minimum", 1, True),
+        ("int64 maximum", (1 << 63) - 1, True),
+        ("int64 overflow", 1 << 63, False),
+        ("huge integer", 10**80, False),
+        ("zero", 0, False),
+        ("negative", -1, False),
+    )
     note_scenarios = (
         ("ordinary note", "Safe note", True),
         ("empty note", "", True),
@@ -83,6 +91,11 @@ def verify_contract(verify_cli: bool) -> None:
         else:
             rule["destinationPort"] = port
         cases.append((f"port/{name}", bundle, expected))
+
+    for name, revision, expected in revision_scenarios:
+        bundle = copy.deepcopy(baseline)
+        bundle["metadata"]["revision"] = revision
+        cases.append((f"revision/{name}", bundle, expected))
 
     for index in (0, 1):
         invalid = copy.deepcopy(baseline)
@@ -136,7 +149,8 @@ def verify_contract(verify_cli: bool) -> None:
     print(
         "P0_POLICY_SCHEMA_CONTRACT_PASS "
         f"({len(scenarios)} rescue + {len(port_scenarios)} port + "
-        f"2 alias + {len(note_scenarios)} note = {len(cases)} cases; "
+        f"2 alias + {len(note_scenarios)} note + "
+        f"{len(revision_scenarios)} revision = {len(cases)} cases; "
         f"Go CLI parity={'PASS' if verify_cli else 'NOT_RUN'})"
     )
 

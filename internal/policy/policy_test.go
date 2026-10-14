@@ -239,6 +239,36 @@ func TestProtocolDestinationPortContract(t *testing.T) {
 	}
 }
 
+// JSON Schema should advertise the exact representable metadata revision
+// domain of the authoritative Go int64 decoder, not unbounded JSON integers.
+func TestMetadataRevisionInt64Bounds(t *testing.T) {
+	b, err := decode(t, fixture(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	b.Metadata.Revision = int64(^uint64(0) >> 1)
+	if err := b.Validate(); err != nil {
+		t.Fatalf("maximum int64 revision rejected: %v", err)
+	}
+	original := string(fixture(t))
+	for name, raw := range map[string]string{
+		"int64-overflow": "9223372036854775808",
+		"huge-integer":   "100000000000000000000000000000000000000000000000000000000000000000000000000000000",
+		"zero":           "0",
+		"negative":       "-1",
+	} {
+		t.Run(name, func(t *testing.T) {
+			input := strings.Replace(original, `"revision": 1`, `"revision": `+raw, 1)
+			if input == original {
+				t.Fatal("fixture revision did not match")
+			}
+			if _, err := decode(t, []byte(input)); err == nil {
+				t.Fatalf("accepted invalid metadata revision %q", raw)
+			}
+		})
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")

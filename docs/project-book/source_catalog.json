@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 45968,
-      "sha256": "4f56b3eacfb2d314aca4171834c98fb150fb04811548fd58eb313b469cc8de71"
+      "bytes": 46681,
+      "sha256": "dd679a1079106567d69feb4811cc5d2879147f70daa309961c0e45dffc895f11"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 15938,
-      "sha256": "ab8eebdde842d1768aeeaf4c98cf73ad5ad43f9f20edcd949cba5ccd5ab19f5f"
+      "bytes": 17586,
+      "sha256": "c012c9cad8b16dae75eaa98587b8541eb94e746f06e533826905fb7f99365555"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -721,8 +721,8 @@
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 9123,
-      "sha256": "e6211b921f2bb730999aee37f56586262bc035a8a8d664cb3b7fea62cf96ef6b"
+      "bytes": 10137,
+      "sha256": "cfab3ea48793674ce9227faafbd2f6779de8065d87f83df792fa1ec132f2cfd9"
     },
     {
       "path": "internal/policy/preview.go",
@@ -833,8 +833,8 @@
       "path": "schemas/policy-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "policy-v1alpha1.schema",
-      "bytes": 7479,
-      "sha256": "bd6b847408567f039a5ecea6d2fdda39c12b2b1a4f77e99e191f1c369bb298a9"
+      "bytes": 7521,
+      "sha256": "cbf6b5d0adbfbd5f85f263b3d8d83a1235a9e5c680d6636b07b4affe4d1242ca"
     },
     {
       "path": "schemas/threat-bulletin-v1alpha1.schema.json",
@@ -1162,8 +1162,8 @@
       "path": "scripts/test_p0_policy_schema_contract.py",
       "category": "developer tooling",
       "title": "test_p0_policy_schema_contract",
-      "bytes": 6297,
-      "sha256": "e4fdc6c084296359a662cab3fc5534cb02114ee699f164c737a73f80a18a29a1"
+      "bytes": 6812,
+      "sha256": "dd1a0df5707bf404d9288961fb5a5439871bbefd164e97568db9e69ae629a822"
     },
     {
       "path": "scripts/update_doc_catalog.py",

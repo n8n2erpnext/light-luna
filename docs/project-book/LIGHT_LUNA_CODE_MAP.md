@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 metadata.revision int64 range agreement — schema preflight (2026-10-15)
+
+- **Go authority:** [`policy.Metadata.Revision int64`](../../internal/policy/model.go) → [`policy.Decode`](../../internal/policy/model.go) / `strictjson.Decode` → [`Bundle.Validate`](../../internal/policy/validate.go), requiring `revision >= 1`.
+- **Public preflight:** [`schemas/policy-v1alpha1.schema.json`](../../schemas/policy-v1alpha1.schema.json) now caps `metadata.revision` at signed `int64` maximum (`9223372036854775807`); previously the schema accepted integers Go could not decode. [Go boundary tests](../../internal/policy/policy_test.go) and [Python 38-case real CLI parity script](../../scripts/test_p0_policy_schema_contract.py) verify this slice RED→GREEN at the JSON Schema boundary.
+- **Side effects:** only unprivileged Go/policy validation and offline synthetic test artifacts. JSON integer lexical representation vs Go decode behavior is not exhaustively equivalent. [Owning contract](../architecture/p0-policy-rule-conflict-audit.md); P0 OPEN/G-STANDALONE BLOCKED.
+
 ## P0 policy schema-to-real-CLI contract tests (2026-10-14)
 
 - **Entry points:** public [`schemas/policy-v1alpha1.schema.json`](../../schemas/policy-v1alpha1.schema.json) now excludes NUL from optional `rules[].note`, agreeing with [`policy.Bundle.Validate`](../../internal/policy/validate.go). Shared bounded [contract script](../../scripts/test_p0_policy_schema_contract.py) defaults to 32 schema scenarios and, with `--verify-cli`, offline-builds the unprivileged `cmd/lunactl` executable and executes `firewall policies validate` against every identical synthetic case.
