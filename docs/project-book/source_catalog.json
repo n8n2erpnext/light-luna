@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 38028,
-      "sha256": "008ce73dca004f71c32ec91efbdd2e3abf91a1bb783a8be020a2d18365233b07"
+      "bytes": 38796,
+      "sha256": "c76eb3dd0abd31fc332eac92e9fb1d7e4a51bda0995639e14da69862a33d12a9"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -368,6 +368,13 @@
       "sha256": "8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed"
     },
     {
+      "path": "docs/architecture/p0-offline-owner-review-separation.md",
+      "category": "architecture / design source",
+      "title": "P0 Offline Agent vs Reviewer Signature Separation — Denial-Only Contract",
+      "bytes": 5645,
+      "sha256": "d0e4cc38ca319d1881267864adb01f49f0f96f992baf834a1864b78bc3aee3db"
+    },
+    {
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
@@ -464,6 +471,20 @@
       "title": "journal_linux_test",
       "bytes": 5993,
       "sha256": "6241c56215afe8fb4c8de1b02858a3a8a6204ec7cc4f04b889e074faf447a847"
+    },
+    {
+      "path": "internal/controlgate/owner_review.go",
+      "category": "implementation",
+      "title": "owner_review",
+      "bytes": 8292,
+      "sha256": "78f3541bae5361b5a2ee6e7a58f3ec1f5c60bde6fdee6fd915d2b9aa36cc2c91"
+    },
+    {
+      "path": "internal/controlgate/owner_review_test.go",
+      "category": "unit / negative tests",
+      "title": "owner_review_test",
+      "bytes": 10126,
+      "sha256": "25c0bb4a1d049d116c7c73aafbfb0a23b3da01fb201700d21a31775f2b3b0c1b"
     },
     {
       "path": "internal/controlgate/selftest.go",
