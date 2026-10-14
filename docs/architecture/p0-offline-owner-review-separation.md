@@ -39,6 +39,10 @@ The existing `controlgate.Boundary.Evaluate` remains unchanged and continues to 
 
 These are **offline unit tests**, not a human owner authentication ceremony, product credential provisioning, durable review approval, real privileged executor, crash-safe Gate transaction or security audit. Until separately implemented and owner-reviewed, `APPLY_POLICY` remains entirely unavailable. P0 OPEN; G-STANDALONE BLOCKED; monitoring/notification and NetBird/Cloud remain deferred.
 
+## Proposed owner-key lifecycle and revocation (draft only, 2026-10-14)
+
+The [K01–K19 source-audited draft](p0-owner-key-lifecycle-revocation-contract.md) describes required independent enrollment, active/retired/revoked key states, monotonic generation and anti-rollback proof **as future work**. The module for such transitions was not implemented; a previous write attempt was blocked by safety checks and was not retried. [Additional Core test coverage](../../internal/controlgate/owner_review_authority_regression_test.go) asserts existing nil/mismatched public key and request-time denial semantics and maintains the unconditional absence of human owner consent and Gate APPLY permission. These source tests **do not** implement revocation, rotation, snapshot rollback or real trust enrollment.
+
 ## Next Core gate
 
 Specify real local owner identity and consent capture (independent of Agent), hardware/user key lifecycle and revocation, durable one-time review binding to a trusted policy hash, signed audit receipt, monotonic boot/session binding and explicit privilege separation. All must be audited and tested **before** adding a Gate-to-Executor operation that changes kernel policy. Do not retrofit the inert reviewer fixture as a production owner token.
