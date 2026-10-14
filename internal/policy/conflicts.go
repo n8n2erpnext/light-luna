@@ -33,6 +33,7 @@ type ConflictReport struct {
 	RulePairs       int               `json:"rulePairs"`
 	CIDRComparisons int               `json:"cidrComparisons"`
 	Findings        []ConflictFinding `json:"findings"`
+	Warnings        []string          `json:"warnings"`
 	Enforceable     bool              `json:"enforceable"`
 	KernelWrites    bool              `json:"kernelWrites"`
 }
@@ -126,6 +127,11 @@ func AnalyzeConflicts(b Bundle) (ConflictReport, error) {
 	report := ConflictReport{
 		Schema: "lightluna.rule-conflicts/v1alpha1", Status: "COMPLETE_NO_FINDINGS",
 		Complete: true, Findings: []ConflictFinding{},
+		Warnings: []string{
+			"Static rule conflicts do not establish effective kernel verdicts or third-party firewall coexistence.",
+			"emergencyAccess networks are declarations only; independent management and rescue reachability remain UNKNOWN.",
+			"This report does not authenticate an owner, grant executor authority, or authorize APPLY.",
+		},
 	}
 	rules := append([]Rule(nil), b.Spec.Rules...)
 	sort.Slice(rules, func(i, j int) bool { return rules[i].Priority < rules[j].Priority })

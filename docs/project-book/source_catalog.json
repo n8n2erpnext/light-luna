@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 44710,
-      "sha256": "01c2e7ef3336f49c8dd423dcf9f77dbb868e5edc7105d35b8fc967ab9cb44ce4"
+      "bytes": 45968,
+      "sha256": "4f56b3eacfb2d314aca4171834c98fb150fb04811548fd58eb313b469cc8de71"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 12373,
-      "sha256": "2057306712d4179a2704dbeef32a45f1a2c71cb8f48e3e08be0959b29f89474d"
+      "bytes": 15938,
+      "sha256": "ab8eebdde842d1768aeeaf4c98cf73ad5ad43f9f20edcd949cba5ccd5ab19f5f"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -693,15 +693,15 @@
       "path": "internal/policy/conflicts.go",
       "category": "implementation",
       "title": "conflicts",
-      "bytes": 5740,
-      "sha256": "ddeb64a0a2ad0f17227a335dbf21056b99e7dcc2c5cf037a7b8d39d44fcd050e"
+      "bytes": 6141,
+      "sha256": "aefdd5d8333a1f1a31aa8f4091b08525501a7913f20a14e6724d637377f2bf1d"
     },
     {
       "path": "internal/policy/conflicts_test.go",
       "category": "unit / negative tests",
       "title": "conflicts_test",
-      "bytes": 4667,
-      "sha256": "11bd520ee3f4f0aabb0b89a7f8130a886787cffb9030b797d936bb5998999182"
+      "bytes": 6517,
+      "sha256": "22d08e9cd7c5a98b2afc825e524e955adc67ce9afbfc40e02a12ca38397c6cc7"
     },
     {
       "path": "internal/policy/duplicate_keys_test.go",
@@ -833,8 +833,8 @@
       "path": "schemas/policy-v1alpha1.schema.json",
       "category": "API contract (partial semantic)",
       "title": "policy-v1alpha1.schema",
-      "bytes": 7396,
-      "sha256": "cb7a8e76b0382eb0cf8809a1f6719deba5a303fd0d59d60a451b8001c263de8d"
+      "bytes": 7479,
+      "sha256": "bd6b847408567f039a5ecea6d2fdda39c12b2b1a4f77e99e191f1c369bb298a9"
     },
     {
       "path": "schemas/threat-bulletin-v1alpha1.schema.json",
@@ -1162,8 +1162,8 @@
       "path": "scripts/test_p0_policy_schema_contract.py",
       "category": "developer tooling",
       "title": "test_p0_policy_schema_contract",
-      "bytes": 3731,
-      "sha256": "610eae06481b7cd1785b5008f074d35cf16995cbf6d316edc31f338200f69888"
+      "bytes": 6297,
+      "sha256": "e4fdc6c084296359a662cab3fc5534cb02114ee699f164c737a73f80a18a29a1"
     },
     {
       "path": "scripts/update_doc_catalog.py",

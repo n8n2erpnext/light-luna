@@ -21,6 +21,18 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 policy schema-to-real-CLI contract tests (2026-10-14)
+
+- **Entry points:** public [`schemas/policy-v1alpha1.schema.json`](../../schemas/policy-v1alpha1.schema.json) now excludes NUL from optional `rules[].note`, agreeing with [`policy.Bundle.Validate`](../../internal/policy/validate.go). Shared bounded [contract script](../../scripts/test_p0_policy_schema_contract.py) defaults to 32 schema scenarios and, with `--verify-cli`, offline-builds the unprivileged `cmd/lunactl` executable and executes `firewall policies validate` against every identical synthetic case.
+- **Evidence and effects:** observed Python schema RED on NUL before schema correction, GREEN after; 32/32 actual Go CLI return results also match expected/schema on HOMESV. No privileged subprocess or runtime installation; only Go compilation and short-lived synthetic files in a temporary test directory. Go `len(note)` counts bytes versus JSON Schema code points; full parity **not** claimed.
+- **Boundary:** Go validation remains authoritative; no authorized firewall writes. [Policy architecture](../architecture/p0-policy-rule-conflict-audit.md). P0 OPEN/G-STANDALONE BLOCKED.
+
+## P0 static conflict analyzer JSON non-authority warnings (2026-10-14)
+
+- **Entry points:** `lunactl firewall policies analyze <file>` → [`policy.AnalyzeConflicts`](../../internal/policy/conflicts.go) → `ConflictReport` → stdout JSON. Existing `Status`, bounded completeness and findings semantics unchanged; report now includes a nonempty `warnings` array even for `COMPLETE_NO_FINDINGS`, `FINDINGS_REQUIRE_REVIEW` and budget-exhausted incomplete outcomes.
+- **Evidence:** [three-case Go negative regression](../../internal/policy/conflicts_test.go) reproduced missing machine warnings RED→GREEN, and development CLI JSON displays unverified kernel, rescue reachability, owner/executor limits. No kernel writes and `Enforceable=false` remain the trust boundary.
+- **Limits:** additive report diagnostics only; consumers must **not** treat a zero-finding static audit as a safe-to-apply certificate. [Owning policy audit](../architecture/p0-policy-rule-conflict-audit.md). P0 OPEN / G-STANDALONE BLOCKED.
+
 ## P0 protocol-port wildcard schema parity — non-enforcing contract (2026-10-14)
 
 - **Go authority and entry points:** [`policy.Bundle.Validate`](../../internal/policy/validate.go) (CLI validation/preview/analyze, Flow Simulator and unhooked nft preview consumers) already accepts destinationPort `0` as TCP/UDP wildcard; rejects nonzero ICMP/ICMPv6 ports. Public [JSON Schema](../../schemas/policy-v1alpha1.schema.json) now reflects both rules: integer min 0, max 65535 and conditional `icmp|icmpv6` → optional port `const:0`.

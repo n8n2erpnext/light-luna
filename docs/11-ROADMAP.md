@@ -61,6 +61,14 @@ False-positive rate against independent labeled benign traffic, recall against v
 
 [Go events module](../internal/observability/events.go), [schema](../schemas/local-security-events-synthetic-v1alpha1.schema.json), [test fixture](../testdata/local-security-events-synthetic.sample.json) and [unit tests](../internal/observability/events_test.go) now validate **synthetic-only** event types and compute deterministic `SIMULATED_NOT_SENT` route plans for Telegram/Discord/Slack/email with a hard fan-out cap. Strict input and anti-forgery checks refuse real `BAN_APPLIED`, actual notification-send claims, raw IP/credential fields and automatic owner authority. **Source-only**: live audit storage, verified ban reconciliation, metrics HTTP endpoint, authenticated ban API, durable outbox, real provider transports, Grafana and signed owner auth remain open. P0 OPEN / G-STANDALONE BLOCKED.
 
+## Active Core P0 — cross-check public schema against real Go CLI (2026-10-14)
+
+[Policy validator contract](architecture/p0-policy-rule-conflict-audit.md) now rejects NUL notes in JSON Schema and has a reproducible **32-case** rescue, protocol/port, alias and note regression that can also compile and exercise the real `lunactl firewall policies validate` path (`--verify-cli`, offline build). All 32 Go/schema cases PASS; Unicode byte-length disparity remains explicitly documented, so this is not blanket semantic equivalence or privileged firewall acceptance. P0 OPEN, G-STANDALONE BLOCKED; NetBird/Cloud deferred and ADR-029 parked.
+
+## Active Core P0 — static analyzer machine-readable safety limits (2026-10-14)
+
+[Policy conflict report](architecture/p0-policy-rule-conflict-audit.md) now always carries warnings directly in `lightluna.rule-conflicts/v1alpha1` JSON, including `COMPLETE_NO_FINDINGS` and incomplete budget returns: kernel verdict, external coexistence, emergency rescue reachability and owner/executor approval remain UNVERIFIED. This is **report hardening**, not live firewall operation or P0 acceptance. Source Go regression RED→GREEN and CLI fixture output PASS. G-STANDALONE BLOCKED; NetBird/Cloud deferred, ADR-029 parked.
+
 ## Active Core P0 — protocol/port schema preflight consistency (2026-10-14)
 
 [Core policy contract](architecture/p0-policy-rule-conflict-audit.md) now fixes a second JSON Schema/Go mismatch: TCP/UDP destination port 0 is accepted as wildcard; ICMP/ICMPv6 reject nonzero ports through a schema conditional, like existing Go validation. [Go and Python tests](../scripts/test_p0_policy_schema_contract.py) are bounded preflight evidence, **not kernel packet-path acceptance**. Changes built on the uncommitted, tested rescue-declaration parity increment. No real firewall writes; P0 OPEN, G-STANDALONE BLOCKED; deferred NetBird/Cloud, parked ADR-029.

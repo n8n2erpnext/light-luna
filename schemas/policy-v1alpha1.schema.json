@@ -214,7 +214,10 @@
               },
               "note": {
                 "type": "string",
-                "maxLength": 512
+                "maxLength": 512,
+                "not": {
+                  "pattern": "\\u0000"
+                }
               }
             },
             "allOf": [

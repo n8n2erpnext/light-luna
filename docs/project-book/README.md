@@ -31,6 +31,10 @@ Read in this order, **before editing any documentation or code**:
 
 ## Latest Core P0 code and test evidence (2026-10-14)
 
+- [Schema→real Go CLI contract verification](../architecture/p0-policy-rule-conflict-audit.md) — rejects NUL in policy notes; [reusable 32-case suite](../../scripts/test_p0_policy_schema_contract.py) optionally offline-builds `lunactl` and checks every JSON fixture through the actual non-enforcing Go validation command. Bounded parity only; Go remains authoritative.
+
+- [Conflict analyzer machine-readable warnings](../architecture/p0-policy-rule-conflict-audit.md) — `COMPLETE_NO_FINDINGS`, reported overlaps and budget-incomplete results all carry unverified kernel, rescue and owner/Executor disclaimers in JSON; not an APPLY permit. [Go regression](../../internal/policy/conflicts_test.go) and development CLI validated.
+
 - [Protocol/port policy schema parity](../architecture/p0-policy-rule-conflict-audit.md) — TCP/UDP explicit wildcard `destinationPort=0` accepted, while ICMP/ICMPv6 nonzero port rejected; [contract regression](../../scripts/test_p0_policy_schema_contract.py) verifies this alongside rescue requirements and reserved source aliases. Go is authoritative and there is no active firewall executor.
 
 - [Deny-default rescue declaration schema parity](../architecture/p0-policy-rule-conflict-audit.md) — public JSON Schema now rejects `drop/reject` policies without enabled emergencyAccess and at least one CIDR, matching existing Go validation; [repeatable contract check](../../scripts/test_p0_policy_schema_contract.py) covers explicit positive/negative cases. Declaration-only, no verified rescue reachability or firewall APPLY.

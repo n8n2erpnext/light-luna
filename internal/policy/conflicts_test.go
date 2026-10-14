@@ -3,6 +3,7 @@ package policy
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -24,6 +25,65 @@ func twoCoreRules(t *testing.T) Bundle {
 	late.Action = "accept"
 	b.Spec.Rules = []Rule{late, early} // inverse file order to prove priority sorting
 	return b
+}
+
+// A complete clean *static* audit is not a rescue-route, kernel or
+// externally coexisting firewall safety certificate. Every report path,
+// including budgets that force INCOMPLETE, must carry explicit limitations.
+func TestConflictReportsAlwaysDiscloseUnverifiedSafety(t *testing.T) {
+	tests := []struct {
+		name         string
+		mutate       func(*Bundle)
+		wantComplete bool
+	}{
+		{"complete no findings", func(b *Bundle) {
+			b.Spec.Rules[0].DestinationPort = 443
+		}, true},
+		{"complete finding", func(b *Bundle) {}, true},
+		{"incomplete pair budget", func(b *Bundle) {
+			b.Spec.Rules = nil
+			for i := 0; i < 200; i++ {
+				b.Spec.Rules = append(b.Spec.Rules, Rule{
+					ID:              fmt.Sprintf("%08x-1111-4111-8111-111111111111", i+1),
+					Priority:        i + 1,
+					Direction:       "input",
+					Source:          "any",
+					Protocol:        "tcp",
+					DestinationPort: 443,
+					Action:          "log",
+				})
+			}
+		}, false},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			b := twoCoreRules(t)
+			tc.mutate(&b)
+			r, err := AnalyzeConflicts(b)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if r.Complete != tc.wantComplete || r.Enforceable || r.KernelWrites {
+				t.Fatalf("incorrect audit authority/completeness: %+v", r)
+			}
+			serialized, err := json.Marshal(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var decoded struct {
+				Warnings []string `json:"warnings"`
+			}
+			if err := json.Unmarshal(serialized, &decoded); err != nil {
+				t.Fatal(err)
+			}
+			joined := strings.ToLower(strings.Join(decoded.Warnings, " "))
+			for _, keyword := range []string{"kernel", "emergencyaccess", "reachability", "owner", "executor"} {
+				if !strings.Contains(joined, keyword) {
+					t.Fatalf("report lost non-authoritative %q warning: %s", keyword, string(serialized))
+				}
+			}
+		})
+	}
 }
 
 func TestDefiniteShadowAndDeterministicOrder(t *testing.T) {
