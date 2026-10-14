@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 48327,
-      "sha256": "b90b0a69406bb55df819539f53e4c945c416975193ccc11b9cf032f0fefba566"
+      "bytes": 49049,
+      "sha256": "4014986d981fb20030e7e15a4e290fdd552652ea3cf5b5ad5bb6fd0f7171f913"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -406,8 +406,8 @@
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
       "category": "architecture / design source",
       "title": "P0 VM typed staging and explicitly triggered independent rollback — verified",
-      "bytes": 10845,
-      "sha256": "1c6280dfb7e2d3ab95932373437598a56c501af582f67a9fa9b248c02f2a78b4"
+      "bytes": 13361,
+      "sha256": "f2c2898332aa1ca1bfcd8a702218a0897c9951a883c83c8150d248c48df14c8f"
     },
     {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
@@ -763,15 +763,15 @@
       "path": "internal/vmstage/plan.go",
       "category": "implementation",
       "title": "plan",
-      "bytes": 2419,
-      "sha256": "8ebfd304695037b39b620a282400e7c52c99a5063885ecb452cd756e8e8274b1"
+      "bytes": 2612,
+      "sha256": "686e2df160d5220bba6a7be155b783b55ca8922f9b7ff844b80802878719d01e"
     },
     {
       "path": "internal/vmstage/plan_test.go",
       "category": "unit / negative tests",
       "title": "plan_test",
-      "bytes": 1340,
-      "sha256": "d7f7fea6930238fcd4e7a269472437e695a51bb45356e3ff79afc8a0d0853a15"
+      "bytes": 2358,
+      "sha256": "b7a7cdc28bbdd40476fb0493189b5d7014cef7de7f1ae972079cbd940a2d9a1a"
     },
     {
       "path": "schemas/cloud-migration-inventory-v1alpha1.schema.json",
@@ -1029,8 +1029,8 @@
       "path": "scripts/lab/vm/guest-stage-journal.py",
       "category": "developer tooling",
       "title": "guest-stage-journal",
-      "bytes": 5556,
-      "sha256": "428ccaab01783c95203c22f93ed64231f167f6c5105f4c0483ee4d01e6741c4c"
+      "bytes": 5588,
+      "sha256": "690f4d0fd6971f9d622fb9d4876d73779daf25e28031ebf33f43635c3212e66a"
     },
     {
       "path": "scripts/lab/vm/guest-stage-test.sh",
@@ -1150,6 +1150,13 @@
       "title": "test_rollback_review",
       "bytes": 7044,
       "sha256": "904459b4ef0c356e385c9fb482a26d5ce8cfd82860de5d301beffce2c21f7587"
+    },
+    {
+      "path": "scripts/lab/vm/test_stage_manifest_ttl.py",
+      "category": "developer tooling",
+      "title": "test_stage_manifest_ttl",
+      "bytes": 3327,
+      "sha256": "9ded27a38335346ac7d32f1b7fd93072879c7dd84914abec2c4031433c879e48"
     },
     {
       "path": "scripts/test_p0_ed25519_identities.sh",

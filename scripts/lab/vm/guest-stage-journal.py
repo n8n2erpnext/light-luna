@@ -60,7 +60,7 @@ def manifest():
     if not isinstance(hash_text,str) or not re.fullmatch("[a-f0-9]{64}",hash_text):
         raise ValueError("missing valid source policy hash")
     expected = "vm-" + hashlib.sha256(
-        (SCHEMA + "\x00" + hash_text + "\x00" + TABLE).encode()
+        (SCHEMA + "\x00" + hash_text + "\x00" + TABLE + "\x00" + str(m["ttlSeconds"])).encode()
     ).hexdigest()[:24]
     if m["stageId"] != expected:
         raise ValueError("stage id mismatch")

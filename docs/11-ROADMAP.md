@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — synthetic VM stage identity binds declared TTL (2026-10-15)
+
+[VM-stage contract](architecture/p0-vm-synthetic-stage-revert.md) now derives synthetic stage IDs from **policy digest + isolated table + TTL**, rather than conflating different TTLs. The [Go test](../internal/vmstage/plan_test.go) was RED on the same-ID collision then GREEN; the [guest parser test](../scripts/lab/vm/test_stage_manifest_ttl.py) verifies stale ID/tampered TTL and old formula denial. **96 offline Python VM tests PASS**, and Go CLI 1s/10s output agrees with guest validator; **no new live KVM acceptance** or production kernel apply/rollback proof. P0 OPEN; G-STANDALONE BLOCKED; NetBird/Cloud deferred, ADR-029 parked.
+
 ## P0 evidence integrity: FD-held network namespace denial (2026-10-14 — isolated KVM PASS)
 
 [Source + proof](architecture/p0-vm-autonomous-ttl-watchdog.md): read-only guest inventory and rollback reviewer now deny a "clean" kernel state if any bounded visible process FD holds a foreign nsfs inode, even when the named namespace has been unlinked and a rollback DONE exists. Five added negative tests PASS; full Python VM suite 91 PASS; exact no-NIC KVM live FD experiment returns fail-closed during FD lifetime and clean only after FD close (active journal unchanged). This prevents a known false-negative ahead of future **ADR-029 Prometheus/Grafana ban-status reporting**; a bounded proc inventory still cannot certify absence against hostile root/kernel. P0 OPEN, G-STANDALONE BLOCKED.

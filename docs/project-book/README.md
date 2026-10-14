@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 VM-stage identity correctness (2026-10-15)
+
+- [TTL-bound synthetic stage ID contract](../architecture/p0-vm-synthetic-stage-revert.md) — [Go builder](../../internal/vmstage/plan.go) and [guest manifest verifier](../../scripts/lab/vm/guest-stage-journal.py) now both bind synthetic `stageId` to policy digest, isolated table and TTL. [RED→GREEN Go regression](../../internal/vmstage/plan_test.go) and [five new VM offline negative tests](../../scripts/lab/vm/test_stage_manifest_ttl.py) prevent a stale-ID TTL change; full offline VM suite now 96 cases. No production rollback or kernel claims.
+
 ## Latest Core P0 source verification — exact required keys (2026-10-15)
 
 - [Required PolicyBundle key case/presence audit](../architecture/p0-policy-rule-conflict-audit.md) — initial real Go CLI mismatch and ten-case prepatch RED established; [exact case-sensitive key checker](../../internal/policy/required_keys.go) passes post-edit Go regression GREEN ×3. The expanded [real CLI/schema suite](../../scripts/test_p0_policy_schema_contract.py) passes 59/59, retaining optional-omission positives. Full Go suite/vet, process scripts, offline VM tests and cross-builds PASS. Non-enforcing source only.

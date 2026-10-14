@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 VM-only stage identity and TTL binding (2026-10-15)
+
+- **Entry:** `lunactl vm stage-intent <policy> <ttl>` → [`vmstage.Build`](../../internal/vmstage/plan.go) → [unhooked `nftpreview.Compile`](../../internal/nftpreview/compile.go) → deterministic `stageId=vm-<24 hex>` over policy digest, synthetic table and **decimal TTL**, all NUL-separated. This is only non-enforcing JSON output, `KernelWrites=false`, `OwnerApproved=false`.
+- **Independent consumer:** guest-only [`guest-stage-journal.py`](../../scripts/lab/vm/guest-stage-journal.py) checks the same TTL-bound identity before accepting synthetic journal transitions. [Go source regression](../../internal/vmstage/plan_test.go) RED on pre-fix 1s/10s same ID → GREEN ×3; [five Python tests](../../scripts/lab/vm/test_stage_manifest_ttl.py) PASS, 96 VM offline tests PASS. Real unprivileged `lunactl` 1s/10s JSON manifests parsed by guest verifier PASS; TTL mutation with stale ID DENIED.
+- **Scope:** legacy unbound IDs now fail closed; no automatic journal cleanup or KVM rerun. No real owner, rescue, production executor, kernel nft, signed receipt or robust epoch uniqueness. [VM-stage architecture](../architecture/p0-vm-synthetic-stage-revert.md). P0 OPEN / G-STANDALONE BLOCKED.
+
 ## P0 required JSON key case/presence parity — verified source (2026-10-15)
 
 - **Entry:** [`policy.Decode`](../../internal/policy/model.go) → bounded `strictjson.DecodeRejectNull` while mirroring raw input into a buffer → [`requireExactPolicyKeys`](../../internal/policy/required_keys.go) → existing `Bundle.Validate`. New helper checks schema-declared exact JSON key names/required membership at root/metadata/spec/emergencyAccess/autonomous and in rule/alias elements, allowing optional `rules` and `aliases`. This is an unprivileged input boundary; existing `strictjson.Decode` API unchanged.

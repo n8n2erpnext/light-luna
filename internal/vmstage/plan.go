@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/n8n2erpnext/light-luna/internal/nftpreview"
 	"github.com/n8n2erpnext/light-luna/internal/policy"
@@ -44,8 +45,10 @@ func Build(p policy.Bundle, ttlSeconds int) (Intent, error) {
 	if preview.KernelWrites || preview.Status != "UNHOOKED_TEXT_PREVIEW_ONLY" || preview.SyntaxChecked || preview.KernelCompatibilityChecked {
 		return Intent{}, errors.New("unsafe preview status")
 	}
-	// The source preview digest is informational traceability, NOT owner auth.
-	digest := sha256.Sum256([]byte(Schema + "\x00" + preview.PolicyHashSHA256 + "\x00" + IsolatedTable))
+	// The stage identity must bind the intended TTL as well as policy/table.
+	// It is deterministic for idempotent synthetic lab replay; it is NOT an
+	// owner signature, durable lease, unique deployment ID or APPLY permit.
+	digest := sha256.Sum256([]byte(Schema + "\x00" + preview.PolicyHashSHA256 + "\x00" + IsolatedTable + "\x00" + strconv.Itoa(ttlSeconds)))
 	return Intent{
 		Schema: Schema, Mode: "SYNTHETIC_VM_ONLY_NO_EXECUTOR",
 		PolicyName: p.Metadata.Name, PolicyRevision: p.Metadata.Revision,
