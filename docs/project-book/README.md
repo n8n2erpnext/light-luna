@@ -31,6 +31,8 @@ Read in this order, **before editing any documentation or code**:
 
 ## Latest Core P0 code and test evidence (2026-10-15)
 
+- [PolicyBundle null-tolerant Go decoding corrected](../architecture/p0-policy-rule-conflict-audit.md) — [`policy.Decode`](../../internal/policy/model.go) uses opt-in [`strictjson.DecodeRejectNull`](../../internal/strictjson/decode.go) to reject explicit JSON nulls, preserving all other callers. [Real CLI parity suite](../../scripts/test_p0_policy_schema_contract.py) now checks **47 bounded cases**; [Go policy regression](../../internal/policy/policy_test.go) observed RED→GREEN. No privileged policy apply.
+
 - [Metadata revision int64 schema parity](../architecture/p0-policy-rule-conflict-audit.md) — [JSON Schema](../../schemas/policy-v1alpha1.schema.json) now caps `metadata.revision` at the Go `int64` maximum. The offline [contract script](../../scripts/test_p0_policy_schema_contract.py) runs **38 bounded scenarios** against real unprivileged `lunactl` with `--verify-cli`; [Go boundary regressions](../../internal/policy/policy_test.go) cover successful maximum and invalid overflow/zero/negative values. No owner or firewall authorization.
 
 ## Latest Core P0 code and test evidence (2026-10-14)

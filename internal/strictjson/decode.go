@@ -13,6 +13,17 @@ import (
 // Decode rejects duplicate keys at every nested object depth and unknown struct fields.
 // maxBytes is a hard input limit, including trailing data.
 func Decode(r io.Reader, maxBytes int64, dst any) error {
+	return decode(r, maxBytes, dst, false)
+}
+
+// DecodeRejectNull is an opt-in stricter trust boundary for typed policy JSON:
+// JSON null must not silently become a Go zero value. Existing Decode callers
+// retain their prior behavior; this API does not execute any operations.
+func DecodeRejectNull(r io.Reader, maxBytes int64, dst any) error {
+	return decode(r, maxBytes, dst, true)
+}
+
+func decode(r io.Reader, maxBytes int64, dst any, rejectNull bool) error {
 	if maxBytes < 1 || maxBytes > 16<<20 {
 		return errors.New("invalid JSON byte budget")
 	}
@@ -23,7 +34,7 @@ func Decode(r io.Reader, maxBytes int64, dst any) error {
 	if int64(len(b)) > maxBytes {
 		return errors.New("JSON input too large")
 	}
-	if err := uniqueObjectKeys(b); err != nil {
+	if err := uniqueObjectKeys(b, rejectNull); err != nil {
 		return err
 	}
 	d := json.NewDecoder(bytes.NewReader(b))
@@ -43,9 +54,9 @@ func Decode(r io.Reader, maxBytes int64, dst any) error {
 
 // uniqueObjectKeys traverses objects and arrays via the JSON token parser.
 // The bounded reader above limits memory; depth is capped to guard recursion.
-func uniqueObjectKeys(b []byte) error {
+func uniqueObjectKeys(b []byte, rejectNull bool) error {
 	d := json.NewDecoder(bytes.NewReader(b))
-	if err := walk(d, 0); err != nil {
+	if err := walk(d, 0, rejectNull); err != nil {
 		return err
 	}
 	var tok any
@@ -57,13 +68,16 @@ func uniqueObjectKeys(b []byte) error {
 	}
 	return nil
 }
-func walk(d *json.Decoder, depth int) error {
+func walk(d *json.Decoder, depth int, rejectNull bool) error {
 	if depth > 64 {
 		return errors.New("JSON nesting exceeds 64 levels")
 	}
 	tok, err := d.Token()
 	if err != nil {
 		return fmt.Errorf("JSON token: %w", err)
+	}
+	if rejectNull && tok == nil {
+		return errors.New("explicit JSON null is not allowed")
 	}
 	delimiter, ok := tok.(json.Delim)
 	if !ok {
@@ -85,7 +99,7 @@ func walk(d *json.Decoder, depth int) error {
 				return fmt.Errorf("duplicate JSON object key %q", k)
 			}
 			seen[k] = struct{}{}
-			if err := walk(d, depth+1); err != nil {
+			if err := walk(d, depth+1, rejectNull); err != nil {
 				return err
 			}
 		}
@@ -95,7 +109,7 @@ func walk(d *json.Decoder, depth int) error {
 		}
 	case '[':
 		for d.More() {
-			if err := walk(d, depth+1); err != nil {
+			if err := walk(d, depth+1, rejectNull); err != nil {
 				return err
 			}
 		}

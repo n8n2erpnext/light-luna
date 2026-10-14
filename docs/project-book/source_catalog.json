@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 46681,
-      "sha256": "dd679a1079106567d69feb4811cc5d2879147f70daa309961c0e45dffc895f11"
+      "bytes": 47461,
+      "sha256": "c058e966e54a1c45aea6835b8d0acb56968d2a19072663e1982dc964db050063"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -385,8 +385,8 @@
       "path": "docs/architecture/p0-policy-rule-conflict-audit.md",
       "category": "architecture / design source",
       "title": "Light Luna P0 Core — Policy Family Validation and Rule Conflict Audit",
-      "bytes": 17586,
-      "sha256": "c012c9cad8b16dae75eaa98587b8541eb94e746f06e533826905fb7f99365555"
+      "bytes": 20010,
+      "sha256": "fd928469e2f99c6eda1587c819272a116d9aa7a205bc6b27355abde21623f63c"
     },
     {
       "path": "docs/architecture/p0-two-process-gate-and-journal.md",
@@ -714,15 +714,15 @@
       "path": "internal/policy/model.go",
       "category": "implementation",
       "title": "model",
-      "bytes": 2058,
-      "sha256": "8b0dd591927c9b7da03b019f3a3d6fa1402dcd3bafd64bf57a9404efcaeb8164"
+      "bytes": 2068,
+      "sha256": "8b713c471f551981f7a5b4496d540f5d233bd279e79a1a71fde8a9bccb33eaa5"
     },
     {
       "path": "internal/policy/policy_test.go",
       "category": "unit / negative tests",
       "title": "policy_test",
-      "bytes": 10137,
-      "sha256": "cfab3ea48793674ce9227faafbd2f6779de8065d87f83df792fa1ec132f2cfd9"
+      "bytes": 11986,
+      "sha256": "0c44a3487f01eb5e23c794ebe6863e030ae97aad1532ab81ee09f6e92adeba68"
     },
     {
       "path": "internal/policy/preview.go",
@@ -742,15 +742,15 @@
       "path": "internal/strictjson/decode.go",
       "category": "implementation",
       "title": "decode",
-      "bytes": 2771,
-      "sha256": "d00ded866ef3de7155bad2f089e8ee9562977eabad329c5a38eca046455c1a26"
+      "bytes": 3405,
+      "sha256": "c3a8c00be9dba8e4370f45228d3d95970c6aa8c537a9a435286615b479c711be"
     },
     {
       "path": "internal/strictjson/decode_test.go",
       "category": "unit / negative tests",
       "title": "decode_test",
-      "bytes": 801,
-      "sha256": "d90a7ab46bca5c7b9ad105716e54509e72937534b21645d5f4cff2620ff9782d"
+      "bytes": 1872,
+      "sha256": "b2cdfcf48ab8cd6c7cc15441d1d781054db64af7cea0218ac321f43de4536c4c"
     },
     {
       "path": "internal/vmstage/plan.go",
@@ -1162,8 +1162,8 @@
       "path": "scripts/test_p0_policy_schema_contract.py",
       "category": "developer tooling",
       "title": "test_p0_policy_schema_contract",
-      "bytes": 6812,
-      "sha256": "dd1a0df5707bf404d9288961fb5a5439871bbefd164e97568db9e69ae629a822"
+      "bytes": 8251,
+      "sha256": "2aa4c6e750267c9c529eab68b520eaae2c1133cbd5bc94cd85283718e231861b"
     },
     {
       "path": "scripts/update_doc_catalog.py",

@@ -64,6 +64,19 @@ def verify_contract(verify_cli: bool) -> None:
         ("zero", 0, False),
         ("negative", -1, False),
     )
+    # All explicit nulls are invalid typed policy syntax. This differs from
+    # omitting optional properties, which remains allowed by the schema.
+    null_scenarios = (
+        ("rules", ("spec", "rules"), False, False),
+        ("aliases with no rule reference", ("spec", "aliases"), False, True),
+        ("rescue networks with accept", ("spec", "emergencyAccess", "networks"), True, False),
+        ("rescue enabled with accept", ("spec", "emergencyAccess", "enabled"), True, False),
+        ("optional rule note", ("spec", "rules", 0, "note"), False, False),
+        ("optional destination port", ("spec", "rules", 0, "destinationPort"), False, False),
+        ("autonomous ban TTL", ("spec", "autonomous", "maxBanTtlSeconds"), False, False),
+        ("alias member", ("spec", "aliases", 0, "values", 0), False, False),
+        ("metadata revision", ("metadata", "revision"), False, False),
+    )
     note_scenarios = (
         ("ordinary note", "Safe note", True),
         ("empty note", "", True),
@@ -106,6 +119,18 @@ def verify_contract(verify_cli: bool) -> None:
         bundle = copy.deepcopy(baseline)
         bundle["spec"]["rules"][0]["note"] = note
         cases.append((f"note/{name}", bundle, expected))
+
+    for name, key_path, accept_default, remove_alias_reference in null_scenarios:
+        bundle = copy.deepcopy(baseline)
+        if accept_default:
+            bundle["spec"]["defaultInbound"] = "accept"
+        if remove_alias_reference:
+            bundle["spec"]["rules"][1]["source"] = "any"
+        value = bundle
+        for key in key_path[:-1]:
+            value = value[key]
+        value[key_path[-1]] = None
+        cases.append((f"explicit null/{name}", bundle, False))
 
     # Build once into a temporary directory; all policy files are synthetic and
     # discarded. Running `validate` is non-enforcing and never touches nft.
@@ -150,7 +175,8 @@ def verify_contract(verify_cli: bool) -> None:
         "P0_POLICY_SCHEMA_CONTRACT_PASS "
         f"({len(scenarios)} rescue + {len(port_scenarios)} port + "
         f"2 alias + {len(note_scenarios)} note + "
-        f"{len(revision_scenarios)} revision = {len(cases)} cases; "
+        f"{len(revision_scenarios)} revision + "
+        f"{len(null_scenarios)} explicit-null = {len(cases)} cases; "
         f"Go CLI parity={'PASS' if verify_cli else 'NOT_RUN'})"
     )
 

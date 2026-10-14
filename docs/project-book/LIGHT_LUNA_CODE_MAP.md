@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 explicit null decode policy boundary (2026-10-15)
+
+- **Active path:** `lunactl firewall policies validate|preview|analyze|nft-preview` → [`policy.Decode`](../../internal/policy/model.go) → new opt-in [`strictjson.DecodeRejectNull`](../../internal/strictjson/decode.go) → [`Bundle.Validate`](../../internal/policy/validate.go). The scanner traverses nested arrays/objects and refuses an explicit JSON `null`, retaining existing duplicate-key, JSON size, depth, unknown-field and trailing-data checks; unprivileged parsing only.
+- **Unaffected callers:** [`strictjson.Decode`](../../internal/strictjson/decode.go) remains legacy-compatible for other consumers. **Evidence:** [Go null regression](../../internal/policy/policy_test.go) RED in seven cases, GREEN after fix; [parser regression](../../internal/strictjson/decode_test.go) checks opt-in behavior and non-null falsy literals; [real Go CLI vs schema test](../../scripts/test_p0_policy_schema_contract.py) PASS **47 cases**, including nine explicit-null negatives.
+- **Safety:** omitted optional properties still differ from explicit null; parser changes cannot authorize a real APPLY, rescue route, privileged process or owner. [Owning audit](../architecture/p0-policy-rule-conflict-audit.md). P0 OPEN/G-STANDALONE BLOCKED.
+
 ## P0 metadata.revision int64 range agreement — schema preflight (2026-10-15)
 
 - **Go authority:** [`policy.Metadata.Revision int64`](../../internal/policy/model.go) → [`policy.Decode`](../../internal/policy/model.go) / `strictjson.Decode` → [`Bundle.Validate`](../../internal/policy/validate.go), requiring `revision >= 1`.

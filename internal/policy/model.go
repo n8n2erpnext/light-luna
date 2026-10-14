@@ -58,7 +58,7 @@ type Autonomous struct {
 // and policy semantics. No kernel/netfilter operation is performed.
 func Decode(r io.Reader) (Bundle, error) {
 	var b Bundle
-	if err := strictjson.Decode(r, MaxPolicyBytes, &b); err != nil {
+	if err := strictjson.DecodeRejectNull(r, MaxPolicyBytes, &b); err != nil {
 		return b, err
 	}
 	if err := b.Validate(); err != nil {

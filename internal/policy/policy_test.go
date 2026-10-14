@@ -269,6 +269,58 @@ func TestMetadataRevisionInt64Bounds(t *testing.T) {
 	}
 }
 
+// Explicit JSON null is never a valid typed PolicyBundle field. For optional
+// properties, omission/zero can remain valid, but null must not silently map
+// to Go zero values and change declared policy intent.
+func TestDecodeRejectExplicitNullFields(t *testing.T) {
+	cases := []struct {
+		name   string
+		change func(map[string]any)
+	}{
+		{"null rules", func(spec map[string]any) { spec["rules"] = nil }},
+		{"null aliases with no reference", func(spec map[string]any) {
+			spec["aliases"] = nil
+			spec["rules"].([]any)[1].(map[string]any)["source"] = "any"
+		}},
+		{"null optional note", func(spec map[string]any) {
+			spec["rules"].([]any)[0].(map[string]any)["note"] = nil
+		}},
+		{"null optional destination port", func(spec map[string]any) {
+			spec["rules"].([]any)[0].(map[string]any)["destinationPort"] = nil
+		}},
+		{"null autonomous TTL", func(spec map[string]any) {
+			spec["autonomous"].(map[string]any)["maxBanTtlSeconds"] = nil
+		}},
+		{"null rescue networks with accept", func(spec map[string]any) {
+			spec["defaultInbound"] = "accept"
+			spec["emergencyAccess"].(map[string]any)["networks"] = nil
+		}},
+		{"null rescue enabled with accept", func(spec map[string]any) {
+			spec["defaultInbound"] = "accept"
+			spec["emergencyAccess"].(map[string]any)["enabled"] = nil
+		}},
+		{"null alias member", func(spec map[string]any) {
+			spec["aliases"].([]any)[0].(map[string]any)["values"].([]any)[0] = nil
+		}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			var payload map[string]any
+			if err := json.Unmarshal(fixture(t), &payload); err != nil {
+				t.Fatal(err)
+			}
+			tc.change(payload["spec"].(map[string]any))
+			raw, err := json.Marshal(payload)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := decode(t, raw); err == nil {
+				t.Fatalf("accepted explicitly null %s", tc.name)
+			}
+		})
+	}
+}
+
 func TestRejectLargeInput(t *testing.T) {
 	if _, err := decode(t, bytes.Repeat([]byte("a"), MaxPolicyBytes+1)); err == nil {
 		t.Fatal("oversized input accepted")
