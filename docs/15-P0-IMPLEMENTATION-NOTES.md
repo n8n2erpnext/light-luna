@@ -22,6 +22,10 @@ go run ./cmd/lunactl firewall policies validate testdata/host-baseline.json
 go run ./cmd/lunactl firewall policies preview testdata/host-baseline.json
 ```
 
+## P0 independent VM nft kernel parser/packet/watchdog evidence (2026-10-14 — PASS)
+
+[Kernel-isolated LXD VM](architecture/p0-lxd-kernel-nft-rollback.md) running Ubuntu 24.04 kernel 6.8.0-142 vs HOMESV 6.8.0-146 now supports repeatable no-NIC netns nft checks. [Runner](../scripts/lab/vm/run-tests.sh) asserts separate KVM kernel, no NIC and exact profile before transferring the synthetic baseline's **unhooked Go compiler script**, and uses `nft -c` only. [Guest test](../scripts/lab/vm/guest-nft-test.sh) verifies baseline ICMP success, negative syntax, independent **synthetic-only** nft hook packet drop/counter, controller-placeholder termination and separate process timer rollback restoring traffic. **PASS on two consecutive runs**. Never interpret this as Light Luna enforcing a live rule, a shipping privileged executor or power-loss-safe rollback. No changes to host firewall or Cloud/NetBird.
+
 ## Networkless LXD Agent/Gate UID lab (2026-10-14; EXECUTED)
 
 **Latest evidence:** After the earlier denial was resolved with explicit Light Remote `lxd`/`package-manager`/`sudo-on-demand` capabilities, LXD 5.21.8 was installed. A fresh no-network unprivileged Ubuntu 24.04 container `light-luna-p0-lab` passed actual multi-UID positive/negative IPC. The expanded LXD config has no NIC; the only automatically created `lxdbr0` was removed. `LXD_DISTINCT_UID_POSITIVE_NEGATIVE_RESTART_PASS` and `LXD_CROSS_UID_TEST_RUN_COMPLETED` were observed. Initial test runner failures (Go absent from command PATH and snap confinement hiding host `/tmp`) were corrected with explicit toolchain PATH and a repo-local transient artifacts dir. Follow the latest [test evidence](architecture/p0-lxd-cross-uid-lab.md); earlier BLOCKED paragraph below is a historical pre-install snapshot.

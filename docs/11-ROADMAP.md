@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## P0 KVM separate-kernel nft preview syntax + synthetic packet rollback (2026-10-14)
+
+[Live VM acceptance evidence](architecture/p0-lxd-kernel-nft-rollback.md) is **PASS twice**. LXD VM `light-luna-p0-nftvm`, guest kernel different from HOMESV, **no NIC**, uses only ephemeral network namespaces. Go-generated **unhooked** policy preview passed `nft -c` kernel syntax check, malformed syntax rejected; synthetic hook blocked ICMP with counter then independent test watchdog restored ping after a stand-in controller was killed. These prove parser compatibility for the synthetic baseline and VM netfilter/rollback feasibility **only**. Real Light Luna hooked-rule compiler, executor, rescue canary, reboot/power-loss rollback, Docker/UFW/VPN coexistence and G-STANDALONE remain **OPEN/BLOCKED**. No production firewall changes.
+
 ## P0 LXD cross-UID isolated identity lab — deployed and tested (2026-10-14)
 
 **Latest verified result:** LXD 5.21.8 installed on HOMESV; Ubuntu 24.04 `light-luna-p0-lab` created as **unprivileged, no-NIC, no-nesting** container (2 vCPU, 1536MiB, 256 processes). Live different-UID Gate/Agent/outsider/rogue-with-test-key signed-request matrix **PASS** via `scripts/lab/lxd/run-tests.sh`: authorized synthetic preview advisory-only, APPLY denied, wrong Gate UID denied, ungrouped outsider denied, wrong UID with copied synthetic test private key denied, restart replay rejected, corrupted journal refused. Initial LXD setup bridge `lxdbr0` was removed and its default-profile NIC deleted. This unblocks *P0 local Linux peer-UID lab evidence only*: **does not establish G-STANDALONE, Linux kernel nftables behavior, power-loss journal integrity, Cloud or NetBird readiness**.

@@ -5,6 +5,10 @@ Date: 2026-10-13
 Scope: product direction, architecture boundaries, documented P0 reality, development order, evidence and open gates
 Source baseline: public `n8n2erpnext/light-luna` `main@66920c251603b0b0c4bcd0d0cfc94ca8f7220d41`; development `feat/p0-standalone-foundation@9ae27b267e72e465ea7808c3936fabcf6b0cac05`
 
+## Latest verified P0 milestone — separate kernel nft syntax and synthetic rollback PASS (2026-10-14)
+
+The new [LXD KVM VM test](../architecture/p0-lxd-kernel-nft-rollback.md) uses a **different Linux kernel from HOMESV** (guest 6.8.0-142, host 6.8.0-146), 2 vCPU / 2048MiB, no NIC and ephemeral netns. **Twice successfully:** generated `nftpreview` unhooked text passed kernel `nft -c`; deliberately bad syntax failed; guest-only synthetic hooked nft rule blocked ICMP with counter evidence, then an independent watchdog deleted the synthetic table and packets resumed. **Light Luna-generated rules were not applied.** Still no real firewall executor, owner-rescue watchdog, crash/power-loss transactional rollback, real device enrollment or Cloud/NetBird integration. This passes the *VM nft syntax and synthetic packet rollback lab*, **not** P0 or G-STANDALONE.
+
 ## Latest verified P0 milestone — LXD different-UID IPC lab PASS (2026-10-14)
 
 On HOMESV, Light Remote installed LXD snap 5.21.8, initialized storage and created a networkless Ubuntu 24.04 **unprivileged** container `light-luna-p0-lab` (2 vCPU, 1536MiB memory, no NIC). Minimal LXD setup unexpectedly created `lxdbr0`, which was removed after deleting its default-profile NIC **before** creating the lab container. Current `lxc network list` shows physical interfaces only. The lab pool uses a `dir` backend, so no per-instance disk quota is guaranteed.

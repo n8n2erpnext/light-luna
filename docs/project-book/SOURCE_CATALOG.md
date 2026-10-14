@@ -8,7 +8,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | Path | Class | Bytes | SHA-256 |
 |---|---|---:|---|
 | [CONTRIBUTING.md](../../CONTRIBUTING.md) | repository contract | 1098 | a669ea8fade762fcd4333a7e8aa79a87aa2d75098d053432fd7b4a5e25758199 |
-| [README.md](../../README.md) | repository contract | 21793 | 4621b2c9b82e6682b0d06507f6530873baa7ec54cf2f3757a05ba16e28c37b4d |
+| [README.md](../../README.md) | repository contract | 22619 | f020ef2c2bb34c19ae3940af477a16654bfb43b4cb4ed654ddfe78c3adda321a |
 | [SECURITY.md](../../SECURITY.md) | repository contract | 612 | 9e6c5e98838dad786e1bdf1cb08f59243e011a1514e964840eef86d835c70ced |
 | [cmd/luna-agent/ed_linux.go](../../cmd/luna-agent/ed_linux.go) | executable entry | 2116 | 6420a0eb3316408b33bb68fce8bad78afdad50dba11ef25fbb8fa61b3a8b95c3 |
 | [cmd/luna-agent/main.go](../../cmd/luna-agent/main.go) | executable entry | 2839 | cfd8e12440334d74d5330a15c6378499437765f9ec8cd69b4bf02adad4c3a1ff |
@@ -26,11 +26,11 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 23211 | 98f70e4cec15f87170c73e9914cdece0e3e064258772546d9ece20122761da11 |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 24041 | 73fe183fa70bf00b7b3cf320312d3459a3e8067b124734fb152e211a579a51a6 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6148 | d3914223b111c9e4bda808f152f85393b3653b3d19b8c069356f3d96548a2443 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
-| [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 8247 | b2857f58ca6018b8c6441c894eea698326f5a945b0c9efd68200286f52ce6329 |
+| [docs/15-P0-IMPLEMENTATION-NOTES.md](../../docs/15-P0-IMPLEMENTATION-NOTES.md) | historical / handoff | 9156 | e30813690feb02cb737854cbd440e51a9d494d948b1431d534a015c2d7ec2a42 |
 | [docs/16-P0-HOMESV-HANDOFF-2026-10-13.md](../../docs/16-P0-HOMESV-HANDOFF-2026-10-13.md) | historical / handoff | 4896 | d34ed9f9e21593fa3b31f3c3aec760da90a28a43ef84263ee11ef49f76055e1d |
 | [docs/adr/ADR-020-go-core-python-optional.md](../../docs/adr/ADR-020-go-core-python-optional.md) | architecture / design source | 5620 | faf41f10c3c4427b4ed36b280197d075c03155bd54f94e1d74eb33da2043c7f8 |
 | [docs/adr/ADR-021-ebpf-observability-xdp-optional.md](../../docs/adr/ADR-021-ebpf-observability-xdp-optional.md) | architecture / design source | 9161 | 13e96c807dbedba32f9cb43a4046a9b4808e549fed57ffd20a35c6535f5200ff |
@@ -55,6 +55,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-linux-unix-ipc.md](../../docs/architecture/p0-linux-unix-ipc.md) | architecture / design source | 8818 | 36c508ec0638e2f29d46e4bc0bb3b6b30b625ce054db1c824f6de43eff6c2779 |
 | [docs/architecture/p0-local-control-gate.md](../../docs/architecture/p0-local-control-gate.md) | architecture / design source | 6704 | c4a52cafb1edb078df7abb7a3307ce2e2ad772dcb12c31452f865396721ab9e9 |
 | [docs/architecture/p0-lxd-cross-uid-lab.md](../../docs/architecture/p0-lxd-cross-uid-lab.md) | architecture / design source | 9657 | f45fa9d43075f1ab6e1c070a247b93d11d29c1834eed6f1c6edc6850be367828 |
+| [docs/architecture/p0-lxd-kernel-nft-rollback.md](../../docs/architecture/p0-lxd-kernel-nft-rollback.md) | architecture / design source | 6668 | a93c73cadf81d62ccb0232d02b5b930d54fb5290025cb8c5664322ebd1d837a9 |
 | [docs/architecture/p0-nft-unhooked-compiler.md](../../docs/architecture/p0-nft-unhooked-compiler.md) | architecture / design source | 4841 | 8a41bd70f3bfb97498f18c13789878d2c59fd0b46c07628d4065405ff5e955ed |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 10083 | 472e142c3e07f258e2afb4aadd0c8655a6899371337c8e1275255e5482fad674 |
 | [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
@@ -109,6 +110,11 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/lxd/delete-lab.sh](../../scripts/lab/lxd/delete-lab.sh) | developer tooling | 1061 | 5690849e9eae48bd04b6cc9e07a8817d56a3c01ccf865f4832ce88c8bdbcb584 |
 | [scripts/lab/lxd/guest-test.sh](../../scripts/lab/lxd/guest-test.sh) | developer tooling | 6943 | bc3e91f788baa8faf0752da349177b5e41d15df6a7ec815666c0664b68cbee95 |
 | [scripts/lab/lxd/run-tests.sh](../../scripts/lab/lxd/run-tests.sh) | developer tooling | 2270 | a3ec932220e5578c44773f2c28eeb6220030f6489b028dcdc3229a5699d41639 |
+| [scripts/lab/vm/README.md](../../scripts/lab/vm/README.md) | developer tooling | 4751 | 6f82c872d375b2554709ca7adbb24a1bf626355de61953f38325e966433e24f9 |
+| [scripts/lab/vm/create-vm.sh](../../scripts/lab/vm/create-vm.sh) | developer tooling | 1954 | db0e0df40add52f1e1221fc51cfa646a11c30a7c941d7ec50b3eb27a59e8f57c |
+| [scripts/lab/vm/delete-vm.sh](../../scripts/lab/vm/delete-vm.sh) | developer tooling | 679 | a5dc36c94b6c85e851e8edaa1ea4683c0e629754b8f5bc13684f4fe3dd7d48c2 |
+| [scripts/lab/vm/guest-nft-test.sh](../../scripts/lab/vm/guest-nft-test.sh) | developer tooling | 4349 | 3d1e6daa63e3835a0a5836395a0ba99144ece395967ea3e9576d1b66e410ec1c |
+| [scripts/lab/vm/run-tests.sh](../../scripts/lab/vm/run-tests.sh) | developer tooling | 2782 | 5746a800d11fe7e9c2a4dc7d98f47175ecae61de6b60798e170330cf27694240 |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |
 | [scripts/test_p0_gate_processes.sh](../../scripts/test_p0_gate_processes.sh) | developer tooling | 2536 | c402ee82bd3eb46a74bf203f19ec188942e035eb7ce65dcbaec44c8bbd6339c6 |
 | [scripts/update_doc_catalog.py](../../scripts/update_doc_catalog.py) | developer tooling | 6141 | 3057438900ce416b98d4e2bdc1b83fc7e18eb8984409b45d1ddff4a076e3fbbb |

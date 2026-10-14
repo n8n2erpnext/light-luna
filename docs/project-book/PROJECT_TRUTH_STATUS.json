@@ -45,7 +45,7 @@
       "independentBrainBuild": "implemented_cli_only_not_process_or_ipc",
       "guardianStatus": "UNKNOWN_NOT_INSTALLED",
       "nestedJSONDuplicateRejection": "implemented_in_policy_and_replay",
-      "nftUnhookedPreview": "implemented_source_unit_tests_pass_syntax_not_kernel_checked",
+      "nftUnhookedPreview": "implemented_unhooked_source_kernel_nft_minus_c_in_separate_KVM_guest_PASS_not_applied",
       "flowSimulator": "implemented_pure_go_synthetic_intent_only_all_effective_verdicts_UNKNOWN",
       "managementLockoutDetection": "synthetic_POTENTIAL_LOCKOUT_warning_not_a_verified_recovery_path",
       "localControlBoundary": "HMAC_signed_ephemeral_controlgate_test_plus_Linux_local_UDS_prototype_no_executor",
@@ -59,7 +59,13 @@
       "lxdLabPreparation": "lab_deployed_unprivileged_container_no_NIC_live_guest_tests_PASS",
       "lxdHostInstallation": "snap_lxd_5_21_8_installed_minimal_init_default_dir_pool_unexpected_bridge_removed",
       "lxdCrossUIDExecution": "PASS_distinct_users_goodAgent_badGateUID_outsider_wrongUID_copiedTestKey_replayRestart_corruptJournal",
-      "lxdKernelTestQualification": "container_shares_host_kernel_not_approved_for_nft_or_ebpf; separate_vm_required",
+      "lxdKernelTestQualification": "prior_LXD_container_shares_host_kernel; nft_validation_now_in_separate_KVM_VM",
+      "lxdKernelVMStatus": "KVM_VM_RUNNING_different_kernel_6_8_0_142_vs_host_6_8_0_146_no_NIC",
+      "lxdKernelVMNftGrammar": "PASS_twice_real_nft_minus_c_on_unhooked_LightLuna_preview_only",
+      "lxdKernelVMNegativeSyntax": "PASS_twice_invalid_script_rejected",
+      "lxdKernelVMSyntheticPacketFlow": "PASS_twice_baseline_icmp_accept_synthetic_drop_counter_then_watchdog_rollback_icmp_restored",
+      "lxdKernelVMExecutor": "NOT_IMPLEMENTED_product_preview_never_applied",
+      "lxdKernelVMHostFirewall": "LXD_inet_lxd_table_empty_no_bridge_lxdbr0_after_test_not_full_host_ruleset_audit",
       "journalRecovery": "restart_replay_pass_corrupt_journal_fails_closed_not_power_loss_tested",
       "productionKeyCustody": "not_implemented_test_only_shared_key_private_0600_same_uid",
       "controlGateRaceDetector": "not_run_gcc_missing_cgo_required",
@@ -117,7 +123,8 @@
     "p0LinuxUnixIPC": "docs/architecture/p0-linux-unix-ipc.md",
     "p0SeparateAgentGate": "docs/architecture/p0-two-process-gate-and-journal.md",
     "p0Ed25519Identity": "docs/architecture/p0-ed25519-agent-gate-identity.md",
-    "p0LxdCrossUidLab": "docs/architecture/p0-lxd-cross-uid-lab.md"
+    "p0LxdCrossUidLab": "docs/architecture/p0-lxd-cross-uid-lab.md",
+    "p0LxdKernelNftLab": "docs/architecture/p0-lxd-kernel-nft-rollback.md"
   },
   "notes": [
     "This JSON is a dated snapshot, not live telemetry",
