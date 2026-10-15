@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — rollback receipt input integrity (2026-10-15)
+
+[VM rollback receipt audit](architecture/p0-vm-synthetic-stage-revert.md) now validates the **opened receipt inode** and actual bounded bytes rather than stale symlink/stat prechecks. [Three receipt negatives](../scripts/lab/vm/test_rollback_receipts.py) were RED→GREEN; `inspect()` reports invalid instead of inventing rollback confidence. **110 Python VM offline tests PASS**. This only hardens synthetic evidence reading; cross-process journal/receipt atomicity, signed owner authorization, independent rescue and live watchdog proof remain missing. Current VM state UNKNOWN because prior LXD socket permission denial was not bypassed. P0 OPEN/G-STANDALONE BLOCKED, NetBird/Cloud deferred, ADR-029 parked.
+
 ## Active Core P0 — cooperative VM journal writer exclusion (2026-10-15)
 
 [VM stage journal source](architecture/p0-vm-synthetic-stage-revert.md) now takes `flock(LOCK_EX|LOCK_NB)` on the existing guest-only directory for each entire `transition()` read/validate/fsync-publication. A second cooperating writer is rejected immediately, not permitted to accept stale `STAGED`. [Test](../scripts/lab/vm/test_boot_journal.py) RED before fix → GREEN after, with additional genuine cross-process lock contention proof; **107 VM Python offline PASS**. The no-clobber `init` remains unchanged. **Other guest utilities/direct persist aren't fenced**, and LXD live status is UNKNOWN; no production owner credentials, kernel APPLY, rescue or crash/power-cut acceptance. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud deferred; ADR-029 parked.

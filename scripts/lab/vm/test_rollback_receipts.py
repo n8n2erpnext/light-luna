@@ -2,6 +2,7 @@
 """Offline immutable VM rollback observations: identity, ordering, crash gaps."""
 import importlib.util
 import json
+import os
 import tempfile
 from pathlib import Path
 import unittest
@@ -82,6 +83,49 @@ class ReceiptTests(unittest.TestCase):
         p=r.path(e,"prepared")
         p.write_text('{"schema":"x","schema":"y"}')
         self.assertEqual(r.inspect(STAGE,BOOT,NETNS,READY)["status"],"INVALID_RECEIPT_FAIL_CLOSED")
+
+    def test_hardlinked_receipt_denied_without_wiping_evidence(self):
+        e=self.prepare()
+        p=r.path(e,"prepared")
+        original=p.read_bytes()
+        alternative=self.root/"receipt-hardlink-alias.json"
+        os.link(p, alternative)
+        with self.assertRaises((ValueError,OSError)):
+            r._safe_load(p)
+        self.assertEqual(r.inspect(STAGE,BOOT,NETNS,READY)["status"],
+                         "INVALID_RECEIPT_FAIL_CLOSED")
+        self.assertEqual(p.read_bytes(),original)
+        self.assertEqual(alternative.read_bytes(),original)
+
+    def test_symlink_receipt_denied_if_path_precheck_stale(self):
+        e=self.prepare()
+        p=r.path(e,"prepared")
+        original=p.read_bytes()
+        alternative=self.root/"receipt-original.json"
+        p.rename(alternative)
+        p.symlink_to(alternative)
+        # The path precheck could go stale before a second open.
+        with mock.patch.object(Path,"is_symlink",return_value=False):
+            with self.assertRaises((ValueError,OSError)):
+                r._safe_load(p)
+            self.assertEqual(r.inspect(STAGE,BOOT,NETNS,READY)["status"],
+                             "INVALID_RECEIPT_FAIL_CLOSED")
+        self.assertEqual(alternative.read_bytes(),original)
+        self.assertTrue(p.is_symlink())
+
+    def test_grown_receipt_denied_if_stat_precheck_stale(self):
+        e=self.prepare()
+        p=r.path(e,"prepared")
+        previous_stat=p.stat()
+        raw=p.read_bytes()
+        p.write_bytes(raw + b" " * 4097)
+        # The length from the *old* stat is no authority for the opened inode.
+        with mock.patch.object(Path,"stat",return_value=previous_stat):
+            with self.assertRaises((ValueError,OSError)):
+                r._safe_load(p)
+            self.assertEqual(r.inspect(STAGE,BOOT,NETNS,READY)["status"],
+                             "INVALID_RECEIPT_FAIL_CLOSED")
+        self.assertTrue(p.stat().st_size > 4096)
 
     def test_out_of_order_receipt_detected(self):
         e=r._id(STAGE,BOOT,NETNS,READY)

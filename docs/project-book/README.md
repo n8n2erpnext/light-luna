@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 synthetic rollback receipt read integrity (2026-10-15)
+
+- [Descriptor-based rollback receipt validation](../architecture/p0-vm-synthetic-stage-revert.md) — [guest receipt reader](../../scripts/lab/vm/guest-rollback-receipts.py) now refuses hardlinks, stale symlink checks and oversized receipts based on the **opened FD**. [Three prepatch RED→GREEN regressions](../../scripts/lab/vm/test_rollback_receipts.py); complete Python VM **offline** suite now **110 PASS**. No live VM/Host firewall result.
+
 ## Latest Core P0 cooperative guest journal writer guard (2026-10-15)
 
 - [VM-only journal transition directory `flock`](../architecture/p0-vm-synthetic-stage-revert.md) covers each `STAGED/VALIDATED/COMMITTED_SYNTHETIC/ROLLED_BACK` `transition()` read–validate–persist path and denies concurrent cooperating writers. [Stale-state double-writer regression](../../scripts/lab/vm/test_boot_journal.py) RED→GREEN; separate-process advisory-lock check PASS, VM Python offline **107 tests PASS**. It is not protected owner execution or a durable multi-subsystem lease.

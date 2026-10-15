@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 synthetic rollback receipt FD-bound reading (2026-10-15)
+
+- **Entry:** [`guest-rollback-receipts.py:inspect/advance`](../../scripts/lab/vm/guest-rollback-receipts.py) → `_safe_load` for each prior receipt. New `os.open` nofollow, FD `fstat` regular one-link inode with 1..4096-byte size, **4097-byte bounded read**, strict UTF-8 JSON and duplicate-key denial. Existing epoch, writer and SHA-256 hash-chain checks remain as before. On invalid receipt `inspect` reports `INVALID_RECEIPT_FAIL_CLOSED`; no kernel operation is inferred.
+- **Evidence:** [`test_rollback_receipts.py`](../../scripts/lab/vm/test_rollback_receipts.py) adds three RED→GREEN cases for hardlink, stale symlink precheck and stale size/growth, with `inspect` denial and source preservation. **15 focused PASS, 110 offline VM Python tests PASS**. This is source-only VM lab; live KVM not tested and present guest evidence remains UNKNOWN.
+- **Limit:** no protection for untrusted ancestor directories, hostile guest root, power-loss consistency or cross-subsystem writer fencing. [Owning architecture](../architecture/p0-vm-synthetic-stage-revert.md). **P0 OPEN / G-STANDALONE BLOCKED.**
+
 ## P0 cooperative journal transition writer guard (2026-10-15)
 
 - **Call path:** [`guest-stage-journal.py:transition`](../../scripts/lab/vm/guest-stage-journal.py) → `stage_writer_guard` takes **nonblocking Linux advisory `flock` on the existing ROOT directory inode** before any journal read and holds it through `persist` + parent fsync. **Busy = fail closed.** `init` retains `os.link` no-clobber; update uses `os.replace` only while cooperating `transition()` holds guard. Does not add a lockfile or touch host nft.

@@ -26,7 +26,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/08-PACKAGING-HARDWARE.md](../../docs/08-PACKAGING-HARDWARE.md) | architecture / design source | 4171 | 41076aa93744bc460c9f33faad5bb19c2d9fc0b02acea26e81dee43273226bea |
 | [docs/09-WEBUI-CLI-API.md](../../docs/09-WEBUI-CLI-API.md) | architecture / design source | 6075 | be33253756647e8b1bbdfc1c6032efa4624ef93c227e942311d6728932708f63 |
 | [docs/10-MOON-DESIGN.md](../../docs/10-MOON-DESIGN.md) | architecture / design source | 3378 | 86f7fd88238d44be85edd5c188afe1fb5a70cb88f7075c8ca91d6ed256479a59 |
-| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 52224 | e55085487ac0b6ad0139d3053080f432d37fa631fb77ac2b13c583b0ad8acb0f |
+| [docs/11-ROADMAP.md](../../docs/11-ROADMAP.md) | decision / roadmap | 53005 | d490946aed08f630e19892757079ca51ea020eb4fa58af1546a0fc2d4db38087 |
 | [docs/12-ADRS.md](../../docs/12-ADRS.md) | decision / roadmap | 6585 | 20026a11a41bae6dc70178877f059488f9e694b6dedccac24125ad07bbbd3e38 |
 | [docs/13-REFERENCES.md](../../docs/13-REFERENCES.md) | architecture / design source | 2719 | de794716ed6800bc88a9a73160c6ec085847a569ae240c0a193c63ccc5286e5a |
 | [docs/14-HANDOFF-2026-10-13.md](../../docs/14-HANDOFF-2026-10-13.md) | historical / handoff | 5764 | 650cd0d2429ff363623d87b53e62204a72fe2326b93473c802471f9eddb57b85 |
@@ -64,7 +64,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [docs/architecture/p0-policy-rule-conflict-audit.md](../../docs/architecture/p0-policy-rule-conflict-audit.md) | architecture / design source | 22366 | c6a554725264228dd98618dfc6d0d6372e348e46e69f9ae84f0e27c5fd198e81 |
 | [docs/architecture/p0-two-process-gate-and-journal.md](../../docs/architecture/p0-two-process-gate-and-journal.md) | architecture / design source | 12601 | 0ab54167d7094aaa15a9d82b878b77332e2b68efed47391cd20cc29f4b91529d |
 | [docs/architecture/p0-vm-autonomous-ttl-watchdog.md](../../docs/architecture/p0-vm-autonomous-ttl-watchdog.md) | architecture / design source | 39939 | ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd |
-| [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 22983 | 7b70f4a90e145f8b613a8ca6137c4ef902b02169695090b0134ffe5484441daf |
+| [docs/architecture/p0-vm-synthetic-stage-revert.md](../../docs/architecture/p0-vm-synthetic-stage-revert.md) | architecture / design source | 25068 | 6cd96be5a30785c654f36e388e7c9fca8862da4950c959145336fdac545b46d8 |
 | [docs/architecture/threat-intelligence-knowledge-pipeline.md](../../docs/architecture/threat-intelligence-knowledge-pipeline.md) | architecture / design source | 10710 | 1c2f7a6d91004181a8391408fef228dc6830caeedc02686f6258ade503b5a00b |
 | [docs/architecture/unified-account-cloud-fleet-control.md](../../docs/architecture/unified-account-cloud-fleet-control.md) | architecture / design source | 12528 | 00ac3b6ccb686809cc3b39b9a5491ecdf5ecc2479fa791526705501a32f295db |
 | [docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md](../../docs/history/audits/SENTINEL_LUNA_COGNITION_AUDIT_2026-10-13.md) | architecture / design source | 9393 | bc75ff20ca4eddb70f6deb5919df3ed34737ff9777804f60d29ccf3c8a84d7d4 |
@@ -150,7 +150,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/vm/guest-prepare-reboot-fault.sh](../../scripts/lab/vm/guest-prepare-reboot-fault.sh) | developer tooling | 4119 | b95abe7c3061a08f98cd433068921518f17a46d7647b95145fdbc775d42f9dc4 |
 | [scripts/lab/vm/guest-preserve-terminal-review.py](../../scripts/lab/vm/guest-preserve-terminal-review.py) | developer tooling | 4692 | 83742f562edc608cf8649c43663548ff5f20a5c9679c5be77a68222355ee80f2 |
 | [scripts/lab/vm/guest-rollback-fence.py](../../scripts/lab/vm/guest-rollback-fence.py) | developer tooling | 2948 | 04ee60ea33cc3873b3bf2925229ab1cd2699a9c454e21f2d9febb3ed9a118026 |
-| [scripts/lab/vm/guest-rollback-receipts.py](../../scripts/lab/vm/guest-rollback-receipts.py) | developer tooling | 6414 | a48f749e20824fa812e4b144740714118c0df6e13a9feba6d7943da77eca8e52 |
+| [scripts/lab/vm/guest-rollback-receipts.py](../../scripts/lab/vm/guest-rollback-receipts.py) | developer tooling | 7050 | ca9cda01778ff0d3bbe8538c42e39368c90436ef0e21fbeeda825c2cef9f2ddd |
 | [scripts/lab/vm/guest-rollback-review.py](../../scripts/lab/vm/guest-rollback-review.py) | developer tooling | 10378 | 4d53df5a8e6de13e797acb193da365c4c15d8f30bcf7ef6cdbfb550b49e0743c |
 | [scripts/lab/vm/guest-rollback.sh](../../scripts/lab/vm/guest-rollback.sh) | developer tooling | 2005 | 9d508139218b0d134cbeb14cfe7a23b2f7ede70cd9bfaf4806eabd28111266fa |
 | [scripts/lab/vm/guest-stage-journal.py](../../scripts/lab/vm/guest-stage-journal.py) | developer tooling | 8204 | fbef92696d66bf2b788068277afd29587ef267714ce213e556310f1696cab365 |
@@ -169,7 +169,7 @@ All SHA-256 values identify exact file bytes in this workspace; uncommitted work
 | [scripts/lab/vm/test_fallback_supervisor.py](../../scripts/lab/vm/test_fallback_supervisor.py) | developer tooling | 3045 | 1a6551156d5f42d37f1b6bbe4637ff11af8cd75fb75c636a312e6a8301394151 |
 | [scripts/lab/vm/test_rollback_fence.py](../../scripts/lab/vm/test_rollback_fence.py) | developer tooling | 5287 | 6197d31a643697e40ca9978e3f61438fd4d52b50b5b7b2f93687e12253b1ca0c |
 | [scripts/lab/vm/test_rollback_fsync_faults.py](../../scripts/lab/vm/test_rollback_fsync_faults.py) | developer tooling | 7637 | a5ed4a56fd9790b0007cace1d15c0d4e5cbfd3c26d20dfc2cba0715b4a29c755 |
-| [scripts/lab/vm/test_rollback_receipts.py](../../scripts/lab/vm/test_rollback_receipts.py) | developer tooling | 4562 | f81e63d93e9c426a31fd7859851b7cb417a1660fc707ff695d0ae9993611276c |
+| [scripts/lab/vm/test_rollback_receipts.py](../../scripts/lab/vm/test_rollback_receipts.py) | developer tooling | 6517 | 34bc91ee94bb18b34540bb82c6938c0da4573de8d817444e473882c663095071 |
 | [scripts/lab/vm/test_rollback_review.py](../../scripts/lab/vm/test_rollback_review.py) | developer tooling | 7044 | 904459b4ef0c356e385c9fb482a26d5ce8cfd82860de5d301beffce2c21f7587 |
 | [scripts/lab/vm/test_stage_manifest_ttl.py](../../scripts/lab/vm/test_stage_manifest_ttl.py) | developer tooling | 6287 | a8fc2bffd3f663ebacacfbdbcfa71c60a93ea4e674bffcebd08d89aaa1ff777e |
 | [scripts/test_p0_ed25519_identities.sh](../../scripts/test_p0_ed25519_identities.sh) | developer tooling | 3020 | 503f8a1b7a60863ad48f7dfdc75b529942dbef0351d37fe8a0e6087c95fc9d49 |

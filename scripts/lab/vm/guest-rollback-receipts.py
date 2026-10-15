@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 
 ROOT = Path("/opt/luna-p0-kernel-tests")
 SCHEMA = "lightluna.vm-rollback-observation/v1alpha1"
@@ -48,16 +49,26 @@ def path(epoch, kind):
 
 
 def _safe_load(p):
-    if p.is_symlink() or not p.is_file() or p.stat().st_size > 4096:
-        raise ValueError("receipt missing, symlink or oversized")
+    # Inspect the OPENED receipt inode rather than relying on pre-open Path
+    # checks. O_NOFOLLOW protects the final pathname component; O_NONBLOCK
+    # prevents FIFO open hangs. Trusted ancestor paths remain a separate lab
+    # requirement. No observation is inferred from a refused receipt.
+    flags = os.O_RDONLY | os.O_CLOEXEC | os.O_NOFOLLOW | os.O_NONBLOCK
+    with os.fdopen(os.open(p, flags), "rb") as source:
+        inode = os.fstat(source.fileno())
+        if (not stat.S_ISREG(inode.st_mode) or inode.st_nlink != 1
+            or not 1 <= inode.st_size <= 4096):
+            raise ValueError("unsafe, hardlinked or over-limit receipt")
+        raw = source.read(4097)
+        if len(raw) > 4096:
+            raise ValueError("receipt exceeded read-time byte limit")
     def pairs(seq):
         d = {}
         for k, v in seq:
             if k in d: raise ValueError("duplicate receipt key")
             d[k] = v
         return d
-    with p.open(encoding="utf-8") as f:
-        return json.load(f, object_pairs_hook=pairs)
+    return json.loads(raw.decode("utf-8"), object_pairs_hook=pairs)
 
 
 def _write_exclusive(p, record):
