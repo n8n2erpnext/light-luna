@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — no-clobber guest STAGED journal creation (2026-10-15)
+
+[VM journal contract](architecture/p0-vm-synthetic-stage-revert.md) now refuses to overwrite an unexpected journal/symlink appearing between the `init` absence precheck and journal publish. The [guest journal](../scripts/lab/vm/guest-stage-journal.py) publishes the first fsynced `STAGED` record via **atomic `os.link` no-clobber**, and later single-writer transitions still use `os.replace`. Two offline race negatives were RED then GREEN; **105 Python VM offline tests PASS**. This does not prove serializable multi-writer transitions, owner authority, kernel rescue or signed rollback, and the live LXD guest remains uninspected after socket permission denial. P0 OPEN/G-STANDALONE BLOCKED.
+
 ## Active Core P0 — VM guest opened-inode manifest/journal size checks (2026-10-15)
 
 [VM-stage file-reader contract](architecture/p0-vm-synthetic-stage-revert.md) now uses descriptor-verified `O_NOFOLLOW` and `fstat` (regular file, single link, bounded bytes), plus a read-time 4097-byte cap to reject stale size checks; strict duplicate-key JSON validation remains. Five new [offline cases](../scripts/lab/vm/test_stage_manifest_ttl.py) include three pre-fix RED→GREEN negatives, bringing Python VM offline suite to **103 PASS**. LXD guest state is still **UNKNOWN** due prior read-only socket permission denial; no guest cleanup, migration or live netfilter test. No owner authorization, rescue or production executor. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud and ADR-029 deferred.

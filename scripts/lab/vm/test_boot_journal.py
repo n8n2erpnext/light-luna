@@ -68,6 +68,38 @@ class BootJournalTests(unittest.TestCase):
                 journal.transition("init", "STAGED", self.manifest)
         self.assertEqual(self.state()["bootId"], BOOT_A)
 
+    def test_init_does_not_overwrite_journal_created_after_precheck(self):
+        # A second writer publishes evidence after the initial path check.
+        # Initial commit must be create-only, preserving existing contents.
+        real_mkstemp = journal.tempfile.mkstemp
+        unexpected = '{"foreign":"previous-or-concurrent-evidence"}'
+        def concurrent_writer(*args, **kwargs):
+            fd, path = real_mkstemp(*args, **kwargs)
+            journal.JOURNAL.write_text(unexpected, encoding="utf-8")
+            return fd, path
+        with mock.patch.object(journal.tempfile, "mkstemp", side_effect=concurrent_writer):
+            with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+                with self.assertRaises((ValueError, OSError)):
+                    journal.transition("init", "STAGED", self.manifest)
+        self.assertEqual(journal.JOURNAL.read_text(encoding="utf-8"), unexpected)
+        self.assertEqual(sorted(p.name for p in self.root.iterdir()), ["stage-journal.json"])
+
+    def test_init_does_not_replace_symlink_created_after_precheck(self):
+        target = self.root / "protected.json"
+        target.write_text("preserve-me", encoding="utf-8")
+        real_mkstemp = journal.tempfile.mkstemp
+        def concurrent_symlink(*args, **kwargs):
+            fd, path = real_mkstemp(*args, **kwargs)
+            journal.JOURNAL.symlink_to(target)
+            return fd, path
+        with mock.patch.object(journal.tempfile, "mkstemp", side_effect=concurrent_symlink):
+            with mock.patch.object(journal, "boot_id", return_value=BOOT_A):
+                with self.assertRaises((ValueError, OSError)):
+                    journal.transition("init", "STAGED", self.manifest)
+        self.assertTrue(journal.JOURNAL.is_symlink())
+        self.assertEqual(target.read_text(encoding="utf-8"), "preserve-me")
+        self.assertEqual(sorted(p.name for p in self.root.iterdir()), ["protected.json", "stage-journal.json"])
+
     def test_unavailable_kernel_boot_id_fails_closed(self):
         with mock.patch.object(Path, "read_text", return_value="not-a-boot-id"):
             with self.assertRaisesRegex(ValueError, "invalid kernel boot ID"):

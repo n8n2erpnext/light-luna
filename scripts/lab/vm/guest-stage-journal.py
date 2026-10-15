@@ -81,9 +81,12 @@ def manifest():
         raise ValueError("stage id mismatch")
     return m
 
-def persist(state):
+def persist(state, create_only=False):
     # This is a single-controller VM lab. No multi-process flock or verified
     # fs power-loss durability claim; fsync is for basic crash fault simulation.
+    # STAGED init is *atomically no-clobber*: a journal created after the
+    # precheck must never be replaced. Subsequent transitions retain the
+    # historical replace-on-update behavior and require separate writer fencing.
     fd, temp_name = tempfile.mkstemp(prefix=".stage-journal-", dir=str(ROOT))
     try:
         os.fchmod(fd, 0o600)
@@ -92,7 +95,13 @@ def persist(state):
             f.write("\n")
             f.flush()
             os.fsync(f.fileno())
-        os.replace(temp_name, JOURNAL)
+        if create_only:
+            # link() fails with EEXIST if another journal or symlink appears.
+            # fsynced temp contents become the new entry without overwrite;
+            # the finally block unlinks the now-secondary temp name.
+            os.link(temp_name, JOURNAL)
+        else:
+            os.replace(temp_name, JOURNAL)
         parent = os.open(ROOT, os.O_RDONLY|os.O_DIRECTORY)
         try: os.fsync(parent)
         finally: os.close(parent)
@@ -121,7 +130,7 @@ def transition(command, target, m):
             raise ValueError("out-of-order or repeated transition")
         state["state"] = target
         state["history"] = history + [target]
-    persist(state)
+    persist(state, create_only=(command == "init"))
     print("VM_STAGE_" + target + "_PASS")
 
 def main():

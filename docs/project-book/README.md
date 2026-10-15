@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 guest journal init safety (2026-10-15)
+
+- [Atomic, no-overwrite first synthetic journal record](../architecture/p0-vm-synthetic-stage-revert.md) — [VM guest journal](../../scripts/lab/vm/guest-stage-journal.py) now `os.link`-publishes initial STAGED only when its path remains absent; competing file/symlink is preserved. [Two pre-fix RED → post-fix GREEN regressions](../../scripts/lab/vm/test_boot_journal.py), 105 VM Python offline tests. Not multi-writer recovery or live kernel proof.
+
 ## Latest Core P0 guest file-read safety (2026-10-15)
 
 - [Synthetic VM manifest/journal opened-inode checks](../architecture/p0-vm-synthetic-stage-revert.md) — [Python guest reader](../../scripts/lab/vm/guest-stage-journal.py) now uses nofollow descriptor open, `fstat` single-link regular-file verification and 4097-byte bounded read to defend against stale path checks/size growth. [Five focused test methods](../../scripts/lab/vm/test_stage_manifest_ttl.py), including three RED→GREEN negatives; VM Python offline suite **103 PASS**. This does not prove guest/Host kernel rollback; live LXD journal status UNKNOWN.

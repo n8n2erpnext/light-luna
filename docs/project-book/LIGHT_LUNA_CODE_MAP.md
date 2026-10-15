@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 VM synthetic journal STAGED init atomic no-clobber (2026-10-15)
+
+- **Code path:** [`guest-stage-journal.py:transition`](../../scripts/lab/vm/guest-stage-journal.py) `init/STAGED` → `persist(state, create_only=True)` → fsynced temp inode → `os.link(temp, JOURNAL)` **fails with EEXIST** if another journal/symlink appeared since precheck; parent dir fsync, temp cleanup. Later transitions keep `os.replace` and are **NOT multi-writer safe**. VM fixture only.
+- **Evidence:** [`test_boot_journal.py`](../../scripts/lab/vm/test_boot_journal.py) injects a competing JSON journal or symlink after precheck via mkstemp; both RED before fix and GREEN after; original bytes/target preserved, no leftover temp. **7 journal tests PASS; 105 total Python VM offline tests PASS**. No live KVM test or LXD socket permissions granted.
+- **Safety truth:** an atomic initial filename creation is not a production transaction, power-loss guarantee, owner signature, rescue or general writer fencing. [Architecture](../architecture/p0-vm-synthetic-stage-revert.md). P0 OPEN / G-STANDALONE BLOCKED.
+
 ## P0 guest-only manifest and journal file-read integrity (2026-10-15)
 
 - **Code:** [`guest-stage-journal.py:safe_load`](../../scripts/lab/vm/guest-stage-journal.py) now validates **opened file descriptor** via `O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK` and `fstat`, requires one-link regular inode and size 1..4096, reads at most 4097 bytes to detect growth, then parses strict UTF-8 with existing duplicate-key protection. Used by the synthetic manifest and journal readers, not Host production files.
