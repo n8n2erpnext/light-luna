@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — cooperative VM journal writer exclusion (2026-10-15)
+
+[VM stage journal source](architecture/p0-vm-synthetic-stage-revert.md) now takes `flock(LOCK_EX|LOCK_NB)` on the existing guest-only directory for each entire `transition()` read/validate/fsync-publication. A second cooperating writer is rejected immediately, not permitted to accept stale `STAGED`. [Test](../scripts/lab/vm/test_boot_journal.py) RED before fix → GREEN after, with additional genuine cross-process lock contention proof; **107 VM Python offline PASS**. The no-clobber `init` remains unchanged. **Other guest utilities/direct persist aren't fenced**, and LXD live status is UNKNOWN; no production owner credentials, kernel APPLY, rescue or crash/power-cut acceptance. P0 OPEN/G-STANDALONE BLOCKED; NetBird/Cloud deferred; ADR-029 parked.
+
 ## Active Core P0 — no-clobber guest STAGED journal creation (2026-10-15)
 
 [VM journal contract](architecture/p0-vm-synthetic-stage-revert.md) now refuses to overwrite an unexpected journal/symlink appearing between the `init` absence precheck and journal publish. The [guest journal](../scripts/lab/vm/guest-stage-journal.py) publishes the first fsynced `STAGED` record via **atomic `os.link` no-clobber**, and later single-writer transitions still use `os.replace`. Two offline race negatives were RED then GREEN; **105 Python VM offline tests PASS**. This does not prove serializable multi-writer transitions, owner authority, kernel rescue or signed rollback, and the live LXD guest remains uninspected after socket permission denial. P0 OPEN/G-STANDALONE BLOCKED.

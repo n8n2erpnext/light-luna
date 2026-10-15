@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 cooperative guest journal writer guard (2026-10-15)
+
+- [VM-only journal transition directory `flock`](../architecture/p0-vm-synthetic-stage-revert.md) covers each `STAGED/VALIDATED/COMMITTED_SYNTHETIC/ROLLED_BACK` `transition()` read–validate–persist path and denies concurrent cooperating writers. [Stale-state double-writer regression](../../scripts/lab/vm/test_boot_journal.py) RED→GREEN; separate-process advisory-lock check PASS, VM Python offline **107 tests PASS**. It is not protected owner execution or a durable multi-subsystem lease.
+
 ## Latest Core P0 guest journal init safety (2026-10-15)
 
 - [Atomic, no-overwrite first synthetic journal record](../architecture/p0-vm-synthetic-stage-revert.md) — [VM guest journal](../../scripts/lab/vm/guest-stage-journal.py) now `os.link`-publishes initial STAGED only when its path remains absent; competing file/symlink is preserved. [Two pre-fix RED → post-fix GREEN regressions](../../scripts/lab/vm/test_boot_journal.py), 105 VM Python offline tests. Not multi-writer recovery or live kernel proof.

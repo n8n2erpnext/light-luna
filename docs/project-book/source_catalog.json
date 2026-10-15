@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 51390,
-      "sha256": "1e993d99e5e6fe5ca7fb8d6d1f11cd687aa958002ae299d24cd8adaa3af3f9c9"
+      "bytes": 52224,
+      "sha256": "e55085487ac0b6ad0139d3053080f432d37fa631fb77ac2b13c583b0ad8acb0f"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -406,8 +406,8 @@
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
       "category": "architecture / design source",
       "title": "P0 VM typed staging and explicitly triggered independent rollback — verified",
-      "bytes": 20462,
-      "sha256": "ec5658ac9e1db1d5402d27ee7c2ed6e512ab5f7bfe2ff9edc97d6767801ee003"
+      "bytes": 22983,
+      "sha256": "7b70f4a90e145f8b613a8ca6137c4ef902b02169695090b0134ffe5484441daf"
     },
     {
       "path": "docs/architecture/threat-intelligence-knowledge-pipeline.md",
@@ -1029,8 +1029,8 @@
       "path": "scripts/lab/vm/guest-stage-journal.py",
       "category": "developer tooling",
       "title": "guest-stage-journal",
-      "bytes": 7010,
-      "sha256": "5e442f627fe3fe36119c9685c5e631c71bde448bb6ac80ef0288eccfa365ff38"
+      "bytes": 8204,
+      "sha256": "fbef92696d66bf2b788068277afd29587ef267714ce213e556310f1696cab365"
     },
     {
       "path": "scripts/lab/vm/guest-stage-test.sh",
@@ -1113,8 +1113,8 @@
       "path": "scripts/lab/vm/test_boot_journal.py",
       "category": "developer tooling",
       "title": "test_boot_journal",
-      "bytes": 5613,
-      "sha256": "3a50d0aa98b78029d8e3c85c8b87b4fcd5cb8ac2a46181853215fc3cc5b2c001"
+      "bytes": 8259,
+      "sha256": "ab09405356cbc2d93af8082058d99ccc9c001179a3a5792813e374d35e520f79"
     },
     {
       "path": "scripts/lab/vm/test_fallback_supervisor.py",

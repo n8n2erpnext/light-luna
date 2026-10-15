@@ -21,6 +21,12 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 cooperative journal transition writer guard (2026-10-15)
+
+- **Call path:** [`guest-stage-journal.py:transition`](../../scripts/lab/vm/guest-stage-journal.py) → `stage_writer_guard` takes **nonblocking Linux advisory `flock` on the existing ROOT directory inode** before any journal read and holds it through `persist` + parent fsync. **Busy = fail closed.** `init` retains `os.link` no-clobber; update uses `os.replace` only while cooperating `transition()` holds guard. Does not add a lockfile or touch host nft.
+- **Test evidence:** [`test_boot_journal.py`](../../scripts/lab/vm/test_boot_journal.py) proved RED when nested competing writer read old STAGED and reported the same transition successful; GREEN after guard; separate Python interpreter verifies real OS lock contention/release. **9 focused PASS, 107 VM Python offline PASS**. This is not a multi-subsystem lock: direct `persist`, other journal/receipt helpers, malicious guest root, directory replacement and physical power failure remain outside proved protection.
+- **Scope:** isolated VM lab only; Gate/Owner/Executor remain unchanged and G-STANDALONE BLOCKED. [Owning architecture](../architecture/p0-vm-synthetic-stage-revert.md).
+
 ## P0 VM synthetic journal STAGED init atomic no-clobber (2026-10-15)
 
 - **Code path:** [`guest-stage-journal.py:transition`](../../scripts/lab/vm/guest-stage-journal.py) `init/STAGED` → `persist(state, create_only=True)` → fsynced temp inode → `os.link(temp, JOURNAL)` **fails with EEXIST** if another journal/symlink appeared since precheck; parent dir fsync, temp cleanup. Later transitions keep `os.replace` and are **NOT multi-writer safe**. VM fixture only.

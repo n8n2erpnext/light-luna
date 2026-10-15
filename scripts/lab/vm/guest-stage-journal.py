@@ -4,6 +4,7 @@
 This does NOT provide production journal concurrency, owner authorization,
 signed receipts, power-loss guarantees, or true executor transaction atomicity.
 """
+import fcntl
 import hashlib
 import json
 import os
@@ -11,6 +12,7 @@ import re
 import stat
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 
 SCHEMA = "lightluna.vm-stage-intent/v1alpha1"
@@ -82,11 +84,11 @@ def manifest():
     return m
 
 def persist(state, create_only=False):
-    # This is a single-controller VM lab. No multi-process flock or verified
-    # fs power-loss durability claim; fsync is for basic crash fault simulation.
-    # STAGED init is *atomically no-clobber*: a journal created after the
-    # precheck must never be replaced. Subsequent transitions retain the
-    # historical replace-on-update behavior and require separate writer fencing.
+    # Synthetic VM-only persistence. Cooperating transition() callers hold
+    # a Linux directory flock, but persist() alone provides no writer lock.
+    # Fsync here is basic crash simulation, not physical power-loss proof.
+    # Initial STAGED is atomic no-clobber; later transitions use replace
+    # only while the cooperating writer holds its full-scope directory lock.
     fd, temp_name = tempfile.mkstemp(prefix=".stage-journal-", dir=str(ROOT))
     try:
         os.fchmod(fd, 0o600)
@@ -109,28 +111,53 @@ def persist(state, create_only=False):
         if os.path.exists(temp_name):
             os.unlink(temp_name)
 
+@contextmanager
+def stage_writer_guard():
+    # Advisory lock on the existing lab DIRECTORY inode, no new lockfile and
+    # no journal mutation before acquisition. Opens are independent, so even
+    # two callers within one process contend. Only cooperating writers are
+    # fenced; hostile guest root or a replaced ancestor is outside P0 proof.
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC | os.O_NOFOLLOW
+    fd = os.open(ROOT, flags)
+    try:
+        if not stat.S_ISDIR(os.fstat(fd).st_mode):
+            raise ValueError("stage root is not a directory")
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as err:
+            raise ValueError("another VM stage journal writer is active") from err
+        try:
+            yield
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+
 def transition(command, target, m):
-    if command == "init":
-        if JOURNAL.exists() or JOURNAL.is_symlink():
-            raise ValueError("previous transaction not cleared; fail closed")
-        if target != "STAGED":
-            raise ValueError("invalid initial state")
-        state = {"stageId": m["stageId"],"bootId":boot_id(),"state":"STAGED","history":["STAGED"]}
-    else:
-        state = safe_load(JOURNAL)
-        if set(state) != {"stageId","bootId","state","history"} or state["stageId"] != m["stageId"]:
-            raise ValueError("journal mismatch")
-        if state["bootId"] != boot_id():
-            raise ValueError("journal belongs to a different Linux boot; independent recovery required")
-        history = state["history"]
-        if not isinstance(history,list) or history != PHASES[:len(history)] or state["state"] != history[-1]:
-            raise ValueError("journal history invalid")
-        step = len(history)
-        if step >= len(PHASES) or target != PHASES[step]:
-            raise ValueError("out-of-order or repeated transition")
-        state["state"] = target
-        state["history"] = history + [target]
-    persist(state, create_only=(command == "init"))
+    # One cooperative writer holds the same directory inode from the first
+    # read through validation, publication and parent-directory fsync.
+    with stage_writer_guard():
+        if command == "init":
+            if JOURNAL.exists() or JOURNAL.is_symlink():
+                raise ValueError("previous transaction not cleared; fail closed")
+            if target != "STAGED":
+                raise ValueError("invalid initial state")
+            state = {"stageId": m["stageId"],"bootId":boot_id(),"state":"STAGED","history":["STAGED"]}
+        else:
+            state = safe_load(JOURNAL)
+            if set(state) != {"stageId","bootId","state","history"} or state["stageId"] != m["stageId"]:
+                raise ValueError("journal mismatch")
+            if state["bootId"] != boot_id():
+                raise ValueError("journal belongs to a different Linux boot; independent recovery required")
+            history = state["history"]
+            if not isinstance(history,list) or history != PHASES[:len(history)] or state["state"] != history[-1]:
+                raise ValueError("journal history invalid")
+            step = len(history)
+            if step >= len(PHASES) or target != PHASES[step]:
+                raise ValueError("out-of-order or repeated transition")
+            state["state"] = target
+            state["history"] = history + [target]
+        persist(state, create_only=(command == "init"))
     print("VM_STAGE_" + target + "_PASS")
 
 def main():
