@@ -21,6 +21,11 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 synthetic DONE temporal coherence (2026-10-15)
+
+- **Entry:** [`guest-rollback-review.py:classify`](../../scripts/lab/vm/guest-rollback-review.py) → `matches_producer_done` checks `completedMonotonic >= deadlineMonotonic` for both primary/fallback and requires primary `lagSeconds == max(0.0, completedMonotonic-deadlineMonotonic)`, matching [actual primary producer](../../scripts/lab/vm/guest-auto-watchdog.py). Mismatch returns `DONE_METADATA_MISMATCH_REVIEW_REQUIRED`, never synthetic-consistent. Pure read-only data path.
+- **Evidence:** [review unit tests](../../scripts/lab/vm/test_rollback_review.py) five negative subcases (two predeadline completion, three mismatched primary lag) **RED→GREEN** and positive producer-shaped cases PASS; focused **30**, VM Python offline **115 PASS**. No live guest or verified kernel-state effect. [Review architecture](../architecture/p0-vm-autonomous-ttl-watchdog.md).
+
 ## P0 primary/fallback DONE contract versus watchdog READY (2026-10-15)
 
 - **Entry:** [`guest-rollback-review.py:classify`](../../scripts/lab/vm/guest-rollback-review.py) → `matches_producer_done` checks the **exact key set** from [primary watchdog DONE](../../scripts/lab/vm/guest-auto-watchdog.py) or [fallback DONE](../../scripts/lab/vm/guest-fallback-supervisor.py), validates fallback schema/netns/inert flags, typed finite monotonic timestamps and DONE deadline equality to READY. A false/extra field or mismatched deadline is **`DONE_METADATA_MISMATCH_REVIEW_REQUIRED`**, not synthetic-consistent. No file/kernel writes or new permission path.

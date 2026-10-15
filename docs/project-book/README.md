@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 DONE monotonic timing verification (2026-10-15)
+
+- [Primary/fallback DONE temporal invariants](../architecture/p0-vm-autonomous-ttl-watchdog.md) — [read-only reviewer](../../scripts/lab/vm/guest-rollback-review.py) now rejects predeadline DONE and primary `lagSeconds` inconsistent with the producer formula. Five [offline RED→GREEN negatives](../../scripts/lab/vm/test_rollback_review.py); **30 reviewer, 115 Python VM offline tests PASS**. No live or production firewall status inferred.
+
 ## Latest Core P0 read-only DONE/READY contract (2026-10-15)
 
 - [Primary and fallback watchdog DONE metadata consistency](../architecture/p0-vm-autonomous-ttl-watchdog.md) — [rollback reviewer](../../scripts/lab/vm/guest-rollback-review.py) refuses unrecognized/forged DONE keys, mismatched deadlines and nonfinite/boolean time metadata. [11-case negative regression](../../scripts/lab/vm/test_rollback_review.py) RED→GREEN; **28 focused and 113 VM offline PASS**. No signed owner or live VM/Host kernel claim.

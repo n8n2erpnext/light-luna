@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — DONE monotonic deadline/lag coherence (2026-10-15)
+
+The [synthetic rollback reviewer](architecture/p0-vm-autonomous-ttl-watchdog.md) now rejects both primary and fallback completion times **before** their matching READY deadline and rejects any primary `lagSeconds` inconsistent with its own completion/deadline timestamps. Five offline contradictory fixture cases were **RED→GREEN**, **115 Python VM offline tests PASS**. No signed owner, independent rescue, live KVM test or production executor/rollback proof; **P0 OPEN / G-STANDALONE BLOCKED**, NetBird/Cloud deferred and ADR-029 parked.
+
 ## Active Core P0 — fail-closed DONE/READY synthetic evidence contract (2026-10-15)
 
 [Read-only rollback reviewer](architecture/p0-vm-autonomous-ttl-watchdog.md) now requires both producer-specific DONE formats with exact JSON keys, typed finite times and **DONE deadline matching READY**. Eleven forged or contradictory cases were **RED before → GREEN after**; **113 Python VM offline tests PASS**. A matching observation never gives Owner APPLY permission or proves safe host recovery. Current LXD guest state is UNKNOWN; no new VM/netfilter run, key enrollment, real rollback or cloud work. **P0 OPEN / G-STANDALONE BLOCKED**, NetBird/Cloud deferred, ADR-029 parked.

@@ -52,10 +52,17 @@ def matches_producer_done(done, ready, writer):
     if (not finite_monotonic(ready.get("deadlineMonotonic"))
         or not finite_monotonic(done.get("deadlineMonotonic"))
         or done["deadlineMonotonic"] != ready["deadlineMonotonic"]
-        or not finite_monotonic(done.get("completedMonotonic"))):
+        or not finite_monotonic(done.get("completedMonotonic"))
+        or done["completedMonotonic"] < done["deadlineMonotonic"]):
         return False
     if writer == "primary":
-        return finite_monotonic(done.get("lagSeconds"))
+        # The primary watcher constructs this field as
+        # max(0.0,completedMonotonic-deadlineMonotonic) using the same
+        # Python float values preserved by its JSON writer. A separate
+        # claimed lag inconsistent with those timestamps is not evidence.
+        return (finite_monotonic(done.get("lagSeconds"))
+                and done["lagSeconds"] == max(
+                    0.0, done["completedMonotonic"] - done["deadlineMonotonic"]))
     return (done.get("schema") == "lightluna.vm-fallback-done/v1alpha1"
             and done.get("netnsInode") == ready.get("netnsInode")
             and done.get("syntheticGuestOnly") is True

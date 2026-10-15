@@ -121,6 +121,34 @@ class ReadOnlyReviewTests(unittest.TestCase):
                                 receipt=dict(RECEIPT,writer=writer),
                                 done=dict(base, **{field:value}))
 
+    def test_done_completion_before_deadline_denied(self):
+        # Both producers wait until READY's monotonic deadline; a purported
+        # completion before that deadline contradicts their actual behavior.
+        for writer, base in (("primary", PRIMARY_DONE), ("fallback", DONE)):
+            with self.subTest(writer=writer):
+                modified = dict(base, completedMonotonic=259.0)
+                if writer == "primary":
+                    modified["lagSeconds"] = 0.0
+                self.status("DONE_METADATA_MISMATCH_REVIEW_REQUIRED",
+                            receipt=dict(RECEIPT, writer=writer),
+                            done=modified)
+
+    def test_primary_lag_must_equal_elapsed_after_deadline(self):
+        # The actual primary producer uses max(0,completed-deadline);
+        # a forged positive number is not independent evidence of the timer.
+        for bad_lag in (0.0, 0.25, 3.5):
+            with self.subTest(lag=bad_lag):
+                self.status("DONE_METADATA_MISMATCH_REVIEW_REQUIRED",
+                            receipt=dict(RECEIPT, writer="primary"),
+                            done=dict(PRIMARY_DONE, lagSeconds=bad_lag))
+        self.status("SYNTHETIC_OBSERVATION_CHAIN_CONSISTENT_NOT_AUTHORITY",
+                    receipt=dict(RECEIPT, writer="primary"),
+                    done=dict(PRIMARY_DONE, completedMonotonic=264.25,
+                              lagSeconds=4.25))
+        self.status("SYNTHETIC_OBSERVATION_CHAIN_CONSISTENT_NOT_AUTHORITY",
+                    receipt=dict(RECEIPT, writer="fallback"),
+                    done=dict(DONE, completedMonotonic=264.25))
+
     def test_bad_history_denied(self):
         self.status("MALFORMED_JOURNAL",journal=dict(JOURNAL,history=["STAGED","ROLLED_BACK"]))
     def test_invalid_journal_state_denied(self):
