@@ -29,6 +29,10 @@ Read in this order, **before editing any documentation or code**:
 22. [ADR-029](../adr/ADR-029-local-observability-and-notifications.md) and [observability/notifications contract](../architecture/local-observability-and-notifications.md) — **DECIDED future** Prometheus/Grafana metrics, read-only bans/events and asynchronous Telegram/Discord/Slack/SMTP; no runtime endpoints/notifications implemented.
 23. [../../README.md](../../README.md) — public product introduction and constraints.
 
+## Latest Core P0 read-only DONE/READY contract (2026-10-15)
+
+- [Primary and fallback watchdog DONE metadata consistency](../architecture/p0-vm-autonomous-ttl-watchdog.md) — [rollback reviewer](../../scripts/lab/vm/guest-rollback-review.py) refuses unrecognized/forged DONE keys, mismatched deadlines and nonfinite/boolean time metadata. [11-case negative regression](../../scripts/lab/vm/test_rollback_review.py) RED→GREEN; **28 focused and 113 VM offline PASS**. No signed owner or live VM/Host kernel claim.
+
 ## Latest Core P0 synthetic rollback receipt read integrity (2026-10-15)
 
 - [Descriptor-based rollback receipt validation](../architecture/p0-vm-synthetic-stage-revert.md) — [guest receipt reader](../../scripts/lab/vm/guest-rollback-receipts.py) now refuses hardlinks, stale symlink checks and oversized receipts based on the **opened FD**. [Three prepatch RED→GREEN regressions](../../scripts/lab/vm/test_rollback_receipts.py); complete Python VM **offline** suite now **110 PASS**. No live VM/Host firewall result.

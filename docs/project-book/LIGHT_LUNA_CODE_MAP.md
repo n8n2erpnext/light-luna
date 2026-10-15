@@ -21,6 +21,11 @@ For each surface ask: (1) reachable from what entry point? (2) owns, adapts, exe
 - **Planned, not yet reachable:** bounded local outbox and Telegram/Discord/Slack/SMTP outgoing adapters. The four channels in the P0 schema are **hypothetical counts**; there is no durable queue, credential, webhook, SMTP job, provider transport, or notification being sent.
 - Source contract: [local-observability-and-notifications.md](../architecture/local-observability-and-notifications.md) and [ADR-029](../adr/ADR-029-local-observability-and-notifications.md). Implemented vs planned must not be conflated. P0/G-STANDALONE remains OPEN/BLOCKED.
 
+## P0 primary/fallback DONE contract versus watchdog READY (2026-10-15)
+
+- **Entry:** [`guest-rollback-review.py:classify`](../../scripts/lab/vm/guest-rollback-review.py) → `matches_producer_done` checks the **exact key set** from [primary watchdog DONE](../../scripts/lab/vm/guest-auto-watchdog.py) or [fallback DONE](../../scripts/lab/vm/guest-fallback-supervisor.py), validates fallback schema/netns/inert flags, typed finite monotonic timestamps and DONE deadline equality to READY. A false/extra field or mismatched deadline is **`DONE_METADATA_MISMATCH_REVIEW_REQUIRED`**, not synthetic-consistent. No file/kernel writes or new permission path.
+- **Evidence:** [`test_rollback_review.py`](../../scripts/lab/vm/test_rollback_review.py) 11 negative subcases **RED→GREEN**, primary/fallback producer-shaped positives preserved; focused review **28 PASS**, Python VM **offline 113 PASS**. Full gate still blocked; no live KVM/Host rollback and no trusted signer added. [Canonical reviewer architecture](../architecture/p0-vm-autonomous-ttl-watchdog.md).
+
 ## P0 synthetic rollback receipt FD-bound reading (2026-10-15)
 
 - **Entry:** [`guest-rollback-receipts.py:inspect/advance`](../../scripts/lab/vm/guest-rollback-receipts.py) → `_safe_load` for each prior receipt. New `os.open` nofollow, FD `fstat` regular one-link inode with 1..4096-byte size, **4097-byte bounded read**, strict UTF-8 JSON and duplicate-key denial. Existing epoch, writer and SHA-256 hash-chain checks remain as before. On invalid receipt `inspect` reports `INVALID_RECEIPT_FAIL_CLOSED`; no kernel operation is inferred.

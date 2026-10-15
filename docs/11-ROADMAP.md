@@ -53,6 +53,10 @@ This track is **not a mandatory standalone acceptance dependency** and does not 
 
 False-positive rate against independent labeled benign traffic, recall against vetted attack corpus, admin recovery time in controlled failures, packet path latency, throughput and drop rate by hardware mode, peak memory under backpressure, policy apply/rollback success, number of unverified IP attributions used in auto-ban (target zero), drift/anomaly explanatory quality.
 
+## Active Core P0 — fail-closed DONE/READY synthetic evidence contract (2026-10-15)
+
+[Read-only rollback reviewer](architecture/p0-vm-autonomous-ttl-watchdog.md) now requires both producer-specific DONE formats with exact JSON keys, typed finite times and **DONE deadline matching READY**. Eleven forged or contradictory cases were **RED before → GREEN after**; **113 Python VM offline tests PASS**. A matching observation never gives Owner APPLY permission or proves safe host recovery. Current LXD guest state is UNKNOWN; no new VM/netfilter run, key enrollment, real rollback or cloud work. **P0 OPEN / G-STANDALONE BLOCKED**, NetBird/Cloud deferred, ADR-029 parked.
+
 ## Active Core P0 — rollback receipt input integrity (2026-10-15)
 
 [VM rollback receipt audit](architecture/p0-vm-synthetic-stage-revert.md) now validates the **opened receipt inode** and actual bounded bytes rather than stale symlink/stat prechecks. [Three receipt negatives](../scripts/lab/vm/test_rollback_receipts.py) were RED→GREEN; `inspect()` reports invalid instead of inventing rollback confidence. **110 Python VM offline tests PASS**. This only hardens synthetic evidence reading; cross-process journal/receipt atomicity, signed owner authorization, independent rescue and live watchdog proof remain missing. Current VM state UNKNOWN because prior LXD socket permission denial was not bypassed. P0 OPEN/G-STANDALONE BLOCKED, NetBird/Cloud deferred, ADR-029 parked.

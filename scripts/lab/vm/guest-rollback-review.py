@@ -6,6 +6,7 @@ receipt, service, or device state. No output status authorizes enforcement.
 """
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -21,6 +22,44 @@ RECEIPT_STATUSES = {
     "INVALID_RECEIPT_FAIL_CLOSED",
 }
 SCHEMA = "lightluna.vm-rollback-review/v1alpha1"
+
+# Match the actual output keys from guest-auto-watchdog.py and
+# guest-fallback-supervisor.py. Unsupported extra fields are not silently
+# accepted as trustworthy synthetic observation metadata.
+PRIMARY_DONE_KEYS = frozenset({
+    "stageId", "bootId", "status", "completedMonotonic",
+    "deadlineMonotonic", "lagSeconds", "rollbackFenced",
+    "rollbackObservationEpoch",
+})
+FALLBACK_DONE_KEYS = frozenset({
+    "schema", "status", "stageId", "bootId", "netnsInode",
+    "deadlineMonotonic", "completedMonotonic", "ownerApproved",
+    "syntheticGuestOnly", "rollbackFenced", "rollbackObservationEpoch",
+})
+
+
+def finite_monotonic(value):
+    return type(value) in (int, float) and math.isfinite(value) and value >= 0
+
+
+def matches_producer_done(done, ready, writer):
+    """Exact two-producer inert DONE contract; not a cryptographic verifier."""
+    if not isinstance(done, dict):
+        return False
+    required = PRIMARY_DONE_KEYS if writer == "primary" else FALLBACK_DONE_KEYS
+    if set(done) != required:
+        return False
+    if (not finite_monotonic(ready.get("deadlineMonotonic"))
+        or not finite_monotonic(done.get("deadlineMonotonic"))
+        or done["deadlineMonotonic"] != ready["deadlineMonotonic"]
+        or not finite_monotonic(done.get("completedMonotonic"))):
+        return False
+    if writer == "primary":
+        return finite_monotonic(done.get("lagSeconds"))
+    return (done.get("schema") == "lightluna.vm-fallback-done/v1alpha1"
+            and done.get("netnsInode") == ready.get("netnsInode")
+            and done.get("syntheticGuestOnly") is True
+            and done.get("ownerApproved") is False)
 
 
 def classify(journal, ready, current_boot, inventory, receipt, done=None, *,
@@ -133,15 +172,15 @@ def classify(journal, ready, current_boot, inventory, receipt, done=None, *,
         or done.get("rollbackFenced") is not True):
         result["status"] = "DONE_METADATA_MISMATCH_REVIEW_REQUIRED"
         return result
-    if receipt["writer"] == "primary":
-        good = done.get("status") == "AUTO_ROLLBACK_CONFIRMED"
-    else:
-        good = (done.get("status") == "SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED"
-                and done.get("netnsInode") == ready["netnsInode"]
-                and done.get("syntheticGuestOnly") is True
-                and done.get("ownerApproved") is False)
-    result["status"] = ("SYNTHETIC_OBSERVATION_CHAIN_CONSISTENT_NOT_AUTHORITY"
-                        if good else "DONE_STATUS_OR_WRITER_CONTRADICTION")
+    expected_status = ("AUTO_ROLLBACK_CONFIRMED" if receipt["writer"] == "primary"
+                       else "SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED")
+    if done.get("status") != expected_status:
+        result["status"] = "DONE_STATUS_OR_WRITER_CONTRADICTION"
+        return result
+    if not matches_producer_done(done, ready, receipt["writer"]):
+        result["status"] = "DONE_METADATA_MISMATCH_REVIEW_REQUIRED"
+        return result
+    result["status"] = "SYNTHETIC_OBSERVATION_CHAIN_CONSISTENT_NOT_AUTHORITY"
     # Even a consistent lab DONE does not authorize host kernel actions or
     # confer cryptographic authenticity / power-loss durability.
     return result

@@ -14,16 +14,23 @@ NETNS="net:[12345678]"
 EPOCH="a"*24
 INVENTORY={"kernelInventoryComplete":True,"rootNftEntries":0,
            "namedNetnsPresent":False,"nonRootNetnsProcesses":0,"foreignNetnsFdHolders":0}
-READY={"stageId":STAGE,"bootId":BOOT,"armed":True,"netnsInode":NETNS}
+READY={"stageId":STAGE,"bootId":BOOT,"armed":True,"netnsInode":NETNS,
+       "deadlineMonotonic":260.0}
 JOURNAL={"stageId":STAGE,"bootId":BOOT,"state":"ROLLED_BACK",
          "history":["STAGED","VALIDATED","COMMITTED_SYNTHETIC","ROLLED_BACK"]}
 RECEIPT={"status":"JOURNAL_TERMINAL_RECEIPT_PRESENT_DONE_NOT_EVALUATED",
          "epoch":EPOCH,"writer":"fallback","ownerApproved":False,
          "automaticRecoveryAuthorized":False}
-DONE={"status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",
+DONE={"schema":"lightluna.vm-fallback-done/v1alpha1",
+      "status":"SYNTHETIC_FALLBACK_ROLLBACK_CONFIRMED",
       "stageId":STAGE,"bootId":BOOT,"rollbackObservationEpoch":EPOCH,
       "rollbackFenced":True,"netnsInode":NETNS,
+      "deadlineMonotonic":260.0,"completedMonotonic":261.0,
       "syntheticGuestOnly":True,"ownerApproved":False}
+PRIMARY_DONE={"status":"AUTO_ROLLBACK_CONFIRMED",
+      "stageId":STAGE,"bootId":BOOT,"rollbackObservationEpoch":EPOCH,
+      "rollbackFenced":True,"deadlineMonotonic":260.0,
+      "completedMonotonic":261.0,"lagSeconds":1.0}
 ARCHIVED_REVIEW={"status":"JOURNAL_TERMINAL_DONE_MISSING_POST_CLEANUP_REVIEW",
                  "rollbackObservationEpoch":EPOCH,"bootId":BOOT,"stageId":STAGE,
                  "successDoneObserved":False,
@@ -82,7 +89,38 @@ class ReadOnlyReviewTests(unittest.TestCase):
     def test_primary_matching_done(self):
         self.status("SYNTHETIC_OBSERVATION_CHAIN_CONSISTENT_NOT_AUTHORITY",
                     receipt=dict(RECEIPT,writer="primary"),
-                    done=dict(DONE,status="AUTO_ROLLBACK_CONFIRMED"))
+                    done=dict(PRIMARY_DONE))
+    def test_done_declared_authority_or_unknown_properties_denied(self):
+        # These are not fields of the actual primary/fallback DONE producers.
+        # They must never survive review as a coherent synthetic observation.
+        for writer, base, field, value in (
+            ("primary", PRIMARY_DONE, "ownerApproved", True),
+            ("primary", PRIMARY_DONE, "signedOwnerReceipt", True),
+            ("primary", PRIMARY_DONE, "kernelWrites", True),
+            ("fallback", DONE, "kernelWrites", True),
+            ("fallback", DONE, "schema", "invented.vm-fallback-done"),
+        ):
+            with self.subTest(writer=writer, field=field, value=value):
+                self.status("DONE_METADATA_MISMATCH_REVIEW_REQUIRED",
+                            receipt=dict(RECEIPT,writer=writer),
+                            done=dict(base, **{field:value}))
+
+    def test_done_deadline_must_match_ready(self):
+        for writer, base in (("primary", PRIMARY_DONE), ("fallback", DONE)):
+            with self.subTest(writer=writer):
+                self.status("DONE_METADATA_MISMATCH_REVIEW_REQUIRED",
+                            receipt=dict(RECEIPT,writer=writer),
+                            done=dict(base,deadlineMonotonic=261.0))
+
+    def test_done_monotonic_types_reject_boolean_and_nonfinite(self):
+        for writer, base in (("primary", PRIMARY_DONE), ("fallback", DONE)):
+            for field, value in (("deadlineMonotonic", True),
+                                 ("completedMonotonic", float("inf"))):
+                with self.subTest(writer=writer, field=field):
+                    self.status("DONE_METADATA_MISMATCH_REVIEW_REQUIRED",
+                                receipt=dict(RECEIPT,writer=writer),
+                                done=dict(base, **{field:value}))
+
     def test_bad_history_denied(self):
         self.status("MALFORMED_JOURNAL",journal=dict(JOURNAL,history=["STAGED","ROLLED_BACK"]))
     def test_invalid_journal_state_denied(self):

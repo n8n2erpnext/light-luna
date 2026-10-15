@@ -140,8 +140,8 @@
       "path": "docs/11-ROADMAP.md",
       "category": "decision / roadmap",
       "title": "11 — Delivery Roadmap, Test Gates and Release Discipline",
-      "bytes": 53005,
-      "sha256": "d490946aed08f630e19892757079ca51ea020eb4fa58af1546a0fc2d4db38087"
+      "bytes": 53680,
+      "sha256": "d68557b827a50f766decc3cbf6b3490ceb28bc668ef177621fd12bb24e9a4102"
     },
     {
       "path": "docs/12-ADRS.md",
@@ -399,8 +399,8 @@
       "path": "docs/architecture/p0-vm-autonomous-ttl-watchdog.md",
       "category": "architecture / design source",
       "title": "P0 autonomous TTL watchdog — independent KVM guest lab",
-      "bytes": 39939,
-      "sha256": "ca8a8ad815d622b972e6c4b681d350ccbef829c231a0d07c4b41d6abbc37b3cd"
+      "bytes": 42882,
+      "sha256": "4593810d208714e439bc9101520ed33d5d87e8131843c3198863471f988aa24b"
     },
     {
       "path": "docs/architecture/p0-vm-synthetic-stage-revert.md",
@@ -1015,8 +1015,8 @@
       "path": "scripts/lab/vm/guest-rollback-review.py",
       "category": "developer tooling",
       "title": "guest-rollback-review",
-      "bytes": 10378,
-      "sha256": "4d53df5a8e6de13e797acb193da365c4c15d8f30bcf7ef6cdbfb550b49e0743c"
+      "bytes": 12025,
+      "sha256": "59c219691504877c2d3225d6441a2c66df0ad96f8016832fc1f60a2ee4251095"
     },
     {
       "path": "scripts/lab/vm/guest-rollback.sh",
@@ -1148,8 +1148,8 @@
       "path": "scripts/lab/vm/test_rollback_review.py",
       "category": "developer tooling",
       "title": "test_rollback_review",
-      "bytes": 7044,
-      "sha256": "904459b4ef0c356e385c9fb482a26d5ce8cfd82860de5d301beffce2c21f7587"
+      "bytes": 9195,
+      "sha256": "e4073a28c49ced5ffa2021dddee2ba17389cc81d25a8ac26f942be9124ef2a5a"
     },
     {
       "path": "scripts/lab/vm/test_stage_manifest_ttl.py",
